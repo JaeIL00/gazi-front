@@ -1,5 +1,13 @@
 import { StyleSheet } from 'react-native';
 
+// App
+// App
+export const appStyles = StyleSheet.create({
+    container: {
+        flex: 1,
+    },
+});
+
 // Smallest
 // Smallest
 export const touchButtonStyles = StyleSheet.create({
