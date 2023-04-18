@@ -1,6 +1,6 @@
-import React from "react";
-import { TextInput } from "react-native";
-import { SingleLineInputProps } from "../../types/types";
+import React from 'react';
+import { TextInput } from 'react-native';
+import { SingleLineInputProps } from '../../types/types';
 
 export const SingleLineInput = ({
     value,
@@ -22,7 +22,7 @@ export const SingleLineInput = ({
             onChangeText={onChangeText}
             placeholder={placeholder}
             onSubmitEditing={onSubmitEditing}
-            keyboardType={keyboardType ?? "default"}
+            keyboardType={keyboardType ?? 'default'}
             maxLength={maxLength}
             secureTextEntry={secureTextEntry}
             style={{ fontSize: fontSize ?? 20, width: width, height: height }}

@@ -1,12 +1,12 @@
-import React from "react";
+import React from 'react';
 import {
     NativeStackNavigationProp,
     createNativeStackNavigator,
-} from "@react-navigation/native-stack";
-import JoinMemberScreen from "../screens/JoinMemberScreen";
-import NotLoginHomeScreen from "../screens/NotLoginHomeScreen";
-import { RootStackParamList } from "../types/types";
-import { useNavigation } from "@react-navigation/native";
+} from '@react-navigation/native-stack';
+import JoinMemberScreen from '../screens/JoinMemberScreen';
+import NotLoginHomeScreen from '../screens/NotLoginHomeScreen';
+import { RootStackParamList } from '../types/types';
+import { useNavigation } from '@react-navigation/native';
 
 export const RootStackNavigation = () => {
     const Stack = createNativeStackNavigator();
@@ -15,7 +15,7 @@ export const RootStackNavigation = () => {
         <Stack.Navigator
             screenOptions={{
                 headerShown: false,
-                presentation: "containedModal",
+                presentation: 'containedModal',
             }}>
             <Stack.Screen name="NotLoginHome" component={NotLoginHomeScreen} />
             <Stack.Screen name="JoinMember" component={JoinMemberScreen} />

@@ -1,6 +1,6 @@
-import React from "react";
-import { SafeAreaView } from "react-native";
-import { RootApp } from "./src/RootApp";
+import React from 'react';
+import { SafeAreaView } from 'react-native';
+import { RootApp } from './src/RootApp';
 
 function App(): JSX.Element {
     return (

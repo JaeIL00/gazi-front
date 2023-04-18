@@ -1,4 +1,4 @@
-import { KeyboardType } from "react-native/types";
+import { KeyboardType } from 'react-native/types';
 
 // Navigation
 // Navigation
@@ -6,7 +6,7 @@ export type RootStackParamList = {
     NotLoginHome: undefined;
     JoinMember: undefined;
 };
-export type NotLoginRouteName = "JoinMember";
+export type NotLoginRouteName = 'JoinMember';
 
 // Smallest
 // Smallest

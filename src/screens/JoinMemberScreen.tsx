@@ -1,6 +1,6 @@
-import React from "react";
-import { View } from "react-native";
-import InputEmailPw from "../components/organisms/InputEmailPw";
+import React from 'react';
+import { View } from 'react-native';
+import InputEmailPw from '../components/organisms/InputEmailPw';
 
 const JoinMemberScreen = () => {
     return (

@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
-import LoginTextInput from "../molecules/LoginTextInput";
-import validator from "validator";
+import React, { useEffect, useState } from 'react';
+import LoginTextInput from '../molecules/LoginTextInput';
+import validator from 'validator';
 
 const InputEmailPw = () => {
-    const [email, setEmail] = useState("");
+    const [email, setEmail] = useState('');
     const [isEmail, setIsEmail] = useState(false);
     const onChangeEmailText = (text: string) => {
         setEmail(text);
@@ -15,7 +15,7 @@ const InputEmailPw = () => {
         emailErrorTextStyle();
     }, [email]);
 
-    const [password, setPassword] = useState("");
+    const [password, setPassword] = useState('');
     const [isPasswordLeng, setIsPasswordLeng] = useState(false);
     const [isPasswordReg, setIsPasswordReg] = useState(false);
     const onChangePasswordText = (text: string) => {

@@ -1,12 +1,12 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet } from 'react-native';
 
 // Smallest
 // Smallest
 export const touchButtonStyles = StyleSheet.create({
     container: {
         borderWidth: 1,
-        borderColor: "black",
-        alignItems: "center",
+        borderColor: 'black',
+        alignItems: 'center',
     },
 });
 
@@ -14,12 +14,12 @@ export const touchButtonStyles = StyleSheet.create({
 // Molecules
 export const LoginTextInputStyles = StyleSheet.create({
     errorSection: {
-        flexDirection: "row",
+        flexDirection: 'row',
     },
     errorTextStyle: {
-        color: "lightgray",
+        color: 'lightgray',
     },
     correctTextStyle: {
-        color: "green",
+        color: 'green',
     },
 });

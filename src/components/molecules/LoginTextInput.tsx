@@ -1,8 +1,8 @@
-import React from "react";
-import { Text, View } from "react-native";
-import { SingleLineInput } from "../smallest/SingleLineInput";
-import { LoginTextInputProps } from "../../types/types";
-import { LoginTextInputStyles } from "../../styles/styles";
+import React from 'react';
+import { Text, View } from 'react-native';
+import { SingleLineInput } from '../smallest/SingleLineInput';
+import { LoginTextInputProps } from '../../types/types';
+import { LoginTextInputStyles } from '../../styles/styles';
 
 const LoginTextInput = ({
     title,
