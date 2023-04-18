@@ -1,6 +1,6 @@
 import React from "react";
-import { Text, View } from "react-native";
-import TouchButton from "../minComponents/TouchButton";
+import { View } from "react-native";
+import TouchButton from "../components/smallest/TouchButton";
 import { useRootNavigation } from "../navigations/RootStackNavigation";
 import { NotLoginRouteName } from "../types/types";
 

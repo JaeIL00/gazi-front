@@ -1,10 +1,11 @@
 import React from "react";
-import { Text, View } from "react-native";
+import { View } from "react-native";
+import InputEmailPw from "../components/organisms/InputEmailPw";
 
 const JoinMemberScreen = () => {
     return (
         <View>
-            <Text style={{ fontSize: 16 }}>JoinMemberScreen</Text>
+            <InputEmailPw />
         </View>
     );
 };
