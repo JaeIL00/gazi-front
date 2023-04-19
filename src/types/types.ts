@@ -16,15 +16,15 @@ export type TouchButtonProps = {
 };
 export type SingleLineInputProps = {
     value: string;
-    onChangeText: (text: string) => void;
     placeholder: string;
-    onSubmitEditing?: () => void;
     keyboardType?: KeyboardType;
     fontSize?: number;
     maxLength?: number;
     secureTextEntry?: boolean;
     width?: number;
     height?: number;
+    onChangeText: (text: string) => void;
+    onSubmitEditing?: () => void;
 };
 
 // Molecules
@@ -36,3 +36,25 @@ export interface LoginTextInputProps extends SingleLineInputProps {
     secondErrorText?: string;
     secondErrorTextStyle?: boolean;
 }
+
+// Organisms
+// Organisms
+export type InputEmailPwProps = {
+    data: {
+        email: string;
+        password: string;
+        nickname: string;
+        keyword: string;
+    };
+    isEmail?: boolean;
+    isPasswordLeng?: boolean;
+    isPasswordReg?: boolean;
+    onChangeEmailText: (text: string) => void;
+    onChangePasswordText: (text: string) => void;
+};
+
+// templates
+// templates
+export type EmailWithPasswordProps = {
+    onPressNextStep: () => void;
+};

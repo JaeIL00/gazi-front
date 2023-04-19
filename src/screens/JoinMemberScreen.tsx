@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { BackHandler, Platform, View } from 'react-native';
 
-import InputEmailPw from '../components/organisms/InputEmailPw';
-import TouchButton from '../components/smallest/TouchButton';
+import EmailWithPassword from '../components/templates/joinMember/EmailWithPassword';
 
 const JoinMemberScreen = () => {
     // Move to next step
@@ -29,10 +28,12 @@ const JoinMemberScreen = () => {
                 );
         }
     }, [step]);
+
     return (
         <View>
-            {step === 1 && <InputEmailPw />}
-            <TouchButton title="다음" onPress={onPressNextStep} />
+            {step === 1 && (
+                <EmailWithPassword onPressNextStep={onPressNextStep} />
+            )}
         </View>
     );
 };

@@ -5,57 +5,30 @@ import { useRecoilState } from 'recoil';
 
 import { joinMemberInfo } from '../../store/atoms';
 import LoginTextInput from '../molecules/LoginTextInput';
+import { InputEmailPwProps } from '../../types/types';
 
-const InputEmailPw = () => {
-    const [joinData, setJoinData] = useRecoilState(joinMemberInfo);
-
-    const [isEmail, setIsEmail] = useState(false);
-    const onChangeEmailText = (text: string) => {
-        setJoinData({ ...joinData, email: text });
-    };
-    const emailErrorTextStyle = () => {
-        validator.isEmail(joinData.email)
-            ? setIsEmail(true)
-            : setIsEmail(false);
-    };
-    useEffect(() => {
-        emailErrorTextStyle();
-    }, [joinData.email]);
-
-    const [isPasswordLeng, setIsPasswordLeng] = useState(false);
-    const [isPasswordReg, setIsPasswordReg] = useState(false);
-    const onChangePasswordText = (text: string) => {
-        setJoinData({ ...joinData, password: text });
-    };
-    const passwordErrorTextStyle = () => {
-        const reg =
-            /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{1,}$/;
-        reg.test(joinData.password)
-            ? setIsPasswordReg(true)
-            : setIsPasswordReg(false);
-
-        joinData.password.length >= 8 && joinData.password.length <= 20
-            ? setIsPasswordLeng(true)
-            : setIsPasswordLeng(false);
-    };
-    useEffect(() => {
-        passwordErrorTextStyle();
-    }, [joinData.password]);
-
+const InputEmailPw = ({
+    data,
+    isEmail,
+    isPasswordLeng,
+    isPasswordReg,
+    onChangeEmailText,
+    onChangePasswordText,
+}: InputEmailPwProps) => {
     return (
         <View>
             <LoginTextInput
                 title="Email"
-                value={joinData.email}
+                value={data.email}
                 placeholder="이메일(아이디)입력"
                 onChangeText={onChangeEmailText}
-                firstErrorText="8자-20자 이내"
+                firstErrorText="올바른 이메일 형식"
                 firstErrorTextStyle={isEmail}
                 keyboardType="email-address"
             />
             <LoginTextInput
                 title="Password"
-                value={joinData.password}
+                value={data.password}
                 placeholder="비밀번호 입력"
                 onChangeText={onChangePasswordText}
                 firstErrorText="8자-20자 이내"
