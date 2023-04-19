@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { BackHandler, Platform, View } from 'react-native';
 
-import EmailWithPassword from '../components/templates/joinMember/EmailWithPassword';
+import EmailWithPasswordTemplate from '../components/templates/joinMember/EmailWithPasswordTemplate';
+import NicknameTemplate from '../components/templates/joinMember/NicknameTemplate';
 
 const JoinMemberScreen = () => {
     // Move to next step
@@ -32,7 +33,10 @@ const JoinMemberScreen = () => {
     return (
         <View>
             {step === 1 && (
-                <EmailWithPassword onPressNextStep={onPressNextStep} />
+                <EmailWithPasswordTemplate onPressNextStep={onPressNextStep} />
+            )}
+            {step === 2 && (
+                <NicknameTemplate onPressNextStep={onPressNextStep} />
             )}
         </View>
     );

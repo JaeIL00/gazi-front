@@ -3,13 +3,15 @@ import { Alert, View } from 'react-native';
 import { useRecoilState } from 'recoil';
 import validator from 'validator';
 
-import { joinMemberInfo } from '../../../store/atoms';
+import { joinMemberData } from '../../../store/atoms';
 import InputEmailPw from '../../organisms/InputEmailPw';
 import { EmailWithPasswordProps } from '../../../types/types';
 import TouchButton from '../../smallest/TouchButton';
 
-const EmailWithPassword = ({ onPressNextStep }: EmailWithPasswordProps) => {
-    const [joinData, setJoinData] = useRecoilState(joinMemberInfo);
+const EmailWithPasswordTemplate = ({
+    onPressNextStep,
+}: EmailWithPasswordProps) => {
+    const [joinData, setJoinData] = useRecoilState(joinMemberData);
 
     // Email validation
     const [isEmail, setIsEmail] = useState(false);
@@ -69,4 +71,4 @@ const EmailWithPassword = ({ onPressNextStep }: EmailWithPasswordProps) => {
     );
 };
 
-export default EmailWithPassword;
+export default EmailWithPasswordTemplate;

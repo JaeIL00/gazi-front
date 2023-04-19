@@ -1,7 +1,7 @@
 import { atom } from 'recoil';
 
-export const joinMemberInfo = atom({
-    key: 'joinMemberInfo',
+export const joinMemberData = atom({
+    key: 'joinMemberData',
     default: {
         email: '',
         password: '',

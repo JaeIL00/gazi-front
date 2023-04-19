@@ -1,9 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { View } from 'react-native';
-import validator from 'validator';
-import { useRecoilState } from 'recoil';
 
-import { joinMemberInfo } from '../../store/atoms';
 import LoginTextInput from '../molecules/LoginTextInput';
 import { InputEmailPwProps } from '../../types/types';
 
