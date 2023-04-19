@@ -1,44 +1,52 @@
 import React, { useEffect, useState } from 'react';
-import LoginTextInput from '../molecules/LoginTextInput';
+import { View } from 'react-native';
 import validator from 'validator';
+import { useRecoilState } from 'recoil';
+
+import { joinMemberInfo } from '../../store/atoms';
+import LoginTextInput from '../molecules/LoginTextInput';
 
 const InputEmailPw = () => {
-    const [email, setEmail] = useState('');
+    const [joinData, setJoinData] = useRecoilState(joinMemberInfo);
+
     const [isEmail, setIsEmail] = useState(false);
     const onChangeEmailText = (text: string) => {
-        setEmail(text);
+        setJoinData({ ...joinData, email: text });
     };
     const emailErrorTextStyle = () => {
-        validator.isEmail(email) ? setIsEmail(true) : setIsEmail(false);
+        validator.isEmail(joinData.email)
+            ? setIsEmail(true)
+            : setIsEmail(false);
     };
     useEffect(() => {
         emailErrorTextStyle();
-    }, [email]);
+    }, [joinData.email]);
 
-    const [password, setPassword] = useState('');
     const [isPasswordLeng, setIsPasswordLeng] = useState(false);
     const [isPasswordReg, setIsPasswordReg] = useState(false);
     const onChangePasswordText = (text: string) => {
-        setPassword(text);
+        setJoinData({ ...joinData, password: text });
     };
     const passwordErrorTextStyle = () => {
         const reg =
             /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{1,}$/;
-        reg.test(password) ? setIsPasswordReg(true) : setIsPasswordReg(false);
+        reg.test(joinData.password)
+            ? setIsPasswordReg(true)
+            : setIsPasswordReg(false);
 
-        password.length >= 8 && password.length <= 20
+        joinData.password.length >= 8 && joinData.password.length <= 20
             ? setIsPasswordLeng(true)
             : setIsPasswordLeng(false);
     };
     useEffect(() => {
         passwordErrorTextStyle();
-    }, [password]);
+    }, [joinData.password]);
 
     return (
-        <>
+        <View>
             <LoginTextInput
                 title="Email"
-                value={email}
+                value={joinData.email}
                 placeholder="이메일(아이디)입력"
                 onChangeText={onChangeEmailText}
                 firstErrorText="8자-20자 이내"
@@ -47,7 +55,7 @@ const InputEmailPw = () => {
             />
             <LoginTextInput
                 title="Password"
-                value={password}
+                value={joinData.password}
                 placeholder="비밀번호 입력"
                 onChangeText={onChangePasswordText}
                 firstErrorText="8자-20자 이내"
@@ -56,7 +64,7 @@ const InputEmailPw = () => {
                 secondErrorTextStyle={isPasswordReg}
                 secureTextEntry={true}
             />
-        </>
+        </View>
     );
 };
 export default InputEmailPw;
