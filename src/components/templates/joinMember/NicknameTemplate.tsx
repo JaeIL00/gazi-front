@@ -11,10 +11,7 @@ const NicknameTemplate = ({ onPressNextStep }: NicknameTemplateProps) => {
     const [joinData, setJoinData] = useRecoilState(joinMemberData);
 
     const onChangeNickname = (text: string) => {
-        setJoinData({
-            ...joinData,
-            nickname: text,
-        });
+        setJoinData({ ...joinData, nickname: text });
     };
 
     const canMoveNextStepHandler = () => {

@@ -22,22 +22,14 @@ const JoinMemberScreen = () => {
     useEffect(() => {
         if (Platform.OS === 'android') {
             BackHandler.addEventListener('hardwareBackPress', handleBackButton);
-            return () =>
-                BackHandler.removeEventListener(
-                    'hardwareBackPress',
-                    handleBackButton,
-                );
+            return () => BackHandler.removeEventListener('hardwareBackPress', handleBackButton);
         }
     }, [step]);
 
     return (
         <View>
-            {step === 1 && (
-                <EmailWithPasswordTemplate onPressNextStep={onPressNextStep} />
-            )}
-            {step === 2 && (
-                <NicknameTemplate onPressNextStep={onPressNextStep} />
-            )}
+            {step === 1 && <EmailWithPasswordTemplate onPressNextStep={onPressNextStep} />}
+            {step === 2 && <NicknameTemplate onPressNextStep={onPressNextStep} />}
         </View>
     );
 };
