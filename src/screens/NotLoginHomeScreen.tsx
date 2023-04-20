@@ -12,10 +12,7 @@ const NotLoginHomeScreen = () => {
     };
     return (
         <View>
-            <TouchButton
-                title="이메일로 가입하기"
-                onPress={() => onPressNavigate('JoinMember')}
-            />
+            <TouchButton title="이메일로 가입하기" onPress={() => onPressNavigate('JoinMember')} />
         </View>
     );
 };

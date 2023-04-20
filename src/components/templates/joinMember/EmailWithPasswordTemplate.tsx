@@ -8,9 +8,7 @@ import InputEmailPw from '../../organisms/InputEmailPw';
 import { EmailWithPasswordProps } from '../../../types/types';
 import TouchButton from '../../smallest/TouchButton';
 
-const EmailWithPasswordTemplate = ({
-    onPressNextStep,
-}: EmailWithPasswordProps) => {
+const EmailWithPasswordTemplate = ({ onPressNextStep }: EmailWithPasswordProps) => {
     const [joinData, setJoinData] = useRecoilState(joinMemberData);
 
     // Email validation
@@ -19,9 +17,7 @@ const EmailWithPasswordTemplate = ({
         setJoinData({ ...joinData, email: text });
     };
     const emailErrorTextStyle = () => {
-        validator.isEmail(joinData.email)
-            ? setIsEmail(true)
-            : setIsEmail(false);
+        validator.isEmail(joinData.email) ? setIsEmail(true) : setIsEmail(false);
     };
     useEffect(() => {
         emailErrorTextStyle();
@@ -34,11 +30,8 @@ const EmailWithPasswordTemplate = ({
         setJoinData({ ...joinData, password: text });
     };
     const passwordErrorTextStyle = () => {
-        const reg =
-            /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{1,}$/;
-        reg.test(joinData.password)
-            ? setIsPasswordReg(true)
-            : setIsPasswordReg(false);
+        const reg = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{1,}$/;
+        reg.test(joinData.password) ? setIsPasswordReg(true) : setIsPasswordReg(false);
 
         joinData.password.length >= 8 && joinData.password.length <= 20
             ? setIsPasswordLeng(true)
