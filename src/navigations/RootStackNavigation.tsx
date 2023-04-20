@@ -15,9 +15,9 @@ export const RootStackNavigation = () => {
                 headerShown: false,
                 presentation: 'containedModal',
             }}>
-            <Stack.Screen name="InitPermission" component={InitPermissionScreen} />
             <Stack.Screen name="NotLoginHome" component={NotLoginHomeScreen} />
             <Stack.Screen name="JoinMember" component={JoinMemberScreen} />
+            <Stack.Screen name="InitPermission" component={InitPermissionScreen} />
         </Stack.Navigator>
     );
 };

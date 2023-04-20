@@ -1,8 +1,9 @@
 import React from 'react';
-import { View } from 'react-native';
+import { Text, View } from 'react-native';
 import TouchButton from '../components/smallest/TouchButton';
 import { useRootNavigation } from '../navigations/RootStackNavigation';
 import { NotLoginRouteName } from '../types/types';
+import { NotLoginHomeScreenStyles } from '../styles/styles';
 
 const NotLoginHomeScreen = () => {
     const rootNavigation = useRootNavigation();
@@ -11,8 +12,10 @@ const NotLoginHomeScreen = () => {
         rootNavigation.navigate(route);
     };
     return (
-        <View>
-            <TouchButton title="이메일로 가입하기" onPress={() => onPressNavigate('JoinMember')} />
+        <View style={NotLoginHomeScreenStyles.container}>
+            <TouchButton onPress={() => onPressNavigate('JoinMember')}>
+                <Text>회원가입</Text>
+            </TouchButton>
         </View>
     );
 };

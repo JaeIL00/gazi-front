@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Alert, View } from 'react-native';
+import { Alert, Text, View } from 'react-native';
 import { useRecoilState } from 'recoil';
 import validator from 'validator';
 
@@ -41,6 +41,7 @@ const EmailWithPasswordTemplate = ({ onPressNextStep }: EmailWithPasswordProps) 
         passwordErrorTextStyle();
     }, [joinData.password]);
 
+    // Checking validation
     const canMoveNextStepHandler = () => {
         if (isEmail && isPasswordLeng && isPasswordReg) {
             onPressNextStep();
@@ -59,7 +60,9 @@ const EmailWithPasswordTemplate = ({ onPressNextStep }: EmailWithPasswordProps) 
                 onChangeEmailText={onChangeEmailText}
                 onChangePasswordText={onChangePasswordText}
             />
-            <TouchButton title="다음" onPress={canMoveNextStepHandler} />
+            <TouchButton onPress={canMoveNextStepHandler}>
+                <Text>이메일 인증</Text>
+            </TouchButton>
         </View>
     );
 };

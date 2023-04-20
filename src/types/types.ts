@@ -1,3 +1,4 @@
+import { ReactElement } from 'react';
 import { KeyboardType } from 'react-native/types';
 
 // Navigation
@@ -11,7 +12,7 @@ export type NotLoginRouteName = 'JoinMember';
 // Smallest
 // Smallest
 export type TouchButtonProps = {
-    title: string;
+    children?: ReactElement;
     onPress: () => void;
 };
 export type SingleLineInputProps = {
@@ -26,6 +27,19 @@ export type SingleLineInputProps = {
     onChangeText: (text: string) => void;
     onSubmitEditing?: () => void;
 };
+export type IconsProps = {
+    type: string;
+    name: string;
+    size: number;
+    color: string;
+};
+export type PageTitleProps = {
+    title: string;
+};
+export type GrayTextProps = {
+    text: string;
+    size: number;
+};
 
 // Molecules
 // Molecules
@@ -35,6 +49,11 @@ export interface LoginTextInputProps extends SingleLineInputProps {
     firstErrorTextStyle?: boolean;
     secondErrorText?: string;
     secondErrorTextStyle?: boolean;
+}
+export interface PageTitleWithExplainProps {
+    title: string;
+    explainText?: string;
+    explainSize?: number;
 }
 
 // Organisms
@@ -52,6 +71,9 @@ export type InputEmailPwProps = {
     onChangeEmailText: (text: string) => void;
     onChangePasswordText: (text: string) => void;
 };
+export interface MoveBackWithPageTitleProps extends PageTitleWithExplainProps {
+    onPress: () => void;
+}
 
 // templates
 // templates
