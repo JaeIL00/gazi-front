@@ -7,7 +7,13 @@ import Colors from '../../styles/Colors';
 import { MoveBackWithPageTitleProps } from '../../types/types';
 import { MoveBackWithPageTitleStyles } from '../../styles/styles';
 
-const MoveBackWithPageTitle = ({ title, explainText, explainSize, onPress }: MoveBackWithPageTitleProps) => {
+const MoveBackWithPageTitle = ({
+    oneTitle,
+    twoTitle,
+    explainText,
+    explainSize,
+    onPress,
+}: MoveBackWithPageTitleProps) => {
     return (
         <View>
             <View style={MoveBackWithPageTitleStyles.buttonContainer}>
@@ -15,7 +21,12 @@ const MoveBackWithPageTitle = ({ title, explainText, explainSize, onPress }: Mov
                     <Icons type="octicons" name="arrow-left" color={Colors.TXT_BLACK} size={24} />
                 </TouchButton>
             </View>
-            <PageTitleWithExplain title={title} explainText={explainText} explainSize={explainSize} />
+            <PageTitleWithExplain
+                oneTitle={oneTitle}
+                twoTitle={twoTitle}
+                explainText={explainText}
+                explainSize={explainSize}
+            />
         </View>
     );
 };

@@ -16,6 +16,6 @@ export const hegithPercentage = (height: number) => {
     return responsiveScreenHeight(percentage);
 };
 export const fontPercentage = (size: number) => {
-    const percentage = size * 0.135;
+    const percentage = size * 0.12;
     return responsiveScreenFontSize(percentage);
 };

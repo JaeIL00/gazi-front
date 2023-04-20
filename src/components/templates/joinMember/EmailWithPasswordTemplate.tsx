@@ -57,7 +57,7 @@ const EmailWithPasswordTemplate = ({ onPressNextStep }: EmailWithPasswordProps) 
     const buttonStyleHandler = () => {
         if (isEmail) {
             setButtonText('이메일 인증');
-            setButtonColor(Colors.BTN_BLACK);
+            setButtonColor(Colors.BLACK);
         } else {
             setButtonText('이메일을 입력해주세요');
             setButtonColor(Colors.BTN_GRAY);
@@ -83,6 +83,7 @@ const EmailWithPasswordTemplate = ({ onPressNextStep }: EmailWithPasswordProps) 
                 height={48}
                 backgroundColor={buttonColor}
                 textColor={Colors.WHITE}
+                fontSize={17}
             />
         </View>
     );

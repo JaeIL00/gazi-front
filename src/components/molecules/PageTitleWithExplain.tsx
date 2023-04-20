@@ -5,10 +5,13 @@ import GrayText from '../smallest/GrayText';
 import { PageTitleWithExplainProps } from '../../types/types';
 import Space from '../smallest/Space';
 
-const PageTitleWithExplain = ({ title, explainText, explainSize }: PageTitleWithExplainProps) => {
+const PageTitleWithExplain = ({ oneTitle, twoTitle, explainText, explainSize }: PageTitleWithExplainProps) => {
     return (
         <View>
-            <PageTitle title={title} />
+            <View>
+                <PageTitle title={oneTitle} />
+                {twoTitle && <PageTitle title={twoTitle} />}
+            </View>
             <Space height={10} />
             {explainText && explainSize && <GrayText text={explainText} size={explainSize} />}
         </View>

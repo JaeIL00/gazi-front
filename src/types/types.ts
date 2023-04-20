@@ -57,13 +57,15 @@ export interface LoginTextInputProps extends SingleLineInputProps {
     secondErrorTextStyle?: boolean;
 }
 export interface PageTitleWithExplainProps {
-    title: string;
+    oneTitle: string;
+    twoTitle: string;
     explainText?: string;
     explainSize?: number;
 }
 export interface TextButtonProps extends TouchButtonProps {
     text: string;
     textColor: string;
+    fontSize: number;
 }
 
 // Organisms

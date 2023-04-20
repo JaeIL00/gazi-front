@@ -87,13 +87,12 @@ export const LoginTextInputStyles = StyleSheet.create({
         color: 'green',
     },
 });
-export const PageTitleWithExplainStyles = StyleSheet.create({});
-export const TextButtonStyles = (color: string) =>
+export const TextButtonStyles = (color: string, fontSize: number) =>
     StyleSheet.create({
         text: {
             color: color,
             fontWeight: '600',
-            fontSize: fontPercentage(17),
+            fontSize: fontPercentage(fontSize),
         },
     });
 
@@ -106,10 +105,34 @@ export const MoveBackWithPageTitleStyles = StyleSheet.create({
     },
 });
 
+// Templates
+// Templates
+export const NicknameTemplateStyles = StyleSheet.create({
+    container: {
+        position: 'relative',
+        flex: 1,
+    },
+    inputBox: {
+        flexDirection: 'row',
+        borderRadius: fontPercentage(5),
+        height: hegithPercentage(48),
+        backgroundColor: Colors.LIGHTGRAY,
+        paddingHorizontal: widthPercentage(16),
+        alignItems: 'center',
+        justifyContent: 'space-between',
+    },
+    buttonBox: {
+        position: 'absolute',
+        width: '100%',
+        bottom: hegithPercentage(41),
+    },
+});
+
 // Screen
 // Screen
 export const JoinMemberScreenStyles = StyleSheet.create({
     container: {
+        flex: 1,
         paddingHorizontal: 16,
         backgroundColor: Colors.WHITE,
     },
