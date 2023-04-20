@@ -33,6 +33,19 @@ export const touchButtonStyles = (
             justifyContent: 'center',
         },
     });
+export const SingleLineInputStyles = (
+    fontSize: number | undefined,
+    width: number | undefined,
+    height: number | undefined,
+) =>
+    StyleSheet.create({
+        input: {
+            fontSize: fontSize,
+            width: width,
+            height: height,
+            color: Colors.TXT_BLACK,
+        },
+    });
 export const pageTitleStyles = StyleSheet.create({
     title: {
         fontSize: fontPercentage(24),
@@ -57,6 +70,13 @@ export const spaceStyles = (height: number) =>
 // Molecules
 // Molecules
 export const LoginTextInputStyles = StyleSheet.create({
+    inputBox: {
+        borderRadius: fontPercentage(5),
+        height: hegithPercentage(48),
+        backgroundColor: Colors.LIGHTGRAY,
+        paddingHorizontal: widthPercentage(16),
+        justifyContent: 'center',
+    },
     errorSection: {
         flexDirection: 'row',
     },
@@ -91,10 +111,12 @@ export const MoveBackWithPageTitleStyles = StyleSheet.create({
 export const JoinMemberScreenStyles = StyleSheet.create({
     container: {
         paddingHorizontal: 16,
+        backgroundColor: Colors.WHITE,
     },
 });
 export const NotLoginHomeScreenStyles = StyleSheet.create({
     container: {
         paddingHorizontal: 16,
+        backgroundColor: Colors.WHITE,
     },
 });

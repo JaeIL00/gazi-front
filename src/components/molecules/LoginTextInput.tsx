@@ -20,14 +20,17 @@ const LoginTextInput = ({
     return (
         <View>
             <Text>{title}</Text>
-            <SingleLineInput
-                value={value}
-                onChangeText={onChangeText}
-                placeholder={placeholder}
-                maxLength={maxLength}
-                keyboardType={keyboardType}
-                secureTextEntry={secureTextEntry}
-            />
+            <View style={LoginTextInputStyles.inputBox}>
+                <SingleLineInput
+                    value={value}
+                    onChangeText={onChangeText}
+                    placeholder={placeholder}
+                    maxLength={maxLength}
+                    keyboardType={keyboardType}
+                    secureTextEntry={secureTextEntry}
+                    fontSize={16}
+                />
+            </View>
             <View style={LoginTextInputStyles.errorSection}>
                 {firstErrorText && (
                     <Text

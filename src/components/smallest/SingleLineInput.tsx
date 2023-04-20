@@ -1,6 +1,8 @@
 import React from 'react';
 import { TextInput } from 'react-native';
 import { SingleLineInputProps } from '../../types/types';
+import { SingleLineInputStyles } from '../../styles/styles';
+import Colors from '../../styles/Colors';
 
 export const SingleLineInput = ({
     value,
@@ -21,11 +23,12 @@ export const SingleLineInput = ({
             value={value}
             onChangeText={onChangeText}
             placeholder={placeholder}
+            placeholderTextColor={Colors.TXT_LIGHTGRAY}
             onSubmitEditing={onSubmitEditing}
             keyboardType={keyboardType ?? 'default'}
             maxLength={maxLength}
             secureTextEntry={secureTextEntry}
-            style={{ fontSize: fontSize ?? 20, width: width, height: height }}
+            style={SingleLineInputStyles(fontSize, width, height).input}
         />
     );
 };

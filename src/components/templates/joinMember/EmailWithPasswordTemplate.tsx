@@ -82,7 +82,7 @@ const EmailWithPasswordTemplate = ({ onPressNextStep }: EmailWithPasswordProps) 
                 text={buttonText}
                 height={48}
                 backgroundColor={buttonColor}
-                textColor={Colors.TXT_WHITE}
+                textColor={Colors.WHITE}
             />
         </View>
     );
