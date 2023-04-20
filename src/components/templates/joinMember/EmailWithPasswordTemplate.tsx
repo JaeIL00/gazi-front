@@ -6,7 +6,7 @@ import validator from 'validator';
 import { joinMemberData } from '../../../store/atoms';
 import InputEmailPw from '../../organisms/InputEmailPw';
 import { EmailWithPasswordProps } from '../../../types/types';
-import MoveStepButton from '../../molecules/MoveStepButton';
+import TextButton from '../../molecules/TextButton';
 import Colors from '../../../styles/Colors';
 
 const EmailWithPasswordTemplate = ({ onPressNextStep }: EmailWithPasswordProps) => {
@@ -77,9 +77,10 @@ const EmailWithPasswordTemplate = ({ onPressNextStep }: EmailWithPasswordProps) 
                 onChangeEmailText={onChangeEmailText}
                 onChangePasswordText={onChangePasswordText}
             />
-            <MoveStepButton
+            <TextButton
                 onPress={canMoveNextStepHandler}
                 text={buttonText}
+                height={48}
                 backgroundColor={buttonColor}
                 textColor={Colors.TXT_WHITE}
             />

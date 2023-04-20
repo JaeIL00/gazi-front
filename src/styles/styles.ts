@@ -68,7 +68,7 @@ export const LoginTextInputStyles = StyleSheet.create({
     },
 });
 export const PageTitleWithExplainStyles = StyleSheet.create({});
-export const MoveStepButtonStyles = (color: string) =>
+export const TextButtonStyles = (color: string) =>
     StyleSheet.create({
         text: {
             color: color,

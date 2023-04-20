@@ -61,7 +61,7 @@ export interface PageTitleWithExplainProps {
     explainText?: string;
     explainSize?: number;
 }
-export interface MoveStepButtonProps extends TouchButtonProps {
+export interface TextButtonProps extends TouchButtonProps {
     text: string;
     textColor: string;
 }
