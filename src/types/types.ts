@@ -1,5 +1,5 @@
 import { ReactElement } from 'react';
-import { KeyboardType } from 'react-native/types';
+import { FlexAlignType, KeyboardType } from 'react-native/types';
 
 // Navigation
 // Navigation
@@ -14,6 +14,12 @@ export type NotLoginRouteName = 'JoinMember';
 export type TouchButtonProps = {
     children?: ReactElement;
     onPress: () => void;
+    width?: number;
+    height?: number;
+    backgroundColor?: string;
+    paddingHorizontal?: number;
+    paddingVertical?: number;
+    alignSelf?: FlexAlignType;
 };
 export type SingleLineInputProps = {
     value: string;
@@ -54,6 +60,10 @@ export interface PageTitleWithExplainProps {
     title: string;
     explainText?: string;
     explainSize?: number;
+}
+export interface MoveStepButtonProps extends TouchButtonProps {
+    text: string;
+    textColor: string;
 }
 
 // Organisms

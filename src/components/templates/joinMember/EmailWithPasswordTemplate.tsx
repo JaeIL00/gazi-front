@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { Alert, Text, View } from 'react-native';
+import { Alert, View } from 'react-native';
 import { useRecoilState } from 'recoil';
 import validator from 'validator';
 
 import { joinMemberData } from '../../../store/atoms';
 import InputEmailPw from '../../organisms/InputEmailPw';
 import { EmailWithPasswordProps } from '../../../types/types';
-import TouchButton from '../../smallest/TouchButton';
+import MoveStepButton from '../../molecules/MoveStepButton';
+import Colors from '../../../styles/Colors';
 
 const EmailWithPasswordTemplate = ({ onPressNextStep }: EmailWithPasswordProps) => {
     const [joinData, setJoinData] = useRecoilState(joinMemberData);
@@ -50,6 +51,22 @@ const EmailWithPasswordTemplate = ({ onPressNextStep }: EmailWithPasswordProps) 
         }
     };
 
+    // Button Style Handling
+    const [buttonText, setButtonText] = useState('이메일을 입력해주세요');
+    const [buttonColor, setButtonColor] = useState(Colors.BTN_GRAY);
+    const buttonStyleHandler = () => {
+        if (isEmail) {
+            setButtonText('이메일 인증');
+            setButtonColor(Colors.BTN_BLACK);
+        } else {
+            setButtonText('이메일을 입력해주세요');
+            setButtonColor(Colors.BTN_GRAY);
+        }
+    };
+    useEffect(() => {
+        buttonStyleHandler();
+    }, [isEmail]);
+
     return (
         <View>
             <InputEmailPw
@@ -60,9 +77,12 @@ const EmailWithPasswordTemplate = ({ onPressNextStep }: EmailWithPasswordProps) 
                 onChangeEmailText={onChangeEmailText}
                 onChangePasswordText={onChangePasswordText}
             />
-            <TouchButton onPress={canMoveNextStepHandler}>
-                <Text>이메일 인증</Text>
-            </TouchButton>
+            <MoveStepButton
+                onPress={canMoveNextStepHandler}
+                text={buttonText}
+                backgroundColor={buttonColor}
+                textColor={Colors.TXT_WHITE}
+            />
         </View>
     );
 };
