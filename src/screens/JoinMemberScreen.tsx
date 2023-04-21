@@ -9,17 +9,25 @@ import { useRootNavigation } from '../navigations/RootStackNavigation';
 import ServiceAgreement from '../components/organisms/ServiceAgreement';
 import Spacer from '../components/smallest/Spacer';
 import InputEmailTemplate from '../components/templates/joinMember/InputEmailTemplate';
+import AuthEmail from '../components/organisms/AuthEmail';
 
 const JoinMemberScreen = () => {
     // Move to next step
     const [step, setStep] = useState(1);
+    const [authEmail, setAuthEmail] = useState(false);
     const [agreement, setAgreement] = useState(false);
     const onPressNextStep = () => {
-        if (step === 2) {
+        if (step === 1) {
+            setAuthEmail(true);
+        } else if (step === 2) {
             setAgreement(true);
-            return;
+        } else {
+            setStep(step + 1);
         }
+    };
+    const finishAuthEmailHandler = () => {
         setStep(step + 1);
+        setAuthEmail(false);
     };
     // In Angreement component
     const finishAgreementHandler = () => {
@@ -94,6 +102,7 @@ const JoinMemberScreen = () => {
                 {step === 2 && <EmailWithPasswordTemplate onPressNextStep={onPressNextStep} />}
                 {step === 3 && <NicknameTemplate onPressNextStep={onPressNextStep} />}
             </View>
+            {authEmail && <AuthEmail finishAuthEmailHandler={finishAuthEmailHandler} />}
             {agreement && <ServiceAgreement finishAgreementHandler={finishAgreementHandler} />}
         </View>
     );

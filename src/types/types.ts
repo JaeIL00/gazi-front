@@ -103,6 +103,9 @@ export interface MoveBackWithPageTitleProps extends PageTitleWithExplainProps {
 export type ServiceAgreementProps = {
     finishAgreementHandler: () => void;
 };
+export type AuthEmailProps = {
+    finishAuthEmailHandler: () => void;
+};
 
 // templates
 // templates

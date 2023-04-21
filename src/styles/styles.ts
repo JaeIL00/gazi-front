@@ -145,8 +145,8 @@ export const checkBoxBackground = (is: boolean) =>
 // Organisms
 export const moveBackWithPageTitleStyles = StyleSheet.create({
     buttonContainer: {
-        paddingTop: 30,
-        paddingBottom: 43,
+        paddingTop: hegithPercentage(30),
+        paddingBottom: hegithPercentage(43),
     },
 });
 export const serviceAgreementStyles = StyleSheet.create({
@@ -191,6 +191,46 @@ export const serviceAgreementStyles = StyleSheet.create({
         alignItems: 'center',
         borderRadius: fontPercentage(3),
         marginRight: widthPercentage(10),
+    },
+});
+export const authEmailStyles = StyleSheet.create({
+    container: {
+        flex: 1,
+        position: 'absolute',
+        height: '100%',
+        width: '100%',
+        backgroundColor: '#00000060',
+    },
+    animateInner: {
+        flex: 1,
+        position: 'absolute',
+        height: '100%',
+        width: '100%',
+        borderRadius: fontPercentage(14),
+        backgroundColor: Colors.WHITE,
+        paddingTop: hegithPercentage(32),
+        paddingHorizontal: widthPercentage(16),
+    },
+    backButtonBox: {
+        paddingBottom: hegithPercentage(28),
+    },
+    inputBox: {
+        height: hegithPercentage(48),
+        backgroundColor: Colors.LIGHTGRAY,
+        borderRadius: fontPercentage(5),
+        justifyContent: 'center',
+        paddingLeft: widthPercentage(16),
+    },
+    retryTextBox: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+    },
+    underBar: {
+        borderBottomColor: Colors.TXT_GRAY,
+        borderBottomWidth: widthPercentage(2),
+    },
+    finishButton: {
+        width: '100%',
     },
 });
 
