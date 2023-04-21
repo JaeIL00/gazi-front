@@ -57,6 +57,7 @@ const InputEmailTemplate = ({ onPressNextStep }: EmailWithPasswordProps) => {
             setJoinData({ ...joinData, email });
             mutate(email);
             Keyboard.dismiss();
+            onPressNextStep();
         }
     };
 

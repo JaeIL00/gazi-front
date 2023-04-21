@@ -11,8 +11,12 @@ import BoldText from '../smallest/BoldText';
 import Spacer from '../smallest/Spacer';
 import { SingleLineInput } from '../smallest/SingleLineInput';
 import NormalText from '../smallest/NormalText';
+import { useRecoilValue } from 'recoil';
+import { authEmailNumber } from '../../store/atoms';
 
 const AuthEmail = ({ finishAuthEmailHandler }: AuthEmailProps) => {
+    const authNumber = useRecoilValue(authEmailNumber);
+
     // Animation handling
     const { height } = useWindowDimensions();
     const topValue = useRef(new Animated.Value(height)).current;
@@ -22,19 +26,6 @@ const AuthEmail = ({ finishAuthEmailHandler }: AuthEmailProps) => {
             duration: 400,
             useNativeDriver: true,
         }).start();
-    };
-    const onPressFinishAnimation = () => {
-        if (true) {
-            Animated.timing(topValue, {
-                toValue: height,
-                duration: 300,
-                useNativeDriver: true,
-            }).start(({ finished }) => {
-                if (finished) {
-                    finishAuthEmailHandler();
-                }
-            });
-        }
     };
     useEffect(() => {
         startAnimationHandler();
@@ -46,9 +37,31 @@ const AuthEmail = ({ finishAuthEmailHandler }: AuthEmailProps) => {
     };
 
     // Input authorization number
-    const [authNumber, setAuthNumber] = useState('');
+    const [inputNumber, setInputNumber] = useState('');
     const onChangNumberText = (text: string) => {
-        setAuthNumber(text);
+        setInputNumber(text);
+        checkAuthNumber(text);
+    };
+
+    // Finish button style handling
+    const [activityButton, setActivityButton] = useState(false);
+    const checkAuthNumber = (text: string) => {
+        if (text === String(authNumber)) {
+            setActivityButton(true);
+        }
+    };
+    const onPressFinishAnimation = () => {
+        if (activityButton) {
+            Animated.timing(topValue, {
+                toValue: height,
+                duration: 300,
+                useNativeDriver: true,
+            }).start(({ finished }) => {
+                if (finished) {
+                    finishAuthEmailHandler();
+                }
+            });
+        }
     };
 
     // Finish button transitionY handling
@@ -93,7 +106,7 @@ const AuthEmail = ({ finishAuthEmailHandler }: AuthEmailProps) => {
 
                 <View style={authEmailStyles.inputBox}>
                     <SingleLineInput
-                        value={authNumber}
+                        value={inputNumber}
                         onChangeText={onChangNumberText}
                         placeholder="인증번호 4자리"
                         keyboardType="number-pad"
@@ -116,7 +129,7 @@ const AuthEmail = ({ finishAuthEmailHandler }: AuthEmailProps) => {
                 <Animated.View style={[authEmailStyles.finishButton, { transform: [{ translateY: bottomValue }] }]}>
                     <TextButton
                         height={48}
-                        backgroundColor={Colors.BTN_GRAY}
+                        backgroundColor={activityButton ? Colors.BLACK : Colors.BTN_GRAY}
                         onPress={onPressFinishAnimation}
                         fontSize={17}
                         textColor={Colors.WHITE}
