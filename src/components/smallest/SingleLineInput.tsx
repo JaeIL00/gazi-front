@@ -1,7 +1,7 @@
 import React from 'react';
 import { TextInput } from 'react-native';
 import { SingleLineInputProps } from '../../types/types';
-import { SingleLineInputStyles } from '../../styles/styles';
+import { singleLineInputStyles } from '../../styles/styles';
 import Colors from '../../styles/Colors';
 
 export const SingleLineInput = ({
@@ -28,7 +28,7 @@ export const SingleLineInput = ({
             keyboardType={keyboardType ?? 'default'}
             maxLength={maxLength}
             secureTextEntry={secureTextEntry}
-            style={SingleLineInputStyles(fontSize, width, height).input}
+            style={singleLineInputStyles(fontSize, width, height).input}
         />
     );
 };

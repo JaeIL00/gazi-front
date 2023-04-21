@@ -46,6 +46,11 @@ export type GrayTextProps = {
     text: string;
     size: number;
 };
+export type AppTextProps = {
+    text: string;
+    size: number;
+    color: string;
+};
 
 // Molecules
 // Molecules

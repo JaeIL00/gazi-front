@@ -1,4 +1,5 @@
-import { FlexAlignType, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
+import { FlexAlignType } from 'react-native/types';
 import Colors from './Colors';
 import { hegithPercentage, widthPercentage, fontPercentage } from '../utils/changeStyleSize';
 
@@ -33,7 +34,7 @@ export const touchButtonStyles = (
             justifyContent: 'center',
         },
     });
-export const SingleLineInputStyles = (
+export const singleLineInputStyles = (
     fontSize: number | undefined,
     width: number | undefined,
     height: number | undefined,
@@ -66,10 +67,33 @@ export const spaceStyles = (height: number) =>
             height: hegithPercentage(height),
         },
     });
+export const appTextStyles = (size: number, color: string) =>
+    StyleSheet.create({
+        textStyle: {
+            fontFamily: 'Pretendard-SemiBold',
+            fontSize: fontPercentage(size),
+            color: color,
+        },
+    });
+export const boldTextStyles = StyleSheet.create({
+    family: {
+        fontFamily: 'Pretendard-Bold',
+    },
+});
+export const semiBoldTextStyles = StyleSheet.create({
+    family: {
+        fontFamily: 'Pretendard-SemiBold',
+    },
+});
+export const normalTextStyles = StyleSheet.create({
+    family: {
+        fontFamily: 'Pretendard-Regular',
+    },
+});
 
 // Molecules
 // Molecules
-export const LoginTextInputStyles = StyleSheet.create({
+export const loginTextInputStyles = StyleSheet.create({
     inputBox: {
         borderRadius: fontPercentage(5),
         height: hegithPercentage(48),
@@ -87,27 +111,64 @@ export const LoginTextInputStyles = StyleSheet.create({
         color: 'green',
     },
 });
-export const TextButtonStyles = (color: string, fontSize: number) =>
-    StyleSheet.create({
-        text: {
-            color: color,
-            fontWeight: '600',
-            fontSize: fontPercentage(fontSize),
-        },
-    });
 
 // Organisms
 // Organisms
-export const MoveBackWithPageTitleStyles = StyleSheet.create({
+export const moveBackWithPageTitleStyles = StyleSheet.create({
     buttonContainer: {
         paddingTop: 30,
         paddingBottom: 43,
     },
 });
+export const serviceAgreementStyles = StyleSheet.create({
+    container: {
+        flex: 1,
+        position: 'absolute',
+        height: '100%',
+        width: '100%',
+        backgroundColor: '#00000060',
+    },
+    animateInner: {
+        flex: 1,
+        position: 'absolute',
+        height: '100%',
+        width: '100%',
+        borderRadius: fontPercentage(14),
+        backgroundColor: Colors.WHITE,
+        paddingTop: hegithPercentage(33),
+        paddingHorizontal: widthPercentage(16),
+    },
+    allAgreeBox: {
+        width: '100%',
+        flexDirection: 'row',
+        paddingHorizontal: widthPercentage(10),
+        paddingVertical: hegithPercentage(13),
+    },
+
+    agreeBox: {
+        width: '100%',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        paddingHorizontal: widthPercentage(10),
+        paddingVertical: hegithPercentage(12),
+    },
+    agreeTitleBox: {
+        flexDirection: 'row',
+    },
+    checkBox: {
+        width: widthPercentage(22),
+        height: widthPercentage(22),
+        backgroundColor: '#E3E3E3',
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: fontPercentage(3),
+        marginRight: widthPercentage(10),
+    },
+});
 
 // Templates
 // Templates
-export const NicknameTemplateStyles = StyleSheet.create({
+export const nicknameTemplateStyles = StyleSheet.create({
     container: {
         position: 'relative',
         flex: 1,
@@ -130,15 +191,19 @@ export const NicknameTemplateStyles = StyleSheet.create({
 
 // Screen
 // Screen
-export const JoinMemberScreenStyles = StyleSheet.create({
+export const joinMemberScreenStyles = StyleSheet.create({
     container: {
         flex: 1,
-        paddingHorizontal: 16,
         backgroundColor: Colors.WHITE,
     },
+    inner: {
+        flex: 1,
+        paddingHorizontal: 16,
+    },
 });
-export const NotLoginHomeScreenStyles = StyleSheet.create({
+export const notLoginHomeScreenStyles = StyleSheet.create({
     container: {
+        flex: 1,
         paddingHorizontal: 16,
         backgroundColor: Colors.WHITE,
     },

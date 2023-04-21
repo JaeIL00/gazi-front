@@ -7,7 +7,7 @@ import { joinMemberData } from '../../../store/atoms';
 import { NicknameTemplateProps } from '../../../types/types';
 import TextButton from '../../molecules/TextButton';
 import Colors from '../../../styles/Colors';
-import { NicknameTemplateStyles } from '../../../styles/styles';
+import { nicknameTemplateStyles } from '../../../styles/styles';
 import Space from '../../smallest/Space';
 
 const NicknameTemplate = ({ onPressNextStep }: NicknameTemplateProps) => {
@@ -35,9 +35,9 @@ const NicknameTemplate = ({ onPressNextStep }: NicknameTemplateProps) => {
     };
 
     return (
-        <View style={NicknameTemplateStyles.container}>
+        <View style={nicknameTemplateStyles.container}>
             <Space height={40} />
-            <View style={NicknameTemplateStyles.inputBox}>
+            <View style={nicknameTemplateStyles.inputBox}>
                 <SingleLineInput
                     value={joinData.nickname}
                     onChangeText={onChangeNickname}
@@ -56,7 +56,7 @@ const NicknameTemplate = ({ onPressNextStep }: NicknameTemplateProps) => {
                     paddingVertical={6}
                 />
             </View>
-            <View style={NicknameTemplateStyles.buttonBox}>
+            <View style={nicknameTemplateStyles.buttonBox}>
                 <TextButton
                     text="확인"
                     textColor={Colors.WHITE}

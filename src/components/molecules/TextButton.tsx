@@ -1,8 +1,7 @@
 import React from 'react';
 import TouchButton from '../smallest/TouchButton';
-import { Text } from 'react-native';
 import { TextButtonProps } from '../../types/types';
-import { TextButtonStyles } from '../../styles/styles';
+import SemiBoldText from '../smallest/SemiBoldText';
 
 const TextButton = ({
     onPress,
@@ -21,7 +20,7 @@ const TextButton = ({
             backgroundColor={backgroundColor}
             paddingHorizontal={paddingHorizontal}
             paddingVertical={paddingVertical}>
-            <Text style={TextButtonStyles(textColor, fontSize).text}>{text}</Text>
+            <SemiBoldText color={textColor} size={fontSize} text={text} />
         </TouchButton>
     );
 };

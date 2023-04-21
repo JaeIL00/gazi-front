@@ -2,7 +2,7 @@ import React from 'react';
 import { Text, View } from 'react-native';
 import { SingleLineInput } from '../smallest/SingleLineInput';
 import { LoginTextInputProps } from '../../types/types';
-import { LoginTextInputStyles } from '../../styles/styles';
+import { loginTextInputStyles } from '../../styles/styles';
 
 const LoginTextInput = ({
     title,
@@ -20,7 +20,7 @@ const LoginTextInput = ({
     return (
         <View>
             <Text>{title}</Text>
-            <View style={LoginTextInputStyles.inputBox}>
+            <View style={loginTextInputStyles.inputBox}>
                 <SingleLineInput
                     value={value}
                     onChangeText={onChangeText}
@@ -31,13 +31,13 @@ const LoginTextInput = ({
                     fontSize={16}
                 />
             </View>
-            <View style={LoginTextInputStyles.errorSection}>
+            <View style={loginTextInputStyles.errorSection}>
                 {firstErrorText && (
                     <Text
                         style={
                             firstErrorTextStyle
-                                ? LoginTextInputStyles.correctTextStyle
-                                : LoginTextInputStyles.errorTextStyle
+                                ? loginTextInputStyles.correctTextStyle
+                                : loginTextInputStyles.errorTextStyle
                         }>
                         {firstErrorText}
                     </Text>
@@ -46,8 +46,8 @@ const LoginTextInput = ({
                     <Text
                         style={
                             secondErrorTextStyle
-                                ? LoginTextInputStyles.correctTextStyle
-                                : LoginTextInputStyles.errorTextStyle
+                                ? loginTextInputStyles.correctTextStyle
+                                : loginTextInputStyles.errorTextStyle
                         }>
                         {secondErrorText}
                     </Text>
