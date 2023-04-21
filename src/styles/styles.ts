@@ -217,11 +217,19 @@ export const nicknameTemplateStyles = StyleSheet.create({
     },
 });
 export const inputEmailTemplateStyles = StyleSheet.create({
+    container: {
+        flex: 1,
+    },
     emailErrorTextBox: {
         flexDirection: 'row',
         paddingLeft: widthPercentage(10),
         justifyContent: 'flex-start',
         alignItems: 'center',
+    },
+    emailAuthBox: {
+        width: '100%',
+        position: 'absolute',
+        bottom: hegithPercentage(41),
     },
 });
 

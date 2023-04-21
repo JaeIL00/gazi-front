@@ -54,7 +54,7 @@ const InputEmailTemplate = ({ onPressNextStep }: EmailWithPasswordProps) => {
     }, [isEmail]);
 
     return (
-        <View>
+        <View style={inputEmailTemplateStyles.container}>
             <LoginTextInput
                 title="Email"
                 value={joinData.email}
@@ -79,14 +79,16 @@ const InputEmailTemplate = ({ onPressNextStep }: EmailWithPasswordProps) => {
                     />
                 </View>
             )}
-            <TextButton
-                onPress={() => {}}
-                text={buttonText}
-                height={48}
-                backgroundColor={buttonColor}
-                textColor={Colors.WHITE}
-                fontSize={17}
-            />
+            <View style={inputEmailTemplateStyles.emailAuthBox}>
+                <TextButton
+                    onPress={() => {}}
+                    text={buttonText}
+                    height={48}
+                    backgroundColor={buttonColor}
+                    textColor={Colors.WHITE}
+                    fontSize={17}
+                />
+            </View>
         </View>
     );
 };
