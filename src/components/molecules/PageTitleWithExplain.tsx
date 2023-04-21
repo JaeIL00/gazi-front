@@ -1,9 +1,10 @@
 import React from 'react';
 import { View } from 'react-native';
 import PageTitle from '../smallest/PageTitle';
-import GrayText from '../smallest/GrayText';
 import { PageTitleWithExplainProps } from '../../types/types';
 import Spacer from '../smallest/Spacer';
+import { Colors } from 'react-native/Libraries/NewAppScreen';
+import NormalText from '../smallest/NormalText';
 
 const PageTitleWithExplain = ({ oneTitle, twoTitle, explainText, explainSize }: PageTitleWithExplainProps) => {
     return (
@@ -12,8 +13,13 @@ const PageTitleWithExplain = ({ oneTitle, twoTitle, explainText, explainSize }: 
                 <PageTitle title={oneTitle} />
                 {twoTitle && <PageTitle title={twoTitle} />}
             </View>
-            <Spacer height={10} />
-            {explainText && explainSize && <GrayText text={explainText} size={explainSize} />}
+
+            {explainText && explainSize && (
+                <>
+                    <Spacer height={10} />
+                    <NormalText text={explainText} size={explainSize} color={Colors.TXT_GRAY} />
+                </>
+            )}
         </View>
     );
 };

@@ -65,10 +65,11 @@ export const grayTextStyles = (size: number) =>
             color: Colors.TXT_GRAY,
         },
     });
-export const SpacerStyles = (height: number) =>
+export const SpacerStyles = (height: number | undefined, width: number | undefined) =>
     StyleSheet.create({
-        height: {
-            height: hegithPercentage(height),
+        size: {
+            height: height && hegithPercentage(height),
+            width: width && widthPercentage(width),
         },
     });
 export const appTextStyles = (size: number, color: string) =>
@@ -89,6 +90,11 @@ export const semiBoldTextStyles = StyleSheet.create({
         fontFamily: 'Pretendard-SemiBold',
     },
 });
+export const mediumTextStyles = StyleSheet.create({
+    family: {
+        fontFamily: 'Pretendard-Medium',
+    },
+});
 export const normalTextStyles = StyleSheet.create({
     family: {
         fontFamily: 'Pretendard-Regular',
@@ -104,15 +110,6 @@ export const loginTextInputStyles = StyleSheet.create({
         backgroundColor: Colors.LIGHTGRAY,
         paddingHorizontal: widthPercentage(16),
         justifyContent: 'center',
-    },
-    errorSection: {
-        flexDirection: 'row',
-    },
-    errorTextStyle: {
-        color: 'lightgray',
-    },
-    correctTextStyle: {
-        color: 'green',
     },
 });
 export const agreementCheckListItemStyles = StyleSheet.create({
@@ -217,6 +214,14 @@ export const nicknameTemplateStyles = StyleSheet.create({
         position: 'absolute',
         width: '100%',
         bottom: hegithPercentage(41),
+    },
+});
+export const inputEmailTemplateStyles = StyleSheet.create({
+    emailErrorTextBox: {
+        flexDirection: 'row',
+        paddingLeft: widthPercentage(10),
+        justifyContent: 'flex-start',
+        alignItems: 'center',
     },
 });
 

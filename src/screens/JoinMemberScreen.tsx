@@ -7,6 +7,8 @@ import { joinMemberScreenStyles } from '../styles/styles';
 import MoveBackWithPageTitle from '../components/organisms/MoveBackWithPageTitle';
 import { useRootNavigation } from '../navigations/RootStackNavigation';
 import ServiceAgreement from '../components/organisms/ServiceAgreement';
+import Spacer from '../components/smallest/Spacer';
+import InputEmailTemplate from '../components/templates/joinMember/InputEmailTemplate';
 
 const JoinMemberScreen = () => {
     // Move to next step
@@ -86,8 +88,12 @@ const JoinMemberScreen = () => {
                     explainSize={explain ? 13 : undefined}
                     onPress={handleBackButton}
                 />
-                {step === 1 && <EmailWithPasswordTemplate onPressNextStep={onPressNextStep} />}
-                {step === 2 && <NicknameTemplate onPressNextStep={onPressNextStep} />}
+
+                <Spacer height={51} />
+
+                {step === 1 && <InputEmailTemplate onPressNextStep={onPressNextStep} />}
+                {step === 2 && <EmailWithPasswordTemplate onPressNextStep={onPressNextStep} />}
+                {step === 3 && <NicknameTemplate onPressNextStep={onPressNextStep} />}
             </View>
             {agreement && <ServiceAgreement finishAgreementHandler={finishAgreementHandler} />}
         </View>

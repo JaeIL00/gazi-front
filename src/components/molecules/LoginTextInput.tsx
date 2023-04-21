@@ -1,8 +1,10 @@
 import React from 'react';
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
 import { SingleLineInput } from '../smallest/SingleLineInput';
 import { LoginTextInputProps } from '../../types/types';
 import { loginTextInputStyles } from '../../styles/styles';
+import MediumText from '../smallest/MediumText';
+import Spacer from '../smallest/Spacer';
 
 const LoginTextInput = ({
     title,
@@ -11,15 +13,12 @@ const LoginTextInput = ({
     placeholder,
     maxLength,
     keyboardType,
-    firstErrorTextStyle,
-    secondErrorTextStyle,
-    firstErrorText,
-    secondErrorText,
     secureTextEntry,
 }: LoginTextInputProps) => {
     return (
         <View>
-            <Text>{title}</Text>
+            <MediumText text={title} size={14} color="#7C8183" />
+            <Spacer height={6} />
             <View style={loginTextInputStyles.inputBox}>
                 <SingleLineInput
                     value={value}
@@ -30,28 +29,6 @@ const LoginTextInput = ({
                     secureTextEntry={secureTextEntry}
                     fontSize={16}
                 />
-            </View>
-            <View style={loginTextInputStyles.errorSection}>
-                {firstErrorText && (
-                    <Text
-                        style={
-                            firstErrorTextStyle
-                                ? loginTextInputStyles.correctTextStyle
-                                : loginTextInputStyles.errorTextStyle
-                        }>
-                        {firstErrorText}
-                    </Text>
-                )}
-                {secondErrorText && (
-                    <Text
-                        style={
-                            secondErrorTextStyle
-                                ? loginTextInputStyles.correctTextStyle
-                                : loginTextInputStyles.errorTextStyle
-                        }>
-                        {secondErrorText}
-                    </Text>
-                )}
             </View>
         </View>
     );

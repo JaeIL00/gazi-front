@@ -8,7 +8,6 @@ import { NicknameTemplateProps } from '../../../types/types';
 import TextButton from '../../molecules/TextButton';
 import Colors from '../../../styles/Colors';
 import { nicknameTemplateStyles } from '../../../styles/styles';
-import Spacer from '../../smallest/Spacer';
 
 const NicknameTemplate = ({ onPressNextStep }: NicknameTemplateProps) => {
     const [joinData, setJoinData] = useRecoilState(joinMemberData);
@@ -36,7 +35,6 @@ const NicknameTemplate = ({ onPressNextStep }: NicknameTemplateProps) => {
 
     return (
         <View style={nicknameTemplateStyles.container}>
-            <Spacer height={40} />
             <View style={nicknameTemplateStyles.inputBox}>
                 <SingleLineInput
                     value={joinData.nickname}

@@ -58,10 +58,6 @@ export type AppTextProps = {
 // Molecules
 export interface LoginTextInputProps extends SingleLineInputProps {
     title: string;
-    firstErrorText?: string;
-    firstErrorTextStyle?: boolean;
-    secondErrorText?: string;
-    secondErrorTextStyle?: boolean;
 }
 export interface PageTitleWithExplainProps {
     oneTitle: string;
