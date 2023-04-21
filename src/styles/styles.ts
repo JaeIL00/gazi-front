@@ -137,6 +137,12 @@ export const agreementCheckListItemStyles = StyleSheet.create({
         marginRight: widthPercentage(10),
     },
 });
+export const checkBoxBackground = (is: boolean) =>
+    StyleSheet.create({
+        color: {
+            backgroundColor: is ? Colors.BLACK : '#E3E3E3',
+        },
+    });
 
 // Organisms
 // Organisms
@@ -184,7 +190,6 @@ export const serviceAgreementStyles = StyleSheet.create({
     checkBox: {
         width: widthPercentage(22),
         height: widthPercentage(22),
-        backgroundColor: '#E3E3E3',
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: fontPercentage(3),

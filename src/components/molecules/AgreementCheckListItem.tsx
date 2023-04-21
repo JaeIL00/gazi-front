@@ -1,7 +1,7 @@
 import React from 'react';
 import { View } from 'react-native';
 
-import { agreementCheckListItemStyles } from '../../styles/styles';
+import { agreementCheckListItemStyles, checkBoxBackground } from '../../styles/styles';
 import TouchButton from '../smallest/TouchButton';
 import Icons from '../smallest/Icons';
 import SemiBoldText from '../smallest/SemiBoldText';
@@ -13,8 +13,8 @@ const AgreementCheckListItem = ({ text, check, index, onPressCheckList }: Agreem
         <View style={agreementCheckListItemStyles.agreeBox}>
             <TouchButton onPress={() => onPressCheckList(index)} width={250}>
                 <View style={agreementCheckListItemStyles.agreeTitleBox}>
-                    <View style={agreementCheckListItemStyles.checkBox}>
-                        {check && <Icons type="feather" name="check" size={20} color="black" />}
+                    <View style={[agreementCheckListItemStyles.checkBox, checkBoxBackground(check).color]}>
+                        {check && <Icons type="feather" name="check" size={20} color={Colors.WHITE} />}
                     </View>
                     <SemiBoldText size={14} color={Colors.BLACK} text={text} />
                 </View>

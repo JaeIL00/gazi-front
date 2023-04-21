@@ -3,7 +3,7 @@ import { Animated, View, useWindowDimensions } from 'react-native';
 
 import TouchButton from '../smallest/TouchButton';
 import Icons from '../smallest/Icons';
-import { serviceAgreementStyles } from '../../styles/styles';
+import { checkBoxBackground, serviceAgreementStyles } from '../../styles/styles';
 import SemiBoldText from '../smallest/SemiBoldText';
 import Colors from '../../styles/Colors';
 import Spacer from '../smallest/Spacer';
@@ -87,8 +87,8 @@ const ServiceAgreement = ({ finishAgreementHandler }: ServiceAgreementProps) => 
                 <View>
                     <TouchButton backgroundColor="#f9f9f9" onPress={onPressAllCheck}>
                         <View style={serviceAgreementStyles.allAgreeBox}>
-                            <View style={serviceAgreementStyles.checkBox}>
-                                {isAllCheck && <Icons type="feather" name="check" size={20} color="black" />}
+                            <View style={[serviceAgreementStyles.checkBox, checkBoxBackground(isAllCheck).color]}>
+                                {isAllCheck && <Icons type="feather" name="check" size={20} color={Colors.WHITE} />}
                             </View>
                             <SemiBoldText size={14} color={Colors.BLACK} text="약관 전체 동의" />
                         </View>
