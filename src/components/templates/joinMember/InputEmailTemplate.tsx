@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Keyboard, View } from 'react-native';
+import { Animated, Keyboard, View } from 'react-native';
 import { useRecoilState } from 'recoil';
 import validator from 'validator';
 
@@ -14,6 +14,7 @@ import Spacer from '../../smallest/Spacer';
 import Icons from '../../smallest/Icons';
 import { useMutation } from 'react-query';
 import { authEmail } from '../../../queries/api';
+import useKeyboardMotion from '../../../utils/hooks/useKeyboardMotion';
 
 const InputEmailTemplate = ({ onPressNextStep }: EmailWithPasswordProps) => {
     const [joinData, setJoinData] = useRecoilState(joinMemberData);
@@ -61,6 +62,18 @@ const InputEmailTemplate = ({ onPressNextStep }: EmailWithPasswordProps) => {
         }
     };
 
+    // Finish button transitionY handling
+    const { bottomValue, buttonUpAnimationHandler, buttonDownAnimationHandler } = useKeyboardMotion(230, 490);
+    useEffect(() => {
+        const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', buttonUpAnimationHandler);
+        const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', buttonDownAnimationHandler);
+
+        return () => {
+            keyboardDidShowListener.remove();
+            keyboardDidHideListener.remove();
+        };
+    }, []);
+
     return (
         <View style={inputEmailTemplateStyles.container}>
             <LoginTextInput
@@ -87,7 +100,8 @@ const InputEmailTemplate = ({ onPressNextStep }: EmailWithPasswordProps) => {
                     />
                 </View>
             )}
-            <View style={inputEmailTemplateStyles.emailAuthBox}>
+            <Animated.View
+                style={[inputEmailTemplateStyles.emailAuthBox, { transform: [{ translateY: bottomValue }] }]}>
                 <TextButton
                     onPress={onPressEmailAuth}
                     text="인증메일 전송"
@@ -96,7 +110,7 @@ const InputEmailTemplate = ({ onPressNextStep }: EmailWithPasswordProps) => {
                     textColor={Colors.WHITE}
                     fontSize={17}
                 />
-            </View>
+            </Animated.View>
         </View>
     );
 };

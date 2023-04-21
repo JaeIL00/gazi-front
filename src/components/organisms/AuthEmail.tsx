@@ -80,7 +80,7 @@ const AuthEmail = ({ finishAuthEmailHandler }: AuthEmailProps) => {
     };
 
     // Finish button transitionY handling
-    const { bottomValue, buttonUpAnimationHandler, buttonDownAnimationHandler } = useKeyboardMotion();
+    const { bottomValue, buttonUpAnimationHandler, buttonDownAnimationHandler } = useKeyboardMotion(80, 330);
     useEffect(() => {
         const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', buttonUpAnimationHandler);
         const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', buttonDownAnimationHandler);

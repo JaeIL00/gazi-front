@@ -269,7 +269,6 @@ export const inputEmailTemplateStyles = StyleSheet.create({
     emailAuthBox: {
         width: '100%',
         position: 'absolute',
-        bottom: hegithPercentage(41),
     },
 });
 export const emailWithPasswordTemplateStyles = StyleSheet.create({

@@ -1,18 +1,18 @@
 import React, { useRef } from 'react';
 import { Animated } from 'react-native';
 
-const useKeyboardMotion = () => {
-    const bottomValue = useRef(new Animated.Value(330)).current;
+const useKeyboardMotion = (upNum: number, downNum: number) => {
+    const bottomValue = useRef(new Animated.Value(downNum)).current;
     const buttonUpAnimationHandler = () => {
         Animated.timing(bottomValue, {
-            toValue: 80,
+            toValue: upNum,
             duration: 300,
             useNativeDriver: true,
         }).start();
     };
     const buttonDownAnimationHandler = () => {
         Animated.timing(bottomValue, {
-            toValue: 330,
+            toValue: downNum,
             duration: 50,
             useNativeDriver: true,
         }).start();
