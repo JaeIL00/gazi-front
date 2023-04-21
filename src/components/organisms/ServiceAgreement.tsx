@@ -1,5 +1,5 @@
-import React from 'react';
-import { Animated, ScrollView, View } from 'react-native';
+import React, { useEffect, useRef } from 'react';
+import { Animated, ScrollView, View, useWindowDimensions } from 'react-native';
 
 import TouchButton from '../smallest/TouchButton';
 import Icons from '../smallest/Icons';
@@ -8,14 +8,40 @@ import SemiBoldText from '../smallest/SemiBoldText';
 import Colors from '../../styles/Colors';
 import Space from '../smallest/Space';
 import TextButton from '../molecules/TextButton';
+import { ServiceAgreementProps } from '../../types/types';
 
-const ServiceAgreement = () => {
+const ServiceAgreement = ({ finishAgreementHandler }: ServiceAgreementProps) => {
+    // Animation
+    const { height } = useWindowDimensions();
+    const topValue = useRef(new Animated.Value(height)).current;
+    const startAnimationHandler = () => {
+        Animated.timing(topValue, {
+            toValue: 240,
+            duration: 400,
+            useNativeDriver: true,
+        }).start();
+    };
+    useEffect(() => {
+        startAnimationHandler();
+    }, []);
+    const onPressFinishAnimation = () => {
+        Animated.timing(topValue, {
+            toValue: height,
+            duration: 400,
+            useNativeDriver: true,
+        }).start(({ finished }) => {
+            if (finished) {
+                finishAgreementHandler();
+            }
+        });
+    };
+
     // Render list data
     const listData = ['(필수) 서비스 약관 동의', '(필수) 개인정보 수집 동의', '(필수) 위치기반 서비스 이용 동의'];
 
     return (
         <View style={serviceAgreementStyles.container}>
-            <Animated.View style={[serviceAgreementStyles.animateInner, { transform: [{ translateY: 240 }] }]}>
+            <Animated.View style={[serviceAgreementStyles.animateInner, { transform: [{ translateY: topValue }] }]}>
                 <View>
                     <TouchButton backgroundColor="#f9f9f9" onPress={() => {}}>
                         <View style={serviceAgreementStyles.allAgreeBox}>
@@ -35,7 +61,7 @@ const ServiceAgreement = () => {
                     <TextButton
                         height={48}
                         backgroundColor="#333"
-                        onPress={() => {}}
+                        onPress={onPressFinishAnimation}
                         fontSize={17}
                         textColor="#FFFFFF"
                         text="완료"

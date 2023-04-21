@@ -91,6 +91,9 @@ export type InputEmailPwProps = {
 export interface MoveBackWithPageTitleProps extends PageTitleWithExplainProps {
     onPress: () => void;
 }
+export type ServiceAgreementProps = {
+    finishAgreementHandler: () => void;
+};
 
 // templates
 // templates

@@ -11,7 +11,15 @@ import ServiceAgreement from '../components/organisms/ServiceAgreement';
 const JoinMemberScreen = () => {
     // Move to next step
     const [step, setStep] = useState(1);
+    const [agreement, setAgreement] = useState(false);
     const onPressNextStep = () => {
+        if (step === 2) {
+            setAgreement(true);
+            return;
+        }
+        setStep(step + 1);
+    };
+    const finishAgreementHandler = () => {
         setStep(step + 1);
     };
 
@@ -42,16 +50,20 @@ const JoinMemberScreen = () => {
                 setOneTitle('회원가입');
                 setTwoTitle('');
                 setExplain('본인인증을 위한 이메일을 입력해주세요');
+                setAgreement(false);
                 break;
-            // case 2:
-            //     setOneTitle('회원가입');
-            // 	   setTwoTitle('');
-            //     setExplain('비밀번호를 입력해주세요');
-            //     break;
             case 2:
+                setOneTitle('회원가입');
+                setTwoTitle('');
+                setExplain('비밀번호를 입력해주세요');
+                setAgreement(false);
+                break;
+            case 3:
                 setOneTitle('사용하실 닉네임을');
                 setTwoTitle('입력해주세요');
                 setExplain('다른 사용자들이 볼 수 있고, 내 프로필에서 수정할 수 있어요');
+                setAgreement(false);
+
                 break;
             default:
                 setOneTitle('유저님의 ');
@@ -73,7 +85,7 @@ const JoinMemberScreen = () => {
                 {step === 1 && <EmailWithPasswordTemplate onPressNextStep={onPressNextStep} />}
                 {step === 2 && <NicknameTemplate onPressNextStep={onPressNextStep} />}
             </View>
-            {step === 1 && <ServiceAgreement />}
+            {agreement && <ServiceAgreement finishAgreementHandler={finishAgreementHandler} />}
         </View>
     );
 };
