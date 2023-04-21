@@ -218,8 +218,15 @@ export const authEmailStyles = StyleSheet.create({
         height: hegithPercentage(48),
         backgroundColor: Colors.LIGHTGRAY,
         borderRadius: fontPercentage(5),
+        justifyContent: 'flex-start',
+        paddingHorizontal: widthPercentage(16),
+        flexDirection: 'row',
+    },
+    inputRange: {
+        flexGrow: 1,
+    },
+    timerBox: {
         justifyContent: 'center',
-        paddingLeft: widthPercentage(16),
     },
     retryTextBox: {
         flexDirection: 'row',

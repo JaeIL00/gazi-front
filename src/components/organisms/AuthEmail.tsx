@@ -1,5 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Animated, Keyboard, View, useWindowDimensions } from 'react-native';
+import { useMutation } from 'react-query';
+import { useRecoilValue } from 'recoil';
 
 import TextButton from '../molecules/TextButton';
 import { authEmailStyles } from '../../styles/styles';
@@ -11,11 +13,10 @@ import BoldText from '../smallest/BoldText';
 import Spacer from '../smallest/Spacer';
 import { SingleLineInput } from '../smallest/SingleLineInput';
 import NormalText from '../smallest/NormalText';
-import { useRecoilValue } from 'recoil';
 import { authEmailNumber, joinMemberData } from '../../store/atoms';
-import { useMutation } from 'react-query';
 import { authEmail } from '../../queries/api';
 import useKeyboardMotion from '../../utils/hooks/useKeyboardMotion';
+import useInterval from '../../utils/hooks/useInterval';
 
 const AuthEmail = ({ finishAuthEmailHandler }: AuthEmailProps) => {
     const joinData = useRecoilValue(joinMemberData);
@@ -47,15 +48,32 @@ const AuthEmail = ({ finishAuthEmailHandler }: AuthEmailProps) => {
         checkAuthNumber(text);
     };
 
+    // Timer
+    const [min, setMin] = useState(0);
+    const [sec, setSec] = useState(0);
+    const timerHandler = () => {
+        if (sec < 59) {
+            setSec(sec + 1);
+        } else {
+            setMin(min + 1);
+            setSec(0);
+        }
+    };
+    useInterval(timerHandler, min === 5 ? null : 1000);
+
     // Retry sending auth number
+
     const [authNumber, setauthNumber] = useState(initAuthNumber);
     const { mutate, isLoading } = useMutation(authEmail, {
         onSuccess(data) {
             setauthNumber(data.data);
+            setMin(0);
         },
     });
     const onPressEmailAuth = () => {
-        mutate(joinData.email);
+        if (min === 5) {
+            mutate(joinData.email);
+        }
     };
 
     // Finish button style handling
@@ -105,13 +123,22 @@ const AuthEmail = ({ finishAuthEmailHandler }: AuthEmailProps) => {
                 <Spacer height={57} />
 
                 <View style={authEmailStyles.inputBox}>
-                    <SingleLineInput
-                        value={inputNumber}
-                        onChangeText={onChangNumberText}
-                        placeholder="인증번호 4자리"
-                        keyboardType="number-pad"
-                    />
-                    <View></View>
+                    <View style={authEmailStyles.inputRange}>
+                        <SingleLineInput
+                            value={inputNumber}
+                            onChangeText={onChangNumberText}
+                            placeholder="인증번호 4자리"
+                            keyboardType="number-pad"
+                            maxLength={4}
+                        />
+                    </View>
+                    <View style={authEmailStyles.timerBox}>
+                        <NormalText
+                            text={`${min}:${String(sec).length === 1 ? '0' : ''}${sec}`}
+                            size={13}
+                            color={Colors.BLACK}
+                        />
+                    </View>
                 </View>
 
                 <Spacer height={36} />
@@ -119,11 +146,11 @@ const AuthEmail = ({ finishAuthEmailHandler }: AuthEmailProps) => {
                 <View style={authEmailStyles.retryTextBox}>
                     <NormalText text="메일을 받지 못하셨나요?" size={13} color={Colors.TXT_GRAY} />
                     <Spacer width={8} />
-                    <View style={authEmailStyles.underBar}>
-                        <TouchButton onPress={onPressEmailAuth}>
+                    <TouchButton onPress={onPressEmailAuth} width={40}>
+                        <View style={authEmailStyles.underBar}>
                             <BoldText text="재전송" size={13} color={Colors.TXT_GRAY} />
-                        </TouchButton>
-                    </View>
+                        </View>
+                    </TouchButton>
                 </View>
 
                 <Animated.View style={[authEmailStyles.finishButton, { transform: [{ translateY: bottomValue }] }]}>
