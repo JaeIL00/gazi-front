@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View } from 'react-native';
+import { Keyboard, View } from 'react-native';
 import { useRecoilState } from 'recoil';
 import validator from 'validator';
 
@@ -12,40 +12,31 @@ import { inputEmailTemplateStyles } from '../../../styles/styles';
 import MediumText from '../../smallest/MediumText';
 import Spacer from '../../smallest/Spacer';
 import Icons from '../../smallest/Icons';
+import { useMutation } from 'react-query';
+import { authEmail } from '../../../queries/api';
 
 const InputEmailTemplate = ({ onPressNextStep }: EmailWithPasswordProps) => {
     const [joinData, setJoinData] = useRecoilState(joinMemberData);
-    const [initError, setInitError] = useState(false);
 
     // Email validation
+    const [email, setEmail] = useState(joinData.email);
     const [isEmail, setIsEmail] = useState(false);
     const onChangeEmailText = (text: string) => {
-        setJoinData({ ...joinData, email: text });
+        setEmail(text);
     };
     const emailErrorTextStyle = () => {
-        validator.isEmail(joinData.email) ? setIsEmail(true) : setIsEmail(false);
-    };
-    const activityErrorTextHandler = () => {
-        if (joinData.email) {
-            setInitError(true);
-        } else {
-            setInitError(false);
-        }
+        validator.isEmail(email) ? setIsEmail(true) : setIsEmail(false);
     };
     useEffect(() => {
         emailErrorTextStyle();
-        activityErrorTextHandler();
-    }, [joinData.email]);
+    }, [email]);
 
     // Button Style Handling
-    const [buttonText, setButtonText] = useState('이메일을 입력해주세요');
     const [buttonColor, setButtonColor] = useState(Colors.BTN_GRAY);
     const buttonStyleHandler = () => {
         if (isEmail) {
-            setButtonText('이메일 인증');
             setButtonColor(Colors.BLACK);
         } else {
-            setButtonText('이메일을 입력해주세요');
             setButtonColor(Colors.BTN_GRAY);
         }
     };
@@ -53,17 +44,28 @@ const InputEmailTemplate = ({ onPressNextStep }: EmailWithPasswordProps) => {
         buttonStyleHandler();
     }, [isEmail]);
 
+    // Email authorization Handling
+    const { mutate, isLoading } = useMutation(authEmail, {
+        onError: error => {},
+        onSuccess: data => {},
+    });
+    const onPressEmailAuth = () => {
+        setJoinData({ ...joinData, email });
+        mutate(email);
+        Keyboard.dismiss();
+    };
+
     return (
         <View style={inputEmailTemplateStyles.container}>
             <LoginTextInput
                 title="Email"
-                value={joinData.email}
+                value={email}
                 onChangeText={onChangeEmailText}
                 placeholder="이메일(아이디) 입력"
                 keyboardType="email-address"
             />
             <Spacer height={8} />
-            {initError && (
+            {email && (
                 <View style={inputEmailTemplateStyles.emailErrorTextBox}>
                     <Icons
                         type={isEmail ? 'octicons' : 'fontisto'}
@@ -81,8 +83,8 @@ const InputEmailTemplate = ({ onPressNextStep }: EmailWithPasswordProps) => {
             )}
             <View style={inputEmailTemplateStyles.emailAuthBox}>
                 <TextButton
-                    onPress={() => {}}
-                    text={buttonText}
+                    onPress={onPressEmailAuth}
+                    text="인증메일 전송"
                     height={48}
                     backgroundColor={buttonColor}
                     textColor={Colors.WHITE}
