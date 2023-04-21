@@ -50,9 +50,11 @@ const InputEmailTemplate = ({ onPressNextStep }: EmailWithPasswordProps) => {
         onSuccess: data => {},
     });
     const onPressEmailAuth = () => {
-        setJoinData({ ...joinData, email });
-        mutate(email);
-        Keyboard.dismiss();
+        if (isEmail) {
+            setJoinData({ ...joinData, email });
+            mutate(email);
+            Keyboard.dismiss();
+        }
     };
 
     return (
