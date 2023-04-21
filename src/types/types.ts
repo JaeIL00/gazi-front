@@ -38,8 +38,8 @@ export type SingleLineInputProps = {
 export type IconsProps = {
     type: string;
     name: string;
-    size: number;
-    color: string;
+    size?: number;
+    color?: string;
 };
 export type PageTitleProps = {
     title: string;
@@ -76,6 +76,11 @@ export type AgreementCheckListItemProps = {
     index: number;
     onPressCheckList: (index: number) => void;
 };
+export interface IconWithMediumTextProps extends IconsProps {
+    iconColor: string;
+    text: string;
+    textColor: string;
+}
 
 // Organisms
 // Organisms

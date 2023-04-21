@@ -1,90 +1,107 @@
 import React, { useEffect, useState } from 'react';
-import { Alert, View } from 'react-native';
+import { View } from 'react-native';
 import { useRecoilState } from 'recoil';
-import validator from 'validator';
 
 import { joinMemberData } from '../../../store/atoms';
-import InputEmailPw from '../../organisms/InputEmailPw';
 import { EmailWithPasswordProps } from '../../../types/types';
 import TextButton from '../../molecules/TextButton';
 import Colors from '../../../styles/Colors';
+import MediumText from '../../smallest/MediumText';
+import LoginTextInput from '../../molecules/LoginTextInput';
+import Spacer from '../../smallest/Spacer';
+import { emailWithPasswordTemplateStyles } from '../../../styles/styles';
+import IconWithMediumText from '../../molecules/IconWithMediumText';
 
 const EmailWithPasswordTemplate = ({ onPressNextStep }: EmailWithPasswordProps) => {
     const [joinData, setJoinData] = useRecoilState(joinMemberData);
 
-    // Email validation
-    const [isEmail, setIsEmail] = useState(false);
-    const onChangeEmailText = (text: string) => {
-        setJoinData({ ...joinData, email: text });
-    };
-    const emailErrorTextStyle = () => {
-        validator.isEmail(joinData.email) ? setIsEmail(true) : setIsEmail(false);
-    };
-    useEffect(() => {
-        emailErrorTextStyle();
-    }, [joinData.email]);
-
     // Password validation
+    const [password, setpassword] = useState(joinData.password);
     const [isPasswordLeng, setIsPasswordLeng] = useState(false);
     const [isPasswordReg, setIsPasswordReg] = useState(false);
     const onChangePasswordText = (text: string) => {
-        setJoinData({ ...joinData, password: text });
+        setpassword(text);
     };
     const passwordErrorTextStyle = () => {
         const reg = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{1,}$/;
-        reg.test(joinData.password) ? setIsPasswordReg(true) : setIsPasswordReg(false);
+        reg.test(password) ? setIsPasswordReg(true) : setIsPasswordReg(false);
 
-        joinData.password.length >= 8 && joinData.password.length <= 20
-            ? setIsPasswordLeng(true)
-            : setIsPasswordLeng(false);
+        password.length >= 8 && password.length <= 20 ? setIsPasswordLeng(true) : setIsPasswordLeng(false);
     };
     useEffect(() => {
         passwordErrorTextStyle();
-    }, [joinData.password]);
-
-    // Checking validation
-    const canMoveNextStepHandler = () => {
-        if (isEmail && isPasswordLeng && isPasswordReg) {
-            onPressNextStep();
-        } else {
-            Alert.alert('입력값을 확인해주세요.');
-        }
-    };
+    }, [password]);
 
     // Button Style Handling
-    const [buttonText, setButtonText] = useState('이메일을 입력해주세요');
     const [buttonColor, setButtonColor] = useState(Colors.BTN_GRAY);
     const buttonStyleHandler = () => {
-        if (isEmail) {
-            setButtonText('이메일 인증');
+        if (isPasswordLeng && isPasswordReg) {
             setButtonColor(Colors.BLACK);
         } else {
-            setButtonText('이메일을 입력해주세요');
             setButtonColor(Colors.BTN_GRAY);
         }
     };
     useEffect(() => {
         buttonStyleHandler();
-    }, [isEmail]);
+    }, [isPasswordLeng, isPasswordReg]);
+
+    // Checking validation
+    const canMoveNextStepHandler = () => {
+        if (isPasswordLeng && isPasswordReg) {
+            setJoinData({ ...joinData, password });
+            onPressNextStep();
+        }
+    };
 
     return (
-        <View>
-            <InputEmailPw
-                data={joinData}
-                isEmail={isEmail}
-                isPasswordLeng={isPasswordLeng}
-                isPasswordReg={isPasswordReg}
-                onChangeEmailText={onChangeEmailText}
-                onChangePasswordText={onChangePasswordText}
+        <View style={emailWithPasswordTemplateStyles.container}>
+            <MediumText text="Email" size={14} color="#7C8183" />
+            <Spacer height={6} />
+
+            <View style={emailWithPasswordTemplateStyles.emainTextBox}>
+                <MediumText text={joinData.email} size={16} color={Colors.BLACK} />
+            </View>
+
+            <Spacer height={20} />
+
+            <LoginTextInput
+                title="Password"
+                value={password}
+                onChangeText={onChangePasswordText}
+                placeholder="비밀번호 입력"
+                secureTextEntry={true}
             />
-            <TextButton
-                onPress={canMoveNextStepHandler}
-                text={buttonText}
-                height={48}
-                backgroundColor={buttonColor}
-                textColor={Colors.WHITE}
-                fontSize={17}
-            />
+
+            <Spacer height={8} />
+
+            <View style={emailWithPasswordTemplateStyles.emailErrorTextBox}>
+                <IconWithMediumText
+                    type="octicons"
+                    name="check"
+                    iconColor={isPasswordLeng ? Colors.STATUS_GREEN : Colors.STATUS_GRAY}
+                    text="8자-20자 이내"
+                    textColor={isPasswordLeng ? Colors.STATUS_GREEN : Colors.STATUS_GRAY}
+                />
+                <Spacer width={14} />
+                <IconWithMediumText
+                    type="octicons"
+                    name="check"
+                    iconColor={isPasswordReg ? Colors.STATUS_GREEN : Colors.STATUS_GRAY}
+                    text="영어/숫자/특수문자 중 3개 포함"
+                    textColor={isPasswordReg ? Colors.STATUS_GREEN : Colors.STATUS_GRAY}
+                />
+            </View>
+
+            <View style={emailWithPasswordTemplateStyles.finishButton}>
+                <TextButton
+                    onPress={canMoveNextStepHandler}
+                    text="회원가입"
+                    height={48}
+                    backgroundColor={buttonColor}
+                    textColor={Colors.WHITE}
+                    fontSize={17}
+                />
+            </View>
         </View>
     );
 };

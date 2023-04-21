@@ -12,7 +12,7 @@ import InputEmailTemplate from '../components/templates/joinMember/InputEmailTem
 
 const JoinMemberScreen = () => {
     // Move to next step
-    const [step, setStep] = useState(1);
+    const [step, setStep] = useState(2);
     const [agreement, setAgreement] = useState(false);
     const onPressNextStep = () => {
         if (step === 2) {
@@ -24,7 +24,6 @@ const JoinMemberScreen = () => {
     // In Angreement component
     const finishAgreementHandler = () => {
         setStep(step + 1);
-
         setAgreement(false);
     };
 

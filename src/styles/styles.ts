@@ -232,6 +232,28 @@ export const inputEmailTemplateStyles = StyleSheet.create({
         bottom: hegithPercentage(41),
     },
 });
+export const emailWithPasswordTemplateStyles = StyleSheet.create({
+    container: {
+        flex: 1,
+    },
+    emainTextBox: {
+        height: hegithPercentage(48),
+        paddingLeft: widthPercentage(16),
+        backgroundColor: Colors.LIGHTGRAY,
+        borderRadius: fontPercentage(5),
+        justifyContent: 'center',
+    },
+    emailErrorTextBox: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingLeft: widthPercentage(10),
+    },
+    finishButton: {
+        width: '100%',
+        position: 'absolute',
+        bottom: hegithPercentage(41),
+    },
+});
 
 // Screen
 // Screen
