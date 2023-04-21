@@ -19,15 +19,20 @@ const JoinMemberScreen = () => {
         }
         setStep(step + 1);
     };
+    // In Angreement component
     const finishAgreementHandler = () => {
         setStep(step + 1);
+
+        setAgreement(false);
     };
 
     // Android back button & Header Back Button Handling
     const rootNavigation = useRootNavigation();
     const handleBackButton = () => {
-        if (step > 1) {
+        if (step > 1 && !agreement) {
             setStep(step - 1);
+        } else if (agreement) {
+            setAgreement(false);
         } else {
             rootNavigation.goBack();
         }
@@ -39,7 +44,7 @@ const JoinMemberScreen = () => {
             BackHandler.addEventListener('hardwareBackPress', handleBackButton);
             return () => BackHandler.removeEventListener('hardwareBackPress', handleBackButton);
         }
-    }, [step]);
+    }, [step, agreement]);
 
     const [oneTitle, setOneTitle] = useState('회원가입');
     const [twoTitle, setTwoTitle] = useState('');
@@ -50,25 +55,24 @@ const JoinMemberScreen = () => {
                 setOneTitle('회원가입');
                 setTwoTitle('');
                 setExplain('본인인증을 위한 이메일을 입력해주세요');
-                setAgreement(false);
                 break;
             case 2:
                 setOneTitle('회원가입');
                 setTwoTitle('');
                 setExplain('비밀번호를 입력해주세요');
-                setAgreement(false);
                 break;
             case 3:
                 setOneTitle('사용하실 닉네임을');
                 setTwoTitle('입력해주세요');
                 setExplain('다른 사용자들이 볼 수 있고, 내 프로필에서 수정할 수 있어요');
-                setAgreement(false);
-
                 break;
-            default:
+            case 4:
                 setOneTitle('유저님의 ');
                 setTwoTitle('회원가입을 축하드립니다!');
                 setExplain('');
+                break;
+            default:
+                return;
         }
     };
 
