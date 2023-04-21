@@ -12,10 +12,13 @@ import Spacer from '../smallest/Spacer';
 import { SingleLineInput } from '../smallest/SingleLineInput';
 import NormalText from '../smallest/NormalText';
 import { useRecoilValue } from 'recoil';
-import { authEmailNumber } from '../../store/atoms';
+import { authEmailNumber, joinMemberData } from '../../store/atoms';
+import { useMutation } from 'react-query';
+import { authEmail } from '../../queries/api';
 
 const AuthEmail = ({ finishAuthEmailHandler }: AuthEmailProps) => {
-    const authNumber = useRecoilValue(authEmailNumber);
+    const joinData = useRecoilValue(joinMemberData);
+    const initAuthNumber = useRecoilValue(authEmailNumber);
 
     // Animation handling
     const { height } = useWindowDimensions();
@@ -41,6 +44,17 @@ const AuthEmail = ({ finishAuthEmailHandler }: AuthEmailProps) => {
     const onChangNumberText = (text: string) => {
         setInputNumber(text);
         checkAuthNumber(text);
+    };
+
+    // Retry sending auth number
+    const [authNumber, setauthNumber] = useState(initAuthNumber);
+    const { mutate, isLoading } = useMutation(authEmail, {
+        onSuccess(data) {
+            setauthNumber(data.data);
+        },
+    });
+    const onPressEmailAuth = () => {
+        mutate(joinData.email);
     };
 
     // Finish button style handling
@@ -120,7 +134,7 @@ const AuthEmail = ({ finishAuthEmailHandler }: AuthEmailProps) => {
                     <NormalText text="메일을 받지 못하셨나요?" size={13} color={Colors.TXT_GRAY} />
                     <Spacer width={8} />
                     <View style={authEmailStyles.underBar}>
-                        <TouchButton onPress={() => {}}>
+                        <TouchButton onPress={onPressEmailAuth}>
                             <BoldText text="재전송" size={13} color={Colors.TXT_GRAY} />
                         </TouchButton>
                     </View>
