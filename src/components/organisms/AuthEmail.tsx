@@ -15,6 +15,7 @@ import { useRecoilValue } from 'recoil';
 import { authEmailNumber, joinMemberData } from '../../store/atoms';
 import { useMutation } from 'react-query';
 import { authEmail } from '../../queries/api';
+import useKeyboardMotion from '../../utils/hooks/useKeyboardMotion';
 
 const AuthEmail = ({ finishAuthEmailHandler }: AuthEmailProps) => {
     const joinData = useRecoilValue(joinMemberData);
@@ -79,22 +80,7 @@ const AuthEmail = ({ finishAuthEmailHandler }: AuthEmailProps) => {
     };
 
     // Finish button transitionY handling
-    const bottomValue = useRef(new Animated.Value(330)).current;
-    const buttonUpAnimationHandler = () => {
-        Animated.timing(bottomValue, {
-            toValue: 80,
-            duration: 300,
-            useNativeDriver: true,
-        }).start();
-    };
-    const buttonDownAnimationHandler = () => {
-        Animated.timing(bottomValue, {
-            toValue: 330,
-            duration: 50,
-            useNativeDriver: true,
-        }).start();
-    };
-
+    const { bottomValue, buttonUpAnimationHandler, buttonDownAnimationHandler } = useKeyboardMotion();
     useEffect(() => {
         const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', buttonUpAnimationHandler);
         const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', buttonDownAnimationHandler);
