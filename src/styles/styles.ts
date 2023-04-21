@@ -111,6 +111,28 @@ export const loginTextInputStyles = StyleSheet.create({
         color: 'green',
     },
 });
+export const agreementCheckListItemStyles = StyleSheet.create({
+    agreeBox: {
+        width: '100%',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        paddingHorizontal: widthPercentage(10),
+        paddingVertical: hegithPercentage(12),
+    },
+    agreeTitleBox: {
+        flexDirection: 'row',
+        width: '100%',
+    },
+    checkBox: {
+        width: widthPercentage(22),
+        height: widthPercentage(22),
+        backgroundColor: '#E3E3E3',
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: fontPercentage(3),
+        marginRight: widthPercentage(10),
+    },
+});
 
 // Organisms
 // Organisms
@@ -144,7 +166,6 @@ export const serviceAgreementStyles = StyleSheet.create({
         paddingHorizontal: widthPercentage(10),
         paddingVertical: hegithPercentage(13),
     },
-
     agreeBox: {
         width: '100%',
         flexDirection: 'row',
@@ -154,6 +175,7 @@ export const serviceAgreementStyles = StyleSheet.create({
     },
     agreeTitleBox: {
         flexDirection: 'row',
+        width: '100%',
     },
     checkBox: {
         width: widthPercentage(22),

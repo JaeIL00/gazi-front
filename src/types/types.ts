@@ -72,6 +72,12 @@ export interface TextButtonProps extends TouchButtonProps {
     textColor: string;
     fontSize: number;
 }
+export type AgreementCheckListItemProps = {
+    text: string;
+    check: boolean;
+    index: number;
+    onPressCheckList: (index: number) => void;
+};
 
 // Organisms
 // Organisms
