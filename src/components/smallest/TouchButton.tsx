@@ -13,13 +13,23 @@ const TouchButton = ({
     paddingHorizontal,
     paddingVertical,
     alignSelf,
+    borderColor,
+    borderWidth,
 }: TouchButtonProps) => {
     return (
         <TouchableOpacity
             onPress={onPress}
             style={
-                touchButtonStyles(width, height, backgroundColor, paddingHorizontal, paddingVertical, alignSelf)
-                    .container
+                touchButtonStyles(
+                    width,
+                    height,
+                    backgroundColor,
+                    paddingHorizontal,
+                    paddingVertical,
+                    alignSelf,
+                    borderColor,
+                    borderWidth,
+                ).container
             }
             activeOpacity={1}>
             {children}

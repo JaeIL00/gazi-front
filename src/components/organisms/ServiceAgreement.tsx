@@ -6,7 +6,7 @@ import Icons from '../smallest/Icons';
 import { serviceAgreementStyles } from '../../styles/styles';
 import SemiBoldText from '../smallest/SemiBoldText';
 import Colors from '../../styles/Colors';
-import Space from '../smallest/Space';
+import Spacer from '../smallest/Spacer';
 import TextButton from '../molecules/TextButton';
 import { ServiceAgreementProps } from '../../types/types';
 import AgreementCheckListItem from '../molecules/AgreementCheckListItem';
@@ -93,7 +93,7 @@ const ServiceAgreement = ({ finishAgreementHandler }: ServiceAgreementProps) => 
                             <SemiBoldText size={14} color={Colors.BLACK} text="약관 전체 동의" />
                         </View>
                     </TouchButton>
-                    <Space height={3} />
+                    <Spacer height={3} />
 
                     {listData.map((text, index) => (
                         <AgreementCheckListItem
@@ -105,7 +105,7 @@ const ServiceAgreement = ({ finishAgreementHandler }: ServiceAgreementProps) => 
                         />
                     ))}
 
-                    <Space height={158} />
+                    <Spacer height={158} />
                     <TextButton
                         height={48}
                         backgroundColor={isAllCheck ? Colors.BLACK : Colors.BTN_GRAY}

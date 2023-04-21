@@ -6,8 +6,8 @@ import { FlexAlignType, KeyboardType } from 'react-native/types';
 export type RootStackParamList = {
     NotLoginHome: undefined;
     JoinMember: undefined;
+    Login: undefined;
 };
-export type NotLoginRouteName = 'JoinMember';
 
 // Smallest
 // Smallest
@@ -20,6 +20,8 @@ export type TouchButtonProps = {
     paddingHorizontal?: number;
     paddingVertical?: number;
     alignSelf?: FlexAlignType;
+    borderColor?: string;
+    borderWidth?: number;
 };
 export type SingleLineInputProps = {
     value: string;

@@ -20,6 +20,8 @@ export const touchButtonStyles = (
     paddingHorizontal: number | undefined,
     paddingVertical: number | undefined,
     alignSelf: FlexAlignType | undefined,
+    borderColor: string | undefined,
+    borderWidth: number | undefined,
 ) =>
     StyleSheet.create({
         container: {
@@ -32,6 +34,8 @@ export const touchButtonStyles = (
             alignSelf: alignSelf,
             alignItems: 'center',
             justifyContent: 'center',
+            borderColor: borderColor && borderColor,
+            borderWidth: borderWidth && widthPercentage(borderWidth),
         },
     });
 export const singleLineInputStyles = (
@@ -61,7 +65,7 @@ export const grayTextStyles = (size: number) =>
             color: Colors.TXT_GRAY,
         },
     });
-export const spaceStyles = (height: number) =>
+export const SpacerStyles = (height: number) =>
     StyleSheet.create({
         height: {
             height: hegithPercentage(height),
@@ -226,6 +230,7 @@ export const joinMemberScreenStyles = StyleSheet.create({
 export const notLoginHomeScreenStyles = StyleSheet.create({
     container: {
         flex: 1,
+        paddingTop: hegithPercentage(99),
         paddingHorizontal: 16,
         backgroundColor: Colors.WHITE,
     },

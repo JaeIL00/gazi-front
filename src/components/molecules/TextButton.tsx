@@ -12,6 +12,8 @@ const TextButton = ({
     fontSize,
     paddingHorizontal,
     paddingVertical,
+    borderColor,
+    borderWidth,
 }: TextButtonProps) => {
     return (
         <TouchButton
@@ -19,7 +21,9 @@ const TextButton = ({
             height={height}
             backgroundColor={backgroundColor}
             paddingHorizontal={paddingHorizontal}
-            paddingVertical={paddingVertical}>
+            paddingVertical={paddingVertical}
+            borderWidth={borderWidth}
+            borderColor={borderColor}>
             <SemiBoldText color={textColor} size={fontSize} text={text} />
         </TouchButton>
     );
