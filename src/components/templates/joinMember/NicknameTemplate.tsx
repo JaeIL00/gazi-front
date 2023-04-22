@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View } from 'react-native';
+import { Animated, Keyboard, View } from 'react-native';
 import { useRecoilState } from 'recoil';
 
 import { SingleLineInput } from '../../smallest/SingleLineInput';
@@ -7,7 +7,8 @@ import { joinMemberData } from '../../../store/atoms';
 import { NicknameTemplateProps } from '../../../types/types';
 import TextButton from '../../molecules/TextButton';
 import Colors from '../../../styles/Colors';
-import { nicknameTemplateStyles } from '../../../styles/styles';
+import { nextStepButtonPosition, nicknameTemplateStyles } from '../../../styles/styles';
+import useKeyboardMotion from '../../../utils/hooks/useKeyboardMotion';
 
 const NicknameTemplate = ({ onPressNextStep }: NicknameTemplateProps) => {
     const [joinData, setJoinData] = useRecoilState(joinMemberData);
@@ -33,6 +34,18 @@ const NicknameTemplate = ({ onPressNextStep }: NicknameTemplateProps) => {
         onPressNextStep();
     };
 
+    // Finish button transitionY handling
+    const { bottomValue, buttonUpAnimationHandler, buttonDownAnimationHandler } = useKeyboardMotion(195, 455);
+    useEffect(() => {
+        const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', buttonUpAnimationHandler);
+        const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', buttonDownAnimationHandler);
+
+        return () => {
+            keyboardDidShowListener.remove();
+            keyboardDidHideListener.remove();
+        };
+    }, []);
+
     return (
         <View style={nicknameTemplateStyles.container}>
             <View style={nicknameTemplateStyles.inputBox}>
@@ -54,7 +67,7 @@ const NicknameTemplate = ({ onPressNextStep }: NicknameTemplateProps) => {
                     paddingVertical={6}
                 />
             </View>
-            <View style={nicknameTemplateStyles.buttonBox}>
+            <Animated.View style={[nextStepButtonPosition.button, { transform: [{ translateY: bottomValue }] }]}>
                 <TextButton
                     text="확인"
                     textColor={Colors.WHITE}
@@ -63,7 +76,7 @@ const NicknameTemplate = ({ onPressNextStep }: NicknameTemplateProps) => {
                     height={48}
                     fontSize={17}
                 />
-            </View>
+            </Animated.View>
         </View>
     );
 };

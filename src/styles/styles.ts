@@ -264,11 +264,6 @@ export const nicknameTemplateStyles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between',
     },
-    buttonBox: {
-        position: 'absolute',
-        width: '100%',
-        bottom: hegithPercentage(41),
-    },
 });
 export const inputEmailTemplateStyles = StyleSheet.create({
     container: {
@@ -279,10 +274,6 @@ export const inputEmailTemplateStyles = StyleSheet.create({
         paddingLeft: widthPercentage(10),
         justifyContent: 'flex-start',
         alignItems: 'center',
-    },
-    emailAuthBox: {
-        width: '100%',
-        position: 'absolute',
     },
 });
 export const emailWithPasswordTemplateStyles = StyleSheet.create({
@@ -300,10 +291,6 @@ export const emailWithPasswordTemplateStyles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         paddingLeft: widthPercentage(10),
-    },
-    finishButton: {
-        width: '100%',
-        position: 'absolute',
     },
 });
 

@@ -8,7 +8,7 @@ import { EmailWithPasswordProps } from '../../../types/types';
 import TextButton from '../../molecules/TextButton';
 import Colors from '../../../styles/Colors';
 import LoginTextInput from '../../molecules/LoginTextInput';
-import { inputEmailTemplateStyles } from '../../../styles/styles';
+import { inputEmailTemplateStyles, nextStepButtonPosition } from '../../../styles/styles';
 import MediumText from '../../smallest/MediumText';
 import Spacer from '../../smallest/Spacer';
 import Icons from '../../smallest/Icons';
@@ -100,8 +100,7 @@ const InputEmailTemplate = ({ onPressNextStep }: EmailWithPasswordProps) => {
                     />
                 </View>
             )}
-            <Animated.View
-                style={[inputEmailTemplateStyles.emailAuthBox, { transform: [{ translateY: bottomValue }] }]}>
+            <Animated.View style={[nextStepButtonPosition.button, { transform: [{ translateY: bottomValue }] }]}>
                 <TextButton
                     onPress={onPressEmailAuth}
                     text="인증메일 전송"
