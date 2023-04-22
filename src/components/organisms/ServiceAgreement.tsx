@@ -11,7 +11,7 @@ import TextButton from '../molecules/TextButton';
 import { ServiceAgreementProps } from '../../types/types';
 import AgreementCheckListItem from '../molecules/AgreementCheckListItem';
 
-const ServiceAgreement = ({ finishAgreementHandler }: ServiceAgreementProps) => {
+const ServiceAgreement = ({ finishSlideComponentHandler }: ServiceAgreementProps) => {
     // Render list data
     const listData = ['(필수) 서비스 약관 동의', '(필수) 개인정보 수집 동의', '(필수) 위치기반 서비스 이용 동의'];
 
@@ -72,7 +72,7 @@ const ServiceAgreement = ({ finishAgreementHandler }: ServiceAgreementProps) => 
                 useNativeDriver: true,
             }).start(({ finished }) => {
                 if (finished) {
-                    finishAgreementHandler();
+                    finishSlideComponentHandler('OK');
                 }
             });
         }

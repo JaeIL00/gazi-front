@@ -18,7 +18,7 @@ import { authEmail } from '../../queries/api';
 import useKeyboardMotion from '../../utils/hooks/useKeyboardMotion';
 import useInterval from '../../utils/hooks/useInterval';
 
-const AuthEmail = ({ finishAuthEmailHandler }: AuthEmailProps) => {
+const AuthEmail = ({ finishSlideComponentHandler }: AuthEmailProps) => {
     const joinData = useRecoilValue(joinMemberData);
     const initAuthNumber = useRecoilValue(authEmailNumber);
 
@@ -38,7 +38,7 @@ const AuthEmail = ({ finishAuthEmailHandler }: AuthEmailProps) => {
 
     // Back Icon handling
     const onPressBackIcon = () => {
-        finishAuthEmailHandler();
+        finishSlideComponentHandler('BACK');
     };
 
     // Input authorization number
@@ -91,7 +91,7 @@ const AuthEmail = ({ finishAuthEmailHandler }: AuthEmailProps) => {
                 useNativeDriver: true,
             }).start(({ finished }) => {
                 if (finished) {
-                    finishAuthEmailHandler();
+                    finishSlideComponentHandler('OK');
                 }
             });
         }

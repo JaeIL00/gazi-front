@@ -16,17 +16,24 @@ const JoinMemberScreen = () => {
     const [step, setStep] = useState(1);
     const [isSlideComponent, setIsSlideComponent] = useState(false);
     const onPressNextStep = () => {
-        if (step === 1) {
-            setIsSlideComponent(true);
-        } else if (step === 2) {
+        if (step < 3) {
             setIsSlideComponent(true);
         } else {
             setStep(step + 1);
         }
     };
-    const finishSlideComponentHandler = () => {
-        setStep(step + 1);
-        setIsSlideComponent(false);
+    const finishSlideComponentHandler = (status: string) => {
+        switch (status) {
+            case 'OK':
+                setStep(step + 1);
+                setIsSlideComponent(false);
+                break;
+            case 'BACK':
+                setIsSlideComponent(false);
+                break;
+            default:
+                return;
+        }
     };
 
     // Android back button & Header Back Button Handling
@@ -96,9 +103,9 @@ const JoinMemberScreen = () => {
                 {step === 2 && <EmailWithPasswordTemplate onPressNextStep={onPressNextStep} />}
                 {step === 3 && <NicknameTemplate onPressNextStep={onPressNextStep} />}
             </View>
-            {isSlideComponent && step === 1 && <AuthEmail finishAuthEmailHandler={finishSlideComponentHandler} />}
+            {isSlideComponent && step === 1 && <AuthEmail finishSlideComponentHandler={finishSlideComponentHandler} />}
             {isSlideComponent && step === 2 && (
-                <ServiceAgreement finishAgreementHandler={finishSlideComponentHandler} />
+                <ServiceAgreement finishSlideComponentHandler={finishSlideComponentHandler} />
             )}
         </View>
     );
