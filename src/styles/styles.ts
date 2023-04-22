@@ -293,6 +293,14 @@ export const emailWithPasswordTemplateStyles = StyleSheet.create({
         paddingLeft: widthPercentage(10),
     },
 });
+export const notLoginTemplateStyles = StyleSheet.create({
+    container: {
+        flex: 1,
+        paddingTop: hegithPercentage(99),
+        paddingHorizontal: 16,
+        backgroundColor: Colors.WHITE,
+    },
+});
 
 // Screen
 // Screen
@@ -304,13 +312,5 @@ export const joinMemberScreenStyles = StyleSheet.create({
     inner: {
         flex: 1,
         paddingHorizontal: 16,
-    },
-});
-export const notLoginHomeScreenStyles = StyleSheet.create({
-    container: {
-        flex: 1,
-        paddingTop: hegithPercentage(99),
-        paddingHorizontal: 16,
-        backgroundColor: Colors.WHITE,
     },
 });
