@@ -224,6 +224,7 @@ export const authEmailStyles = StyleSheet.create({
     },
     inputRange: {
         flexGrow: 1,
+        justifyContent: 'center',
     },
     timerBox: {
         justifyContent: 'center',
