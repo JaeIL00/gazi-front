@@ -32,9 +32,6 @@ const AuthEmail = ({ finishSlideComponentHandler }: AuthEmailProps) => {
             useNativeDriver: true,
         }).start();
     };
-    useEffect(() => {
-        startAnimationHandler();
-    }, []);
 
     // Back Icon handling
     const onPressBackIcon = () => {
@@ -42,11 +39,18 @@ const AuthEmail = ({ finishSlideComponentHandler }: AuthEmailProps) => {
     };
 
     // Input authorization number
+    const [authNumber, setauthNumber] = useState(0);
     const [inputNumber, setInputNumber] = useState('');
     const onChangNumberText = (text: string) => {
         setInputNumber(text);
         checkAuthNumber(text);
     };
+
+    useEffect(() => {
+        if (initAuthNumber > 0) {
+            setauthNumber(initAuthNumber);
+        }
+    }, [initAuthNumber]);
 
     // Timer
     const [min, setMin] = useState(0);
@@ -62,7 +66,6 @@ const AuthEmail = ({ finishSlideComponentHandler }: AuthEmailProps) => {
     useInterval(timerHandler, min === 5 ? null : 1000);
 
     // Retry sending auth number
-    const [authNumber, setauthNumber] = useState(initAuthNumber);
     const { mutate, isLoading } = useMutation(memberJoinAPIs, {
         onSuccess(data) {
             setauthNumber(data.data);
@@ -105,6 +108,7 @@ const AuthEmail = ({ finishSlideComponentHandler }: AuthEmailProps) => {
     // Finish button transitionY handling
     const { bottomValue, buttonUpAnimationHandler, buttonDownAnimationHandler } = useKeyboardMotion(80, 330);
     useEffect(() => {
+        startAnimationHandler();
         const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', buttonUpAnimationHandler);
         const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', buttonDownAnimationHandler);
 

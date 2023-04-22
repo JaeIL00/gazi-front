@@ -11,7 +11,5 @@ export const joinMemberData = atom({
 });
 export const authEmailNumber = atom({
     key: 'authEmailNumber',
-    default: {
-        number: 0,
-    },
+    default: 0,
 });
