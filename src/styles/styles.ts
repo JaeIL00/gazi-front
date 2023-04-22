@@ -10,6 +10,12 @@ export const appStyles = StyleSheet.create({
         flex: 1,
     },
 });
+export const nextStepButtonPosition = StyleSheet.create({
+    button: {
+        width: '100%',
+        position: 'absolute',
+    },
+});
 
 // Smallest
 // Smallest
@@ -298,7 +304,6 @@ export const emailWithPasswordTemplateStyles = StyleSheet.create({
     finishButton: {
         width: '100%',
         position: 'absolute',
-        bottom: hegithPercentage(41),
     },
 });
 

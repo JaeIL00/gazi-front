@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View } from 'react-native';
+import { Animated, Keyboard, View } from 'react-native';
 import { useRecoilState } from 'recoil';
 
 import { joinMemberData } from '../../../store/atoms';
@@ -9,8 +9,9 @@ import Colors from '../../../styles/Colors';
 import MediumText from '../../smallest/MediumText';
 import LoginTextInput from '../../molecules/LoginTextInput';
 import Spacer from '../../smallest/Spacer';
-import { emailWithPasswordTemplateStyles } from '../../../styles/styles';
+import { emailWithPasswordTemplateStyles, nextStepButtonPosition } from '../../../styles/styles';
 import IconWithMediumText from '../../molecules/IconWithMediumText';
+import useKeyboardMotion from '../../../utils/hooks/useKeyboardMotion';
 
 const EmailWithPasswordTemplate = ({ onPressNextStep }: EmailWithPasswordProps) => {
     const [joinData, setJoinData] = useRecoilState(joinMemberData);
@@ -53,6 +54,18 @@ const EmailWithPasswordTemplate = ({ onPressNextStep }: EmailWithPasswordProps) 
         }
     };
 
+    // Finish button transitionY handling
+    const { bottomValue, buttonUpAnimationHandler, buttonDownAnimationHandler } = useKeyboardMotion(230, 490);
+    useEffect(() => {
+        const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', buttonUpAnimationHandler);
+        const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', buttonDownAnimationHandler);
+
+        return () => {
+            keyboardDidShowListener.remove();
+            keyboardDidHideListener.remove();
+        };
+    }, []);
+
     return (
         <View style={emailWithPasswordTemplateStyles.container}>
             <MediumText text="Email" size={14} color="#7C8183" />
@@ -92,7 +105,7 @@ const EmailWithPasswordTemplate = ({ onPressNextStep }: EmailWithPasswordProps) 
                 />
             </View>
 
-            <View style={emailWithPasswordTemplateStyles.finishButton}>
+            <Animated.View style={[nextStepButtonPosition.button, { transform: [{ translateY: bottomValue }] }]}>
                 <TextButton
                     onPress={canMoveNextStepHandler}
                     text="회원가입"
@@ -101,7 +114,7 @@ const EmailWithPasswordTemplate = ({ onPressNextStep }: EmailWithPasswordProps) 
                     textColor={Colors.WHITE}
                     fontSize={17}
                 />
-            </View>
+            </Animated.View>
         </View>
     );
 };
