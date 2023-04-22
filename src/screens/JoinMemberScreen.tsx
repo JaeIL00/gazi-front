@@ -10,8 +10,12 @@ import ServiceAgreement from '../components/organisms/ServiceAgreement';
 import Spacer from '../components/smallest/Spacer';
 import InputEmailTemplate from '../components/templates/joinMember/InputEmailTemplate';
 import AuthEmail from '../components/organisms/AuthEmail';
+import { useRecoilState } from 'recoil';
+import { joinMemberData } from '../store/atoms';
 
 const JoinMemberScreen = () => {
+    const [joinData, setJoinData] = useRecoilState(joinMemberData);
+
     // Move to next step
     const [step, setStep] = useState(1);
     const [isSlideComponent, setIsSlideComponent] = useState(false);
@@ -45,6 +49,12 @@ const JoinMemberScreen = () => {
         } else if (isSlideComponent) {
             setIsSlideComponent(false);
         } else {
+            setJoinData({
+                email: '',
+                password: '',
+                nickname: '',
+                keyword: '',
+            });
             rootNavigation.goBack();
         }
         return true;

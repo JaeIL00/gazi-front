@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import BoldText from '../../smallest/BoldText';
 import Spacer from '../../smallest/Spacer';
 import { View } from 'react-native';
@@ -8,8 +8,8 @@ import { useRootNavigation } from '../../../navigations/RootStackNavigation';
 import { notLoginTemplateStyles } from '../../../styles/styles';
 
 const NotLoginTemplate = () => {
+    // Move screens
     const rootNavigation = useRootNavigation();
-
     const onPressNavigate = (route: string) => {
         if (route === 'JoinMember') {
             rootNavigation.navigate('JoinMember');
@@ -17,6 +17,7 @@ const NotLoginTemplate = () => {
             rootNavigation.navigate('Login');
         }
     };
+
     return (
         <View style={notLoginTemplateStyles.container}>
             <BoldText text="가는길에 지금 어떤 일이" size={24} color={Colors.BLACK} />
