@@ -14,34 +14,28 @@ import AuthEmail from '../components/organisms/AuthEmail';
 const JoinMemberScreen = () => {
     // Move to next step
     const [step, setStep] = useState(1);
-    const [authEmail, setAuthEmail] = useState(false);
-    const [agreement, setAgreement] = useState(false);
+    const [isSlideComponent, setIsSlideComponent] = useState(false);
     const onPressNextStep = () => {
         if (step === 1) {
-            setAuthEmail(true);
+            setIsSlideComponent(true);
         } else if (step === 2) {
-            setAgreement(true);
+            setIsSlideComponent(true);
         } else {
             setStep(step + 1);
         }
     };
-    const finishAuthEmailHandler = () => {
+    const finishSlideComponentHandler = () => {
         setStep(step + 1);
-        setAuthEmail(false);
-    };
-    // In Angreement component
-    const finishAgreementHandler = () => {
-        setStep(step + 1);
-        setAgreement(false);
+        setIsSlideComponent(false);
     };
 
     // Android back button & Header Back Button Handling
     const rootNavigation = useRootNavigation();
     const handleBackButton = () => {
-        if (step > 1 && !agreement) {
+        if (step > 1 && !isSlideComponent) {
             setStep(step - 1);
-        } else if (agreement) {
-            setAgreement(false);
+        } else if (isSlideComponent) {
+            setIsSlideComponent(false);
         } else {
             rootNavigation.goBack();
         }
@@ -53,7 +47,7 @@ const JoinMemberScreen = () => {
             BackHandler.addEventListener('hardwareBackPress', handleBackButton);
             return () => BackHandler.removeEventListener('hardwareBackPress', handleBackButton);
         }
-    }, [step, agreement]);
+    }, [step, isSlideComponent]);
 
     const [oneTitle, setOneTitle] = useState('회원가입');
     const [twoTitle, setTwoTitle] = useState('');
@@ -102,8 +96,10 @@ const JoinMemberScreen = () => {
                 {step === 2 && <EmailWithPasswordTemplate onPressNextStep={onPressNextStep} />}
                 {step === 3 && <NicknameTemplate onPressNextStep={onPressNextStep} />}
             </View>
-            {authEmail && <AuthEmail finishAuthEmailHandler={finishAuthEmailHandler} />}
-            {agreement && <ServiceAgreement finishAgreementHandler={finishAgreementHandler} />}
+            {isSlideComponent && step === 1 && <AuthEmail finishAuthEmailHandler={finishSlideComponentHandler} />}
+            {isSlideComponent && step === 2 && (
+                <ServiceAgreement finishAgreementHandler={finishSlideComponentHandler} />
+            )}
         </View>
     );
 };
