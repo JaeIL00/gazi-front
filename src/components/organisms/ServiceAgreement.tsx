@@ -59,7 +59,7 @@ const ServiceAgreement = ({ finishSlideComponentHandler }: ServiceAgreementProps
     const topValue = useRef(new Animated.Value(height)).current;
     const startAnimationHandler = () => {
         Animated.timing(topValue, {
-            toValue: 240,
+            toValue: 295,
             duration: 400,
             useNativeDriver: true,
         }).start();
