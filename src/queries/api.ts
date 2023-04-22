@@ -8,17 +8,15 @@ import Config from 'react-native-config';
 //     },
 // });
 
-export const authEmail = async (email: string) => {
+export const memberJoinAPIs = async (props: { endpoint: string; method: string; data: {} }) => {
     const response = await axios({
         baseURL: Config.API_BASE_URL,
-        url: '/api/v1/member/emailConfirm',
-        method: 'post',
+        url: `/api/v1/member/${props.endpoint}`,
+        method: props.method,
         headers: {
             'Content-Type': 'application/json',
         },
-        data: JSON.stringify({
-            email,
-        }),
+        data: JSON.stringify(props.data),
     });
     return response;
 };

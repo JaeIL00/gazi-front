@@ -13,7 +13,7 @@ import MediumText from '../../smallest/MediumText';
 import Spacer from '../../smallest/Spacer';
 import Icons from '../../smallest/Icons';
 import { useMutation } from 'react-query';
-import { authEmail } from '../../../queries/api';
+import { memberJoinAPIs } from '../../../queries/api';
 import useKeyboardMotion from '../../../utils/hooks/useKeyboardMotion';
 
 const InputEmailTemplate = ({ onPressNextStep }: EmailWithPasswordProps) => {
@@ -47,7 +47,7 @@ const InputEmailTemplate = ({ onPressNextStep }: EmailWithPasswordProps) => {
     }, [isEmail]);
 
     // Email authorization Handling
-    const { mutate, isLoading } = useMutation(authEmail, {
+    const { mutate, isLoading } = useMutation(memberJoinAPIs, {
         onSuccess: data => {
             setauthNumber(data.data);
             onPressNextStep();
@@ -56,7 +56,13 @@ const InputEmailTemplate = ({ onPressNextStep }: EmailWithPasswordProps) => {
     const onPressEmailAuth = () => {
         if (isEmail) {
             setJoinData({ ...joinData, email });
-            // mutate(email);
+            mutate({
+                endpoint: 'emailConfirm',
+                method: 'post',
+                data: {
+                    email,
+                },
+            });
             Keyboard.dismiss();
             onPressNextStep();
         }

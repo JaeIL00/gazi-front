@@ -14,7 +14,7 @@ import Spacer from '../smallest/Spacer';
 import { SingleLineInput } from '../smallest/SingleLineInput';
 import NormalText from '../smallest/NormalText';
 import { authEmailNumber, joinMemberData } from '../../store/atoms';
-import { authEmail } from '../../queries/api';
+import { memberJoinAPIs } from '../../queries/api';
 import useKeyboardMotion from '../../utils/hooks/useKeyboardMotion';
 import useInterval from '../../utils/hooks/useInterval';
 
@@ -62,9 +62,8 @@ const AuthEmail = ({ finishSlideComponentHandler }: AuthEmailProps) => {
     useInterval(timerHandler, min === 5 ? null : 1000);
 
     // Retry sending auth number
-
     const [authNumber, setauthNumber] = useState(initAuthNumber);
-    const { mutate, isLoading } = useMutation(authEmail, {
+    const { mutate, isLoading } = useMutation(memberJoinAPIs, {
         onSuccess(data) {
             setauthNumber(data.data);
             setMin(0);
@@ -72,7 +71,13 @@ const AuthEmail = ({ finishSlideComponentHandler }: AuthEmailProps) => {
     });
     const onPressEmailAuth = () => {
         if (min === 5) {
-            mutate(joinData.email);
+            mutate({
+                endpoint: 'emailConfirm',
+                method: 'post',
+                data: {
+                    email: joinData.email,
+                },
+            });
         }
     };
 
