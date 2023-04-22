@@ -56,14 +56,14 @@ const InputEmailTemplate = ({ onPressNextStep }: EmailWithPasswordProps) => {
     const onPressEmailAuth = () => {
         if (isEmail) {
             setJoinData({ ...joinData, email });
-            mutate(email);
+            // mutate(email);
             Keyboard.dismiss();
             onPressNextStep();
         }
     };
 
     // Finish button transitionY handling
-    const { bottomValue, buttonUpAnimationHandler, buttonDownAnimationHandler } = useKeyboardMotion(230, 490);
+    const { bottomValue, buttonUpAnimationHandler, buttonDownAnimationHandler } = useKeyboardMotion(200, 430);
     useEffect(() => {
         const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', buttonUpAnimationHandler);
         const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', buttonDownAnimationHandler);
