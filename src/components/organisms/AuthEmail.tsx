@@ -39,16 +39,21 @@ const AuthEmail = ({ finishSlideComponentHandler }: AuthEmailProps) => {
     };
 
     // Input authorization number
-    const [authNumber, setauthNumber] = useState(0);
+    const [authNumber, setAuthNumber] = useState(0);
     const [inputNumber, setInputNumber] = useState('');
+    const [activityButton, setActivityButton] = useState(false);
     const onChangNumberText = (text: string) => {
         setInputNumber(text);
         checkAuthNumber(text);
     };
-
+    const checkAuthNumber = (text: string) => {
+        if (text === String(authNumber)) {
+            setActivityButton(true);
+        }
+    };
     useEffect(() => {
         if (initAuthNumber > 0) {
-            setauthNumber(initAuthNumber);
+            setAuthNumber(initAuthNumber);
         }
     }, [initAuthNumber]);
 
@@ -58,6 +63,8 @@ const AuthEmail = ({ finishSlideComponentHandler }: AuthEmailProps) => {
     const timerHandler = () => {
         if (sec < 59) {
             setSec(sec + 1);
+        } else if (min === 5) {
+            setAuthNumber(0);
         } else {
             setMin(min + 1);
             setSec(0);
@@ -68,7 +75,7 @@ const AuthEmail = ({ finishSlideComponentHandler }: AuthEmailProps) => {
     // Retry sending auth number
     const { mutate, isLoading } = useMutation(memberJoinAPIs, {
         onSuccess(data) {
-            setauthNumber(data.data);
+            setAuthNumber(data.data);
             setMin(0);
         },
     });
@@ -85,12 +92,6 @@ const AuthEmail = ({ finishSlideComponentHandler }: AuthEmailProps) => {
     };
 
     // Finish button style handling
-    const [activityButton, setActivityButton] = useState(false);
-    const checkAuthNumber = (text: string) => {
-        if (text === String(authNumber)) {
-            setActivityButton(true);
-        }
-    };
     const onPressFinishAnimation = () => {
         if (activityButton) {
             Animated.timing(topValue, {
