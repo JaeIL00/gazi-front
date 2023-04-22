@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { BackHandler, Platform, View } from 'react-native';
+import { BackHandler, Keyboard, Platform, View } from 'react-native';
 
 import EmailWithPasswordTemplate from '../components/templates/joinMember/EmailWithPasswordTemplate';
 import NicknameTemplate from '../components/templates/joinMember/NicknameTemplate';
@@ -16,6 +16,7 @@ const JoinMemberScreen = () => {
     const [step, setStep] = useState(1);
     const [isSlideComponent, setIsSlideComponent] = useState(false);
     const onPressNextStep = () => {
+        Keyboard.dismiss();
         if (step < 3) {
             setIsSlideComponent(true);
         } else {

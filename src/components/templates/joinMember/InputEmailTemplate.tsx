@@ -63,7 +63,6 @@ const InputEmailTemplate = ({ onPressNextStep }: EmailWithPasswordProps) => {
                     email,
                 },
             });
-            Keyboard.dismiss();
             onPressNextStep();
         }
     };
