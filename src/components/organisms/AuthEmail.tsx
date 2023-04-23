@@ -98,7 +98,7 @@ const AuthEmail = ({ min, sec, resetTimeHandler, finishSlideComponentHandler }: 
     };
 
     // Finish button transitionY handling
-    const { bottomValue, buttonUpAnimationHandler, buttonDownAnimationHandler } = useKeyboardMotion(80, 330);
+    const { bottomValue, buttonUpAnimationHandler, buttonDownAnimationHandler } = useKeyboardMotion(60, 290);
     useEffect(() => {
         startAnimationHandler();
         const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', buttonUpAnimationHandler);
