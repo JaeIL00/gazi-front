@@ -264,6 +264,12 @@ export const nicknameTemplateStyles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between',
     },
+    emailErrorTextBox: {
+        flexDirection: 'row',
+        paddingLeft: widthPercentage(10),
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+    },
 });
 export const inputEmailTemplateStyles = StyleSheet.create({
     container: {

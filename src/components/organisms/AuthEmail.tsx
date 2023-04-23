@@ -60,8 +60,8 @@ const AuthEmail = ({ min, sec, resetTimeHandler, finishSlideComponentHandler }: 
     }, [min, sec]);
 
     // Retry sending auth number
-    const { mutate, isLoading } = useMutation(memberJoinAPIs, {
-        onSuccess(data) {
+    const { mutate } = useMutation(memberJoinAPIs, {
+        onSuccess: data => {
             setAuthNumber(data.data);
             resetTimeHandler();
         },

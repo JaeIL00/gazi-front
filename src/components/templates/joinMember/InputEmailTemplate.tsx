@@ -47,7 +47,7 @@ const InputEmailTemplate = ({ onPressNextStep, resetTimeHandler }: InputEmailTem
     }, [isEmail]);
 
     // Email authorization Handling
-    const { mutate, isLoading } = useMutation(memberJoinAPIs, {
+    const { mutate } = useMutation(memberJoinAPIs, {
         onSuccess: data => {
             setAuthData(data.data);
             onPressNextStep();
