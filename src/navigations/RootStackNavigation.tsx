@@ -4,8 +4,8 @@ import JoinMemberScreen from '../screens/JoinMemberScreen';
 import NotLoginHomeScreen from '../screens/NotLoginHomeScreen';
 import { RootStackParamList } from '../types/types';
 import { useNavigation } from '@react-navigation/native';
-import InitPermissionScreen from '../screens/InitPermissionScreen';
 import LoginScreen from '../screens/LoginScreen';
+import RequestPermissionScreen from '../screens/RequestPermissionScreen';
 
 export const RootStackNavigation = () => {
     const Stack = createNativeStackNavigator();
@@ -19,7 +19,7 @@ export const RootStackNavigation = () => {
             <Stack.Screen name="NotLoginHome" component={NotLoginHomeScreen} />
             <Stack.Screen name="JoinMember" component={JoinMemberScreen} />
             <Stack.Screen name="Login" component={LoginScreen} />
-            <Stack.Screen name="InitPermission" component={InitPermissionScreen} />
+            <Stack.Screen name="RequestPermission" component={RequestPermissionScreen} />
         </Stack.Navigator>
     );
 };

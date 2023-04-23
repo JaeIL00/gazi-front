@@ -1,8 +1,8 @@
 import React from 'react';
 import InitPemissionTemplate from '../components/templates/joinMember/InitPemissionTemplate';
 
-const InitPermissionScreen = () => {
+const RequestPermissionScreen = () => {
     return <InitPemissionTemplate />;
 };
 
-export default InitPermissionScreen;
+export default RequestPermissionScreen;

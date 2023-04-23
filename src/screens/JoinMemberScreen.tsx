@@ -16,6 +16,7 @@ import useBackgroundInterval from '../utils/hooks/useBackgroundInterval';
 import CompletedJoinTemplate from '../components/templates/joinMember/CompletedJoinTemplate';
 
 const JoinMemberScreen = () => {
+    const rootNavigation = useRootNavigation();
     const [joinData, setJoinData] = useRecoilState(joinMemberData);
 
     // Move to next step
@@ -25,6 +26,8 @@ const JoinMemberScreen = () => {
         Keyboard.dismiss();
         if (step < 3) {
             setIsSlideComponent(true);
+        } else if (step === 4) {
+            rootNavigation.navigate('RequestPermission');
         } else {
             setStep(step + 1);
         }
@@ -65,7 +68,7 @@ const JoinMemberScreen = () => {
                 setExplain('다른 사용자들이 볼 수 있고, 내 프로필에서 수정할 수 있어요');
                 break;
             case 4:
-                setOneTitle('유저님의 ');
+                setOneTitle(`${joinData.nickname}님의`);
                 setTwoTitle('회원가입을 축하드립니다!');
                 setExplain('');
                 break;
@@ -92,7 +95,6 @@ const JoinMemberScreen = () => {
     useBackgroundInterval(timerHandler, min === 5 ? null : 1000);
 
     // Android back button & Header Back Button Handling
-    const rootNavigation = useRootNavigation();
     const handleBackButton = () => {
         if (step > 1 && !isSlideComponent) {
             setStep(step - 1);

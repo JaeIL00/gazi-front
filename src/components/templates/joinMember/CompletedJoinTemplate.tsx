@@ -26,7 +26,7 @@ const CompletedJoinTemplate = ({ onPressNextStep }: CompletedJoinTemplateProps) 
                     onPress={onPressNextStep}
                     text="확인"
                     height={48}
-                    backgroundColor={Colors.BTN_GRAY}
+                    backgroundColor={Colors.BLACK}
                     textColor={Colors.WHITE}
                     fontSize={17}
                 />

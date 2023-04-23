@@ -7,6 +7,7 @@ export type RootStackParamList = {
     NotLoginHome: undefined;
     JoinMember: undefined;
     Login: undefined;
+    RequestPermission: undefined;
 };
 
 // Smallest
