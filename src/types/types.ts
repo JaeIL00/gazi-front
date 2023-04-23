@@ -119,3 +119,4 @@ export type EmailWithPasswordProps = {
     onPressNextStep: () => void;
 };
 export interface NicknameTemplateProps extends EmailWithPasswordProps {}
+export interface CompletedJoinTemplateProps extends EmailWithPasswordProps {}

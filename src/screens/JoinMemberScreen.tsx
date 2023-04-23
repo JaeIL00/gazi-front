@@ -13,6 +13,7 @@ import AuthEmail from '../components/organisms/AuthEmail';
 import { useRecoilState } from 'recoil';
 import { joinMemberData } from '../store/atoms';
 import useBackgroundInterval from '../utils/hooks/useBackgroundInterval';
+import CompletedJoinTemplate from '../components/templates/joinMember/CompletedJoinTemplate';
 
 const JoinMemberScreen = () => {
     const [joinData, setJoinData] = useRecoilState(joinMemberData);
@@ -134,6 +135,7 @@ const JoinMemberScreen = () => {
                 )}
                 {step === 2 && <EmailWithPasswordTemplate onPressNextStep={onPressNextStep} />}
                 {step === 3 && <NicknameTemplate onPressNextStep={onPressNextStep} />}
+                {step === 4 && <CompletedJoinTemplate onPressNextStep={onPressNextStep} />}
             </View>
             {isSlideComponent && step === 1 && (
                 <AuthEmail
