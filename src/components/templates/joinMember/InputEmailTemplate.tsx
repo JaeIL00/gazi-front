@@ -3,7 +3,7 @@ import { Animated, Keyboard, View } from 'react-native';
 import { useRecoilState } from 'recoil';
 import validator from 'validator';
 
-import { authEmailData, joinMemberData } from '../../../store/atoms';
+import { emailAuthNumber, joinMemberData } from '../../../store/atoms';
 import { InputEmailTemplateProps } from '../../../types/types';
 import TextButton from '../../molecules/TextButton';
 import Colors from '../../../styles/Colors';
@@ -18,7 +18,7 @@ import useKeyboardMotion from '../../../utils/hooks/useKeyboardMotion';
 
 const InputEmailTemplate = ({ onPressNextStep, resetTimeHandler }: InputEmailTemplateProps) => {
     const [joinData, setJoinData] = useRecoilState(joinMemberData);
-    const [authData, setAuthData] = useRecoilState(authEmailData);
+    const [authData, setAuthData] = useRecoilState(emailAuthNumber);
 
     // Email validation
     const [email, setEmail] = useState(joinData.email);
@@ -49,7 +49,7 @@ const InputEmailTemplate = ({ onPressNextStep, resetTimeHandler }: InputEmailTem
     // Email authorization Handling
     const { mutate, isLoading } = useMutation(memberJoinAPIs, {
         onSuccess: data => {
-            setAuthData({ ...authData, number: data.data });
+            setAuthData(data.data);
             onPressNextStep();
         },
     });

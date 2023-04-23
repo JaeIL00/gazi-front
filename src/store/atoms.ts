@@ -9,11 +9,7 @@ export const joinMemberData = atom({
         keyword: '',
     },
 });
-export const authEmailData = atom({
-    key: 'authEmailData',
-    default: {
-        number: 0,
-        min: 0,
-        sec: 0,
-    },
+export const emailAuthNumber = atom({
+    key: 'emailAuthNumber',
+    default: 0,
 });

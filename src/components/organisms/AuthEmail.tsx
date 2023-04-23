@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Animated, Keyboard, View, useWindowDimensions } from 'react-native';
 import { useMutation } from 'react-query';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilValue } from 'recoil';
 
 import TextButton from '../molecules/TextButton';
 import { authEmailStyles } from '../../styles/styles';
@@ -13,12 +13,12 @@ import BoldText from '../smallest/BoldText';
 import Spacer from '../smallest/Spacer';
 import { SingleLineInput } from '../smallest/SingleLineInput';
 import NormalText from '../smallest/NormalText';
-import { authEmailData, joinMemberData } from '../../store/atoms';
+import { emailAuthNumber, joinMemberData } from '../../store/atoms';
 import { memberJoinAPIs } from '../../queries/api';
 import useKeyboardMotion from '../../utils/hooks/useKeyboardMotion';
 
 const AuthEmail = ({ min, sec, resetTimeHandler, finishSlideComponentHandler }: AuthEmailProps) => {
-    const [authData, setAuthData] = useRecoilState(authEmailData);
+    const initAuthNumber = useRecoilValue(emailAuthNumber);
     const joinData = useRecoilValue(joinMemberData);
 
     // Animation handling
@@ -38,7 +38,7 @@ const AuthEmail = ({ min, sec, resetTimeHandler, finishSlideComponentHandler }: 
     };
 
     // Input authorization number
-    const [authNumber, setAuthNumber] = useState(0);
+    const [authNumber, setAuthNumber] = useState<number | null>(null);
     const [inputNumber, setInputNumber] = useState('');
     const [activityButton, setActivityButton] = useState(false);
     const onChangNumberText = (text: string) => {
@@ -47,10 +47,10 @@ const AuthEmail = ({ min, sec, resetTimeHandler, finishSlideComponentHandler }: 
         setActivityButton(text === String(authNumber));
     };
     useEffect(() => {
-        if (authData.number > 0) {
-            setAuthNumber(authData.number);
+        if (initAuthNumber > 0) {
+            setAuthNumber(initAuthNumber);
         }
-    }, [authData]);
+    }, [initAuthNumber]);
 
     // Reset auth number by full time
     useEffect(() => {
