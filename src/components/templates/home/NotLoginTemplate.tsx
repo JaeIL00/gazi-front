@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import BoldText from '../../smallest/BoldText';
 import Spacer from '../../smallest/Spacer';
 import { View } from 'react-native';

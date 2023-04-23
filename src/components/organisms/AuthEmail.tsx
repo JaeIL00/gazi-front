@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Animated, Keyboard, View, useWindowDimensions } from 'react-native';
 import { useMutation } from 'react-query';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 
 import TextButton from '../molecules/TextButton';
 import { authEmailStyles } from '../../styles/styles';
@@ -13,14 +13,13 @@ import BoldText from '../smallest/BoldText';
 import Spacer from '../smallest/Spacer';
 import { SingleLineInput } from '../smallest/SingleLineInput';
 import NormalText from '../smallest/NormalText';
-import { authEmailNumber, joinMemberData } from '../../store/atoms';
+import { authEmailData, joinMemberData } from '../../store/atoms';
 import { memberJoinAPIs } from '../../queries/api';
 import useKeyboardMotion from '../../utils/hooks/useKeyboardMotion';
-import useInterval from '../../utils/hooks/useInterval';
 
-const AuthEmail = ({ finishSlideComponentHandler }: AuthEmailProps) => {
+const AuthEmail = ({ min, sec, resetTimeHandler, finishSlideComponentHandler }: AuthEmailProps) => {
+    const [authData, setAuthData] = useRecoilState(authEmailData);
     const joinData = useRecoilValue(joinMemberData);
-    const initAuthNumber = useRecoilValue(authEmailNumber);
 
     // Animation handling
     const { height } = useWindowDimensions();
@@ -52,31 +51,23 @@ const AuthEmail = ({ finishSlideComponentHandler }: AuthEmailProps) => {
         }
     };
     useEffect(() => {
-        if (initAuthNumber > 0) {
-            setAuthNumber(initAuthNumber);
+        if (authData.number > 0) {
+            setAuthNumber(authData.number);
         }
-    }, [initAuthNumber]);
+    }, [authData]);
 
-    // Timer
-    const [min, setMin] = useState(0);
-    const [sec, setSec] = useState(0);
-    const timerHandler = () => {
-        if (sec < 59) {
-            setSec(sec + 1);
-        } else if (min === 5) {
+    // Reset auth number by full time
+    useEffect(() => {
+        if (min === 5) {
             setAuthNumber(0);
-        } else {
-            setMin(min + 1);
-            setSec(0);
         }
-    };
-    useInterval(timerHandler, min === 5 ? null : 1000);
+    }, [min, sec]);
 
     // Retry sending auth number
     const { mutate, isLoading } = useMutation(memberJoinAPIs, {
         onSuccess(data) {
             setAuthNumber(data.data);
-            setMin(0);
+            resetTimeHandler();
         },
     });
     const onPressEmailAuth = () => {

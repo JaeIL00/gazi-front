@@ -3,8 +3,8 @@ import { Animated, Keyboard, View } from 'react-native';
 import { useRecoilState } from 'recoil';
 import validator from 'validator';
 
-import { authEmailNumber, joinMemberData } from '../../../store/atoms';
-import { EmailWithPasswordProps } from '../../../types/types';
+import { authEmailData, joinMemberData } from '../../../store/atoms';
+import { InputEmailTemplateProps } from '../../../types/types';
 import TextButton from '../../molecules/TextButton';
 import Colors from '../../../styles/Colors';
 import LoginTextInput from '../../molecules/LoginTextInput';
@@ -16,9 +16,9 @@ import { useMutation } from 'react-query';
 import { memberJoinAPIs } from '../../../queries/api';
 import useKeyboardMotion from '../../../utils/hooks/useKeyboardMotion';
 
-const InputEmailTemplate = ({ onPressNextStep }: EmailWithPasswordProps) => {
+const InputEmailTemplate = ({ onPressNextStep, resetTimeHandler }: InputEmailTemplateProps) => {
     const [joinData, setJoinData] = useRecoilState(joinMemberData);
-    const [authNumber, setauthNumber] = useRecoilState(authEmailNumber);
+    const [authData, setAuthData] = useRecoilState(authEmailData);
 
     // Email validation
     const [email, setEmail] = useState(joinData.email);
@@ -49,12 +49,13 @@ const InputEmailTemplate = ({ onPressNextStep }: EmailWithPasswordProps) => {
     // Email authorization Handling
     const { mutate, isLoading } = useMutation(memberJoinAPIs, {
         onSuccess: data => {
-            setauthNumber(data.data);
+            setAuthData({ ...authData, number: data.data });
             onPressNextStep();
         },
     });
+    // If edit email then reset timer
     const onPressEmailAuth = () => {
-        if (isEmail) {
+        if (isEmail && email !== joinData.email) {
             setJoinData({ ...joinData, email });
             mutate({
                 endpoint: 'emailConfirm',
@@ -63,6 +64,9 @@ const InputEmailTemplate = ({ onPressNextStep }: EmailWithPasswordProps) => {
                     email,
                 },
             });
+            resetTimeHandler();
+            onPressNextStep();
+        } else if (email === joinData.email) {
             onPressNextStep();
         }
     };

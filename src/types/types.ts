@@ -103,10 +103,18 @@ export interface MoveBackWithPageTitleProps extends PageTitleWithExplainProps {
 export type ServiceAgreementProps = {
     finishSlideComponentHandler: (status: string) => void;
 };
-export interface AuthEmailProps extends ServiceAgreementProps {}
+export interface AuthEmailProps extends ServiceAgreementProps {
+    min: number;
+    sec: number;
+    resetTimeHandler: () => void;
+}
 
 // templates
 // templates
+export type InputEmailTemplateProps = {
+    onPressNextStep: () => void;
+    resetTimeHandler: () => void;
+};
 export type EmailWithPasswordProps = {
     onPressNextStep: () => void;
 };
