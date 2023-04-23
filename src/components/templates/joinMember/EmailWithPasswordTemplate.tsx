@@ -46,7 +46,7 @@ const EmailWithPasswordTemplate = ({ onPressNextStep }: EmailWithPasswordProps) 
         buttonStyleHandler();
     }, [isPasswordLeng, isPasswordReg]);
 
-    // Checking validation
+    // Checking validation for next step
     const canMoveNextStepHandler = () => {
         if (isPasswordLeng && isPasswordReg) {
             setJoinData({ ...joinData, password });

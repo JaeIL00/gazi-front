@@ -55,7 +55,7 @@ const InputEmailTemplate = ({ onPressNextStep, resetTimeHandler }: InputEmailTem
     });
     // If edit email then reset timer
     const onPressEmailAuth = () => {
-        if (isEmail && email !== joinData.email) {
+        if ((isEmail && email !== joinData.email) || (isEmail && joinData.password)) {
             setJoinData({ ...joinData, email });
             mutate({
                 endpoint: 'emailConfirm',
