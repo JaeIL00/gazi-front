@@ -43,12 +43,8 @@ const AuthEmail = ({ min, sec, resetTimeHandler, finishSlideComponentHandler }: 
     const [activityButton, setActivityButton] = useState(false);
     const onChangNumberText = (text: string) => {
         setInputNumber(text);
-        checkAuthNumber(text);
-    };
-    const checkAuthNumber = (text: string) => {
-        if (text === String(authNumber)) {
-            setActivityButton(true);
-        }
+        // Auth number validation
+        setActivityButton(text === String(authNumber));
     };
     useEffect(() => {
         if (authData.number > 0) {
