@@ -102,7 +102,7 @@ export interface MoveBackWithPageTitleProps extends PageTitleWithExplainProps {
     onPress: () => void;
 }
 export type ServiceAgreementProps = {
-    finishSlideComponentHandler: (status: string) => void;
+    finishSlideComponentHandler: (state: string) => void;
 };
 export interface AuthEmailProps extends ServiceAgreementProps {
     min: number;
@@ -125,5 +125,5 @@ export type EmailWithPasswordProps = {
 export interface NicknameTemplateProps extends EmailWithPasswordProps {}
 export interface CompletedJoinTemplateProps extends EmailWithPasswordProps {}
 export type RequestPemissionTemplateProps = {
-    moveToKeywordScreen: () => void;
+    moveToScreen: (state: string) => void;
 };

@@ -32,8 +32,8 @@ const JoinMemberScreen = () => {
             setStep(step + 1);
         }
     };
-    const finishSlideComponentHandler = (status: string) => {
-        switch (status) {
+    const finishSlideComponentHandler = (state: string) => {
+        switch (state) {
             case 'OK':
                 setStep(step + 1);
                 setIsSlideComponent(false);

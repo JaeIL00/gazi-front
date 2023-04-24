@@ -13,7 +13,7 @@ import FailLocationPermisionModal from '../../organisms/FailLocationPermisionMod
 import { RequestPemissionTemplateProps } from '../../../types/types';
 import { requestPemissionTemplateStyles } from '../../../styles/styles';
 
-const RequestPemissionTemplate = ({ moveToKeywordScreen }: RequestPemissionTemplateProps) => {
+const RequestPemissionTemplate = ({ moveToScreen }: RequestPemissionTemplateProps) => {
     // Request Permissions
     const [onModal, setOnModal] = useState(false);
     const onPressrequstPermission = async () => {
@@ -30,7 +30,7 @@ const RequestPemissionTemplate = ({ moveToKeywordScreen }: RequestPemissionTempl
                 const locationPermmission = await check(PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION);
                 const isAllow = locationPermmission === RESULTS.GRANTED;
                 if (isAllow) {
-                    moveToKeywordScreen();
+                    moveToScreen('OK');
                 } else {
                     setOnModal(true);
                 }
@@ -55,7 +55,11 @@ const RequestPemissionTemplate = ({ moveToKeywordScreen }: RequestPemissionTempl
 
     return (
         <>
-            <MoveBackWithPageTitle oneTitle="앱 사용을 위해" twoTitle="접근 권한을 허용해주세요" onPress={() => {}} />
+            <MoveBackWithPageTitle
+                oneTitle="앱 사용을 위해"
+                twoTitle="접근 권한을 허용해주세요"
+                onPress={() => moveToScreen('BACK')}
+            />
 
             <Spacer height={51} />
 
@@ -74,7 +78,6 @@ const RequestPemissionTemplate = ({ moveToKeywordScreen }: RequestPemissionTempl
 
             <View>
                 <MediumText text="선택 권한" size={14} color={Colors.TXT_GRAY} />
-                <Spacer height={13} />
 
                 <ScrollView contentContainerStyle={requestPemissionTemplateStyles.choicePermission}>
                     <IconPermissionListItem

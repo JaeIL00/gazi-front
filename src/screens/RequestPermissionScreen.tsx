@@ -7,13 +7,22 @@ import { useRootNavigation } from '../navigations/RootStackNavigation';
 
 const RequestPermissionScreen = () => {
     const rootNavigation = useRootNavigation();
-    const moveToKeywordScreen = () => {
-        rootNavigation.navigate('InitKeyword');
+    const moveToScreen = (state: string) => {
+        switch (state) {
+            case 'OK':
+                rootNavigation.navigate('InitKeyword');
+                break;
+            case 'BACK':
+                rootNavigation.goBack();
+                break;
+            default:
+                return;
+        }
     };
 
     return (
         <View style={globalDefaultStyles.container}>
-            <RequestPemissionTemplate moveToKeywordScreen={moveToKeywordScreen} />
+            <RequestPemissionTemplate moveToScreen={moveToScreen} />
         </View>
     );
 };
