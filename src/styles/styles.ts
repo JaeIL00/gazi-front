@@ -58,9 +58,9 @@ export const singleLineInputStyles = (
 ) =>
     StyleSheet.create({
         input: {
-            fontSize: fontSize,
-            width: width,
-            height: height,
+            fontSize: fontSize && fontPercentage(fontSize),
+            width: width && widthPercentage(width),
+            height: height && hegithPercentage(height),
             color: Colors.TXT_BLACK,
         },
     });
@@ -85,7 +85,7 @@ export const SpacerStyles = (height: number | undefined, width: number | undefin
             width: width && widthPercentage(width),
         },
     });
-export const appTextStyles = (size: number, color: string, textAlign?: TextStyle['textAlign'] | undefined) =>
+export const appTextStyles = (size: number, color: string, textAlign: TextStyle['textAlign'] | undefined) =>
     StyleSheet.create({
         textStyle: {
             fontSize: fontPercentage(size),
@@ -285,7 +285,7 @@ export const authEmailStyles = StyleSheet.create({
     },
     underBar: {
         borderBottomColor: Colors.TXT_GRAY,
-        borderBottomWidth: widthPercentage(2),
+        borderBottomWidth: fontPercentage(2),
     },
     finishButton: {
         width: '100%',

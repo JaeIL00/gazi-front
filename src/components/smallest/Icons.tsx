@@ -5,14 +5,16 @@ import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 
 import { IconsProps } from '../../types/types';
+import { fontPercentage } from '../../utils/changeStyleSize';
 
 const Icons = ({ type, name, size, color }: IconsProps) => {
+    const freshSize = fontPercentage(size);
     return (
         <>
-            {type === 'octicons' && <Octicons name={name} size={size} color={color} />}
-            {type === 'feather' && <Feather name={name} size={size} color={color} />}
-            {type === 'simpleLineIcons' && <SimpleLineIcons name={name} size={size} color={color} />}
-            {type === 'fontisto' && <Fontisto name={name} size={size} color={color} />}
+            {type === 'octicons' && <Octicons name={name} size={freshSize} color={color} />}
+            {type === 'feather' && <Feather name={name} size={freshSize} color={color} />}
+            {type === 'simpleLineIcons' && <SimpleLineIcons name={name} size={freshSize} color={color} />}
+            {type === 'fontisto' && <Fontisto name={name} size={freshSize} color={color} />}
         </>
     );
 };
