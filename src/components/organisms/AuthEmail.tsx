@@ -3,20 +3,20 @@ import { Animated, Keyboard, View, useWindowDimensions } from 'react-native';
 import { useMutation } from 'react-query';
 import { useRecoilValue } from 'recoil';
 
-import TextButton from '../molecules/TextButton';
-import { authEmailStyles } from '../../styles/styles';
-import { AuthEmailProps } from '../../types/types';
-import TouchButton from '../smallest/TouchButton';
 import Icons from '../smallest/Icons';
+import Spacer from '../smallest/Spacer';
 import Colors from '../../styles/Colors';
 import BoldText from '../smallest/BoldText';
-import Spacer from '../smallest/Spacer';
-import { SingleLineInput } from '../smallest/SingleLineInput';
 import NormalText from '../smallest/NormalText';
-import { emailAuthNumber, joinMemberData } from '../../store/atoms';
-import { memberJoinAPIs } from '../../queries/api';
-import useKeyboardMotion from '../../utils/hooks/useKeyboardMotion';
+import TextButton from '../molecules/TextButton';
+import TouchButton from '../smallest/TouchButton';
 import ModalBackground from '../smallest/ModalBackground';
+import useKeyboardMotion from '../../utils/hooks/useKeyboardMotion';
+import { memberJoinAPIs } from '../../queries/api';
+import { AuthEmailProps } from '../../types/types';
+import { authEmailStyles } from '../../styles/styles';
+import { SingleLineInput } from '../smallest/SingleLineInput';
+import { emailAuthNumber, joinMemberData } from '../../store/atoms';
 
 const AuthEmail = ({ min, sec, resetTimeHandler, finishSlideComponentHandler }: AuthEmailProps) => {
     const initAuthNumber = useRecoilValue(emailAuthNumber);
@@ -56,7 +56,7 @@ const AuthEmail = ({ min, sec, resetTimeHandler, finishSlideComponentHandler }: 
     // Reset auth number by full time
     useEffect(() => {
         if (min === 5) {
-            setAuthNumber(0);
+            setAuthNumber(null);
         }
     }, [min, sec]);
 

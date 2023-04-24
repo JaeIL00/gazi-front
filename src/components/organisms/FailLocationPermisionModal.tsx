@@ -1,13 +1,14 @@
 import React from 'react';
-import ModalBackground from '../smallest/ModalBackground';
 import { View } from 'react-native';
-import SemiBoldText from '../smallest/SemiBoldText';
-import NormalText from '../smallest/NormalText';
-import Colors from '../../styles/Colors';
-import { failLocationPermisionModalStyles } from '../../styles/styles';
+
 import Spacer from '../smallest/Spacer';
+import Colors from '../../styles/Colors';
+import NormalText from '../smallest/NormalText';
 import TextButton from '../molecules/TextButton';
+import SemiBoldText from '../smallest/SemiBoldText';
+import ModalBackground from '../smallest/ModalBackground';
 import { FailLocationPermisionModalProps } from '../../types/types';
+import { failLocationPermisionModalStyles } from '../../styles/styles';
 
 const FailLocationPermisionModal = ({ onPressModalButton }: FailLocationPermisionModalProps) => {
     return (
@@ -32,7 +33,7 @@ const FailLocationPermisionModal = ({ onPressModalButton }: FailLocationPermisio
                         text="닫기"
                         textColor={Colors.TXT_GRAY}
                         fontSize={14}
-                        onPress={() => onPressModalButton('close')}
+                        onPress={() => onPressModalButton('CLOSE')}
                         paddingVertical={12}
                         borderWidth={1}
                         borderColor={Colors.TXT_GRAY}
@@ -42,7 +43,7 @@ const FailLocationPermisionModal = ({ onPressModalButton }: FailLocationPermisio
                         text="설정하러 가기"
                         textColor={Colors.WHITE}
                         fontSize={14}
-                        onPress={() => onPressModalButton('move')}
+                        onPress={() => onPressModalButton('MOVE')}
                         backgroundColor={Colors.BLACK}
                         paddingVertical={12}
                     />

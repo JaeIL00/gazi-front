@@ -1,8 +1,9 @@
+import React from 'react';
 import Octicons from 'react-native-vector-icons/Octicons';
 import Feather from 'react-native-vector-icons/Feather';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import Fontisto from 'react-native-vector-icons/Fontisto';
-import React from 'react';
+
 import { IconsProps } from '../../types/types';
 
 const Icons = ({ type, name, size, color }: IconsProps) => {

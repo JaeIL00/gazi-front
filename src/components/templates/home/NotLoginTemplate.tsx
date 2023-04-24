@@ -1,9 +1,10 @@
 import React from 'react';
-import BoldText from '../../smallest/BoldText';
-import Spacer from '../../smallest/Spacer';
 import { View } from 'react-native';
-import TextButton from '../../molecules/TextButton';
+
+import Spacer from '../../smallest/Spacer';
 import Colors from '../../../styles/Colors';
+import BoldText from '../../smallest/BoldText';
+import TextButton from '../../molecules/TextButton';
 import { useRootNavigation } from '../../../navigations/RootStackNavigation';
 import { notLoginTemplateStyles } from '../../../styles/styles';
 

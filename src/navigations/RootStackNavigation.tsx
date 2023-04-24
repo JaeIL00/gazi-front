@@ -1,12 +1,13 @@
 import React from 'react';
+import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp, createNativeStackNavigator } from '@react-navigation/native-stack';
+
+import LoginScreen from '../screens/LoginScreen';
 import JoinMemberScreen from '../screens/JoinMemberScreen';
 import NotLoginHomeScreen from '../screens/NotLoginHomeScreen';
-import { RootStackParamList } from '../types/types';
-import { useNavigation } from '@react-navigation/native';
-import LoginScreen from '../screens/LoginScreen';
-import RequestPermissionScreen from '../screens/RequestPermissionScreen';
 import InitLikeKeywordScreen from '../screens/InitLikeKeywordScreen';
+import RequestPermissionScreen from '../screens/RequestPermissionScreen';
+import { RootStackParamList } from '../types/types';
 
 export const RootStackNavigation = () => {
     const Stack = createNativeStackNavigator();

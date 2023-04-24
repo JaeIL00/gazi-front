@@ -1,19 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { BackHandler, Keyboard, Platform, View } from 'react-native';
-
-import EmailWithPasswordTemplate from '../components/templates/joinMember/EmailWithPasswordTemplate';
-import NicknameTemplate from '../components/templates/joinMember/NicknameTemplate';
-import { joinMemberScreenStyles } from '../styles/styles';
-import MoveBackWithPageTitle from '../components/organisms/MoveBackWithPageTitle';
-import { useRootNavigation } from '../navigations/RootStackNavigation';
-import ServiceAgreement from '../components/organisms/ServiceAgreement';
-import Spacer from '../components/smallest/Spacer';
-import InputEmailTemplate from '../components/templates/joinMember/InputEmailTemplate';
-import AuthEmail from '../components/organisms/AuthEmail';
 import { useRecoilState } from 'recoil';
-import { joinMemberData } from '../store/atoms';
+
+import Spacer from '../components/smallest/Spacer';
+import AuthEmail from '../components/organisms/AuthEmail';
+import ServiceAgreement from '../components/organisms/ServiceAgreement';
 import useBackgroundInterval from '../utils/hooks/useBackgroundInterval';
+import MoveBackWithPageTitle from '../components/organisms/MoveBackWithPageTitle';
+import NicknameTemplate from '../components/templates/joinMember/NicknameTemplate';
+import InputEmailTemplate from '../components/templates/joinMember/InputEmailTemplate';
 import CompletedJoinTemplate from '../components/templates/joinMember/CompletedJoinTemplate';
+import EmailWithPasswordTemplate from '../components/templates/joinMember/EmailWithPasswordTemplate';
+import { joinMemberData } from '../store/atoms';
+import { joinMemberScreenStyles } from '../styles/styles';
+import { useRootNavigation } from '../navigations/RootStackNavigation';
 
 const JoinMemberScreen = () => {
     const rootNavigation = useRootNavigation();

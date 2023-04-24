@@ -85,7 +85,7 @@ export const SpacerStyles = (height: number | undefined, width: number | undefin
             width: width && widthPercentage(width),
         },
     });
-export const appTextStyles = (size: number, color: string, textAlign: TextStyle['textAlign'] | undefined) =>
+export const appTextStyles = (size: number, color: string, textAlign?: TextStyle['textAlign'] | undefined) =>
     StyleSheet.create({
         textStyle: {
             fontSize: fontPercentage(size),

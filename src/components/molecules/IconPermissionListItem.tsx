@@ -1,10 +1,11 @@
 import React from 'react';
 import { Image, View } from 'react-native';
+
 import Icons from '../smallest/Icons';
-import { IconPermissionListItemProps } from '../../types/types';
-import MediumText from '../smallest/MediumText';
-import NormalText from '../smallest/NormalText';
 import Colors from '../../styles/Colors';
+import NormalText from '../smallest/NormalText';
+import MediumText from '../smallest/MediumText';
+import { IconPermissionListItemProps } from '../../types/types';
 import { iconPermissionListItemStyles } from '../../styles/styles';
 
 const IconPermissionListItem = ({ iconType, iconName, title, explain, image }: IconPermissionListItemProps) => {

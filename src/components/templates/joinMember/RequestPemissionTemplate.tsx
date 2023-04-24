@@ -2,16 +2,16 @@ import React, { useState } from 'react';
 import { Linking, Platform, ScrollView, View } from 'react-native';
 import { PERMISSIONS, RESULTS, check, requestMultiple } from 'react-native-permissions';
 
-import MoveBackWithPageTitle from '../../organisms/MoveBackWithPageTitle';
-import { requestPemissionTemplateStyles } from '../../../styles/styles';
-import IconPermissionListItem from '../../molecules/IconPermissionListItem';
-import MediumText from '../../smallest/MediumText';
-import Colors from '../../../styles/Colors';
 import Spacer from '../../smallest/Spacer';
-import TextButton from '../../molecules/TextButton';
+import Colors from '../../../styles/Colors';
+import MediumText from '../../smallest/MediumText';
 import NormalText from '../../smallest/NormalText';
+import TextButton from '../../molecules/TextButton';
+import MoveBackWithPageTitle from '../../organisms/MoveBackWithPageTitle';
+import IconPermissionListItem from '../../molecules/IconPermissionListItem';
 import FailLocationPermisionModal from '../../organisms/FailLocationPermisionModal';
 import { RequestPemissionTemplateProps } from '../../../types/types';
+import { requestPemissionTemplateStyles } from '../../../styles/styles';
 
 const RequestPemissionTemplate = ({ moveToKeywordScreen }: RequestPemissionTemplateProps) => {
     // Request Permissions
@@ -41,10 +41,10 @@ const RequestPemissionTemplate = ({ moveToKeywordScreen }: RequestPemissionTempl
     // Request again modal button Handling
     const onPressModalButton = async (state: string) => {
         switch (state) {
-            case 'close':
+            case 'CLOSE':
                 setOnModal(false);
                 break;
-            case 'move':
+            case 'MOVE':
                 setOnModal(false);
                 await Linking.openSettings();
                 break;

@@ -1,10 +1,11 @@
 import React from 'react';
 import { View } from 'react-native';
-import { SingleLineInput } from '../smallest/SingleLineInput';
+
+import Spacer from '../smallest/Spacer';
+import MediumText from '../smallest/MediumText';
 import { LoginTextInputProps } from '../../types/types';
 import { loginTextInputStyles } from '../../styles/styles';
-import MediumText from '../smallest/MediumText';
-import Spacer from '../smallest/Spacer';
+import { SingleLineInput } from '../smallest/SingleLineInput';
 
 const LoginTextInput = ({
     title,

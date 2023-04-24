@@ -2,9 +2,9 @@ import React from 'react';
 import { View } from 'react-native';
 
 import Icons from '../smallest/Icons';
-import PageTitleWithExplain from '../molecules/PageTitleWithExplain';
-import TouchButton from '../smallest/TouchButton';
 import Colors from '../../styles/Colors';
+import TouchButton from '../smallest/TouchButton';
+import PageTitleWithExplain from '../molecules/PageTitleWithExplain';
 import { MoveBackWithPageTitleProps } from '../../types/types';
 import { moveBackWithPageTitleStyles } from '../../styles/styles';
 

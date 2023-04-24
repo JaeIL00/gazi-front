@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import React, { useRef } from 'react';
 import { Animated } from 'react-native';
 import { hegithPercentage } from '../changeStyleSize';
 

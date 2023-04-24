@@ -1,12 +1,12 @@
 import React from 'react';
 import { View } from 'react-native';
 
-import { agreementCheckListItemStyles, checkBoxBackground } from '../../styles/styles';
-import TouchButton from '../smallest/TouchButton';
 import Icons from '../smallest/Icons';
-import SemiBoldText from '../smallest/SemiBoldText';
 import Colors from '../../styles/Colors';
+import TouchButton from '../smallest/TouchButton';
+import SemiBoldText from '../smallest/SemiBoldText';
 import { AgreementCheckListItemProps } from '../../types/types';
+import { agreementCheckListItemStyles, checkBoxBackground } from '../../styles/styles';
 
 const AgreementCheckListItem = ({ text, check, index, onPressCheckList }: AgreementCheckListItemProps) => {
     return (

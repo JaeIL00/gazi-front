@@ -1,10 +1,11 @@
 import React, { useEffect } from 'react';
 import { Animated, Keyboard, View } from 'react-native';
-import { CompletedJoinTemplateProps } from '../../../types/types';
-import useKeyboardMotion from '../../../utils/hooks/useKeyboardMotion';
-import TextButton from '../../molecules/TextButton';
+
 import Colors from '../../../styles/Colors';
+import TextButton from '../../molecules/TextButton';
+import useKeyboardMotion from '../../../utils/hooks/useKeyboardMotion';
 import { nextStepButtonPosition } from '../../../styles/styles';
+import { CompletedJoinTemplateProps } from '../../../types/types';
 
 const CompletedJoinTemplate = ({ onPressNextStep }: CompletedJoinTemplateProps) => {
     // Finish button transitionY handling

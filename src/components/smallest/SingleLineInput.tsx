@@ -1,8 +1,9 @@
 import React from 'react';
 import { TextInput } from 'react-native';
+
+import Colors from '../../styles/Colors';
 import { SingleLineInputProps } from '../../types/types';
 import { singleLineInputStyles } from '../../styles/styles';
-import Colors from '../../styles/Colors';
 
 export const SingleLineInput = ({
     value,

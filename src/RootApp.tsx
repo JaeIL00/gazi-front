@@ -1,9 +1,8 @@
 import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
+import { LogBox } from 'react-native';
 import { RecoilRoot } from 'recoil';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import { LogBox } from 'react-native';
-
+import { NavigationContainer } from '@react-navigation/native';
 import { RootStackNavigation } from './navigations/RootStackNavigation';
 
 export const RootApp = () => {

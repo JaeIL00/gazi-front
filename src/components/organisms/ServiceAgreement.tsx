@@ -1,15 +1,15 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Animated, View, useWindowDimensions } from 'react-native';
 
-import TouchButton from '../smallest/TouchButton';
 import Icons from '../smallest/Icons';
-import { checkBoxBackground, serviceAgreementStyles } from '../../styles/styles';
-import SemiBoldText from '../smallest/SemiBoldText';
-import Colors from '../../styles/Colors';
 import Spacer from '../smallest/Spacer';
+import Colors from '../../styles/Colors';
 import TextButton from '../molecules/TextButton';
-import { ServiceAgreementProps } from '../../types/types';
+import TouchButton from '../smallest/TouchButton';
+import SemiBoldText from '../smallest/SemiBoldText';
 import AgreementCheckListItem from '../molecules/AgreementCheckListItem';
+import { ServiceAgreementProps } from '../../types/types';
+import { checkBoxBackground, serviceAgreementStyles } from '../../styles/styles';
 
 const ServiceAgreement = ({ finishSlideComponentHandler }: ServiceAgreementProps) => {
     // Render list data

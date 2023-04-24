@@ -1,10 +1,11 @@
 import React from 'react';
 import { View } from 'react-native';
-import PageTitle from '../smallest/PageTitle';
-import { PageTitleWithExplainProps } from '../../types/types';
+
 import Spacer from '../smallest/Spacer';
-import { Colors } from 'react-native/Libraries/NewAppScreen';
+import PageTitle from '../smallest/PageTitle';
 import NormalText from '../smallest/NormalText';
+import { Colors } from 'react-native/Libraries/NewAppScreen';
+import { PageTitleWithExplainProps } from '../../types/types';
 
 const PageTitleWithExplain = ({ oneTitle, twoTitle, explainText, explainSize }: PageTitleWithExplainProps) => {
     return (

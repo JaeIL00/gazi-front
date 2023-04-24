@@ -1,7 +1,8 @@
 import React from 'react';
 import { Text } from 'react-native';
-import { appTextStyles, normalTextStyles } from '../../styles/styles';
+
 import { AppTextProps } from '../../types/types';
+import { appTextStyles, normalTextStyles } from '../../styles/styles';
 
 const NormalText = ({ text, size, color, textAlign, lineHeight }: AppTextProps) => {
     return (

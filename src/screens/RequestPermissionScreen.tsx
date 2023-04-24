@@ -1,6 +1,7 @@
 import React from 'react';
 import RequestPemissionTemplate from '../components/templates/joinMember/RequestPemissionTemplate';
 import { View } from 'react-native';
+
 import { globalDefaultStyles } from '../styles/styles';
 import { useRootNavigation } from '../navigations/RootStackNavigation';
 

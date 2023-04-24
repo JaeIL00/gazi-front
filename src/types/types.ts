@@ -98,19 +98,6 @@ export type IconPermissionListItemProps = {
 
 // Organisms
 // Organisms
-export type InputEmailPwProps = {
-    data: {
-        email: string;
-        password: string;
-        nickname: string;
-        keyword: string;
-    };
-    isEmail?: boolean;
-    isPasswordLeng?: boolean;
-    isPasswordReg?: boolean;
-    onChangeEmailText: (text: string) => void;
-    onChangePasswordText: (text: string) => void;
-};
 export interface MoveBackWithPageTitleProps extends PageTitleWithExplainProps {
     onPress: () => void;
 }

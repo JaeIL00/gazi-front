@@ -3,17 +3,17 @@ import { ActivityIndicator, Animated, Keyboard, View } from 'react-native';
 import { useRecoilState } from 'recoil';
 import { useMutation, useQuery } from 'react-query';
 
-import { SingleLineInput } from '../../smallest/SingleLineInput';
-import { joinMemberData } from '../../../store/atoms';
-import { NicknameTemplateProps } from '../../../types/types';
-import TextButton from '../../molecules/TextButton';
-import Colors from '../../../styles/Colors';
-import { nextStepButtonPosition, nicknameTemplateStyles } from '../../../styles/styles';
-import useKeyboardMotion from '../../../utils/hooks/useKeyboardMotion';
-import { checkNicknameAPI, memberJoinAPIs } from '../../../queries/api';
 import Icons from '../../smallest/Icons';
 import Spacer from '../../smallest/Spacer';
+import Colors from '../../../styles/Colors';
 import MediumText from '../../smallest/MediumText';
+import TextButton from '../../molecules/TextButton';
+import useKeyboardMotion from '../../../utils/hooks/useKeyboardMotion';
+import { joinMemberData } from '../../../store/atoms';
+import { NicknameTemplateProps } from '../../../types/types';
+import { SingleLineInput } from '../../smallest/SingleLineInput';
+import { checkNicknameAPI, memberJoinAPIs } from '../../../queries/api';
+import { nextStepButtonPosition, nicknameTemplateStyles } from '../../../styles/styles';
 
 const NicknameTemplate = ({ onPressNextStep }: NicknameTemplateProps) => {
     const [joinData, setJoinData] = useRecoilState(joinMemberData);

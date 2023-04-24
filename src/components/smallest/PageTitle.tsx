@@ -1,5 +1,6 @@
 import React from 'react';
 import { Text } from 'react-native';
+
 import { PageTitleProps } from '../../types/types';
 import { pageTitleStyles } from '../../styles/styles';
 
