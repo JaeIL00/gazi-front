@@ -12,7 +12,7 @@ import InputEmailTemplate from '../components/templates/joinMember/InputEmailTem
 import CompletedJoinTemplate from '../components/templates/joinMember/CompletedJoinTemplate';
 import EmailWithPasswordTemplate from '../components/templates/joinMember/EmailWithPasswordTemplate';
 import { joinMemberData } from '../store/atoms';
-import { joinMemberScreenStyles } from '../styles/styles';
+import { globalDefaultStyles } from '../styles/styles';
 import { useRootNavigation } from '../navigations/RootStackNavigation';
 
 const JoinMemberScreen = () => {
@@ -119,25 +119,22 @@ const JoinMemberScreen = () => {
     }, [step, isSlideComponent]);
 
     return (
-        <View style={joinMemberScreenStyles.container}>
-            <View style={joinMemberScreenStyles.inner}>
-                <MoveBackWithPageTitle
-                    oneTitle={oneTitle}
-                    twoTitle={twoTitle}
-                    explainText={explain && explain}
-                    explainSize={explain ? 13 : undefined}
-                    onPress={handleBackButton}
-                />
+        <View style={globalDefaultStyles.container}>
+            <MoveBackWithPageTitle
+                oneTitle={oneTitle}
+                twoTitle={twoTitle}
+                explainText={explain && explain}
+                explainSize={explain ? 13 : undefined}
+                onPress={handleBackButton}
+            />
 
-                <Spacer height={51} />
+            <Spacer height={51} />
 
-                {step === 1 && (
-                    <InputEmailTemplate resetTimeHandler={resetTimeHandler} onPressNextStep={onPressNextStep} />
-                )}
-                {step === 2 && <EmailWithPasswordTemplate onPressNextStep={onPressNextStep} />}
-                {step === 3 && <NicknameTemplate onPressNextStep={onPressNextStep} />}
-                {step === 4 && <CompletedJoinTemplate onPressNextStep={onPressNextStep} />}
-            </View>
+            {step === 1 && <InputEmailTemplate resetTimeHandler={resetTimeHandler} onPressNextStep={onPressNextStep} />}
+            {step === 2 && <EmailWithPasswordTemplate onPressNextStep={onPressNextStep} />}
+            {step === 3 && <NicknameTemplate onPressNextStep={onPressNextStep} />}
+            {step === 4 && <CompletedJoinTemplate onPressNextStep={onPressNextStep} />}
+
             {isSlideComponent && step === 1 && (
                 <AuthEmail
                     min={min}

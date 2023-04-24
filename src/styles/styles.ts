@@ -11,7 +11,7 @@ export const appStyles = StyleSheet.create({
     },
 });
 export const globalDefaultStyles = StyleSheet.create({
-    background: {
+    container: {
         flex: 1,
         paddingHorizontal: widthPercentage(16),
         backgroundColor: Colors.WHITE,
@@ -366,13 +366,10 @@ export const notLoginTemplateStyles = StyleSheet.create({
     container: {
         flex: 1,
         paddingTop: hegithPercentage(99),
-        paddingHorizontal: widthPercentage(16),
-        backgroundColor: Colors.WHITE,
     },
     buttonBox: {
         width: '100%',
         position: 'absolute',
-        left: widthPercentage(16),
         bottom: hegithPercentage(70),
     },
 });
@@ -384,18 +381,5 @@ export const requestPemissionTemplateStyles = StyleSheet.create({
     lineBar: {
         borderTopWidth: fontPercentage(1),
         borderColor: '#EBEBEB',
-    },
-});
-
-// Screen
-// Screen
-export const joinMemberScreenStyles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: Colors.WHITE,
-    },
-    inner: {
-        flex: 1,
-        paddingHorizontal: 16,
     },
 });

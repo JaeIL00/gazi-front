@@ -12,7 +12,7 @@ const RequestPermissionScreen = () => {
     };
 
     return (
-        <View style={globalDefaultStyles.background}>
+        <View style={globalDefaultStyles.container}>
             <RequestPemissionTemplate moveToKeywordScreen={moveToKeywordScreen} />
         </View>
     );

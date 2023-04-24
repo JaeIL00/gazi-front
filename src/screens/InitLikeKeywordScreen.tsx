@@ -5,7 +5,7 @@ import InitLikeKeywordTemplate from '../components/templates/joinMember/InitLike
 
 const InitLikeKeywordScreen = () => {
     return (
-        <View style={globalDefaultStyles.background}>
+        <View style={globalDefaultStyles.container}>
             <InitLikeKeywordTemplate />
         </View>
     );
