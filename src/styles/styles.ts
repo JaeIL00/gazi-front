@@ -10,6 +10,13 @@ export const appStyles = StyleSheet.create({
         flex: 1,
     },
 });
+export const globalDefaultStyles = StyleSheet.create({
+    background: {
+        flex: 1,
+        paddingHorizontal: widthPercentage(16),
+        backgroundColor: Colors.WHITE,
+    },
+});
 export const nextStepButtonPosition = StyleSheet.create({
     button: {
         width: '100%',
@@ -81,7 +88,6 @@ export const SpacerStyles = (height: number | undefined, width: number | undefin
 export const appTextStyles = (size: number, color: string) =>
     StyleSheet.create({
         textStyle: {
-            fontFamily: 'Pretendard-SemiBold',
             fontSize: fontPercentage(size),
             color: color,
         },
@@ -146,6 +152,25 @@ export const checkBoxBackground = (is: boolean) =>
             backgroundColor: is ? Colors.BLACK : '#E3E3E3',
         },
     });
+export const iconPermissionListItemStyles = StyleSheet.create({
+    itemBox: {
+        flexDirection: 'row',
+        paddingBottom: hegithPercentage(16),
+    },
+    iconBox: {
+        width: widthPercentage(40),
+        height: hegithPercentage(40),
+        backgroundColor: '#E3E3E3',
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: fontPercentage(40),
+        marginRight: widthPercentage(18),
+    },
+    imageSize: {
+        width: widthPercentage(25),
+        height: widthPercentage(25),
+    },
+});
 
 // Organisms
 // Organisms
@@ -303,8 +328,18 @@ export const notLoginTemplateStyles = StyleSheet.create({
     container: {
         flex: 1,
         paddingTop: hegithPercentage(99),
-        paddingHorizontal: 16,
+        paddingHorizontal: widthPercentage(16),
         backgroundColor: Colors.WHITE,
+    },
+});
+export const requestPemissionTemplateStyles = StyleSheet.create({
+    choicePermission: {
+        paddingTop: hegithPercentage(13),
+        paddingBottom: hegithPercentage(21),
+    },
+    lineBar: {
+        borderTopWidth: fontPercentage(1),
+        borderColor: '#EBEBEB',
     },
 });
 

@@ -61,7 +61,7 @@ const InputEmailTemplate = ({ onPressNextStep, resetTimeHandler }: InputEmailTem
         if ((isEmail && email !== joinData.email) || (isEmail && joinData.password)) {
             setJoinData({ ...joinData, email });
             mutate({
-                endpoint: 'emailConfirm',
+                endpoint: 'email-confirm',
                 method: 'post',
                 data: {
                     email,

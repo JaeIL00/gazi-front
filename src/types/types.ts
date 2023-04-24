@@ -82,6 +82,13 @@ export interface IconWithMediumTextProps extends IconsProps {
     text: string;
     textColor: string;
 }
+export type IconPermissionListItemProps = {
+    iconType?: string;
+    iconName?: string;
+    title: string;
+    explain: string;
+    image?: string;
+};
 
 // Organisms
 // Organisms

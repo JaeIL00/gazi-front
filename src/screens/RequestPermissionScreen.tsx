@@ -1,8 +1,14 @@
 import React from 'react';
-import InitPemissionTemplate from '../components/templates/joinMember/InitPemissionTemplate';
+import RequestPemissionTemplate from '../components/templates/joinMember/RequestPemissionTemplate';
+import { View } from 'react-native';
+import { globalDefaultStyles } from '../styles/styles';
 
 const RequestPermissionScreen = () => {
-    return <InitPemissionTemplate />;
+    return (
+        <View style={globalDefaultStyles.background}>
+            <RequestPemissionTemplate />
+        </View>
+    );
 };
 
 export default RequestPermissionScreen;
