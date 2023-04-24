@@ -39,7 +39,7 @@ export const touchButtonStyles = (
     StyleSheet.create({
         container: {
             width: width && widthPercentage(width),
-            maxHeight: height && hegithPercentage(height),
+            height: height && hegithPercentage(height),
             backgroundColor: backgroundColor,
             paddingHorizontal: paddingHorizontal && widthPercentage(paddingHorizontal),
             paddingVertical: paddingVertical && hegithPercentage(paddingVertical),
@@ -49,7 +49,6 @@ export const touchButtonStyles = (
             justifyContent: 'center',
             borderColor: borderColor && borderColor,
             borderWidth: borderWidth && widthPercentage(borderWidth),
-            flex: 1,
         },
     });
 export const singleLineInputStyles = (
@@ -281,6 +280,7 @@ export const authEmailStyles = StyleSheet.create({
     },
     retryTextBox: {
         flexDirection: 'row',
+        alignItems: 'center',
         justifyContent: 'center',
     },
     underBar: {

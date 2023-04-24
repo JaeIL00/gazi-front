@@ -16,6 +16,7 @@ import NormalText from '../smallest/NormalText';
 import { emailAuthNumber, joinMemberData } from '../../store/atoms';
 import { memberJoinAPIs } from '../../queries/api';
 import useKeyboardMotion from '../../utils/hooks/useKeyboardMotion';
+import ModalBackground from '../smallest/ModalBackground';
 
 const AuthEmail = ({ min, sec, resetTimeHandler, finishSlideComponentHandler }: AuthEmailProps) => {
     const initAuthNumber = useRecoilValue(emailAuthNumber);
@@ -44,6 +45,7 @@ const AuthEmail = ({ min, sec, resetTimeHandler, finishSlideComponentHandler }: 
     const onChangNumberText = (text: string) => {
         setInputNumber(text);
         // Auth number validation
+        console.log(authNumber);
         setActivityButton(text === String(authNumber));
     };
     useEffect(() => {
@@ -67,6 +69,7 @@ const AuthEmail = ({ min, sec, resetTimeHandler, finishSlideComponentHandler }: 
         },
     });
     const onPressEmailAuth = () => {
+        console.log('hi');
         if (min === 5) {
             mutate({
                 endpoint: 'emailConfirm',
@@ -107,7 +110,7 @@ const AuthEmail = ({ min, sec, resetTimeHandler, finishSlideComponentHandler }: 
     }, []);
 
     return (
-        <View style={authEmailStyles.container}>
+        <ModalBackground>
             <Animated.View style={[authEmailStyles.animateInner, { transform: [{ translateY: topValue }] }]}>
                 <View style={authEmailStyles.backButtonBox}>
                     <TouchButton alignSelf="flex-start" onPress={onPressBackIcon}>
@@ -143,7 +146,7 @@ const AuthEmail = ({ min, sec, resetTimeHandler, finishSlideComponentHandler }: 
                 <View style={authEmailStyles.retryTextBox}>
                     <NormalText text="메일을 받지 못하셨나요?" size={13} color={Colors.TXT_GRAY} />
                     <Spacer width={8} />
-                    <TouchButton onPress={onPressEmailAuth} width={40}>
+                    <TouchButton onPress={onPressEmailAuth}>
                         <View style={authEmailStyles.underBar}>
                             <BoldText text="재전송" size={13} color={Colors.TXT_GRAY} />
                         </View>
@@ -161,7 +164,7 @@ const AuthEmail = ({ min, sec, resetTimeHandler, finishSlideComponentHandler }: 
                     />
                 </Animated.View>
             </Animated.View>
-        </View>
+        </ModalBackground>
     );
 };
 
