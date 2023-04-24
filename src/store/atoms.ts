@@ -5,8 +5,7 @@ export const joinMemberData = atom({
     default: {
         email: '',
         password: '',
-        nickname: '',
-        keyword: '',
+        nickName: '',
     },
 });
 export const emailAuthNumber = atom({

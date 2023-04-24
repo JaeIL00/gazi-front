@@ -68,7 +68,7 @@ const JoinMemberScreen = () => {
                 setExplain('다른 사용자들이 볼 수 있고, 내 프로필에서 수정할 수 있어요');
                 break;
             case 4:
-                setOneTitle(`${joinData.nickname}님의`);
+                setOneTitle(`${joinData.nickName}님의`);
                 setTwoTitle('회원가입을 축하드립니다!');
                 setExplain('');
                 break;
@@ -104,8 +104,7 @@ const JoinMemberScreen = () => {
             setJoinData({
                 email: '',
                 password: '',
-                nickname: '',
-                keyword: '',
+                nickName: '',
             });
             rootNavigation.goBack();
         }

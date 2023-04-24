@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, Animated, Keyboard, View } from 'react-native';
 import { useRecoilState } from 'recoil';
-import { useQuery } from 'react-query';
+import { useMutation, useQuery } from 'react-query';
 
 import { SingleLineInput } from '../../smallest/SingleLineInput';
 import { joinMemberData } from '../../../store/atoms';
@@ -10,7 +10,7 @@ import TextButton from '../../molecules/TextButton';
 import Colors from '../../../styles/Colors';
 import { nextStepButtonPosition, nicknameTemplateStyles } from '../../../styles/styles';
 import useKeyboardMotion from '../../../utils/hooks/useKeyboardMotion';
-import { checkNicknameAPI } from '../../../queries/api';
+import { checkNicknameAPI, memberJoinAPIs } from '../../../queries/api';
 import Icons from '../../smallest/Icons';
 import Spacer from '../../smallest/Spacer';
 import MediumText from '../../smallest/MediumText';
@@ -30,6 +30,7 @@ const NicknameTemplate = ({ onPressNextStep }: NicknameTemplateProps) => {
         enabled: false,
         onSuccess: () => {
             setIsDuplicate(true);
+            setJoinData({ ...joinData, nickName: inputNickname });
         },
         onError: ({ response }) => {
             // 추후에 409로 수정 예정
@@ -47,12 +48,21 @@ const NicknameTemplate = ({ onPressNextStep }: NicknameTemplateProps) => {
         }
     };
 
-    // Move Next Step
-    const canMoveNextStepHandler = () => {
-        if (isDuplicate) {
-            setJoinData({ ...joinData, nickname: inputNickname });
+    const { mutate } = useMutation(memberJoinAPIs, {
+        onSuccess: () => {
             onPressNextStep();
+        },
+    });
+
+    // Join member API by finish button
+    const onPressJoinMember = () => {
+        if (isDuplicate) {
         }
+        mutate({
+            endpoint: 'signup',
+            method: 'post',
+            data: joinData,
+        });
     };
 
     // Finish button transitionY handling
@@ -113,7 +123,7 @@ const NicknameTemplate = ({ onPressNextStep }: NicknameTemplateProps) => {
                     text="확인"
                     textColor={Colors.WHITE}
                     backgroundColor={isDuplicate ? Colors.BLACK : Colors.BTN_GRAY}
-                    onPress={canMoveNextStepHandler}
+                    onPress={onPressJoinMember}
                     height={48}
                     fontSize={17}
                 />

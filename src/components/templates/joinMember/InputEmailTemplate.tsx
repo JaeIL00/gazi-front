@@ -52,6 +52,9 @@ const InputEmailTemplate = ({ onPressNextStep, resetTimeHandler }: InputEmailTem
             setAuthData(data.data);
             onPressNextStep();
         },
+        onError: ({ response }) => {
+            console.log(response);
+        },
     });
     // If edit email then reset timer
     const onPressEmailAuth = () => {
