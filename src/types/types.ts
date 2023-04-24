@@ -8,6 +8,7 @@ export type RootStackParamList = {
     JoinMember: undefined;
     Login: undefined;
     RequestPermission: undefined;
+    InitKeyword: undefined;
 };
 
 // Smallest
@@ -136,3 +137,6 @@ export type EmailWithPasswordProps = {
 };
 export interface NicknameTemplateProps extends EmailWithPasswordProps {}
 export interface CompletedJoinTemplateProps extends EmailWithPasswordProps {}
+export type RequestPemissionTemplateProps = {
+    moveToKeywordScreen: () => void;
+};

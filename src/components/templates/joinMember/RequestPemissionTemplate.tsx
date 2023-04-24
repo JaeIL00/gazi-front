@@ -10,12 +10,11 @@ import Colors from '../../../styles/Colors';
 import Spacer from '../../smallest/Spacer';
 import TextButton from '../../molecules/TextButton';
 import NormalText from '../../smallest/NormalText';
-import { useRootNavigation } from '../../../navigations/RootStackNavigation';
 import FailLocationPermisionModal from '../../organisms/FailLocationPermisionModal';
+import { RequestPemissionTemplateProps } from '../../../types/types';
 
-const RequestPemissionTemplate = () => {
-    const rootNavigation = useRootNavigation();
-
+const RequestPemissionTemplate = ({ moveToKeywordScreen }: RequestPemissionTemplateProps) => {
+    // Request Permissions
     const [onModal, setOnModal] = useState(false);
     const onPressrequstPermission = async () => {
         if (Platform.OS === 'android') {
@@ -31,7 +30,7 @@ const RequestPemissionTemplate = () => {
                 const locationPermmission = await check(PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION);
                 const isAllow = locationPermmission === RESULTS.GRANTED;
                 if (isAllow) {
-                    rootNavigation.navigate('NotLoginHome');
+                    moveToKeywordScreen();
                 } else {
                     setOnModal(true);
                 }

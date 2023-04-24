@@ -6,6 +6,7 @@ import { RootStackParamList } from '../types/types';
 import { useNavigation } from '@react-navigation/native';
 import LoginScreen from '../screens/LoginScreen';
 import RequestPermissionScreen from '../screens/RequestPermissionScreen';
+import InitLikeKeywordScreen from '../screens/InitLikeKeywordScreen';
 
 export const RootStackNavigation = () => {
     const Stack = createNativeStackNavigator();
@@ -20,6 +21,7 @@ export const RootStackNavigation = () => {
             <Stack.Screen name="JoinMember" component={JoinMemberScreen} />
             <Stack.Screen name="NotLoginHome" component={NotLoginHomeScreen} />
             <Stack.Screen name="Login" component={LoginScreen} />
+            <Stack.Screen name="InitKeyword" component={InitLikeKeywordScreen} />
         </Stack.Navigator>
     );
 };
