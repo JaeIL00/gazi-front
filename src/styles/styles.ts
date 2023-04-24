@@ -369,6 +369,12 @@ export const notLoginTemplateStyles = StyleSheet.create({
         paddingHorizontal: widthPercentage(16),
         backgroundColor: Colors.WHITE,
     },
+    buttonBox: {
+        width: '100%',
+        position: 'absolute',
+        left: widthPercentage(16),
+        bottom: hegithPercentage(70),
+    },
 });
 export const requestPemissionTemplateStyles = StyleSheet.create({
     choicePermission: {

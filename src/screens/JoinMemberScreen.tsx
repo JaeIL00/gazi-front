@@ -20,7 +20,7 @@ const JoinMemberScreen = () => {
     const [joinData, setJoinData] = useRecoilState(joinMemberData);
 
     // Move to next step
-    const [step, setStep] = useState(3);
+    const [step, setStep] = useState(1);
     const [isSlideComponent, setIsSlideComponent] = useState(false);
     const onPressNextStep = () => {
         Keyboard.dismiss();

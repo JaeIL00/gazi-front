@@ -27,27 +27,27 @@ const NotLoginTemplate = () => {
             {/* 임시 */}
             <View style={{ backgroundColor: '#333', height: 300 }} />
 
-            <Spacer height={69} />
-
-            <TextButton
-                text="이메일로 가입"
-                onPress={() => onPressNavigate('JoinMember')}
-                textColor={Colors.WHITE}
-                backgroundColor={Colors.BLACK}
-                fontSize={17}
-                height={48}
-            />
-            <Spacer height={12} />
-            <TextButton
-                text="이메일로 로그인"
-                onPress={() => onPressNavigate('Login')}
-                textColor={Colors.BLACK}
-                backgroundColor={Colors.WHITE}
-                fontSize={17}
-                height={48}
-                borderColor={Colors.BLACK}
-                borderWidth={1}
-            />
+            <View style={notLoginTemplateStyles.buttonBox}>
+                <TextButton
+                    text="이메일로 가입"
+                    onPress={() => onPressNavigate('JoinMember')}
+                    textColor={Colors.WHITE}
+                    backgroundColor={Colors.BLACK}
+                    fontSize={17}
+                    height={48}
+                />
+                <Spacer height={12} />
+                <TextButton
+                    text="이메일로 로그인"
+                    onPress={() => onPressNavigate('Login')}
+                    textColor={Colors.BLACK}
+                    backgroundColor={Colors.WHITE}
+                    fontSize={17}
+                    height={48}
+                    borderColor={Colors.BLACK}
+                    borderWidth={1}
+                />
+            </View>
         </View>
     );
 };
