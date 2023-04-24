@@ -22,12 +22,12 @@ const EmailWithPasswordTemplate = ({ onPressNextStep }: EmailWithPasswordProps) 
     const [isPasswordReg, setIsPasswordReg] = useState(false);
     const onChangePasswordText = (text: string) => {
         setpassword(text);
-        passwordErrorTextStyle();
+        passwordErrorTextStyle(text);
     };
-    const passwordErrorTextStyle = () => {
+    const passwordErrorTextStyle = (text: string) => {
         const reg = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{1,}$/;
-        reg.test(password) ? setIsPasswordReg(true) : setIsPasswordReg(false);
-        password.length >= 8 && password.length <= 20 ? setIsPasswordLeng(true) : setIsPasswordLeng(false);
+        reg.test(text) ? setIsPasswordReg(true) : setIsPasswordReg(false);
+        text.length >= 8 && text.length <= 20 ? setIsPasswordLeng(true) : setIsPasswordLeng(false);
     };
 
     // Checking validation for next step
