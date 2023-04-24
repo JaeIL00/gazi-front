@@ -19,9 +19,11 @@ const NicknameTemplate = ({ onPressNextStep }: NicknameTemplateProps) => {
     const [joinData, setJoinData] = useRecoilState(joinMemberData);
     const [initErrorText, setInitErrorText] = useState(false);
 
+    // Nickname Text Handling
     const [inputNickname, setInputNickname] = useState('');
     const onChangeNickname = (text: string) => {
         setInputNickname(text);
+        setInitErrorText(false);
     };
 
     // Check nickname duplicate Handling
@@ -124,7 +126,7 @@ const NicknameTemplate = ({ onPressNextStep }: NicknameTemplateProps) => {
                 <TextButton
                     text="확인"
                     textColor={Colors.WHITE}
-                    backgroundColor={isDuplicate ? Colors.BLACK : Colors.BTN_GRAY}
+                    backgroundColor={isDuplicate && initErrorText ? Colors.BLACK : Colors.BTN_GRAY}
                     onPress={onPressJoinMember}
                     height={48}
                     fontSize={17}
