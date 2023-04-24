@@ -10,9 +10,12 @@ import Colors from '../../../styles/Colors';
 import Spacer from '../../smallest/Spacer';
 import TextButton from '../../molecules/TextButton';
 import NormalText from '../../smallest/NormalText';
+import { useRootNavigation } from '../../../navigations/RootStackNavigation';
+import FailLocationPermisionModal from '../../organisms/FailLocationPermisionModal';
 
 const RequestPemissionTemplate = () => {
-    const canMoveNextStepHandler = async () => {
+    const rootNavigation = useRootNavigation();
+    const onPressrequstPermission = async () => {
         if (Platform.OS === 'android') {
             try {
                 await requestMultiple([
@@ -26,7 +29,7 @@ const RequestPemissionTemplate = () => {
                 const locationPermmission = await check(PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION);
                 const isAllow = locationPermmission === RESULTS.GRANTED;
                 if (isAllow) {
-                    Alert.alert('키워드 설정 페이지 이동');
+                    rootNavigation.navigate('NotLoginHome');
                 } else {
                     Alert.alert('경고', '위치 권한을 허용해주세요', [
                         {
@@ -102,13 +105,15 @@ const RequestPemissionTemplate = () => {
             <Spacer height={61} />
 
             <TextButton
-                onPress={() => {}}
+                onPress={onPressrequstPermission}
                 text="확인"
                 height={48}
                 backgroundColor={Colors.BLACK}
                 textColor={Colors.WHITE}
                 fontSize={17}
             />
+
+            <FailLocationPermisionModal />
         </>
     );
 };

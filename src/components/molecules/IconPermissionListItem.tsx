@@ -23,7 +23,7 @@ const IconPermissionListItem = ({ iconType, iconName, title, explain, image }: I
                 )}
                 {iconType && iconName && <Icons type={iconType} name={iconName} size={25} color={Colors.BLACK} />}
             </View>
-            <View>
+            <View style={iconPermissionListItemStyles.textBox}>
                 <MediumText text={title} size={16} color={Colors.BLACK} />
                 <NormalText text={explain} size={12} color={Colors.TXT_GRAY} />
             </View>

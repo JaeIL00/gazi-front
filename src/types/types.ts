@@ -1,5 +1,5 @@
 import { ReactElement } from 'react';
-import { FlexAlignType, KeyboardType } from 'react-native/types';
+import { FlexAlignType, KeyboardType, TextStyle } from 'react-native/types';
 
 // Navigation
 // Navigation
@@ -53,6 +53,11 @@ export type AppTextProps = {
     text: string;
     size: number;
     color: string;
+    textAlign?: TextStyle['textAlign'];
+    lineHeight?: number;
+};
+export type ModalBackgroundProps = {
+    children?: ReactElement;
 };
 
 // Molecules

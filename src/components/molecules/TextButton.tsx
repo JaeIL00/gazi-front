@@ -7,6 +7,7 @@ const TextButton = ({
     onPress,
     text,
     textColor,
+    width,
     height,
     backgroundColor,
     fontSize,
@@ -18,6 +19,7 @@ const TextButton = ({
     return (
         <TouchButton
             onPress={onPress}
+            width={width}
             height={height}
             backgroundColor={backgroundColor}
             paddingHorizontal={paddingHorizontal}

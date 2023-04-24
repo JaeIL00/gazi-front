@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { FlexAlignType } from 'react-native/types';
+import { FlexAlignType, TextStyle } from 'react-native/types';
 import Colors from './Colors';
 import { hegithPercentage, widthPercentage, fontPercentage } from '../utils/changeStyleSize';
 
@@ -39,7 +39,7 @@ export const touchButtonStyles = (
     StyleSheet.create({
         container: {
             width: width && widthPercentage(width),
-            height: height && hegithPercentage(height),
+            maxHeight: height && hegithPercentage(height),
             backgroundColor: backgroundColor,
             paddingHorizontal: paddingHorizontal && widthPercentage(paddingHorizontal),
             paddingVertical: paddingVertical && hegithPercentage(paddingVertical),
@@ -49,6 +49,7 @@ export const touchButtonStyles = (
             justifyContent: 'center',
             borderColor: borderColor && borderColor,
             borderWidth: borderWidth && widthPercentage(borderWidth),
+            flex: 1,
         },
     });
 export const singleLineInputStyles = (
@@ -85,11 +86,12 @@ export const SpacerStyles = (height: number | undefined, width: number | undefin
             width: width && widthPercentage(width),
         },
     });
-export const appTextStyles = (size: number, color: string) =>
+export const appTextStyles = (size: number, color: string, textAlign: TextStyle['textAlign'] | undefined) =>
     StyleSheet.create({
         textStyle: {
             fontSize: fontPercentage(size),
             color: color,
+            textAlign: textAlign && textAlign,
         },
     });
 export const boldTextStyles = StyleSheet.create({
@@ -107,11 +109,25 @@ export const mediumTextStyles = StyleSheet.create({
         fontFamily: 'Pretendard-Medium',
     },
 });
-export const normalTextStyles = StyleSheet.create({
-    family: {
-        fontFamily: 'Pretendard-Regular',
-    },
-});
+export const normalTextStyles = (lineHeight: number | undefined) =>
+    StyleSheet.create({
+        family: {
+            fontFamily: 'Pretendard-Regular',
+            lineHeight: lineHeight && fontPercentage(19),
+        },
+    });
+export const modalBackgroundStyles = (width: number, height: number) =>
+    StyleSheet.create({
+        background: {
+            flex: 1,
+            position: 'absolute',
+            width: width,
+            height: height,
+            backgroundColor: '#00000099',
+            justifyContent: 'center',
+            alignItems: 'center',
+        },
+    });
 
 // Molecules
 // Molecules
@@ -169,6 +185,9 @@ export const iconPermissionListItemStyles = StyleSheet.create({
     imageSize: {
         width: widthPercentage(25),
         height: widthPercentage(25),
+    },
+    textBox: {
+        justifyContent: 'center',
     },
 });
 
@@ -270,6 +289,25 @@ export const authEmailStyles = StyleSheet.create({
     },
     finishButton: {
         width: '100%',
+    },
+});
+export const failLocationPermisionModalStyles = StyleSheet.create({
+    container: {
+        backgroundColor: Colors.WHITE,
+        borderRadius: fontPercentage(12),
+        alignItems: 'center',
+        paddingTop: hegithPercentage(32),
+        paddingBottom: hegithPercentage(24),
+        paddingHorizontal: widthPercentage(24),
+        marginHorizontal: widthPercentage(36),
+    },
+    textBox: {
+        alignItems: 'center',
+        paddingHorizontal: widthPercentage(12),
+    },
+    buttonBox: {
+        width: '100%',
+        flexDirection: 'row',
     },
 });
 
