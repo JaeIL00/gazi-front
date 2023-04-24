@@ -26,20 +26,27 @@ const InputEmailTemplate = ({ onPressNextStep, resetTimeHandler }: InputEmailTem
     const onChangeEmailText = (text: string) => {
         setEmail(text);
         validator.isEmail(text) ? setIsEmail(true) : setIsEmail(false);
+
+        setIsDuplicated(false);
     };
 
     // Email authorization Handling
+    const [isDuplicated, setIsDuplicated] = useState(false);
     const { isLoading, mutate } = useMutation(memberJoinAPIs, {
         onSuccess: data => {
             setAuthData(data.data.data);
             onPressNextStep();
+            resetTimeHandler();
         },
         onError: ({ response }) => {
-            console.log(response);
+            if (response.status === 409) {
+                setIsEmail(false);
+                setIsDuplicated(true);
+            }
         },
     });
 
-    // If edit email then reset timer
+    // Request auth number button handling
     const onPressEmailAuth = () => {
         if ((isEmail && email !== joinData.email) || (isEmail && joinData.password)) {
             setJoinData({ ...joinData, email });
@@ -50,9 +57,7 @@ const InputEmailTemplate = ({ onPressNextStep, resetTimeHandler }: InputEmailTem
                     email,
                 },
             });
-            resetTimeHandler();
-            onPressNextStep();
-        } else if (email === joinData.email) {
+        } else if (isEmail && email === joinData.email) {
             onPressNextStep();
         }
     };
@@ -78,8 +83,10 @@ const InputEmailTemplate = ({ onPressNextStep, resetTimeHandler }: InputEmailTem
                 placeholder="이메일(아이디) 입력"
                 keyboardType="email-address"
             />
+
             <Spacer height={8} />
-            {email && (
+
+            {email && !isDuplicated && (
                 <View style={inputEmailTemplateStyles.emailErrorTextBox}>
                     <Icons
                         type={isEmail ? 'octicons' : 'fontisto'}
@@ -89,12 +96,20 @@ const InputEmailTemplate = ({ onPressNextStep, resetTimeHandler }: InputEmailTem
                     />
                     <Spacer width={4} />
                     <MediumText
-                        text={isEmail ? '올바른 이메일 형식입니다.' : '이메일 형식이 올바르지 않습니다'}
+                        text={isEmail ? '올바른 이메일 형식입니다' : '이메일 형식이 올바르지 않습니다'}
                         size={12}
                         color={isEmail ? Colors.STATUS_GREEN : Colors.STATUS_RED}
                     />
                 </View>
             )}
+            {isDuplicated && (
+                <View style={inputEmailTemplateStyles.emailErrorTextBox}>
+                    <Icons type={'fontisto'} name={'close'} size={14} color={Colors.STATUS_RED} />
+                    <Spacer width={4} />
+                    <MediumText text="중복된 이메일입니다" size={12} color={Colors.STATUS_RED} />
+                </View>
+            )}
+
             <Animated.View style={[nextStepButtonPosition.button, { transform: [{ translateY: bottomValue }] }]}>
                 <TextButton
                     onPress={onPressEmailAuth}
@@ -105,6 +120,7 @@ const InputEmailTemplate = ({ onPressNextStep, resetTimeHandler }: InputEmailTem
                     fontSize={17}
                 />
             </Animated.View>
+
             {isLoading && <ActivityIndicator size="large" />}
         </View>
     );
