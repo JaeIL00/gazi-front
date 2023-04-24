@@ -45,7 +45,6 @@ const AuthEmail = ({ min, sec, resetTimeHandler, finishSlideComponentHandler }: 
     const onChangNumberText = (text: string) => {
         setInputNumber(text);
         // Auth number validation
-        console.log(authNumber);
         setActivityButton(text === String(authNumber));
     };
     useEffect(() => {
@@ -69,7 +68,6 @@ const AuthEmail = ({ min, sec, resetTimeHandler, finishSlideComponentHandler }: 
         },
     });
     const onPressEmailAuth = () => {
-        console.log('hi');
         if (min === 5) {
             mutate({
                 endpoint: 'emailConfirm',

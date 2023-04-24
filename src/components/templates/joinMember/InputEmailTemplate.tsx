@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Animated, Keyboard, View } from 'react-native';
+import { ActivityIndicator, Animated, Keyboard, View } from 'react-native';
 import { useRecoilState } from 'recoil';
 import validator from 'validator';
 
@@ -47,7 +47,7 @@ const InputEmailTemplate = ({ onPressNextStep, resetTimeHandler }: InputEmailTem
     }, [isEmail]);
 
     // Email authorization Handling
-    const { mutate } = useMutation(memberJoinAPIs, {
+    const { isLoading, mutate } = useMutation(memberJoinAPIs, {
         onSuccess: data => {
             setAuthData(data.data.data);
             onPressNextStep();
@@ -122,6 +122,7 @@ const InputEmailTemplate = ({ onPressNextStep, resetTimeHandler }: InputEmailTem
                     fontSize={17}
                 />
             </Animated.View>
+            {isLoading && <ActivityIndicator size="large" />}
         </View>
     );
 };
