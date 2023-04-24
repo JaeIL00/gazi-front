@@ -7,8 +7,9 @@ import Colors from '../../styles/Colors';
 import { failLocationPermisionModalStyles } from '../../styles/styles';
 import Spacer from '../smallest/Spacer';
 import TextButton from '../molecules/TextButton';
+import { FailLocationPermisionModalProps } from '../../types/types';
 
-const FailLocationPermisionModal = () => {
+const FailLocationPermisionModal = ({ onPressModalButton }: FailLocationPermisionModalProps) => {
     return (
         <ModalBackground>
             <View style={failLocationPermisionModalStyles.container}>
@@ -31,7 +32,7 @@ const FailLocationPermisionModal = () => {
                         text="닫기"
                         textColor={Colors.TXT_GRAY}
                         fontSize={14}
-                        onPress={() => {}}
+                        onPress={() => onPressModalButton('close')}
                         paddingVertical={12}
                         borderWidth={1}
                         borderColor={Colors.TXT_GRAY}
@@ -41,7 +42,7 @@ const FailLocationPermisionModal = () => {
                         text="설정하러 가기"
                         textColor={Colors.WHITE}
                         fontSize={14}
-                        onPress={() => {}}
+                        onPress={() => onPressModalButton('move')}
                         backgroundColor={Colors.BLACK}
                         paddingVertical={12}
                     />

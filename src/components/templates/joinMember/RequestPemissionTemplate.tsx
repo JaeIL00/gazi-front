@@ -1,5 +1,5 @@
-import React from 'react';
-import { Alert, Linking, Platform, ScrollView, View } from 'react-native';
+import React, { useState } from 'react';
+import { Linking, Platform, ScrollView, View } from 'react-native';
 import { PERMISSIONS, RESULTS, check, requestMultiple } from 'react-native-permissions';
 
 import MoveBackWithPageTitle from '../../organisms/MoveBackWithPageTitle';
@@ -15,6 +15,8 @@ import FailLocationPermisionModal from '../../organisms/FailLocationPermisionMod
 
 const RequestPemissionTemplate = () => {
     const rootNavigation = useRootNavigation();
+
+    const [onModal, setOnModal] = useState(false);
     const onPressrequstPermission = async () => {
         if (Platform.OS === 'android') {
             try {
@@ -31,18 +33,24 @@ const RequestPemissionTemplate = () => {
                 if (isAllow) {
                     rootNavigation.navigate('NotLoginHome');
                 } else {
-                    Alert.alert('경고', '위치 권한을 허용해주세요', [
-                        {
-                            text: '취소',
-                            style: 'cancel',
-                        },
-                        {
-                            text: 'OK',
-                            onPress: async () => await Linking.openSettings(),
-                        },
-                    ]);
+                    setOnModal(true);
                 }
             }
+        }
+    };
+
+    // Request again modal button Handling
+    const onPressModalButton = async (state: string) => {
+        switch (state) {
+            case 'close':
+                setOnModal(false);
+                break;
+            case 'move':
+                setOnModal(false);
+                await Linking.openSettings();
+                break;
+            default:
+                return;
         }
     };
 
@@ -113,7 +121,7 @@ const RequestPemissionTemplate = () => {
                 fontSize={17}
             />
 
-            <FailLocationPermisionModal />
+            {onModal && <FailLocationPermisionModal onPressModalButton={onPressModalButton} />}
         </>
     );
 };

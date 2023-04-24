@@ -121,6 +121,9 @@ export interface AuthEmailProps extends ServiceAgreementProps {
     sec: number;
     resetTimeHandler: () => void;
 }
+export type FailLocationPermisionModalProps = {
+    onPressModalButton: (state: string) => void;
+};
 
 // templates
 // templates
