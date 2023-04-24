@@ -30,6 +30,13 @@ const InputEmailTemplate = ({ onPressNextStep, resetTimeHandler }: InputEmailTem
         setIsDuplicated(false);
     };
 
+    // Initialized state Handling
+    const initStateHandler = () => {
+        if (joinData.email) {
+            setIsEmail(true);
+        }
+    };
+
     // Email authorization Handling
     const [isDuplicated, setIsDuplicated] = useState(false);
     const { isLoading, mutate } = useMutation(memberJoinAPIs, {
@@ -65,6 +72,7 @@ const InputEmailTemplate = ({ onPressNextStep, resetTimeHandler }: InputEmailTem
     // Finish button transitionY handling
     const { bottomValue, buttonUpAnimationHandler, buttonDownAnimationHandler } = useKeyboardMotion(200, 430);
     useEffect(() => {
+        initStateHandler();
         const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', buttonUpAnimationHandler);
         const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', buttonDownAnimationHandler);
 
