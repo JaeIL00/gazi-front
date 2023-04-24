@@ -234,6 +234,10 @@ export const serviceAgreementStyles = StyleSheet.create({
         borderRadius: fontPercentage(3),
         marginRight: widthPercentage(10),
     },
+    listBox: {
+        paddingTop: hegithPercentage(3),
+        paddingBottom: hegithPercentage(158),
+    },
 });
 export const authEmailStyles = StyleSheet.create({
     container: {

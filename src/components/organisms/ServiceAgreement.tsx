@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Animated, View, useWindowDimensions } from 'react-native';
+import { Animated, ScrollView, View, useWindowDimensions } from 'react-native';
 
 import Icons from '../smallest/Icons';
 import Spacer from '../smallest/Spacer';
@@ -94,19 +94,19 @@ const ServiceAgreement = ({ finishSlideComponentHandler }: ServiceAgreementProps
                             <SemiBoldText size={14} color={Colors.BLACK} text="약관 전체 동의" />
                         </View>
                     </TouchButton>
-                    <Spacer height={3} />
 
-                    {listData.map((text, index) => (
-                        <AgreementCheckListItem
-                            text={text}
-                            key={index}
-                            check={index === 0 ? isServiceCheck : index === 1 ? isPersonalCheck : isLocationCheck}
-                            onPressCheckList={onPressCheckList}
-                            index={index}
-                        />
-                    ))}
+                    <ScrollView contentContainerStyle={serviceAgreementStyles.listBox}>
+                        {listData.map((text, index) => (
+                            <AgreementCheckListItem
+                                text={text}
+                                key={index}
+                                check={index === 0 ? isServiceCheck : index === 1 ? isPersonalCheck : isLocationCheck}
+                                onPressCheckList={onPressCheckList}
+                                index={index}
+                            />
+                        ))}
+                    </ScrollView>
 
-                    <Spacer height={158} />
                     <TextButton
                         height={48}
                         backgroundColor={isAllCheck ? Colors.BLACK : Colors.BTN_GRAY}
