@@ -33,8 +33,7 @@ const NicknameTemplate = ({ onPressNextStep }: NicknameTemplateProps) => {
             setJoinData({ ...joinData, nickName: inputNickname });
         },
         onError: ({ response }) => {
-            // 추후에 409로 수정 예정
-            if (response.status === 401) {
+            if (response.status === 409) {
                 setIsDuplicate(false);
             }
         },
@@ -52,17 +51,20 @@ const NicknameTemplate = ({ onPressNextStep }: NicknameTemplateProps) => {
         onSuccess: () => {
             onPressNextStep();
         },
+        onError: ({ response }) => {
+            console.log(response);
+        },
     });
 
     // Join member API by finish button
     const onPressJoinMember = () => {
         if (isDuplicate) {
+            mutate({
+                endpoint: 'signup',
+                method: 'post',
+                data: joinData,
+            });
         }
-        mutate({
-            endpoint: 'signup',
-            method: 'post',
-            data: joinData,
-        });
     };
 
     // Finish button transitionY handling
