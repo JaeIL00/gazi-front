@@ -10,6 +10,7 @@ import SemiBoldText from '../smallest/SemiBoldText';
 import AgreementCheckListItem from '../molecules/AgreementCheckListItem';
 import { ServiceAgreementProps } from '../../types/types';
 import { checkBoxBackground, serviceAgreementStyles } from '../../styles/styles';
+import ModalBackground from '../smallest/ModalBackground';
 
 const ServiceAgreement = ({ finishSlideComponentHandler }: ServiceAgreementProps) => {
     // Render list data
@@ -82,7 +83,7 @@ const ServiceAgreement = ({ finishSlideComponentHandler }: ServiceAgreementProps
     }, []);
 
     return (
-        <View style={serviceAgreementStyles.container}>
+        <ModalBackground>
             <Animated.View style={[serviceAgreementStyles.animateInner, { transform: [{ translateY: topValue }] }]}>
                 <View>
                     <TouchButton backgroundColor="#f9f9f9" onPress={onPressAllCheck}>
@@ -116,7 +117,7 @@ const ServiceAgreement = ({ finishSlideComponentHandler }: ServiceAgreementProps
                     />
                 </View>
             </Animated.View>
-        </View>
+        </ModalBackground>
     );
 };
 export default ServiceAgreement;

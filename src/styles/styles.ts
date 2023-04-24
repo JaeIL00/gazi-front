@@ -199,13 +199,6 @@ export const moveBackWithPageTitleStyles = StyleSheet.create({
     },
 });
 export const serviceAgreementStyles = StyleSheet.create({
-    container: {
-        flex: 1,
-        position: 'absolute',
-        height: '100%',
-        width: '100%',
-        backgroundColor: '#00000060',
-    },
     animateInner: {
         flex: 1,
         position: 'absolute',
