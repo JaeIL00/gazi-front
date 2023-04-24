@@ -25,26 +25,8 @@ const InputEmailTemplate = ({ onPressNextStep, resetTimeHandler }: InputEmailTem
     const [isEmail, setIsEmail] = useState(false);
     const onChangeEmailText = (text: string) => {
         setEmail(text);
+        validator.isEmail(text) ? setIsEmail(true) : setIsEmail(false);
     };
-    const emailErrorTextStyle = () => {
-        validator.isEmail(email) ? setIsEmail(true) : setIsEmail(false);
-    };
-    useEffect(() => {
-        emailErrorTextStyle();
-    }, [email]);
-
-    // Button Style Handling
-    const [buttonColor, setButtonColor] = useState(Colors.BTN_GRAY);
-    const buttonStyleHandler = () => {
-        if (isEmail) {
-            setButtonColor(Colors.BLACK);
-        } else {
-            setButtonColor(Colors.BTN_GRAY);
-        }
-    };
-    useEffect(() => {
-        buttonStyleHandler();
-    }, [isEmail]);
 
     // Email authorization Handling
     const { isLoading, mutate } = useMutation(memberJoinAPIs, {
@@ -56,6 +38,7 @@ const InputEmailTemplate = ({ onPressNextStep, resetTimeHandler }: InputEmailTem
             console.log(response);
         },
     });
+
     // If edit email then reset timer
     const onPressEmailAuth = () => {
         if ((isEmail && email !== joinData.email) || (isEmail && joinData.password)) {
@@ -117,7 +100,7 @@ const InputEmailTemplate = ({ onPressNextStep, resetTimeHandler }: InputEmailTem
                     onPress={onPressEmailAuth}
                     text="인증메일 전송"
                     height={48}
-                    backgroundColor={buttonColor}
+                    backgroundColor={isEmail ? Colors.BLACK : Colors.BTN_GRAY}
                     textColor={Colors.WHITE}
                     fontSize={17}
                 />
