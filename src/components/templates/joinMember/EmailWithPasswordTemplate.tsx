@@ -2,16 +2,16 @@ import React, { useEffect, useState } from 'react';
 import { Animated, Keyboard, View } from 'react-native';
 import { useRecoilState } from 'recoil';
 
-import { joinMemberData } from '../../../store/atoms';
-import { EmailWithPasswordProps } from '../../../types/types';
-import TextButton from '../../molecules/TextButton';
+import Spacer from '../../smallest/Spacer';
 import Colors from '../../../styles/Colors';
+import TextButton from '../../molecules/TextButton';
 import MediumText from '../../smallest/MediumText';
 import LoginTextInput from '../../molecules/LoginTextInput';
-import Spacer from '../../smallest/Spacer';
-import { emailWithPasswordTemplateStyles, nextStepButtonPosition } from '../../../styles/styles';
 import IconWithMediumText from '../../molecules/IconWithMediumText';
 import useKeyboardMotion from '../../../utils/hooks/useKeyboardMotion';
+import { joinMemberData } from '../../../store/atoms';
+import { EmailWithPasswordProps } from '../../../types/types';
+import { emailWithPasswordTemplateStyles, nextStepButtonPosition } from '../../../styles/styles';
 
 const EmailWithPasswordTemplate = ({ onPressNextStep }: EmailWithPasswordProps) => {
     const [joinData, setJoinData] = useRecoilState(joinMemberData);
@@ -22,29 +22,13 @@ const EmailWithPasswordTemplate = ({ onPressNextStep }: EmailWithPasswordProps) 
     const [isPasswordReg, setIsPasswordReg] = useState(false);
     const onChangePasswordText = (text: string) => {
         setpassword(text);
+        passwordErrorTextStyle();
     };
     const passwordErrorTextStyle = () => {
         const reg = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{1,}$/;
         reg.test(password) ? setIsPasswordReg(true) : setIsPasswordReg(false);
-
         password.length >= 8 && password.length <= 20 ? setIsPasswordLeng(true) : setIsPasswordLeng(false);
     };
-    useEffect(() => {
-        passwordErrorTextStyle();
-    }, [password]);
-
-    // Button Style Handling
-    const [buttonColor, setButtonColor] = useState(Colors.BTN_GRAY);
-    const buttonStyleHandler = () => {
-        if (isPasswordLeng && isPasswordReg) {
-            setButtonColor(Colors.BLACK);
-        } else {
-            setButtonColor(Colors.BTN_GRAY);
-        }
-    };
-    useEffect(() => {
-        buttonStyleHandler();
-    }, [isPasswordLeng, isPasswordReg]);
 
     // Checking validation for next step
     const canMoveNextStepHandler = () => {
@@ -110,7 +94,7 @@ const EmailWithPasswordTemplate = ({ onPressNextStep }: EmailWithPasswordProps) 
                     onPress={canMoveNextStepHandler}
                     text="회원가입"
                     height={48}
-                    backgroundColor={buttonColor}
+                    backgroundColor={isPasswordLeng && isPasswordReg ? Colors.BLACK : Colors.BTN_GRAY}
                     textColor={Colors.WHITE}
                     fontSize={17}
                 />

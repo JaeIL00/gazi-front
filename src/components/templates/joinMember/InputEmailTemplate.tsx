@@ -3,18 +3,18 @@ import { ActivityIndicator, Animated, Keyboard, View } from 'react-native';
 import { useRecoilState } from 'recoil';
 import validator from 'validator';
 
-import { emailAuthNumber, joinMemberData } from '../../../store/atoms';
-import { InputEmailTemplateProps } from '../../../types/types';
-import TextButton from '../../molecules/TextButton';
-import Colors from '../../../styles/Colors';
-import LoginTextInput from '../../molecules/LoginTextInput';
-import { inputEmailTemplateStyles, nextStepButtonPosition } from '../../../styles/styles';
-import MediumText from '../../smallest/MediumText';
-import Spacer from '../../smallest/Spacer';
 import Icons from '../../smallest/Icons';
+import Spacer from '../../smallest/Spacer';
+import Colors from '../../../styles/Colors';
+import MediumText from '../../smallest/MediumText';
+import TextButton from '../../molecules/TextButton';
+import LoginTextInput from '../../molecules/LoginTextInput';
+import useKeyboardMotion from '../../../utils/hooks/useKeyboardMotion';
 import { useMutation } from 'react-query';
 import { memberJoinAPIs } from '../../../queries/api';
-import useKeyboardMotion from '../../../utils/hooks/useKeyboardMotion';
+import { InputEmailTemplateProps } from '../../../types/types';
+import { emailAuthNumber, joinMemberData } from '../../../store/atoms';
+import { inputEmailTemplateStyles, nextStepButtonPosition } from '../../../styles/styles';
 
 const InputEmailTemplate = ({ onPressNextStep, resetTimeHandler }: InputEmailTemplateProps) => {
     const [joinData, setJoinData] = useRecoilState(joinMemberData);
