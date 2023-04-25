@@ -10,6 +10,8 @@ import { useRootNavigation } from '../../../navigations/RootStackNavigation';
 import { notLoginTemplateStyles } from '../../../styles/styles';
 import { useMutation } from 'react-query';
 import { deleteMemberAPI } from '../../../queries/api';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { forDebugAtom } from '../../../store/atoms';
 
 const NotLoginTemplate = () => {
     // Move screens
@@ -24,24 +26,31 @@ const NotLoginTemplate = () => {
 
     // For Debug
     // Delete member API (temporary)
+    const [tok, setTok] = useRecoilState(forDebugAtom);
     const [st, setst] = useState('');
     const getStorage = async () => {
         try {
             const is = await AsyncStorage.getItem('GAZI_ac_tk');
-            is !== null ? setst(is) : null;
+            if (is) {
+                setst(is);
+                setTok(is);
+            }
         } catch {
-            // For Debug
             ToastAndroid.show('토큰 불러오기 실패', 4000);
         }
     };
     useEffect(() => {
-        getStorage();
-    }, []);
+        if (tok) {
+            setst(tok);
+        } else {
+            getStorage();
+        }
+    }, [tok]);
     const { mutate } = useMutation(deleteMemberAPI, {
         onSuccess: () => {
             ToastAndroid.show('회원 탈퇴 성공', 4000);
         },
-        onError: () => {
+        onError: ({ response }) => {
             ToastAndroid.show('회원 탈퇴 실패', 4000);
         },
     });

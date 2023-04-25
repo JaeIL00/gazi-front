@@ -10,7 +10,7 @@ import Colors from '../../../styles/Colors';
 import MediumText from '../../smallest/MediumText';
 import TextButton from '../../molecules/TextButton';
 import useKeyboardMotion from '../../../utils/hooks/useKeyboardMotion';
-import { joinMemberData } from '../../../store/atoms';
+import { forDebugAtom, joinMemberData } from '../../../store/atoms';
 import { NicknameTemplateProps } from '../../../types/types';
 import { SingleLineInput } from '../../smallest/SingleLineInput';
 import { joinMemberAPI, checkNicknameAPI } from '../../../queries/api';
@@ -51,11 +51,13 @@ const NicknameTemplate = ({ onPressNextStep }: NicknameTemplateProps) => {
     };
 
     // Join member API Handling
+    const [tok, setTok] = useRecoilState(forDebugAtom);
     const { mutate } = useMutation(joinMemberAPI, {
         onSuccess: data => {
-            successJoinMemberHandler(data.data);
+            console.log(data.data.data);
+            successJoinMemberHandler(data.data.data);
         },
-        onError: ({ response }) => {
+        onError: () => {
             // For Debug
             ToastAndroid.show('회원가입 실패', 4000);
         },
@@ -64,7 +66,8 @@ const NicknameTemplate = ({ onPressNextStep }: NicknameTemplateProps) => {
         try {
             await AsyncStorage.setItem('GAZI_ac_tk', data.accessToken);
             await AsyncStorage.setItem('GAZI_re_tk', data.refreshToken);
-        } catch {
+            setTok(data.accessToken);
+        } catch (err) {
             // For Debug
             ToastAndroid.show('토큰 저장 실패', 4000);
         } finally {

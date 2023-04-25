@@ -12,3 +12,8 @@ export const emailAuthNumber = atom({
     key: 'emailAuthNumber',
     default: 0,
 });
+// For Debug
+export const forDebugAtom = atom({
+    key: 'forDebugAtom',
+    default: '',
+});
