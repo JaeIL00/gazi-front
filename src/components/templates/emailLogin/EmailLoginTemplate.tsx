@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Animated, Keyboard, View } from 'react-native';
+import { ActivityIndicator, Animated, Keyboard, ToastAndroid, View } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import Spacer from '../../smallest/Spacer';
 import Colors from '../../../styles/Colors';
@@ -9,9 +10,12 @@ import TouchButton from '../../smallest/TouchButton';
 import LoginTextInput from '../../molecules/LoginTextInput';
 import useKeyboardMotion from '../../../utils/hooks/useKeyboardMotion';
 import MoveBackWithPageTitle from '../../organisms/MoveBackWithPageTitle';
+import { useMutation } from 'react-query';
+import { loginAPI } from '../../../queries/api';
 import { emailLoginTemplateStyles, nextStepButtonPosition } from '../../../styles/styles';
 
 const EmailLoginTemplate = () => {
+    // Text change Handling
     const [email, setEmail] = useState('');
     const onChangeEmail = (text: string) => {
         setEmail(text);
@@ -19,6 +23,27 @@ const EmailLoginTemplate = () => {
     const [password, setPassword] = useState('');
     const onChangePassword = (text: string) => {
         setPassword(text);
+    };
+
+    // Login API Handling
+    const { mutate, isLoading } = useMutation(loginAPI, {
+        onSuccess: data => {
+            console.log(data.data.data);
+            successJoinMemberHandler(data.data.data);
+        },
+    });
+    const onPressLoginButton = () => {
+        mutate({ email, password });
+    };
+    const successJoinMemberHandler = async (data: { accessToken: string; refreshToken: string }) => {
+        try {
+            await AsyncStorage.setItem('GAZI_ac_tk', data.accessToken);
+            await AsyncStorage.setItem('GAZI_re_tk', data.refreshToken);
+        } catch (err) {
+            // For Debug
+            ToastAndroid.show('토큰 저장 실패', 4000);
+        } finally {
+        }
     };
 
     // Finish button transitionY handling
@@ -57,7 +82,7 @@ const EmailLoginTemplate = () => {
 
             <Animated.View style={[nextStepButtonPosition.button, { transform: [{ translateY: bottomValue }] }]}>
                 <TextButton
-                    onPress={() => {}}
+                    onPress={onPressLoginButton}
                     text="로그인"
                     height={48}
                     backgroundColor={email && password ? Colors.BLACK : Colors.BTN_GRAY}
@@ -71,6 +96,7 @@ const EmailLoginTemplate = () => {
                     </View>
                 </TouchButton>
             </Animated.View>
+            {isLoading && <ActivityIndicator size="large" />}
         </View>
     );
 };

@@ -50,3 +50,14 @@ export const deleteMemberAPI = async (token: string) => {
     });
     return response;
 };
+export const loginAPI = async (data: { email: string; password: string }) => {
+    const response = await Axios({
+        url: '/api/v1/member/login',
+        method: 'post',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        data: JSON.stringify(data),
+    });
+    return response;
+};
