@@ -6,13 +6,22 @@ import { useRootNavigation } from '../navigations/RootStackNavigation';
 
 const EmailLoginScreen = () => {
     const rootNavigation = useRootNavigation();
-    const moveServiceHomeHandler = () => {
-        rootNavigation.navigate('ServiceHome');
+    const moveScreenHandler = (state: string) => {
+        switch (state) {
+            case 'GO':
+                rootNavigation.navigate('ServiceHome');
+                break;
+            case 'BACK':
+                rootNavigation.goBack();
+                break;
+            default:
+                return;
+        }
     };
 
     return (
         <View style={globalDefaultStyles.container}>
-            <EmailLoginTemplate moveServiceHomeHandler={moveServiceHomeHandler} />
+            <EmailLoginTemplate moveServiceHomeHandler={moveScreenHandler} />
         </View>
     );
 };

@@ -47,7 +47,7 @@ const EmailLoginTemplate = ({ moveServiceHomeHandler }: EmailLoginTemplateProps)
             // For Debug
             ToastAndroid.show('토큰 저장 실패', 4000);
         } finally {
-            moveServiceHomeHandler();
+            moveServiceHomeHandler('GO');
         }
     };
 
@@ -65,7 +65,11 @@ const EmailLoginTemplate = ({ moveServiceHomeHandler }: EmailLoginTemplateProps)
 
     return (
         <View style={emailLoginTemplateStyles.container}>
-            <MoveBackWithPageTitle oneTitle="이메일로 로그인" twoTitle="" onPress={() => {}} />
+            <MoveBackWithPageTitle
+                oneTitle="이메일로 로그인"
+                twoTitle=""
+                onPress={() => moveServiceHomeHandler('GO')}
+            />
 
             <Spacer height={75} />
 
@@ -95,7 +99,7 @@ const EmailLoginTemplate = ({ moveServiceHomeHandler }: EmailLoginTemplateProps)
                     fontSize={17}
                 />
                 <Spacer height={24} />
-                <TouchButton onPress={() => {}}>
+                <TouchButton onPress={() => ToastAndroid.show('우선순위가 많이 밀린 페이지에요ㅜ', 4000)}>
                     <View style={emailLoginTemplateStyles.underBar}>
                         <BoldText text="비밀번호 찾기" size={13} color={Colors.TXT_GRAY} />
                     </View>

@@ -130,5 +130,5 @@ export type RequestPemissionTemplateProps = {
     moveToScreen: (state: string) => void;
 };
 export type EmailLoginTemplateProps = {
-    moveServiceHomeHandler: () => void;
+    moveServiceHomeHandler: (state: string) => void;
 };
