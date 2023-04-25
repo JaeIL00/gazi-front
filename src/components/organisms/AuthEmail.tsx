@@ -89,7 +89,7 @@ const AuthEmail = ({ min, sec, resetTimeHandler, finishSlideComponentHandler }: 
     };
 
     // Finish button transitionY handling
-    const { bottomValue, buttonUpAnimationHandler, buttonDownAnimationHandler } = useKeyboardMotion(60, 290);
+    const { bottomValue, buttonUpAnimationHandler, buttonDownAnimationHandler } = useKeyboardMotion(51, 271);
     useEffect(() => {
         startAnimationHandler();
         const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', buttonUpAnimationHandler);
@@ -133,7 +133,7 @@ const AuthEmail = ({ min, sec, resetTimeHandler, finishSlideComponentHandler }: 
                     </View>
                 </View>
 
-                <Spacer height={36} />
+                <Spacer height={55} />
 
                 <View style={authEmailStyles.retryTextBox}>
                     <NormalText text="메일을 받지 못하셨나요?" size={13} color={Colors.TXT_GRAY} />
