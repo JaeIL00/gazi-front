@@ -12,7 +12,7 @@ import TextButton from '../molecules/TextButton';
 import TouchButton from '../smallest/TouchButton';
 import ModalBackground from '../smallest/ModalBackground';
 import useKeyboardMotion from '../../utils/hooks/useKeyboardMotion';
-import { memberJoinAPIs } from '../../queries/api';
+import { emailAuthAPI } from '../../queries/api';
 import { AuthEmailProps } from '../../types/types';
 import { authEmailStyles } from '../../styles/styles';
 import { SingleLineInput } from '../smallest/SingleLineInput';
@@ -55,27 +55,21 @@ const AuthEmail = ({ min, sec, resetTimeHandler, finishSlideComponentHandler }: 
 
     // Reset auth number by full time
     useEffect(() => {
-        if (min === 5) {
+        if (min > 5) {
             setAuthNumber(null);
         }
     }, [min, sec]);
 
     // Retry sending auth number
-    const { mutate } = useMutation(memberJoinAPIs, {
+    const { mutate } = useMutation(emailAuthAPI, {
         onSuccess: data => {
             setAuthNumber(data.data);
             resetTimeHandler();
         },
     });
     const onPressEmailAuth = () => {
-        if (min === 5) {
-            mutate({
-                endpoint: 'emailConfirm',
-                method: 'post',
-                data: {
-                    email: joinData.email,
-                },
-            });
+        if (min > 4) {
+            mutate(joinData.email);
         }
     };
 
