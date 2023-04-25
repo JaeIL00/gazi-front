@@ -388,3 +388,12 @@ export const requestPemissionTemplateStyles = StyleSheet.create({
         borderColor: '#EBEBEB',
     },
 });
+export const emailLoginTemplateStyles = StyleSheet.create({
+    container: {
+        flex: 1,
+    },
+    underBar: {
+        borderBottomColor: Colors.TXT_GRAY,
+        borderBottomWidth: fontPercentage(2),
+    },
+});

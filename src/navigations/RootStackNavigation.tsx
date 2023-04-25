@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp, createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import LoginScreen from '../screens/LoginScreen';
+import LoginScreen from '../screens/EmailLoginScreen';
 import JoinMemberScreen from '../screens/JoinMemberScreen';
 import NotLoginHomeScreen from '../screens/NotLoginHomeScreen';
 import InitLikeKeywordScreen from '../screens/InitLikeKeywordScreen';
