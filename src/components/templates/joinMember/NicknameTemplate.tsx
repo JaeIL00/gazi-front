@@ -12,7 +12,7 @@ import useKeyboardMotion from '../../../utils/hooks/useKeyboardMotion';
 import { joinMemberData } from '../../../store/atoms';
 import { NicknameTemplateProps } from '../../../types/types';
 import { SingleLineInput } from '../../smallest/SingleLineInput';
-import { checkNicknameAPI, memberJoinAPIs } from '../../../queries/api';
+import { JoinMemberAPI, checkNicknameAPI } from '../../../queries/api';
 import { nextStepButtonPosition, nicknameTemplateStyles } from '../../../styles/styles';
 
 const NicknameTemplate = ({ onPressNextStep }: NicknameTemplateProps) => {
@@ -49,7 +49,7 @@ const NicknameTemplate = ({ onPressNextStep }: NicknameTemplateProps) => {
         }
     };
 
-    const { mutate } = useMutation(memberJoinAPIs, {
+    const { mutate } = useMutation(JoinMemberAPI, {
         onSuccess: () => {
             onPressNextStep();
         },
@@ -61,11 +61,7 @@ const NicknameTemplate = ({ onPressNextStep }: NicknameTemplateProps) => {
     // Join member API by finish button
     const onPressJoinMember = () => {
         if (isDuplicate) {
-            mutate({
-                endpoint: 'signup',
-                method: 'post',
-                data: joinData,
-            });
+            mutate(joinData);
         }
     };
 

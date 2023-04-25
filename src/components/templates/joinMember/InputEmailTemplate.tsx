@@ -11,7 +11,7 @@ import TextButton from '../../molecules/TextButton';
 import LoginTextInput from '../../molecules/LoginTextInput';
 import useKeyboardMotion from '../../../utils/hooks/useKeyboardMotion';
 import { useMutation } from 'react-query';
-import { memberJoinAPIs } from '../../../queries/api';
+import { emailAuthAPI } from '../../../queries/api';
 import { InputEmailTemplateProps } from '../../../types/types';
 import { emailAuthNumber, joinMemberData } from '../../../store/atoms';
 import { inputEmailTemplateStyles, nextStepButtonPosition } from '../../../styles/styles';
@@ -39,7 +39,7 @@ const InputEmailTemplate = ({ onPressNextStep, resetTimeHandler }: InputEmailTem
 
     // Email authorization Handling
     const [isDuplicated, setIsDuplicated] = useState(false);
-    const { isLoading, mutate } = useMutation(memberJoinAPIs, {
+    const { isLoading, mutate } = useMutation(emailAuthAPI, {
         onSuccess: data => {
             setAuthData(data.data.data);
             resetTimeHandler();
@@ -57,13 +57,7 @@ const InputEmailTemplate = ({ onPressNextStep, resetTimeHandler }: InputEmailTem
     const onPressEmailAuth = () => {
         if ((isEmail && email !== joinData.email) || (isEmail && joinData.password)) {
             setJoinData({ ...joinData, email });
-            mutate({
-                endpoint: 'email-confirm',
-                method: 'post',
-                data: {
-                    email,
-                },
-            });
+            mutate(email);
         } else if (isEmail && email === joinData.email) {
             onPressNextStep();
         }
