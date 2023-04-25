@@ -9,6 +9,7 @@ export type RootStackParamList = {
     Login: undefined;
     RequestPermission: undefined;
     InitKeyword: undefined;
+    ServiceHome: undefined;
 };
 
 // Smallest
@@ -126,4 +127,7 @@ export interface NicknameTemplateProps extends EmailWithPasswordProps {}
 export interface CompletedJoinTemplateProps extends EmailWithPasswordProps {}
 export type RequestPemissionTemplateProps = {
     moveToScreen: (state: string) => void;
+};
+export type EmailLoginTemplateProps = {
+    moveServiceHomeHandler: () => void;
 };

@@ -12,9 +12,10 @@ import useKeyboardMotion from '../../../utils/hooks/useKeyboardMotion';
 import MoveBackWithPageTitle from '../../organisms/MoveBackWithPageTitle';
 import { useMutation } from 'react-query';
 import { loginAPI } from '../../../queries/api';
+import { EmailLoginTemplateProps } from '../../../types/types';
 import { emailLoginTemplateStyles, nextStepButtonPosition } from '../../../styles/styles';
 
-const EmailLoginTemplate = () => {
+const EmailLoginTemplate = ({ moveServiceHomeHandler }: EmailLoginTemplateProps) => {
     // Text change Handling
     const [email, setEmail] = useState('');
     const onChangeEmail = (text: string) => {
@@ -31,6 +32,10 @@ const EmailLoginTemplate = () => {
             console.log(data.data.data);
             successJoinMemberHandler(data.data.data);
         },
+        onError: ({ response }) => {
+            // For Debug
+            ToastAndroid.show(response.data.message, 4000);
+        },
     });
     const onPressLoginButton = () => {
         mutate({ email, password });
@@ -43,6 +48,7 @@ const EmailLoginTemplate = () => {
             // For Debug
             ToastAndroid.show('토큰 저장 실패', 4000);
         } finally {
+            moveServiceHomeHandler();
         }
     };
 
