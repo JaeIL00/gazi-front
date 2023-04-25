@@ -89,7 +89,7 @@ const AuthEmail = ({ min, sec, resetTimeHandler, finishSlideComponentHandler }: 
         },
     });
     const onPressEmailAuth = () => {
-        if (min > 4) {
+        if (min > 0) {
             mutate(joinData.email);
         }
     };
