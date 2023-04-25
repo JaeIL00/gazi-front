@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Animated, Keyboard, View, useWindowDimensions } from 'react-native';
+import { ActivityIndicator, Animated, Keyboard, View, useWindowDimensions } from 'react-native';
 import { useMutation } from 'react-query';
 import { useRecoilValue } from 'recoil';
 
@@ -80,8 +80,10 @@ const AuthEmail = ({ min, sec, resetTimeHandler, finishSlideComponentHandler }: 
     }, [initAuthNumber]);
 
     // Retry sending auth number
-    const { mutate } = useMutation(emailAuthAPI, {
+    const { mutate, isLoading } = useMutation(emailAuthAPI, {
         onSuccess: data => {
+            setInputNumber('');
+            setIsWrong(false);
             setAuthNumber(data.data);
             resetTimeHandler();
         },
@@ -168,6 +170,7 @@ const AuthEmail = ({ min, sec, resetTimeHandler, finishSlideComponentHandler }: 
                         text="완료"
                     />
                 </Animated.View>
+                {isLoading && <ActivityIndicator size="large" />}
             </Animated.View>
         </ModalBackground>
     );
