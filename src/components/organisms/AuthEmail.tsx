@@ -17,6 +17,7 @@ import { AuthEmailProps } from '../../types/types';
 import { authEmailStyles } from '../../styles/styles';
 import { SingleLineInput } from '../smallest/SingleLineInput';
 import { emailAuthNumber, joinMemberData } from '../../store/atoms';
+import MediumText from '../smallest/MediumText';
 
 const AuthEmail = ({ min, sec, resetTimeHandler, finishSlideComponentHandler }: AuthEmailProps) => {
     const initAuthNumber = useRecoilValue(emailAuthNumber);
@@ -33,46 +34,6 @@ const AuthEmail = ({ min, sec, resetTimeHandler, finishSlideComponentHandler }: 
         }).start();
     };
 
-    // Back Icon handling
-    const onPressBackIcon = () => {
-        finishSlideComponentHandler('BACK');
-    };
-
-    // Input authorization number
-    const [authNumber, setAuthNumber] = useState<number | null>(null);
-    const [inputNumber, setInputNumber] = useState('');
-    const [activityButton, setActivityButton] = useState(false);
-    const onChangNumberText = (text: string) => {
-        setInputNumber(text);
-        // Auth number validation
-        setActivityButton(text === String(authNumber));
-    };
-    useEffect(() => {
-        if (initAuthNumber > 0) {
-            setAuthNumber(initAuthNumber);
-        }
-    }, [initAuthNumber]);
-
-    // Reset auth number by full time
-    useEffect(() => {
-        if (min > 5) {
-            setAuthNumber(null);
-        }
-    }, [min, sec]);
-
-    // Retry sending auth number
-    const { mutate } = useMutation(emailAuthAPI, {
-        onSuccess: data => {
-            setAuthNumber(data.data);
-            resetTimeHandler();
-        },
-    });
-    const onPressEmailAuth = () => {
-        if (min > 4) {
-            mutate(joinData.email);
-        }
-    };
-
     // Finish button style handling
     const onPressFinishAnimation = () => {
         if (activityButton) {
@@ -85,6 +46,49 @@ const AuthEmail = ({ min, sec, resetTimeHandler, finishSlideComponentHandler }: 
                     finishSlideComponentHandler('OK');
                 }
             });
+        }
+    };
+
+    // Back Icon handling
+    const onPressBackIcon = () => {
+        finishSlideComponentHandler('BACK');
+    };
+
+    // Input authorization number
+    const [authNumber, setAuthNumber] = useState<number | null>(null);
+    const [inputNumber, setInputNumber] = useState('');
+    const [isWrong, setIsWrong] = useState(false);
+    const [activityButton, setActivityButton] = useState(false);
+    const onChangNumberText = (text: string) => {
+        setInputNumber(text);
+        setIsWrong(false);
+        // Auth number validation
+        if (text.length === 4) {
+            validationHandler(text);
+        }
+    };
+    const validationHandler = (text: string) => {
+        if (text === String(authNumber)) {
+            setActivityButton(true);
+        } else {
+            setIsWrong(true);
+            setActivityButton(false);
+        }
+    };
+    useEffect(() => {
+        setAuthNumber(initAuthNumber);
+    }, [initAuthNumber]);
+
+    // Retry sending auth number
+    const { mutate } = useMutation(emailAuthAPI, {
+        onSuccess: data => {
+            setAuthNumber(data.data);
+            resetTimeHandler();
+        },
+    });
+    const onPressEmailAuth = () => {
+        if (min > 4) {
+            mutate(joinData.email);
         }
     };
 
@@ -113,24 +117,33 @@ const AuthEmail = ({ min, sec, resetTimeHandler, finishSlideComponentHandler }: 
                 <BoldText text="입력해주세요" size={24} color={Colors.BLACK} />
 
                 <Spacer height={57} />
+                <View>
+                    <View style={authEmailStyles.inputBox}>
+                        <View style={authEmailStyles.inputRange}>
+                            <SingleLineInput
+                                value={inputNumber}
+                                onChangeText={onChangNumberText}
+                                placeholder="인증번호 4자리"
+                                keyboardType="number-pad"
+                                maxLength={4}
+                            />
+                        </View>
+                        <View style={authEmailStyles.timerBox}>
+                            <NormalText
+                                text={`${min}:${String(sec).length === 1 ? '0' : ''}${sec}`}
+                                size={13}
+                                color={Colors.BLACK}
+                            />
+                        </View>
+                    </View>
 
-                <View style={authEmailStyles.inputBox}>
-                    <View style={authEmailStyles.inputRange}>
-                        <SingleLineInput
-                            value={inputNumber}
-                            onChangeText={onChangNumberText}
-                            placeholder="인증번호 4자리"
-                            keyboardType="number-pad"
-                            maxLength={4}
-                        />
-                    </View>
-                    <View style={authEmailStyles.timerBox}>
-                        <NormalText
-                            text={`${min}:${String(sec).length === 1 ? '0' : ''}${sec}`}
-                            size={13}
-                            color={Colors.BLACK}
-                        />
-                    </View>
+                    {isWrong && (
+                        <View style={authEmailStyles.emailErrorTextBox}>
+                            <Icons type={'fontisto'} name={'close'} size={14} color={Colors.STATUS_RED} />
+                            <Spacer width={4} />
+                            <MediumText text="인증번호가 일치하지 않습니다" size={12} color={Colors.STATUS_RED} />
+                        </View>
+                    )}
                 </View>
 
                 <Spacer height={55} />

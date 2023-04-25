@@ -275,6 +275,14 @@ export const authEmailStyles = StyleSheet.create({
     timerBox: {
         justifyContent: 'center',
     },
+    emailErrorTextBox: {
+        flexDirection: 'row',
+        paddingLeft: widthPercentage(10),
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        position: 'absolute',
+        bottom: hegithPercentage(-21),
+    },
     retryTextBox: {
         flexDirection: 'row',
         alignItems: 'center',

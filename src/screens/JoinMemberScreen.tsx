@@ -11,7 +11,7 @@ import NicknameTemplate from '../components/templates/joinMember/NicknameTemplat
 import InputEmailTemplate from '../components/templates/joinMember/InputEmailTemplate';
 import CompletedJoinTemplate from '../components/templates/joinMember/CompletedJoinTemplate';
 import EmailWithPasswordTemplate from '../components/templates/joinMember/EmailWithPasswordTemplate';
-import { joinMemberData } from '../store/atoms';
+import { emailAuthNumber, joinMemberData } from '../store/atoms';
 import { globalDefaultStyles } from '../styles/styles';
 import { useRootNavigation } from '../navigations/RootStackNavigation';
 
@@ -93,6 +93,14 @@ const JoinMemberScreen = () => {
         setSec(0);
     };
     useBackgroundInterval(timerHandler, min === 5 ? null : 1000);
+
+    // Reset auth number by full time
+    const [authData, setAuthData] = useRecoilState(emailAuthNumber);
+    useEffect(() => {
+        if (min > 4) {
+            setAuthData(0);
+        }
+    }, [min]);
 
     // Android back button & Header Back Button Handling
     const handleBackButton = () => {
