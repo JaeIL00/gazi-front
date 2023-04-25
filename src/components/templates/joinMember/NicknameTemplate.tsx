@@ -52,7 +52,7 @@ const NicknameTemplate = ({ onPressNextStep }: NicknameTemplateProps) => {
 
     // Join member API Handling
     const [tok, setTok] = useRecoilState(forDebugAtom);
-    const { mutate } = useMutation(joinMemberAPI, {
+    const { mutate, isLoading } = useMutation(joinMemberAPI, {
         onSuccess: data => {
             successJoinMemberHandler(data.data.data);
         },
@@ -133,7 +133,7 @@ const NicknameTemplate = ({ onPressNextStep }: NicknameTemplateProps) => {
                     />
                 </View>
             )}
-            {isFetching && <ActivityIndicator size="large" />}
+            {(isFetching || isLoading) && <ActivityIndicator size="large" />}
             <Animated.View style={[nextStepButtonPosition.button, { transform: [{ translateY: bottomValue }] }]}>
                 <TextButton
                     text="확인"
