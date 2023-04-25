@@ -55,7 +55,7 @@ const InputEmailTemplate = ({ onPressNextStep, resetTimeHandler }: InputEmailTem
         if ((isEmail && !authData) || (isEmail && joinData.password) || (isEmail && email !== joinData.email)) {
             setJoinData({ ...joinData, email });
             mutate(email);
-        } else {
+        } else if (isEmail && authData && email === joinData.email) {
             onPressNextStep();
         }
     };
