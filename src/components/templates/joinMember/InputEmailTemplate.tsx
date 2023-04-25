@@ -27,7 +27,7 @@ const InputEmailTemplate = ({ onPressNextStep, resetTimeHandler }: InputEmailTem
         setEmail(text);
         validator.isEmail(text) ? setIsEmail(true) : setIsEmail(false);
 
-        setIsDuplicated(false);
+        setIsDuplicated('');
     };
 
     // Initialized state Handling
@@ -38,7 +38,7 @@ const InputEmailTemplate = ({ onPressNextStep, resetTimeHandler }: InputEmailTem
     };
 
     // Email authorization Handling
-    const [isDuplicated, setIsDuplicated] = useState(false);
+    const [isDuplicated, setIsDuplicated] = useState('');
     const { isLoading, mutate } = useMutation(emailAuthAPI, {
         onSuccess: data => {
             setAuthData(data.data.data);
@@ -46,10 +46,7 @@ const InputEmailTemplate = ({ onPressNextStep, resetTimeHandler }: InputEmailTem
             onPressNextStep();
         },
         onError: ({ response }) => {
-            if (response.status === 409) {
-                setIsEmail(false);
-                setIsDuplicated(true);
-            }
+            setIsDuplicated(response.data.message);
         },
     });
 
@@ -108,7 +105,7 @@ const InputEmailTemplate = ({ onPressNextStep, resetTimeHandler }: InputEmailTem
                 <View style={inputEmailTemplateStyles.emailErrorTextBox}>
                     <Icons type={'fontisto'} name={'close'} size={14} color={Colors.STATUS_RED} />
                     <Spacer width={4} />
-                    <MediumText text="중복된 이메일입니다" size={12} color={Colors.STATUS_RED} />
+                    <MediumText text={isDuplicated} size={12} color={Colors.STATUS_RED} />
                 </View>
             )}
 

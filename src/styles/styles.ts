@@ -399,4 +399,12 @@ export const emailLoginTemplateStyles = StyleSheet.create({
         borderBottomColor: Colors.TXT_GRAY,
         borderBottomWidth: fontPercentage(2),
     },
+    emailErrorTextBox: {
+        flexDirection: 'row',
+        paddingLeft: widthPercentage(10),
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        position: 'absolute',
+        bottom: hegithPercentage(-21),
+    },
 });

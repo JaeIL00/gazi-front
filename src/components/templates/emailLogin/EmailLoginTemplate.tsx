@@ -14,26 +14,32 @@ import { useMutation } from 'react-query';
 import { loginAPI } from '../../../queries/api';
 import { EmailLoginTemplateProps } from '../../../types/types';
 import { emailLoginTemplateStyles, nextStepButtonPosition } from '../../../styles/styles';
+import Icons from '../../smallest/Icons';
+import MediumText from '../../smallest/MediumText';
 
 const EmailLoginTemplate = ({ moveServiceHomeHandler }: EmailLoginTemplateProps) => {
     // Text change Handling
     const [email, setEmail] = useState('');
     const onChangeEmail = (text: string) => {
         setEmail(text);
+        setLoginErrorText('');
     };
     const [password, setPassword] = useState('');
     const onChangePassword = (text: string) => {
         setPassword(text);
+        setLoginErrorText('');
     };
 
     // Login API Handling
+    const [loginErrorText, setLoginErrorText] = useState('');
     const { mutate, isLoading } = useMutation(loginAPI, {
         onSuccess: data => {
             successJoinMemberHandler(data.data.data);
         },
         onError: ({ response }) => {
+            setLoginErrorText(response.data.message);
             // For Debug
-            ToastAndroid.show(response.data.message, 4000);
+            // ToastAndroid.show(response.data.message, 4000);
         },
     });
     const onPressLoginButton = () => {
@@ -72,22 +78,30 @@ const EmailLoginTemplate = ({ moveServiceHomeHandler }: EmailLoginTemplateProps)
             />
 
             <Spacer height={75} />
-
-            <LoginTextInput
-                title="Email"
-                value={email}
-                placeholder="이메일(아이디)입력"
-                onChangeText={onChangeEmail}
-                keyboardType="email-address"
-            />
-            <Spacer height={20} />
-            <LoginTextInput
-                title="password"
-                value={password}
-                placeholder="비밀번호 입력"
-                onChangeText={onChangePassword}
-                secureTextEntry={true}
-            />
+            <View>
+                <LoginTextInput
+                    title="Email"
+                    value={email}
+                    placeholder="이메일(아이디)입력"
+                    onChangeText={onChangeEmail}
+                    keyboardType="email-address"
+                />
+                <Spacer height={20} />
+                <LoginTextInput
+                    title="password"
+                    value={password}
+                    placeholder="비밀번호 입력"
+                    onChangeText={onChangePassword}
+                    secureTextEntry={true}
+                />
+                {loginErrorText && (
+                    <View style={emailLoginTemplateStyles.emailErrorTextBox}>
+                        <Icons type={'fontisto'} name={'close'} size={14} color={Colors.STATUS_RED} />
+                        <Spacer width={4} />
+                        <MediumText text={loginErrorText} size={12} color={Colors.STATUS_RED} />
+                    </View>
+                )}
+            </View>
 
             <Animated.View style={[nextStepButtonPosition.button, { transform: [{ translateY: bottomValue }] }]}>
                 <TextButton
@@ -99,7 +113,7 @@ const EmailLoginTemplate = ({ moveServiceHomeHandler }: EmailLoginTemplateProps)
                     fontSize={17}
                 />
                 <Spacer height={24} />
-                <TouchButton onPress={() => ToastAndroid.show('우선순위가 많이 밀린 페이지에요ㅜ', 4000)}>
+                <TouchButton onPress={() => ToastAndroid.show('개발 우선순위가 많이 밀렸어요ㅜ', 4000)}>
                     <View style={emailLoginTemplateStyles.underBar}>
                         <BoldText text="비밀번호 찾기" size={13} color={Colors.TXT_GRAY} />
                     </View>

@@ -10,38 +10,35 @@ import Colors from '../../../styles/Colors';
 import MediumText from '../../smallest/MediumText';
 import TextButton from '../../molecules/TextButton';
 import useKeyboardMotion from '../../../utils/hooks/useKeyboardMotion';
-import { forDebugAtom, joinMemberData } from '../../../store/atoms';
 import { NicknameTemplateProps } from '../../../types/types';
 import { SingleLineInput } from '../../smallest/SingleLineInput';
+import { forDebugAtom, joinMemberData } from '../../../store/atoms';
 import { joinMemberAPI, checkNicknameAPI } from '../../../queries/api';
 import { nextStepButtonPosition, nicknameTemplateStyles } from '../../../styles/styles';
 
 const NicknameTemplate = ({ onPressNextStep }: NicknameTemplateProps) => {
     const [joinData, setJoinData] = useRecoilState(joinMemberData);
-    const [initErrorText, setInitErrorText] = useState(false);
 
     // Nickname Text Handling
     const [inputNickname, setInputNickname] = useState('');
     const onChangeNickname = (text: string) => {
         setInputNickname(text);
-        setInitErrorText(false);
+        setResultText('');
     };
 
     // Check nickname duplicate API Handling
+    const [resultText, setResultText] = useState('');
     const [isDuplicate, setIsDuplicate] = useState(false);
     const { refetch, isFetching } = useQuery('duplicateNickname', () => checkNicknameAPI(inputNickname), {
         enabled: false,
-        onSuccess: () => {
+        onSuccess: ({ data }) => {
+            setResultText(data.message);
             setIsDuplicate(true);
             setJoinData({ ...joinData, nickName: inputNickname });
         },
         onError: ({ response }) => {
-            if (response.status === 409) {
-                setIsDuplicate(false);
-            }
-        },
-        onSettled: () => {
-            setInitErrorText(true);
+            setResultText(response.data.message);
+            setIsDuplicate(false);
         },
     });
     const onPressCheckDuplicate = () => {
@@ -117,7 +114,7 @@ const NicknameTemplate = ({ onPressNextStep }: NicknameTemplateProps) => {
 
             <Spacer height={8} />
 
-            {initErrorText && (
+            {resultText && (
                 <View style={nicknameTemplateStyles.emailErrorTextBox}>
                     <Icons
                         type={isDuplicate ? 'octicons' : 'fontisto'}
@@ -127,7 +124,7 @@ const NicknameTemplate = ({ onPressNextStep }: NicknameTemplateProps) => {
                     />
                     <Spacer width={4} />
                     <MediumText
-                        text={isDuplicate ? '사용 가능한 닉네임입니다' : '중복된 닉네임입니다'}
+                        text={resultText}
                         size={12}
                         color={isDuplicate ? Colors.STATUS_GREEN : Colors.STATUS_RED}
                     />
@@ -138,7 +135,7 @@ const NicknameTemplate = ({ onPressNextStep }: NicknameTemplateProps) => {
                 <TextButton
                     text="확인"
                     textColor={Colors.WHITE}
-                    backgroundColor={isDuplicate && initErrorText ? Colors.BLACK : Colors.BTN_GRAY}
+                    backgroundColor={isDuplicate && resultText ? Colors.BLACK : Colors.BTN_GRAY}
                     onPress={onPressJoinMember}
                     height={48}
                     fontSize={17}
