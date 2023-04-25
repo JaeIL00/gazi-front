@@ -54,7 +54,6 @@ const NicknameTemplate = ({ onPressNextStep }: NicknameTemplateProps) => {
     const [tok, setTok] = useRecoilState(forDebugAtom);
     const { mutate } = useMutation(joinMemberAPI, {
         onSuccess: data => {
-            console.log(data.data.data);
             successJoinMemberHandler(data.data.data);
         },
         onError: () => {

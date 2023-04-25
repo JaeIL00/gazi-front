@@ -55,7 +55,7 @@ const InputEmailTemplate = ({ onPressNextStep, resetTimeHandler }: InputEmailTem
 
     // Request auth number button handling
     const onPressEmailAuth = () => {
-        if ((isEmail && !authData) || (isEmail && joinData.password)) {
+        if ((isEmail && !authData) || (isEmail && joinData.password) || (isEmail && email !== joinData.email)) {
             setJoinData({ ...joinData, email });
             mutate(email);
         } else {
