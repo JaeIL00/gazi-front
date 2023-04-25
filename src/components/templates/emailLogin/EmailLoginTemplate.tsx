@@ -13,9 +13,13 @@ import { emailLoginTemplateStyles, nextStepButtonPosition } from '../../../style
 
 const EmailLoginTemplate = () => {
     const [email, setEmail] = useState('');
-    const onChangeEmail = () => {};
+    const onChangeEmail = (text: string) => {
+        setEmail(text);
+    };
     const [password, setPassword] = useState('');
-    const onChangePassword = () => {};
+    const onChangePassword = (text: string) => {
+        setPassword(text);
+    };
 
     // Finish button transitionY handling
     const { bottomValue, buttonUpAnimationHandler, buttonDownAnimationHandler } = useKeyboardMotion(410, 595);
@@ -35,13 +39,20 @@ const EmailLoginTemplate = () => {
 
             <Spacer height={75} />
 
-            <LoginTextInput title="Email" value={email} placeholder="이메일(아이디)입력" onChangeText={onChangeEmail} />
+            <LoginTextInput
+                title="Email"
+                value={email}
+                placeholder="이메일(아이디)입력"
+                onChangeText={onChangeEmail}
+                keyboardType="email-address"
+            />
             <Spacer height={20} />
             <LoginTextInput
                 title="password"
                 value={password}
                 placeholder="비밀번호 입력"
                 onChangeText={onChangePassword}
+                secureTextEntry={true}
             />
 
             <Animated.View style={[nextStepButtonPosition.button, { transform: [{ translateY: bottomValue }] }]}>
@@ -49,7 +60,7 @@ const EmailLoginTemplate = () => {
                     onPress={() => {}}
                     text="로그인"
                     height={48}
-                    backgroundColor={Colors.BLACK}
+                    backgroundColor={email && password ? Colors.BLACK : Colors.BTN_GRAY}
                     textColor={Colors.WHITE}
                     fontSize={17}
                 />

@@ -62,6 +62,7 @@ export const singleLineInputStyles = (
             width: width && widthPercentage(width),
             height: height && hegithPercentage(height),
             color: Colors.TXT_BLACK,
+            fontFamily: 'Pretendard-Medium',
         },
     });
 export const pageTitleStyles = StyleSheet.create({
