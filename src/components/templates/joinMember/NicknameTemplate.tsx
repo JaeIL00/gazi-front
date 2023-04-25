@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, Animated, Keyboard, View } from 'react-native';
+import { ActivityIndicator, Animated, Keyboard, ToastAndroid, View } from 'react-native';
 import { useRecoilState } from 'recoil';
 import { useMutation, useQuery } from 'react-query';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import Icons from '../../smallest/Icons';
 import Spacer from '../../smallest/Spacer';
@@ -12,7 +13,7 @@ import useKeyboardMotion from '../../../utils/hooks/useKeyboardMotion';
 import { joinMemberData } from '../../../store/atoms';
 import { NicknameTemplateProps } from '../../../types/types';
 import { SingleLineInput } from '../../smallest/SingleLineInput';
-import { JoinMemberAPI, checkNicknameAPI } from '../../../queries/api';
+import { joinMemberAPI, checkNicknameAPI } from '../../../queries/api';
 import { nextStepButtonPosition, nicknameTemplateStyles } from '../../../styles/styles';
 
 const NicknameTemplate = ({ onPressNextStep }: NicknameTemplateProps) => {
@@ -26,7 +27,7 @@ const NicknameTemplate = ({ onPressNextStep }: NicknameTemplateProps) => {
         setInitErrorText(false);
     };
 
-    // Check nickname duplicate Handling
+    // Check nickname duplicate API Handling
     const [isDuplicate, setIsDuplicate] = useState(false);
     const { refetch, isFetching } = useQuery('duplicateNickname', () => checkNicknameAPI(inputNickname), {
         enabled: false,
@@ -49,14 +50,27 @@ const NicknameTemplate = ({ onPressNextStep }: NicknameTemplateProps) => {
         }
     };
 
-    const { mutate } = useMutation(JoinMemberAPI, {
-        onSuccess: () => {
-            onPressNextStep();
+    // Join member API Handling
+    const { mutate } = useMutation(joinMemberAPI, {
+        onSuccess: data => {
+            successJoinMemberHandler(data.data);
         },
         onError: ({ response }) => {
-            console.log(response);
+            // For Debug
+            ToastAndroid.show('회원가입 실패', 4000);
         },
     });
+    const successJoinMemberHandler = async (data: { accessToken: string; refreshToken: string }) => {
+        try {
+            await AsyncStorage.setItem('GAZI_ac_tk', data.accessToken);
+            await AsyncStorage.setItem('GAZI_re_tk', data.refreshToken);
+        } catch {
+            // For Debug
+            ToastAndroid.show('토큰 저장 실패', 4000);
+        } finally {
+            onPressNextStep();
+        }
+    };
 
     // Join member API by finish button
     const onPressJoinMember = () => {

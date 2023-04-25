@@ -8,7 +8,7 @@ const Axios = axios.create({
 export const emailAuthAPI = async (email: string) => {
     const response = await Axios({
         method: 'post',
-        url: `/api/v1/member/email-confirm`,
+        url: '/api/v1/member/email-confirm',
         headers: {
             'Content-Type': 'application/json',
         },
@@ -28,14 +28,25 @@ export const checkNicknameAPI = async (nickname: string) => {
     });
     return response;
 };
-export const JoinMemberAPI = async (data: { email: string; password: string; nickName: string }) => {
+export const joinMemberAPI = async (data: { email: string; password: string; nickName: string }) => {
     const response = await Axios({
-        url: `/api/v1/member/signup`,
+        url: '/api/v1/member/signup',
         method: 'post',
         headers: {
             'Content-Type': 'application/json',
         },
         data: JSON.stringify(data),
+    });
+    return response;
+};
+export const deleteMemberAPI = async (token: string) => {
+    const response = await Axios({
+        url: '/api/v1/member/delete-member',
+        method: 'post',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+        },
     });
     return response;
 };
