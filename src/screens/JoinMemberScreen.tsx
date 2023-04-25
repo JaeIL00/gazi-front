@@ -104,7 +104,10 @@ const JoinMemberScreen = () => {
 
     // Android back button & Header Back Button Handling
     const handleBackButton = () => {
-        if (step > 1 && !isSlideComponent) {
+        if (step === 4) {
+            // For Debug
+            rootNavigation.navigate('NotLoginHome');
+        } else if (step > 1 && !isSlideComponent) {
             setStep(step - 1);
         } else if (isSlideComponent) {
             setIsSlideComponent(false);
