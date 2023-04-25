@@ -37,6 +37,7 @@ const FailLocationPermisionModal = ({ onPressModalButton }: FailLocationPermisio
                         paddingVertical={12}
                         borderWidth={1}
                         borderColor={Colors.TXT_GRAY}
+                        flex={1}
                     />
                     <Spacer width={8} />
                     <TextButton
@@ -46,6 +47,7 @@ const FailLocationPermisionModal = ({ onPressModalButton }: FailLocationPermisio
                         onPress={() => onPressModalButton('MOVE')}
                         backgroundColor={Colors.BLACK}
                         paddingVertical={12}
+                        flex={1}
                     />
                 </View>
             </View>

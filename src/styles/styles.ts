@@ -35,6 +35,7 @@ export const touchButtonStyles = (
     alignSelf: FlexAlignType | undefined,
     borderColor: string | undefined,
     borderWidth: number | undefined,
+    flex: number | undefined,
 ) =>
     StyleSheet.create({
         container: {
@@ -49,6 +50,7 @@ export const touchButtonStyles = (
             justifyContent: 'center',
             borderColor: borderColor && borderColor,
             borderWidth: borderWidth && widthPercentage(borderWidth),
+            flex: flex && flex,
         },
     });
 export const singleLineInputStyles = (

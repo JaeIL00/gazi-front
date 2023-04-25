@@ -15,6 +15,7 @@ const TouchButton = ({
     alignSelf,
     borderColor,
     borderWidth,
+    flex,
 }: TouchButtonProps) => {
     return (
         <TouchableOpacity
@@ -29,6 +30,7 @@ const TouchButton = ({
                     alignSelf,
                     borderColor,
                     borderWidth,
+                    flex,
                 ).container
             }
             activeOpacity={1}>

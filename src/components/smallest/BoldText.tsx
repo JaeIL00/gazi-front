@@ -4,7 +4,7 @@ import { Text } from 'react-native';
 import { AppTextProps } from '../../types/types';
 import { appTextStyles, boldTextStyles } from '../../styles/styles';
 
-const BoldText = ({ text, size, color }: AppTextProps) => {
-    return <Text style={[appTextStyles(size, color).textStyle, boldTextStyles.family]}>{text}</Text>;
+const BoldText = ({ text, size, color, textAlign }: AppTextProps) => {
+    return <Text style={[appTextStyles(size, color, textAlign).textStyle, boldTextStyles.family]}>{text}</Text>;
 };
 export default BoldText;

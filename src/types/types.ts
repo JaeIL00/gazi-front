@@ -25,6 +25,7 @@ export type TouchButtonProps = {
     alignSelf?: FlexAlignType;
     borderColor?: string;
     borderWidth?: number;
+    flex?: number;
 };
 export type SingleLineInputProps = {
     value: string;

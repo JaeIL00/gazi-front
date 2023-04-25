@@ -29,7 +29,6 @@ const EmailLoginTemplate = ({ moveServiceHomeHandler }: EmailLoginTemplateProps)
     // Login API Handling
     const { mutate, isLoading } = useMutation(loginAPI, {
         onSuccess: data => {
-            console.log(data.data.data);
             successJoinMemberHandler(data.data.data);
         },
         onError: ({ response }) => {
