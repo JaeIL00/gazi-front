@@ -77,7 +77,7 @@ const NicknameTemplate = ({ onPressNextStep }: NicknameTemplateProps) => {
 
     // Finish button for join member API
     const onPressJoinMember = () => {
-        if (isDuplicate) {
+        if (resultText) {
             mutate(joinData);
         }
     };
