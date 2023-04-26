@@ -1,28 +1,16 @@
-import React, { useEffect } from 'react';
-import { Animated, Keyboard, View } from 'react-native';
+import React from 'react';
+import { View } from 'react-native';
 
 import Colors from '../../../styles/Colors';
 import TextButton from '../../molecules/TextButton';
-import useKeyboardMotion from '../../../utils/hooks/useKeyboardMotion';
-import { nextStepButtonPosition } from '../../../styles/styles';
+import { completedJoinTemplateStyles } from '../../../styles/styles';
 import { CompletedJoinTemplateProps } from '../../../types/types';
 
 const CompletedJoinTemplate = ({ onPressNextStep }: CompletedJoinTemplateProps) => {
-    // Finish button transitionY handling
-    const { bottomValue, buttonUpAnimationHandler, buttonDownAnimationHandler } = useKeyboardMotion(200, 430);
-    useEffect(() => {
-        const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', buttonUpAnimationHandler);
-        const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', buttonDownAnimationHandler);
-
-        return () => {
-            keyboardDidShowListener.remove();
-            keyboardDidHideListener.remove();
-        };
-    }, []);
     return (
-        <View>
+        <View style={completedJoinTemplateStyles.container}>
             <View style={{ height: 300, backgroundColor: '#333' }}></View>
-            <Animated.View style={[nextStepButtonPosition.button, { transform: [{ translateY: bottomValue }] }]}>
+            <View style={completedJoinTemplateStyles.button}>
                 <TextButton
                     onPress={onPressNextStep}
                     text="확인"
@@ -31,7 +19,7 @@ const CompletedJoinTemplate = ({ onPressNextStep }: CompletedJoinTemplateProps) 
                     textColor={Colors.WHITE}
                     fontSize={17}
                 />
-            </Animated.View>
+            </View>
         </View>
     );
 };

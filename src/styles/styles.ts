@@ -428,3 +428,13 @@ export const initLikeKeywordTemplateStyles = StyleSheet.create({
         height: hegithPercentage(42),
     },
 });
+export const completedJoinTemplateStyles = StyleSheet.create({
+    container: {
+        flex: 1,
+    },
+    button: {
+        width: '100%',
+        position: 'absolute',
+        bottom: hegithPercentage(42),
+    },
+});
