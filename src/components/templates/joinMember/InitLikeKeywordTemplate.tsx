@@ -121,9 +121,9 @@ const InitLikeKeywordTemplate = () => {
         <View style={initLikeKeywordTemplateStyles.container}>
             <ScrollView showsVerticalScrollIndicator={false}>
                 <MoveBackWithPageTitle
-                    oneTitle="관심있는 키워드를"
-                    twoTitle="세대 이상 골라주세요"
-                    explainText="선택한 키워드가 포함된 스레드가 상단에 표시됩니다."
+                    oneTitle="관심있는 키워드를 선택하고"
+                    twoTitle="맞춤형 커뮤니티를 경험하세요"
+                    explainText="관심 키워드는 마이페이지에서 언제든 변경할 수 있어요!"
                     explainSize={13}
                     onPress={() => {}}
                 />
