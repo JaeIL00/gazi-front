@@ -25,7 +25,7 @@ const EmailWithPasswordTemplate = ({ onPressNextStep }: EmailWithPasswordProps) 
         passwordErrorTextStyle(text);
     };
     const passwordErrorTextStyle = (text: string) => {
-        const reg = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{1,}$/;
+        const reg = /^(?=.*[a-zA-Z])(?=.*[!~.,?@#$%^&()_/|;:'"<>*+=-])(?=.*[0-9])/;
         reg.test(text) ? setIsPasswordReg(true) : setIsPasswordReg(false);
         text.length >= 8 && text.length <= 20 ? setIsPasswordLeng(true) : setIsPasswordLeng(false);
     };
@@ -67,6 +67,7 @@ const EmailWithPasswordTemplate = ({ onPressNextStep }: EmailWithPasswordProps) 
                 onChangeText={onChangePasswordText}
                 placeholder="비밀번호 입력"
                 secureTextEntry={true}
+                maxLength={20}
             />
 
             <Spacer height={8} />
