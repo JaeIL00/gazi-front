@@ -1,6 +1,13 @@
 import { ReactElement } from 'react';
 import { FlexAlignType, KeyboardType, TextStyle } from 'react-native/types';
 
+export type KeywordListTypes = {
+    id: number;
+    keywordEnum: string;
+    keywordName: string;
+    vehicleType: string | null;
+}[];
+
 // Navigation
 // Navigation
 export type RootStackParamList = {
@@ -117,12 +124,7 @@ export type FailLocationPermisionModalProps = {
 };
 export type KeywordsListProps = {
     type: string;
-    list: {
-        id: number;
-        keywordEnum: string;
-        keywordName: string;
-        vehicleType: string | null;
-    }[];
+    list: KeywordListTypes;
     isCheck: boolean[];
     checkKeywordHandler: (list: string, index: number) => void;
 };

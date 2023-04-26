@@ -5,6 +5,7 @@ const Axios = axios.create({
     baseURL: Config.API_BASE_URL,
 });
 
+// JOIN
 export const emailAuthAPI = async (email: string) => {
     const response = await Axios({
         method: 'post',
@@ -39,6 +40,18 @@ export const joinMemberAPI = async (data: { email: string; password: string; nic
     });
     return response;
 };
+export const loginAPI = async (data: { email: string; password: string }) => {
+    const response = await Axios({
+        url: '/api/v1/member/login',
+        method: 'post',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        data: JSON.stringify(data),
+    });
+    return response;
+};
+
 export const deleteMemberAPI = async (token: string) => {
     const response = await Axios({
         url: '/api/v1/member/delete-member',
@@ -50,14 +63,19 @@ export const deleteMemberAPI = async (token: string) => {
     });
     return response;
 };
-export const loginAPI = async (data: { email: string; password: string }) => {
+
+// KEYWORD
+export const likeKeywordsAPI = async (props: { token: string; data: number[] }) => {
     const response = await Axios({
-        url: '/api/v1/member/login',
+        url: '/api/v1/keyword/interest-keyword',
         method: 'post',
         headers: {
             'Content-Type': 'application/json',
+            Authorization: `Bearer ${props.token}`,
         },
-        data: JSON.stringify(data),
+        data: JSON.stringify({
+            myKeywordList: props.data,
+        }),
     });
     return response;
 };

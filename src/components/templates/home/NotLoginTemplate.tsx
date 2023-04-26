@@ -10,7 +10,7 @@ import { useRootNavigation } from '../../../navigations/RootStackNavigation';
 import { notLoginTemplateStyles } from '../../../styles/styles';
 import { useMutation } from 'react-query';
 import { deleteMemberAPI } from '../../../queries/api';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState } from 'recoil';
 import { forDebugAtom } from '../../../store/atoms';
 
 const NotLoginTemplate = () => {

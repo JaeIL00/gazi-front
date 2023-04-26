@@ -420,3 +420,16 @@ export const emailLoginTemplateStyles = StyleSheet.create({
         bottom: hegithPercentage(-21),
     },
 });
+export const initLikeKeywordTemplateStyles = StyleSheet.create({
+    container: {
+        flex: 1,
+    },
+    button: {
+        width: '100%',
+        position: 'absolute',
+        bottom: 0,
+    },
+    linear: {
+        height: hegithPercentage(42),
+    },
+});
