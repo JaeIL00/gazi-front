@@ -3,8 +3,8 @@ import { View } from 'react-native';
 
 import Colors from '../../../styles/Colors';
 import TextButton from '../../molecules/TextButton';
-import { completedJoinTemplateStyles } from '../../../styles/styles';
 import { CompletedJoinTemplateProps } from '../../../types/types';
+import { completedJoinTemplateStyles } from '../../../styles/styles';
 
 const CompletedJoinTemplate = ({ onPressNextStep }: CompletedJoinTemplateProps) => {
     return (

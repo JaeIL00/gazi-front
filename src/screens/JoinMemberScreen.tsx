@@ -11,8 +11,8 @@ import NicknameTemplate from '../components/templates/joinMember/NicknameTemplat
 import InputEmailTemplate from '../components/templates/joinMember/InputEmailTemplate';
 import CompletedJoinTemplate from '../components/templates/joinMember/CompletedJoinTemplate';
 import EmailWithPasswordTemplate from '../components/templates/joinMember/EmailWithPasswordTemplate';
-import { emailAuthNumber, joinMemberData } from '../store/atoms';
 import { globalDefaultStyles } from '../styles/styles';
+import { emailAuthNumber, joinMemberData } from '../store/atoms';
 import { useRootNavigation } from '../navigations/RootStackNavigation';
 
 const JoinMemberScreen = () => {

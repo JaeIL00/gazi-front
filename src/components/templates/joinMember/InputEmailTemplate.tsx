@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, Animated, Keyboard, View } from 'react-native';
 import { useRecoilState } from 'recoil';
 import validator from 'validator';
+import { useMutation } from 'react-query';
 
 import Icons from '../../smallest/Icons';
 import Spacer from '../../smallest/Spacer';
@@ -10,7 +11,6 @@ import MediumText from '../../smallest/MediumText';
 import TextButton from '../../molecules/TextButton';
 import LoginTextInput from '../../molecules/LoginTextInput';
 import useKeyboardMotion from '../../../utils/hooks/useKeyboardMotion';
-import { useMutation } from 'react-query';
 import { emailAuthAPI } from '../../../queries/api';
 import { InputEmailTemplateProps } from '../../../types/types';
 import { emailAuthNumber, joinMemberData } from '../../../store/atoms';

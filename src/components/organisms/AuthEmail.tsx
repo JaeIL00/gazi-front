@@ -8,6 +8,7 @@ import Spacer from '../smallest/Spacer';
 import Colors from '../../styles/Colors';
 import BoldText from '../smallest/BoldText';
 import NormalText from '../smallest/NormalText';
+import MediumText from '../smallest/MediumText';
 import TextButton from '../molecules/TextButton';
 import TouchButton from '../smallest/TouchButton';
 import ModalBackground from '../smallest/ModalBackground';
@@ -17,7 +18,6 @@ import { AuthEmailProps } from '../../types/types';
 import { authEmailStyles } from '../../styles/styles';
 import { SingleLineInput } from '../smallest/SingleLineInput';
 import { emailAuthNumber, joinMemberData } from '../../store/atoms';
-import MediumText from '../smallest/MediumText';
 
 const AuthEmail = ({ min, sec, resetTimeHandler, finishSlideComponentHandler }: AuthEmailProps) => {
     const initAuthNumber = useRecoilValue(emailAuthNumber);

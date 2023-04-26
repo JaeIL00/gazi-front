@@ -2,9 +2,9 @@ import React from 'react';
 import { View } from 'react-native';
 
 import Spacer from '../smallest/Spacer';
+import Colors from '../../styles/Colors';
 import PageTitle from '../smallest/PageTitle';
 import NormalText from '../smallest/NormalText';
-import { Colors } from 'react-native/Libraries/NewAppScreen';
 import { PageTitleWithExplainProps } from '../../types/types';
 
 const PageTitleWithExplain = ({ oneTitle, twoTitle, explainText, explainSize }: PageTitleWithExplainProps) => {
