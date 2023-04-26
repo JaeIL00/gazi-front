@@ -18,7 +18,7 @@ const EmailLoginScreen = () => {
                 break;
             default:
                 // For Debug
-                console.log(`(ERROR) Move to screen handling. state: ${state}`);
+                console.log('(ERROR) Move to screen handling. state: ', state);
         }
     };
 

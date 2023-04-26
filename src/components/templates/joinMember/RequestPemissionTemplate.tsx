@@ -28,7 +28,7 @@ const RequestPemissionTemplate = ({ moveToScreen }: RequestPemissionTemplateProp
                 ]);
             } catch (err) {
                 // For Debug
-                console.log(`(ERROR) Request Permissions. err: ${err}`);
+                console.log('(ERROR) Request Permissions. err: ', err);
             } finally {
                 const locationPermmission = await check(PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION);
                 const isAllow = locationPermmission === RESULTS.GRANTED;
@@ -53,7 +53,7 @@ const RequestPemissionTemplate = ({ moveToScreen }: RequestPemissionTemplateProp
                 break;
             default:
                 // For Debug
-                console.log(`(ERROR) Again request modal button Handling. state: ${state}`);
+                console.log('(ERROR) Again request modal button Handling. state: ', state);
         }
     };
 

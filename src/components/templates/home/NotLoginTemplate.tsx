@@ -35,7 +35,9 @@ const NotLoginTemplate = () => {
                 setst(is);
                 setTok(is);
             }
-        } catch {
+        } catch (err) {
+            // For Debug
+            console.log('get access token in storage', err);
             ToastAndroid.show('토큰 불러오기 실패', 4000);
         }
     };
@@ -52,7 +54,7 @@ const NotLoginTemplate = () => {
         },
         onError: ({ response }) => {
             // For Debug
-            console.log(`(ERROR) Delete member API. response: ${response}`);
+            console.log('(ERROR) Delete member API. response: ', response);
             ToastAndroid.show('회원 탈퇴 실패', 4000);
         },
     });

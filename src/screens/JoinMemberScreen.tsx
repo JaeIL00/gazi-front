@@ -43,7 +43,7 @@ const JoinMemberScreen = () => {
                 break;
             default:
                 // For Debug
-                console.log(`(ERROR) Move to slider component of screen handling. state: ${state}`);
+                console.log('(ERROR) Move to slider component of screen handling. state: ', state);
         }
     };
 
@@ -75,7 +75,7 @@ const JoinMemberScreen = () => {
                 break;
             default:
                 // For Debug
-                console.log(`(ERROR) Change screen header title. state: ${step}`);
+                console.log('(ERROR) Change screen header title. state: ', step);
         }
     };
 

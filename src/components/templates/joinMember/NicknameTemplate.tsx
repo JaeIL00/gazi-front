@@ -39,7 +39,7 @@ const NicknameTemplate = ({ onPressNextStep }: NicknameTemplateProps) => {
         },
         onError: ({ response }) => {
             // For Debug
-            console.log(`(ERROR) Check nickname duplicate API. respense: ${response}`);
+            console.log('(ERROR) Check nickname duplicate API. respense: ', response);
             setResultText(response.data.message);
             setIsDuplicate(false);
         },
@@ -57,7 +57,7 @@ const NicknameTemplate = ({ onPressNextStep }: NicknameTemplateProps) => {
         },
         onError: ({ response }) => {
             // For Debug
-            console.log(`(ERROR) Join member API. response: ${response}`);
+            console.log('(ERROR) Join member API. response: ', response);
             ToastAndroid.show('회원가입 실패', 4000);
         },
     });
@@ -68,7 +68,7 @@ const NicknameTemplate = ({ onPressNextStep }: NicknameTemplateProps) => {
             setTok(data.accessToken);
         } catch (err) {
             // For Debug
-            console.log(`(ERROR) User authorization token set storage. err: ${err}`);
+            console.log('(ERROR) User authorization token set storage. err: ', err);
             ToastAndroid.show('토큰 저장 실패', 4000);
         } finally {
             onPressNextStep();

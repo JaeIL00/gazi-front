@@ -64,7 +64,7 @@ const InitLikeKeywordTemplate = () => {
                 break;
             default:
                 // For Debug
-                console.log(`(ERROR) check Keyword Handling. listname: ${list}`);
+                console.log('(ERROR) check Keyword Handling. listname:', list);
                 return;
         }
     };
@@ -96,7 +96,7 @@ const InitLikeKeywordTemplate = () => {
             }
         } catch (err) {
             //For Debug
-            console.log('Failed get token in storage');
+            console.log('Failed get token in storage', err);
         }
     };
     const { mutate } = useMutation(likeKeywordsAPI, {
@@ -105,7 +105,7 @@ const InitLikeKeywordTemplate = () => {
         },
         onError: ({ response }) => {
             //For Debug
-            console.log(response);
+            console.log('(ERROR) Send like keywords API', response);
         },
     });
     const onPressLikedKeyword = () => {

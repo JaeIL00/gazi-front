@@ -39,7 +39,7 @@ const EmailLoginTemplate = ({ moveServiceHomeHandler }: EmailLoginTemplateProps)
         },
         onError: ({ response }) => {
             // For Debug
-            console.log(`(ERROR) Login API Handling. response: ${response}`);
+            console.log('(ERROR) Login API Handling. response: ', response);
             setLoginErrorText(response.data.message);
         },
     });
@@ -52,7 +52,7 @@ const EmailLoginTemplate = ({ moveServiceHomeHandler }: EmailLoginTemplateProps)
             await AsyncStorage.setItem('GAZI_re_tk', data.refreshToken);
         } catch (err) {
             // For Debug
-            console.log(`(ERROR) User authorization token set storage. err: ${err}`);
+            console.log('(ERROR) User authorization token set storage. err: ', err);
             ToastAndroid.show('토큰 저장 실패', 4000);
         } finally {
             moveServiceHomeHandler('GO');

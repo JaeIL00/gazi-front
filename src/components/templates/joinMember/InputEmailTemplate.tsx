@@ -47,7 +47,7 @@ const InputEmailTemplate = ({ onPressNextStep, resetTimeHandler }: InputEmailTem
         },
         onError: ({ response }) => {
             // For Debug
-            console.log(`(ERROR) Request email authorization number API. response: ${response}`);
+            console.log('(ERROR) Request email authorization number API. response: ', response);
             setDuplicatedError(response.data.message);
         },
     });
