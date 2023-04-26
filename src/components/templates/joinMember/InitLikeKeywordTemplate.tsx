@@ -64,7 +64,7 @@ const InitLikeKeywordTemplate = () => {
                 break;
             default:
                 // For Debug
-                console.log('check keyword function list name error');
+                console.log(`(ERROR) check Keyword Handling. listname: ${list}`);
                 return;
         }
     };

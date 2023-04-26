@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { ToastAndroid, View } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useMutation } from 'react-query';
+import { useRecoilState } from 'recoil';
 
 import Spacer from '../../smallest/Spacer';
 import Colors from '../../../styles/Colors';
 import BoldText from '../../smallest/BoldText';
 import TextButton from '../../molecules/TextButton';
-import { useRootNavigation } from '../../../navigations/RootStackNavigation';
-import { notLoginTemplateStyles } from '../../../styles/styles';
-import { useMutation } from 'react-query';
-import { deleteMemberAPI } from '../../../queries/api';
-import { useRecoilState } from 'recoil';
 import { forDebugAtom } from '../../../store/atoms';
+import { deleteMemberAPI } from '../../../queries/api';
+import { notLoginTemplateStyles } from '../../../styles/styles';
+import { useRootNavigation } from '../../../navigations/RootStackNavigation';
 
 const NotLoginTemplate = () => {
     // Move screens handling
@@ -51,6 +51,8 @@ const NotLoginTemplate = () => {
             ToastAndroid.show('회원 탈퇴 성공', 4000);
         },
         onError: ({ response }) => {
+            // For Debug
+            console.log(`(ERROR) Delete member API. response: ${response}`);
             ToastAndroid.show('회원 탈퇴 실패', 4000);
         },
     });

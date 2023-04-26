@@ -42,7 +42,8 @@ const JoinMemberScreen = () => {
                 setIsSlideComponent(false);
                 break;
             default:
-                return;
+                // For Debug
+                console.log(`(ERROR) Move to slider component of screen handling. state: ${state}`);
         }
     };
 
@@ -73,7 +74,8 @@ const JoinMemberScreen = () => {
                 setExplain('');
                 break;
             default:
-                return;
+                // For Debug
+                console.log(`(ERROR) Change screen header title. state: ${step}`);
         }
     };
 

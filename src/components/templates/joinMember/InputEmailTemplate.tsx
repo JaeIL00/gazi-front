@@ -46,6 +46,8 @@ const InputEmailTemplate = ({ onPressNextStep, resetTimeHandler }: InputEmailTem
             onPressNextStep();
         },
         onError: ({ response }) => {
+            // For Debug
+            console.log(`(ERROR) Request email authorization number API. response: ${response}`);
             setDuplicatedError(response.data.message);
         },
     });
@@ -57,6 +59,11 @@ const InputEmailTemplate = ({ onPressNextStep, resetTimeHandler }: InputEmailTem
             mutate(email);
         } else if (isEmail && authData && email === joinData.email) {
             onPressNextStep();
+        } else {
+            // For Debug
+            console.log(
+                `(ERROR) Request email authorization number API handling. isEmail: ${isEmail}, email: ${email}, atomEmail: ${joinData.email}, atomPassword: ${joinData.password}, atomAuthNumber: ${authData}`,
+            );
         }
     };
 

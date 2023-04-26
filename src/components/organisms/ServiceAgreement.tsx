@@ -2,15 +2,14 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Animated, ScrollView, View, useWindowDimensions } from 'react-native';
 
 import Icons from '../smallest/Icons';
-import Spacer from '../smallest/Spacer';
 import Colors from '../../styles/Colors';
 import TextButton from '../molecules/TextButton';
 import TouchButton from '../smallest/TouchButton';
 import SemiBoldText from '../smallest/SemiBoldText';
+import ModalBackground from '../smallest/ModalBackground';
 import AgreementCheckListItem from '../molecules/AgreementCheckListItem';
 import { ServiceAgreementProps } from '../../types/types';
 import { checkBoxBackground, serviceAgreementStyles } from '../../styles/styles';
-import ModalBackground from '../smallest/ModalBackground';
 
 const ServiceAgreement = ({ finishSlideComponentHandler }: ServiceAgreementProps) => {
     // Render list data

@@ -1,21 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, Animated, Keyboard, ToastAndroid, View } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useMutation } from 'react-query';
 
+import Icons from '../../smallest/Icons';
 import Spacer from '../../smallest/Spacer';
 import Colors from '../../../styles/Colors';
 import BoldText from '../../smallest/BoldText';
+import MediumText from '../../smallest/MediumText';
 import TextButton from '../../molecules/TextButton';
 import TouchButton from '../../smallest/TouchButton';
 import LoginTextInput from '../../molecules/LoginTextInput';
 import useKeyboardMotion from '../../../utils/hooks/useKeyboardMotion';
 import MoveBackWithPageTitle from '../../organisms/MoveBackWithPageTitle';
-import { useMutation } from 'react-query';
 import { loginAPI } from '../../../queries/api';
 import { EmailLoginTemplateProps } from '../../../types/types';
 import { emailLoginTemplateStyles, nextStepButtonPosition } from '../../../styles/styles';
-import Icons from '../../smallest/Icons';
-import MediumText from '../../smallest/MediumText';
 
 const EmailLoginTemplate = ({ moveServiceHomeHandler }: EmailLoginTemplateProps) => {
     // Text change Handling
@@ -38,6 +38,7 @@ const EmailLoginTemplate = ({ moveServiceHomeHandler }: EmailLoginTemplateProps)
         },
         onError: ({ response }) => {
             // For Debug
+            console.log(`(ERROR) Login API Handling. response: ${response}`);
             setLoginErrorText(response.data.message);
         },
     });
@@ -50,6 +51,7 @@ const EmailLoginTemplate = ({ moveServiceHomeHandler }: EmailLoginTemplateProps)
             await AsyncStorage.setItem('GAZI_re_tk', data.refreshToken);
         } catch (err) {
             // For Debug
+            console.log(`(ERROR) User authorization token set storage. err: ${err}`);
             ToastAndroid.show('토큰 저장 실패', 4000);
         } finally {
             moveServiceHomeHandler('GO');

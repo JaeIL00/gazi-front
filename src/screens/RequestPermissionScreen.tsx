@@ -18,7 +18,8 @@ const RequestPermissionScreen = () => {
                 rootNavigation.goBack();
                 break;
             default:
-                return;
+                // For Debug
+                console.log(`(ERROR) Move to screen handling. state: ${state}`);
         }
     };
 

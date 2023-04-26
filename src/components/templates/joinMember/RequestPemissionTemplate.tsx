@@ -26,6 +26,9 @@ const RequestPemissionTemplate = ({ moveToScreen }: RequestPemissionTemplateProp
                     PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION,
                     PERMISSIONS.ANDROID.POST_NOTIFICATIONS,
                 ]);
+            } catch (err) {
+                // For Debug
+                console.log(`(ERROR) Request Permissions. err: ${err}`);
             } finally {
                 const locationPermmission = await check(PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION);
                 const isAllow = locationPermmission === RESULTS.GRANTED;
@@ -49,7 +52,8 @@ const RequestPemissionTemplate = ({ moveToScreen }: RequestPemissionTemplateProp
                 await Linking.openSettings();
                 break;
             default:
-                return;
+                // For Debug
+                console.log(`(ERROR) Again request modal button Handling. state: ${state}`);
         }
     };
 
