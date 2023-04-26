@@ -80,26 +80,26 @@ const JoinMemberScreen = () => {
     };
 
     // Timer for email authorization
-    const [min, setMin] = useState<number>(0);
+    const [min, setMin] = useState<number>(5);
     const [sec, setSec] = useState<number>(0);
     const timerHandler = () => {
-        if (sec < 59) {
-            setSec(sec + 1);
-        } else {
-            setMin(min + 1);
-            setSec(0);
+        if (sec > 0) {
+            setSec(sec - 1);
+        } else if (sec === 0) {
+            setSec(59);
+            setMin(min - 1);
         }
     };
     const resetTimeHandler = () => {
-        setMin(0);
+        setMin(5);
         setSec(0);
     };
-    useBackgroundInterval(timerHandler, min === 1 ? null : 1000);
+    useBackgroundInterval(timerHandler, min === 0 ? null : 1000);
 
     // Reset auth number by full time
     const [authData, setAuthData] = useRecoilState(emailAuthNumber);
     useEffect(() => {
-        if (min > 0) {
+        if (min === 0 && sec === 0) {
             setAuthData(0);
         }
     }, [min]);
@@ -156,6 +156,7 @@ const JoinMemberScreen = () => {
                     finishSlideComponentHandler={finishSlideComponentHandler}
                 />
             )}
+
             {isSlideComponent && step === 2 && (
                 <ServiceAgreement finishSlideComponentHandler={finishSlideComponentHandler} />
             )}
