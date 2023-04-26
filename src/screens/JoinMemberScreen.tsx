@@ -94,7 +94,7 @@ const JoinMemberScreen = () => {
         setMin(5);
         setSec(0);
     };
-    useBackgroundInterval(timerHandler, min === 0 ? null : 1000);
+    useBackgroundInterval(timerHandler, min === 0 && sec === 0 ? null : 1000);
 
     // Reset auth number by full time
     const [authData, setAuthData] = useRecoilState(emailAuthNumber);
