@@ -1,6 +1,7 @@
 import { ReactElement } from 'react';
 import { FlexAlignType, KeyboardType, TextStyle } from 'react-native/types';
 
+//COMMON
 export type KeywordListTypes = {
     id: number;
     keywordEnum: string;
@@ -19,8 +20,7 @@ export type joinMemberTypes = {
     nickName: string;
 };
 
-// Navigation
-// Navigation
+// NAVIGATION
 export type RootStackParamList = {
     NotLoginHome: undefined;
     JoinMember: undefined;
@@ -30,8 +30,7 @@ export type RootStackParamList = {
     ServiceHome: undefined;
 };
 
-// Smallest
-// Smallest
+// SMALLEST
 export type TouchButtonProps = {
     children?: ReactElement;
     onPress: () => void;
@@ -82,8 +81,7 @@ export type ModalBackgroundProps = {
     children?: ReactElement;
 };
 
-// Molecules
-// Molecules
+// MOLECULES
 export interface LoginTextInputProps extends SingleLineInputProps {
     title: string;
 }
@@ -119,8 +117,7 @@ export type IconPermissionListItemProps = {
     image?: string;
 };
 
-// Organisms
-// Organisms
+// ORGANISMS
 export interface MoveBackWithPageTitleProps extends PageTitleWithExplainProps {
     onPress: () => void;
 }
@@ -142,8 +139,7 @@ export type KeywordsListProps = {
     checkKeywordHandler: (list: string, index: number) => void;
 };
 
-// templates
-// templates
+// TEMPLATES
 export type InputEmailTemplateProps = {
     onPressNextStep: () => void;
     resetTimeHandler: () => void;

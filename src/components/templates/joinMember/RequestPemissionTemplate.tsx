@@ -38,7 +38,7 @@ const RequestPemissionTemplate = ({ moveToScreen }: RequestPemissionTemplateProp
         }
     };
 
-    // Request again modal button Handling
+    // Again request modal button Handling
     const onPressModalButton = async (state: string) => {
         switch (state) {
             case 'CLOSE':

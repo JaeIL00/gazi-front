@@ -18,6 +18,7 @@ import { nextStepButtonPosition, nicknameTemplateStyles } from '../../../styles/
 
 const NicknameTemplate = ({ onPressNextStep }: NicknameTemplateProps) => {
     const [joinData, setJoinData] = useRecoilState(joinMemberData);
+    const [tok, setTok] = useRecoilState(forDebugAtom);
 
     // Nickname Text Handling
     const [inputNickname, setInputNickname] = useState<string>('');
@@ -26,7 +27,7 @@ const NicknameTemplate = ({ onPressNextStep }: NicknameTemplateProps) => {
         setResultText('');
     };
 
-    // Check nickname duplicate API Handling
+    // Check nickname duplicate API
     const [resultText, setResultText] = useState<string>('');
     const [isDuplicate, setIsDuplicate] = useState<boolean>(false);
     const { refetch, isFetching } = useQuery('duplicateNickname', () => checkNicknameAPI(inputNickname), {
@@ -47,8 +48,7 @@ const NicknameTemplate = ({ onPressNextStep }: NicknameTemplateProps) => {
         }
     };
 
-    // Join member API Handling
-    const [tok, setTok] = useRecoilState(forDebugAtom);
+    // Join member API
     const { mutate, isLoading } = useMutation(joinMemberAPI, {
         onSuccess: data => {
             successJoinMemberHandler(data.data.data);
@@ -71,14 +71,14 @@ const NicknameTemplate = ({ onPressNextStep }: NicknameTemplateProps) => {
         }
     };
 
-    // Join member API by finish button
+    // Finish button for join member API
     const onPressJoinMember = () => {
         if (isDuplicate) {
             mutate(joinData);
         }
     };
 
-    // Finish button transitionY handling
+    // Change button Position by keyboard activity
     const { bottomValue, buttonUpAnimationHandler, buttonDownAnimationHandler } = useKeyboardMotion(180, 400);
     useEffect(() => {
         const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', buttonUpAnimationHandler);

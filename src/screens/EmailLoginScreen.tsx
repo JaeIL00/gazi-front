@@ -6,6 +6,8 @@ import { useRootNavigation } from '../navigations/RootStackNavigation';
 
 const EmailLoginScreen = () => {
     const rootNavigation = useRootNavigation();
+
+    // Move to screen handling
     const moveScreenHandler = (state: string) => {
         switch (state) {
             case 'GO':

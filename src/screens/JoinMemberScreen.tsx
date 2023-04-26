@@ -19,7 +19,7 @@ const JoinMemberScreen = () => {
     const rootNavigation = useRootNavigation();
     const [joinData, setJoinData] = useRecoilState(joinMemberData);
 
-    // Move to next step
+    // Move to screen handling
     const [step, setStep] = useState<number>(1);
     const [isSlideComponent, setIsSlideComponent] = useState<boolean>(false);
     const onPressNextStep = () => {
@@ -46,7 +46,7 @@ const JoinMemberScreen = () => {
         }
     };
 
-    // Page Header Title Handling
+    // Change screen header title
     const [oneTitle, setOneTitle] = useState<string>('회원가입');
     const [twoTitle, setTwoTitle] = useState<string>('');
     const [explain, setExplain] = useState<string>('본인인증을 위한 이메일을 입력해주세요');
@@ -77,7 +77,7 @@ const JoinMemberScreen = () => {
         }
     };
 
-    // Timer
+    // Timer for email authorization
     const [min, setMin] = useState<number>(0);
     const [sec, setSec] = useState<number>(0);
     const timerHandler = () => {

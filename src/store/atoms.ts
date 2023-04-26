@@ -10,7 +10,7 @@ export const userToken = atom<userTokenTypes>({
     },
 });
 
-// JOIH
+// JOIN
 export const joinMemberData = atom<joinMemberTypes>({
     key: 'joinMemberData',
     default: {

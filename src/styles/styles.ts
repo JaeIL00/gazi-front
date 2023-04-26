@@ -3,8 +3,7 @@ import { FlexAlignType, TextStyle } from 'react-native/types';
 import Colors from './Colors';
 import { hegithPercentage, widthPercentage, fontPercentage } from '../utils/changeStyleSize';
 
-// App
-// App
+// APP
 export const appStyles = StyleSheet.create({
     container: {
         flex: 1,
@@ -24,8 +23,7 @@ export const nextStepButtonPosition = StyleSheet.create({
     },
 });
 
-// Smallest
-// Smallest
+// SMALLEST
 export const touchButtonStyles = (
     width: number | undefined,
     height: number | undefined,
@@ -132,8 +130,7 @@ export const modalBackgroundStyles = (width: number, height: number) =>
         },
     });
 
-// Molecules
-// Molecules
+// MOLECULES
 export const loginTextInputStyles = StyleSheet.create({
     inputBox: {
         borderRadius: fontPercentage(5),
@@ -194,8 +191,7 @@ export const iconPermissionListItemStyles = StyleSheet.create({
     },
 });
 
-// Organisms
-// Organisms
+// ORGANISMS
 export const moveBackWithPageTitleStyles = StyleSheet.create({
     buttonContainer: {
         paddingTop: hegithPercentage(30),
@@ -331,8 +327,7 @@ export const keywordsListStyles = StyleSheet.create({
     },
 });
 
-// Templates
-// Templates
+// TEMPLATES
 export const nicknameTemplateStyles = StyleSheet.create({
     container: {
         position: 'relative',

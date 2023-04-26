@@ -16,7 +16,7 @@ import { emailWithPasswordTemplateStyles, nextStepButtonPosition } from '../../.
 const EmailWithPasswordTemplate = ({ onPressNextStep }: EmailWithPasswordProps) => {
     const [joinData, setJoinData] = useRecoilState(joinMemberData);
 
-    // Password validation
+    // Password validation handling
     const [password, setpassword] = useState<string>('');
     const [isPasswordLeng, setIsPasswordLeng] = useState<boolean>(false);
     const [isPasswordReg, setIsPasswordReg] = useState<boolean>(false);
@@ -38,7 +38,7 @@ const EmailWithPasswordTemplate = ({ onPressNextStep }: EmailWithPasswordProps) 
         }
     };
 
-    // Finish button transitionY handling
+    // Change button Position by keyboard activity
     const { bottomValue, buttonUpAnimationHandler, buttonDownAnimationHandler } = useKeyboardMotion(210, 430);
     useEffect(() => {
         const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', buttonUpAnimationHandler);

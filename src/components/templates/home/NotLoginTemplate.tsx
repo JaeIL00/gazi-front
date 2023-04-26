@@ -14,7 +14,7 @@ import { useRecoilState } from 'recoil';
 import { forDebugAtom } from '../../../store/atoms';
 
 const NotLoginTemplate = () => {
-    // Move screens
+    // Move screens handling
     const rootNavigation = useRootNavigation();
     const onPressNavigate = (route: string) => {
         if (route === 'JoinMember') {

@@ -6,9 +6,6 @@ import { NavigationContainer } from '@react-navigation/native';
 import { RootStackNavigation } from './navigations/RootStackNavigation';
 
 export const RootApp = () => {
-    // Background timer hide warning
-    // LogBox.ignoreLogs(['new NativeEventEmitter']);
-    // For Debug
     LogBox.ignoreAllLogs();
 
     const queryClient = new QueryClient();

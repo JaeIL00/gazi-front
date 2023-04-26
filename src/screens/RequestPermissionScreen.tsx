@@ -7,6 +7,8 @@ import { useRootNavigation } from '../navigations/RootStackNavigation';
 
 const RequestPermissionScreen = () => {
     const rootNavigation = useRootNavigation();
+
+    // Move to screen handling
     const moveToScreen = (state: string) => {
         switch (state) {
             case 'OK':

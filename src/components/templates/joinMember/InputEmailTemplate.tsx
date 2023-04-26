@@ -30,14 +30,14 @@ const InputEmailTemplate = ({ onPressNextStep, resetTimeHandler }: InputEmailTem
         setDuplicatedError('');
     };
 
-    // Initialized state Handling
+    // If email state in atom, set state
     const initStateHandler = () => {
         if (joinData.email) {
             setIsEmail(true);
         }
     };
 
-    // Email authorization Handling
+    // Request email authorization number API
     const [duplicatedError, setDuplicatedError] = useState<string>('');
     const { isLoading, mutate } = useMutation(emailAuthAPI, {
         onSuccess: data => {
@@ -50,7 +50,7 @@ const InputEmailTemplate = ({ onPressNextStep, resetTimeHandler }: InputEmailTem
         },
     });
 
-    // Request auth number button handling
+    // Request email authorization number API handling by button
     const onPressEmailAuth = () => {
         if ((isEmail && !authData) || (isEmail && joinData.password) || (isEmail && email !== joinData.email)) {
             setJoinData({ ...joinData, email });
@@ -60,7 +60,7 @@ const InputEmailTemplate = ({ onPressNextStep, resetTimeHandler }: InputEmailTem
         }
     };
 
-    // Finish button transitionY handling
+    // Change button Position by keyboard activity
     const { bottomValue, buttonUpAnimationHandler, buttonDownAnimationHandler } = useKeyboardMotion(210, 430);
     useEffect(() => {
         initStateHandler();
