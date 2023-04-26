@@ -318,6 +318,24 @@ export const failLocationPermisionModalStyles = StyleSheet.create({
         flexDirection: 'row',
     },
 });
+export const keywordsListStyles = StyleSheet.create({
+    container: {
+        paddingTop: hegithPercentage(14),
+        paddingBottom: hegithPercentage(16),
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        width: '90%',
+    },
+    itemBox: {
+        borderWidth: fontPercentage(1),
+        borderColor: Colors.TXT_GRAY,
+        borderRadius: fontPercentage(30),
+        paddingHorizontal: widthPercentage(14),
+        paddingVertical: hegithPercentage(8),
+        marginRight: widthPercentage(6),
+        marginBottom: hegithPercentage(12),
+    },
+});
 
 // Templates
 // Templates

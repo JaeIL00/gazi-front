@@ -1,7 +1,12 @@
 import React from 'react';
-import { View } from 'react-native';
-import BoldText from '../../smallest/BoldText';
+import { ScrollView, View } from 'react-native';
+
+import Spacer from '../../smallest/Spacer';
+import Colors from '../../../styles/Colors';
+import SemiBoldText from '../../smallest/SemiBoldText';
+import KeywordsList from '../../organisms/KeywordsList';
 import MoveBackWithPageTitle from '../../organisms/MoveBackWithPageTitle';
+import { issueKeywords, trafficKeywords } from '../../../utils/allKeywords';
 
 const InitLikeKeywordTemplate = () => {
     return (
@@ -13,6 +18,13 @@ const InitLikeKeywordTemplate = () => {
                 explainSize={13}
                 onPress={() => {}}
             />
+
+            <Spacer height={35} />
+
+            <SemiBoldText text="교통수단" color={Colors.BLACK} size={18} />
+            <KeywordsList list={trafficKeywords} />
+            <SemiBoldText text="이슈" color={Colors.BLACK} size={18} />
+            <KeywordsList list={issueKeywords} />
         </View>
     );
 };

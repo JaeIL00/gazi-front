@@ -114,6 +114,14 @@ export interface AuthEmailProps extends ServiceAgreementProps {
 export type FailLocationPermisionModalProps = {
     onPressModalButton: (state: string) => void;
 };
+export type KeywordsListProps = {
+    list: {
+        id: number;
+        keywordEnum: string;
+        keywordName: string;
+        vehicleType: string | null;
+    }[];
+};
 
 // templates
 // templates
