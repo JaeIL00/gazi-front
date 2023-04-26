@@ -17,9 +17,9 @@ const EmailWithPasswordTemplate = ({ onPressNextStep }: EmailWithPasswordProps) 
     const [joinData, setJoinData] = useRecoilState(joinMemberData);
 
     // Password validation
-    const [password, setpassword] = useState('');
-    const [isPasswordLeng, setIsPasswordLeng] = useState(false);
-    const [isPasswordReg, setIsPasswordReg] = useState(false);
+    const [password, setpassword] = useState<string>('');
+    const [isPasswordLeng, setIsPasswordLeng] = useState<boolean>(false);
+    const [isPasswordReg, setIsPasswordReg] = useState<boolean>(false);
     const onChangePasswordText = (text: string) => {
         setpassword(text);
         passwordErrorTextStyle(text);

@@ -20,8 +20,8 @@ const JoinMemberScreen = () => {
     const [joinData, setJoinData] = useRecoilState(joinMemberData);
 
     // Move to next step
-    const [step, setStep] = useState(1);
-    const [isSlideComponent, setIsSlideComponent] = useState(false);
+    const [step, setStep] = useState<number>(1);
+    const [isSlideComponent, setIsSlideComponent] = useState<boolean>(false);
     const onPressNextStep = () => {
         Keyboard.dismiss();
         if (step < 3) {
@@ -47,9 +47,9 @@ const JoinMemberScreen = () => {
     };
 
     // Page Header Title Handling
-    const [oneTitle, setOneTitle] = useState('회원가입');
-    const [twoTitle, setTwoTitle] = useState('');
-    const [explain, setExplain] = useState('본인인증을 위한 이메일을 입력해주세요');
+    const [oneTitle, setOneTitle] = useState<string>('회원가입');
+    const [twoTitle, setTwoTitle] = useState<string>('');
+    const [explain, setExplain] = useState<string>('본인인증을 위한 이메일을 입력해주세요');
     const headerTextHandler = () => {
         switch (step) {
             case 1:
@@ -78,8 +78,8 @@ const JoinMemberScreen = () => {
     };
 
     // Timer
-    const [min, setMin] = useState(0);
-    const [sec, setSec] = useState(0);
+    const [min, setMin] = useState<number>(0);
+    const [sec, setSec] = useState<number>(0);
     const timerHandler = () => {
         if (sec < 59) {
             setSec(sec + 1);
@@ -103,7 +103,7 @@ const JoinMemberScreen = () => {
     }, [min]);
 
     // Android back button & Header Back Button Handling
-    const handleBackButton = () => {
+    const handleBackButton = (): boolean => {
         if (step === 4) {
             // For Debug
             rootNavigation.navigate('NotLoginHome');

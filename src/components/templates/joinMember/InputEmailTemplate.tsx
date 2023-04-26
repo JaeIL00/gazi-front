@@ -21,13 +21,13 @@ const InputEmailTemplate = ({ onPressNextStep, resetTimeHandler }: InputEmailTem
     const [authData, setAuthData] = useRecoilState(emailAuthNumber);
 
     // Email validation
-    const [email, setEmail] = useState(joinData.email);
-    const [isEmail, setIsEmail] = useState(false);
+    const [email, setEmail] = useState<string>(joinData.email);
+    const [isEmail, setIsEmail] = useState<boolean>(false);
     const onChangeEmailText = (text: string) => {
         setEmail(text);
         validator.isEmail(text) ? setIsEmail(true) : setIsEmail(false);
 
-        setIsDuplicated('');
+        setDuplicatedError('');
     };
 
     // Initialized state Handling
@@ -38,7 +38,7 @@ const InputEmailTemplate = ({ onPressNextStep, resetTimeHandler }: InputEmailTem
     };
 
     // Email authorization Handling
-    const [isDuplicated, setIsDuplicated] = useState('');
+    const [duplicatedError, setDuplicatedError] = useState<string>('');
     const { isLoading, mutate } = useMutation(emailAuthAPI, {
         onSuccess: data => {
             setAuthData(data.data.data);
@@ -46,7 +46,7 @@ const InputEmailTemplate = ({ onPressNextStep, resetTimeHandler }: InputEmailTem
             onPressNextStep();
         },
         onError: ({ response }) => {
-            setIsDuplicated(response.data.message);
+            setDuplicatedError(response.data.message);
         },
     });
 
@@ -85,7 +85,7 @@ const InputEmailTemplate = ({ onPressNextStep, resetTimeHandler }: InputEmailTem
 
             <Spacer height={8} />
 
-            {email && !isDuplicated && (
+            {email && !duplicatedError && (
                 <View style={inputEmailTemplateStyles.emailErrorTextBox}>
                     <Icons
                         type={isEmail ? 'octicons' : 'fontisto'}
@@ -101,11 +101,11 @@ const InputEmailTemplate = ({ onPressNextStep, resetTimeHandler }: InputEmailTem
                     />
                 </View>
             )}
-            {isDuplicated && (
+            {duplicatedError && (
                 <View style={inputEmailTemplateStyles.emailErrorTextBox}>
                     <Icons type={'fontisto'} name={'close'} size={14} color={Colors.STATUS_RED} />
                     <Spacer width={4} />
-                    <MediumText text={isDuplicated} size={12} color={Colors.STATUS_RED} />
+                    <MediumText text={duplicatedError} size={12} color={Colors.STATUS_RED} />
                 </View>
             )}
 

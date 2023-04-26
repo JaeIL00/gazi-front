@@ -15,7 +15,7 @@ import { requestPemissionTemplateStyles } from '../../../styles/styles';
 
 const RequestPemissionTemplate = ({ moveToScreen }: RequestPemissionTemplateProps) => {
     // Request Permissions
-    const [onModal, setOnModal] = useState(false);
+    const [onModal, setOnModal] = useState<boolean>(false);
     const onPressrequstPermission = async () => {
         if (Platform.OS === 'android') {
             try {

@@ -1,7 +1,8 @@
 import { atom } from 'recoil';
+import { joinMemberTypes, userTokenTypes } from '../types/types';
 
 // AUTH
-export const userToken = atom({
+export const userToken = atom<userTokenTypes>({
     key: 'userToken',
     default: {
         accessToken: '',
@@ -10,7 +11,7 @@ export const userToken = atom({
 });
 
 // JOIH
-export const joinMemberData = atom({
+export const joinMemberData = atom<joinMemberTypes>({
     key: 'joinMemberData',
     default: {
         email: '',
@@ -18,13 +19,13 @@ export const joinMemberData = atom({
         nickName: '',
     },
 });
-export const emailAuthNumber = atom({
+export const emailAuthNumber = atom<number>({
     key: 'emailAuthNumber',
     default: 0,
 });
 
 // For Debug
-export const forDebugAtom = atom({
+export const forDebugAtom = atom<string>({
     key: 'forDebugAtom',
     default: '',
 });

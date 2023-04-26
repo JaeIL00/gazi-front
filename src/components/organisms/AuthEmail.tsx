@@ -25,7 +25,7 @@ const AuthEmail = ({ min, sec, resetTimeHandler, finishSlideComponentHandler }: 
 
     // Animation handling
     const { height } = useWindowDimensions();
-    const topValue = useRef(new Animated.Value(height)).current;
+    const topValue = useRef<Animated.Value>(new Animated.Value(height)).current;
     const startAnimationHandler = () => {
         Animated.timing(topValue, {
             toValue: 40,
@@ -56,9 +56,9 @@ const AuthEmail = ({ min, sec, resetTimeHandler, finishSlideComponentHandler }: 
 
     // Input authorization number
     const [authNumber, setAuthNumber] = useState<number | null>(null);
-    const [inputNumber, setInputNumber] = useState('');
-    const [isWrong, setIsWrong] = useState(false);
-    const [activityButton, setActivityButton] = useState(false);
+    const [inputNumber, setInputNumber] = useState<string>('');
+    const [isWrong, setIsWrong] = useState<boolean>(false);
+    const [activityButton, setActivityButton] = useState<boolean>(false);
     const onChangNumberText = (text: string) => {
         setInputNumber(text);
         setIsWrong(false);

@@ -4,11 +4,11 @@ import { NativeStackNavigationProp, createNativeStackNavigator } from '@react-na
 
 import LoginScreen from '../screens/EmailLoginScreen';
 import JoinMemberScreen from '../screens/JoinMemberScreen';
+import SeviceHomeScreen from '../screens/SeviceHomeScreen';
 import NotLoginHomeScreen from '../screens/NotLoginHomeScreen';
 import InitLikeKeywordScreen from '../screens/InitLikeKeywordScreen';
 import RequestPermissionScreen from '../screens/RequestPermissionScreen';
 import { RootStackParamList } from '../types/types';
-import SeviceHomeScreen from '../screens/SeviceHomeScreen';
 
 export const RootStackNavigation = () => {
     const Stack = createNativeStackNavigator();
@@ -19,11 +19,11 @@ export const RootStackNavigation = () => {
                 headerShown: false,
                 presentation: 'containedModal',
             }}>
-            <Stack.Screen name="InitKeyword" component={InitLikeKeywordScreen} />
             <Stack.Screen name="NotLoginHome" component={NotLoginHomeScreen} />
             <Stack.Screen name="JoinMember" component={JoinMemberScreen} />
             <Stack.Screen name="Login" component={LoginScreen} />
             <Stack.Screen name="RequestPermission" component={RequestPermissionScreen} />
+            <Stack.Screen name="InitKeyword" component={InitLikeKeywordScreen} />
             <Stack.Screen name="ServiceHome" component={SeviceHomeScreen} />
         </Stack.Navigator>
     );

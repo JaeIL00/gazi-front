@@ -8,6 +8,17 @@ export type KeywordListTypes = {
     vehicleType: string | null;
 }[];
 
+// ATOM
+export type userTokenTypes = {
+    accessToken: string;
+    refreshToken: string;
+};
+export type joinMemberTypes = {
+    email: string;
+    password: string;
+    nickName: string;
+};
+
 // Navigation
 // Navigation
 export type RootStackParamList = {
@@ -50,8 +61,8 @@ export type SingleLineInputProps = {
 export type IconsProps = {
     type: string;
     name: string;
-    size?: number;
-    color?: string;
+    size: number;
+    color: string;
 };
 export type PageTitleProps = {
     title: string;
@@ -93,11 +104,13 @@ export type AgreementCheckListItemProps = {
     index: number;
     onPressCheckList: (index: number) => void;
 };
-export interface IconWithMediumTextProps extends IconsProps {
+export type IconWithMediumTextProps = {
     iconColor: string;
     text: string;
     textColor: string;
-}
+    type: string;
+    name: string;
+};
 export type IconPermissionListItemProps = {
     iconType?: string;
     iconName?: string;

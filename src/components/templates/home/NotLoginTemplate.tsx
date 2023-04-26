@@ -27,7 +27,7 @@ const NotLoginTemplate = () => {
     // For Debug
     // Delete member API (temporary)
     const [tok, setTok] = useRecoilState(forDebugAtom);
-    const [st, setst] = useState('');
+    const [st, setst] = useState<string>('');
     const getStorage = async () => {
         try {
             const is = await AsyncStorage.getItem('GAZI_ac_tk');

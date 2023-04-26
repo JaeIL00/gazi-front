@@ -20,15 +20,15 @@ const NicknameTemplate = ({ onPressNextStep }: NicknameTemplateProps) => {
     const [joinData, setJoinData] = useRecoilState(joinMemberData);
 
     // Nickname Text Handling
-    const [inputNickname, setInputNickname] = useState('');
+    const [inputNickname, setInputNickname] = useState<string>('');
     const onChangeNickname = (text: string) => {
         setInputNickname(text);
         setResultText('');
     };
 
     // Check nickname duplicate API Handling
-    const [resultText, setResultText] = useState('');
-    const [isDuplicate, setIsDuplicate] = useState(false);
+    const [resultText, setResultText] = useState<string>('');
+    const [isDuplicate, setIsDuplicate] = useState<boolean>(false);
     const { refetch, isFetching } = useQuery('duplicateNickname', () => checkNicknameAPI(inputNickname), {
         enabled: false,
         onSuccess: ({ data }) => {

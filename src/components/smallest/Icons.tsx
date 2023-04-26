@@ -8,7 +8,7 @@ import { IconsProps } from '../../types/types';
 import { fontPercentage } from '../../utils/changeStyleSize';
 
 const Icons = ({ type, name, size, color }: IconsProps) => {
-    const freshSize = fontPercentage(size);
+    let freshSize = fontPercentage(size);
     return (
         <>
             {type === 'octicons' && <Octicons name={name} size={freshSize} color={color} />}

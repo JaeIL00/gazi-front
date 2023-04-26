@@ -19,7 +19,7 @@ import MediumText from '../../smallest/MediumText';
 
 const EmailLoginTemplate = ({ moveServiceHomeHandler }: EmailLoginTemplateProps) => {
     // Text change Handling
-    const [email, setEmail] = useState('');
+    const [email, setEmail] = useState<string>('');
     const onChangeEmail = (text: string) => {
         setEmail(text);
         setLoginErrorText('');
@@ -31,15 +31,14 @@ const EmailLoginTemplate = ({ moveServiceHomeHandler }: EmailLoginTemplateProps)
     };
 
     // Login API Handling
-    const [loginErrorText, setLoginErrorText] = useState('');
+    const [loginErrorText, setLoginErrorText] = useState<string>('');
     const { mutate, isLoading } = useMutation(loginAPI, {
         onSuccess: data => {
             successJoinMemberHandler(data.data.data);
         },
         onError: ({ response }) => {
-            setLoginErrorText(response.data.message);
             // For Debug
-            // ToastAndroid.show(response.data.message, 4000);
+            setLoginErrorText(response.data.message);
         },
     });
     const onPressLoginButton = () => {
