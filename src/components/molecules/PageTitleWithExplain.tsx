@@ -3,16 +3,16 @@ import { View } from 'react-native';
 
 import Spacer from '../smallest/Spacer';
 import Colors from '../../styles/Colors';
-import PageTitle from '../smallest/PageTitle';
 import NormalText from '../smallest/NormalText';
 import { PageTitleWithExplainProps } from '../../types/types';
+import BoldText from '../smallest/BoldText';
 
 const PageTitleWithExplain = ({ oneTitle, twoTitle, explainText, explainSize }: PageTitleWithExplainProps) => {
     return (
         <View>
             <View>
-                <PageTitle title={oneTitle} />
-                {twoTitle && <PageTitle title={twoTitle} />}
+                <BoldText text={oneTitle} size={24} color={Colors.BLACK} />
+                {twoTitle && <BoldText text={twoTitle} size={24} color={Colors.BLACK} />}
             </View>
 
             {explainText && explainSize && (

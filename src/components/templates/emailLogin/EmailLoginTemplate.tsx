@@ -34,6 +34,7 @@ const EmailLoginTemplate = ({ moveServiceHomeHandler }: EmailLoginTemplateProps)
     const [loginErrorText, setLoginErrorText] = useState<string>('');
     const { mutate, isLoading } = useMutation(loginAPI, {
         onSuccess: data => {
+            console.log(data.data);
             successJoinMemberHandler(data.data.data);
         },
         onError: ({ response }) => {
