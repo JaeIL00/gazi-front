@@ -25,6 +25,7 @@ export type TouchButtonProps = {
     alignSelf?: FlexAlignType;
     borderColor?: string;
     borderWidth?: number;
+    borderRadius?: number;
     flex?: number;
 };
 export type SingleLineInputProps = {
@@ -115,12 +116,15 @@ export type FailLocationPermisionModalProps = {
     onPressModalButton: (state: string) => void;
 };
 export type KeywordsListProps = {
+    type: string;
     list: {
         id: number;
         keywordEnum: string;
         keywordName: string;
         vehicleType: string | null;
     }[];
+    isCheck: boolean[];
+    checkKeywordHandler: (list: string, index: number) => void;
 };
 
 // templates

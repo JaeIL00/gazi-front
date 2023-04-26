@@ -14,6 +14,7 @@ export const issueKeywords = [
     { id: 8, keywordEnum: 'ISSUE', keywordName: '기타', vehicleType: null },
 ];
 export const subwayKeywords = [
+    { id: 9998, keywordEnum: 'VEHICLE', keywordName: '전체', vehicleType: 'SUBWAY' },
     { id: 11, keywordEnum: 'VEHICLE', keywordName: '1호선', vehicleType: 'SUBWAY' },
     { id: 12, keywordEnum: 'VEHICLE', keywordName: '2호선', vehicleType: 'SUBWAY' },
     { id: 13, keywordEnum: 'VEHICLE', keywordName: '3호선', vehicleType: 'SUBWAY' },
