@@ -14,7 +14,7 @@ export const globalDefaultStyles = StyleSheet.create({
     container: {
         flex: 1,
         paddingHorizontal: widthPercentage(16),
-        backgroundColor: Colors.WHITE,
+        backgroundColor: Colors.BACKGROUND_DEFAULT,
     },
 });
 export const nextStepButtonPosition = StyleSheet.create({
