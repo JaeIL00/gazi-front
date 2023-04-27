@@ -419,13 +419,39 @@ export const initLikeKeywordTemplateStyles = StyleSheet.create({
     container: {
         flex: 1,
     },
+    headerBox: {
+        zIndex: 1,
+    },
+    upLinear: {
+        width: '100%',
+        height: hegithPercentage(32),
+        position: 'absolute',
+        bottom: -hegithPercentage(32),
+    },
+    scrollBox: {
+        paddingTop: hegithPercentage(35),
+        paddingBottom: hegithPercentage(168),
+    },
+    downLinearBox: {
+        height: hegithPercentage(84),
+    },
+    downLinear: {
+        width: '100%',
+        height: hegithPercentage(32),
+        position: 'absolute',
+        top: -hegithPercentage(32),
+    },
     button: {
         width: '100%',
         position: 'absolute',
-        bottom: 0,
+        bottom: hegithPercentage(42),
     },
-    linear: {
+    androidShadow: {
+        width: '100%',
         height: hegithPercentage(42),
+        borderRadius: fontPercentage(5),
+        position: 'absolute',
+        bottom: -fontPercentage(4),
     },
 });
 export const completedJoinTemplateStyles = StyleSheet.create({

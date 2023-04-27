@@ -1,5 +1,5 @@
 import React, { useEffect, useLayoutEffect, useState } from 'react';
-import { ScrollView, View } from 'react-native';
+import { Platform, ScrollView, View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { useRecoilValue } from 'recoil';
 import { useMutation } from 'react-query';
@@ -113,7 +113,7 @@ const InitLikeKeywordTemplate = ({ moveToScreen }: InitLikeKeywordTemplateProps)
 
     return (
         <View style={initLikeKeywordTemplateStyles.container}>
-            <ScrollView showsVerticalScrollIndicator={false}>
+            <View style={initLikeKeywordTemplateStyles.headerBox}>
                 <MoveBackWithPageTitle
                     oneTitle="관심있는 키워드를 선택하고"
                     twoTitle="맞춤형 커뮤니티를 경험하세요"
@@ -122,8 +122,11 @@ const InitLikeKeywordTemplate = ({ moveToScreen }: InitLikeKeywordTemplateProps)
                     onPress={() => moveToScreen('BACK')}
                 />
 
-                <Spacer height={35} />
-
+                <LinearGradient colors={['#F9F9F9', '#F9F9F900']} style={initLikeKeywordTemplateStyles.upLinear} />
+            </View>
+            <ScrollView
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={initLikeKeywordTemplateStyles.scrollBox}>
                 <View>
                     <SemiBoldText text="교통수단" color={Colors.BLACK} size={18} />
                     <Spacer height={14} />
@@ -157,7 +160,18 @@ const InitLikeKeywordTemplate = ({ moveToScreen }: InitLikeKeywordTemplateProps)
                 </View>
             </ScrollView>
 
+            <View style={initLikeKeywordTemplateStyles.downLinearBox}>
+                <LinearGradient colors={['#F9F9F900', '#F9F9F9']} style={initLikeKeywordTemplateStyles.downLinear} />
+            </View>
+
             <View style={initLikeKeywordTemplateStyles.button}>
+                {Platform.OS === 'android' && checkedKeywords.length > 0 && (
+                    <LinearGradient
+                        colors={['#000000', '#00000000']}
+                        style={initLikeKeywordTemplateStyles.androidShadow}
+                    />
+                )}
+
                 <TextButton
                     onPress={onPressLikedKeyword}
                     text={checkedKeywords.length > 0 ? '확인' : '키워드를 골라주세요'}
@@ -165,11 +179,6 @@ const InitLikeKeywordTemplate = ({ moveToScreen }: InitLikeKeywordTemplateProps)
                     backgroundColor={checkedKeywords.length > 0 ? Colors.BLACK : Colors.BTN_GRAY}
                     textColor={Colors.WHITE}
                     fontSize={17}
-                />
-                <LinearGradient
-                    colors={['#F9F9F900', '#F9F9F9']}
-                    style={initLikeKeywordTemplateStyles.linear}
-                    locations={[0, 0.6]}
                 />
             </View>
         </View>
