@@ -43,7 +43,7 @@ const InitLikeKeywordTemplate = ({ moveToScreen }: InitLikeKeywordTemplateProps)
     }, []);
 
     // check Keyword Handling
-    const checkKeywordHandler = (list: string, index: number) => {
+    const checkKeywordHandler = (list: string, index: number, id: number) => {
         switch (list) {
             case 'TRAFFIC':
                 const freshTraffic = [...checkTraffic];
@@ -51,9 +51,16 @@ const InitLikeKeywordTemplate = ({ moveToScreen }: InitLikeKeywordTemplateProps)
                 setCheckTraffic(freshTraffic);
                 break;
             case 'SUBWAY':
-                const freshSubway = [...checkSubway];
-                freshSubway.splice(index, 1, !freshSubway[index]);
-                setCheckSubway(freshSubway);
+                if (id === 9998) {
+                    const freshSubway = [...checkSubway];
+                    const checkAll = freshSubway.map(item => !freshSubway[0]);
+                    setCheckSubway(checkAll);
+                } else {
+                    const freshSubway = [...checkSubway];
+                    freshSubway.splice(0, 1, false);
+                    freshSubway.splice(index, 1, !freshSubway[index]);
+                    setCheckSubway(freshSubway);
+                }
                 break;
             case 'ISSUE':
                 const freshIssue = [...checkIssue];

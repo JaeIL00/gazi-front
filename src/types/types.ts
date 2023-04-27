@@ -136,7 +136,7 @@ export type KeywordsListProps = {
     type: string;
     list: KeywordListTypes;
     isCheck: boolean[];
-    checkKeywordHandler: (list: string, index: number) => void;
+    checkKeywordHandler: (list: string, index: number, id: number) => void;
 };
 
 // TEMPLATES

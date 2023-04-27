@@ -14,7 +14,7 @@ const KeywordsList = ({ type, list, isCheck, checkKeywordHandler }: KeywordsList
                 <View key={item.id} style={keywordsListStyles.itemBox}>
                     <TouchButton
                         onPress={() => {
-                            checkKeywordHandler(type, index);
+                            checkKeywordHandler(type, index, item.id);
                         }}
                         borderColor={isCheck[index] ? Colors.BLACK : Colors.TXT_GRAY}
                         borderRadius={30}
