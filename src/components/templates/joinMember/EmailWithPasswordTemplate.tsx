@@ -14,8 +14,6 @@ import { EmailWithPasswordProps } from '../../../types/types';
 import { emailWithPasswordTemplateStyles, nextStepButtonPosition } from '../../../styles/styles';
 
 const EmailWithPasswordTemplate = ({ onPressNextStep }: EmailWithPasswordProps) => {
-    const [joinData, setJoinData] = useRecoilState(joinMemberData);
-
     // Password validation handling
     const [password, setpassword] = useState<string>('');
     const [isPasswordLeng, setIsPasswordLeng] = useState<boolean>(false);
@@ -31,6 +29,7 @@ const EmailWithPasswordTemplate = ({ onPressNextStep }: EmailWithPasswordProps) 
     };
 
     // Checking validation for next step
+    const [joinData, setJoinData] = useRecoilState(joinMemberData);
     const canMoveNextStepHandler = () => {
         if (isPasswordLeng && isPasswordReg) {
             setJoinData({ ...joinData, password });

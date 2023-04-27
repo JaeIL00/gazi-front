@@ -16,6 +16,8 @@ import MoveBackWithPageTitle from '../../organisms/MoveBackWithPageTitle';
 import { loginAPI } from '../../../queries/api';
 import { EmailLoginTemplateProps } from '../../../types/types';
 import { emailLoginTemplateStyles, nextStepButtonPosition } from '../../../styles/styles';
+import { useRecoilState } from 'recoil';
+import { userToken } from '../../../store/atoms';
 
 const EmailLoginTemplate = ({ moveServiceHomeHandler }: EmailLoginTemplateProps) => {
     // Text change Handling
@@ -31,10 +33,10 @@ const EmailLoginTemplate = ({ moveServiceHomeHandler }: EmailLoginTemplateProps)
     };
 
     // Login API Handling
+    const [tokenAtom, setTokenAtom] = useRecoilState(userToken);
     const [loginErrorText, setLoginErrorText] = useState<string>('');
     const { mutate, isLoading } = useMutation(loginAPI, {
         onSuccess: data => {
-            console.log(data.data);
             successJoinMemberHandler(data.data.data);
         },
         onError: ({ response }) => {
@@ -52,6 +54,10 @@ const EmailLoginTemplate = ({ moveServiceHomeHandler }: EmailLoginTemplateProps)
         try {
             await AsyncStorage.setItem('GAZI_ac_tk', data.accessToken);
             await AsyncStorage.setItem('GAZI_re_tk', data.refreshToken);
+            setTokenAtom({
+                accessToken: data.accessToken,
+                refreshToken: data.refreshToken,
+            });
         } catch (err) {
             // For Debug
             console.log('(ERROR) User authorization token set storage. err: ', err);

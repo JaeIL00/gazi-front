@@ -12,14 +12,11 @@ import TextButton from '../../molecules/TextButton';
 import useKeyboardMotion from '../../../utils/hooks/useKeyboardMotion';
 import { NicknameTemplateProps } from '../../../types/types';
 import { SingleLineInput } from '../../smallest/SingleLineInput';
-import { forDebugAtom, joinMemberData } from '../../../store/atoms';
+import { joinMemberData, userToken } from '../../../store/atoms';
 import { joinMemberAPI, checkNicknameAPI } from '../../../queries/api';
 import { nextStepButtonPosition, nicknameTemplateStyles } from '../../../styles/styles';
 
 const NicknameTemplate = ({ onPressNextStep }: NicknameTemplateProps) => {
-    const [joinData, setJoinData] = useRecoilState(joinMemberData);
-    const [tok, setTok] = useRecoilState(forDebugAtom);
-
     // Nickname Text Handling
     const [inputNickname, setInputNickname] = useState<string>('');
     const onChangeNickname = (text: string) => {
@@ -28,6 +25,7 @@ const NicknameTemplate = ({ onPressNextStep }: NicknameTemplateProps) => {
     };
 
     // Check nickname duplicate API
+    const [joinData, setJoinData] = useRecoilState(joinMemberData);
     const [resultText, setResultText] = useState<string>('');
     const [isDuplicate, setIsDuplicate] = useState<boolean>(false);
     const { refetch, isFetching } = useQuery('duplicateNickname', () => checkNicknameAPI(inputNickname), {
@@ -53,6 +51,7 @@ const NicknameTemplate = ({ onPressNextStep }: NicknameTemplateProps) => {
     };
 
     // Join member API
+    const [tokenAtom, setTokenAtom] = useRecoilState(userToken);
     const { mutate, isLoading } = useMutation(joinMemberAPI, {
         onSuccess: data => {
             successJoinMemberHandler(data.data.data);
@@ -67,7 +66,10 @@ const NicknameTemplate = ({ onPressNextStep }: NicknameTemplateProps) => {
         try {
             await AsyncStorage.setItem('GAZI_ac_tk', data.accessToken);
             await AsyncStorage.setItem('GAZI_re_tk', data.refreshToken);
-            setTok(data.accessToken);
+            setTokenAtom({
+                accessToken: data.accessToken,
+                refreshToken: data.refreshToken,
+            });
         } catch (err) {
             // For Debug
             console.log('(ERROR) User authorization token set storage. err: ', err);
