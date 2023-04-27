@@ -15,6 +15,8 @@ import { likeKeywordsAPI } from '../../../queries/api';
 import { initLikeKeywordTemplateStyles } from '../../../styles/styles';
 import { InitLikeKeywordTemplateProps, KeywordListTypes } from '../../../types/types';
 import { issueKeywords, subwayKeywords, trafficKeywords } from '../../../utils/allKeywords';
+import TouchButton from '../../smallest/TouchButton';
+import MediumText from '../../smallest/MediumText';
 
 const InitLikeKeywordTemplate = ({ moveToScreen }: InitLikeKeywordTemplateProps) => {
     // Initialized check keywords
@@ -121,6 +123,11 @@ const InitLikeKeywordTemplate = ({ moveToScreen }: InitLikeKeywordTemplateProps)
                     explainSize={13}
                     onPress={() => moveToScreen('BACK')}
                 />
+                <View style={initLikeKeywordTemplateStyles.skipBox}>
+                    <TouchButton onPress={() => moveToScreen('OK')}>
+                        <MediumText text="Skip" color={Colors.TXT_GRAY} size={14} />
+                    </TouchButton>
+                </View>
 
                 <LinearGradient colors={['#F9F9F9', '#F9F9F900']} style={initLikeKeywordTemplateStyles.upLinear} />
             </View>

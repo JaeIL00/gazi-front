@@ -419,6 +419,11 @@ export const initLikeKeywordTemplateStyles = StyleSheet.create({
     container: {
         flex: 1,
     },
+    skipBox: {
+        position: 'absolute',
+        top: hegithPercentage(30),
+        right: 0,
+    },
     headerBox: {
         zIndex: 1,
     },
