@@ -38,9 +38,11 @@ const EmailLoginTemplate = ({ moveServiceHomeHandler }: EmailLoginTemplateProps)
             successJoinMemberHandler(data.data.data);
         },
         onError: ({ response }) => {
+            if (response.data.state === 401) {
+                setLoginErrorText(response.data.message);
+            }
             // For Debug
             console.log('(ERROR) Login API Handling. response: ', response);
-            setLoginErrorText(response.data.message);
         },
     });
     const onPressLoginButton = () => {

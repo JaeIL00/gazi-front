@@ -38,7 +38,7 @@ const NicknameTemplate = ({ onPressNextStep }: NicknameTemplateProps) => {
             setJoinData({ ...joinData, nickName: inputNickname });
         },
         onError: ({ response }) => {
-            if (response.state === 409) {
+            if (response.data.state === 409) {
                 setResultText(response.data.message);
                 setIsDuplicate(false);
             }

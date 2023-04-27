@@ -64,7 +64,7 @@ const InputEmailTemplate = ({ onPressNextStep, resetTimeHandler }: InputEmailTem
         } else {
             // For Debug
             console.log(
-                `(ERROR) Request email authorization number API handling. isEmail: ${isEmail}, email: ${email}, atomEmail: ${joinData.email}, atomPassword: ${joinData.password}, atomAuthNumber: ${authData}`,
+                `(ERROR) Request email authorization number API handling. isEmail: ${isEmail}, email: ${email}, atomEmail: ${joinData.email}, duplicatedError: ${duplicatedError}`,
             );
         }
     };
