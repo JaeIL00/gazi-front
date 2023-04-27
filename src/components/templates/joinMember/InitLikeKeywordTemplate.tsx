@@ -1,8 +1,7 @@
 import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { ScrollView, View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useRecoilState } from 'recoil';
+import { useRecoilValue } from 'recoil';
 import { useMutation } from 'react-query';
 
 import Spacer from '../../smallest/Spacer';
@@ -13,8 +12,8 @@ import KeywordsList from '../../organisms/KeywordsList';
 import MoveBackWithPageTitle from '../../organisms/MoveBackWithPageTitle';
 import { userToken } from '../../../store/atoms';
 import { likeKeywordsAPI } from '../../../queries/api';
-import { InitLikeKeywordTemplateProps, KeywordListTypes } from '../../../types/types';
 import { initLikeKeywordTemplateStyles } from '../../../styles/styles';
+import { InitLikeKeywordTemplateProps, KeywordListTypes } from '../../../types/types';
 import { issueKeywords, subwayKeywords, trafficKeywords } from '../../../utils/allKeywords';
 
 const InitLikeKeywordTemplate = ({ moveToScreen }: InitLikeKeywordTemplateProps) => {
@@ -41,7 +40,6 @@ const InitLikeKeywordTemplate = ({ moveToScreen }: InitLikeKeywordTemplateProps)
     };
     useLayoutEffect(() => {
         checkingInitialize();
-        getToken();
     }, []);
 
     // check Keyword Handling
@@ -87,21 +85,9 @@ const InitLikeKeywordTemplate = ({ moveToScreen }: InitLikeKeywordTemplateProps)
     }, [checkTraffic, checkIssue, checkSubway]);
 
     // Send like keywords API
-    const [userTk, setUserTk] = useRecoilState(userToken);
-    const getToken = async () => {
-        try {
-            const tk = await AsyncStorage.getItem('GAZI_ac_tk');
-            if (tk) {
-                setUserTk({ ...userTk, accessToken: tk });
-            }
-        } catch (err) {
-            //For Debug
-            console.log('Failed get token in storage', err);
-        }
-    };
+    const userTk = useRecoilValue(userToken);
     const { mutate } = useMutation(likeKeywordsAPI, {
-        onSuccess: data => {
-            console.log(data);
+        onSuccess: () => {
             moveToScreen('OK');
         },
         onError: ({ response }) => {
