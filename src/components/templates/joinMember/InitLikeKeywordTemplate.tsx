@@ -13,11 +13,11 @@ import KeywordsList from '../../organisms/KeywordsList';
 import MoveBackWithPageTitle from '../../organisms/MoveBackWithPageTitle';
 import { userToken } from '../../../store/atoms';
 import { likeKeywordsAPI } from '../../../queries/api';
-import { KeywordListTypes } from '../../../types/types';
+import { InitLikeKeywordTemplateProps, KeywordListTypes } from '../../../types/types';
 import { initLikeKeywordTemplateStyles } from '../../../styles/styles';
 import { issueKeywords, subwayKeywords, trafficKeywords } from '../../../utils/allKeywords';
 
-const InitLikeKeywordTemplate = () => {
+const InitLikeKeywordTemplate = ({ moveToScreen }: InitLikeKeywordTemplateProps) => {
     // Initialized check keywords
     const [checkTraffic, setCheckTraffic] = useState<boolean[]>([]);
     const [checkSubway, setCheckSubway] = useState<boolean[]>([]);
@@ -102,6 +102,7 @@ const InitLikeKeywordTemplate = () => {
     const { mutate } = useMutation(likeKeywordsAPI, {
         onSuccess: data => {
             console.log(data);
+            moveToScreen('OK');
         },
         onError: ({ response }) => {
             //For Debug
@@ -125,7 +126,7 @@ const InitLikeKeywordTemplate = () => {
                     twoTitle="맞춤형 커뮤니티를 경험하세요"
                     explainText="관심 키워드는 마이페이지에서 언제든 변경할 수 있어요!"
                     explainSize={13}
-                    onPress={() => {}}
+                    onPress={() => moveToScreen('BACK')}
                 />
 
                 <Spacer height={35} />

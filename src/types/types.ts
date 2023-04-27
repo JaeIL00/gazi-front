@@ -155,3 +155,4 @@ export type RequestPemissionTemplateProps = {
 export type EmailLoginTemplateProps = {
     moveServiceHomeHandler: (state: string) => void;
 };
+export interface InitLikeKeywordTemplateProps extends RequestPemissionTemplateProps {}
