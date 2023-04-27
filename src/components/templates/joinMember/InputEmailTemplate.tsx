@@ -46,18 +46,20 @@ const InputEmailTemplate = ({ onPressNextStep, resetTimeHandler }: InputEmailTem
             onPressNextStep();
         },
         onError: ({ response }) => {
+            if (response.data.state === 409) {
+                setDuplicatedError(response.data.message);
+            }
             // For Debug
             console.log('(ERROR) Request email authorization number API. response: ', response);
-            setDuplicatedError(response.data.message);
         },
     });
 
     // Request email authorization number API handling by button
     const onPressEmailAuth = () => {
-        if ((isEmail && !authData) || (isEmail && joinData.password) || (isEmail && email !== joinData.email)) {
+        if (!duplicatedError && isEmail && email !== joinData.email) {
             setJoinData({ ...joinData, email });
             mutate(email);
-        } else if (isEmail && authData && email === joinData.email) {
+        } else if (!duplicatedError && email === joinData.email) {
             onPressNextStep();
         } else {
             // For Debug
@@ -66,6 +68,8 @@ const InputEmailTemplate = ({ onPressNextStep, resetTimeHandler }: InputEmailTem
             );
         }
     };
+
+    //
 
     // Change button Position by keyboard activity
     const { bottomValue, buttonUpAnimationHandler, buttonDownAnimationHandler } = useKeyboardMotion(210, 430);
@@ -121,7 +125,7 @@ const InputEmailTemplate = ({ onPressNextStep, resetTimeHandler }: InputEmailTem
                     onPress={onPressEmailAuth}
                     text="인증메일 전송"
                     height={48}
-                    backgroundColor={isEmail ? Colors.BLACK : Colors.BTN_GRAY}
+                    backgroundColor={isEmail && !duplicatedError ? Colors.BLACK : Colors.BTN_GRAY}
                     textColor={Colors.WHITE}
                     fontSize={17}
                 />

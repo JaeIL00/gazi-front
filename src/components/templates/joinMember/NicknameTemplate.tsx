@@ -38,10 +38,12 @@ const NicknameTemplate = ({ onPressNextStep }: NicknameTemplateProps) => {
             setJoinData({ ...joinData, nickName: inputNickname });
         },
         onError: ({ response }) => {
+            if (response.state === 409) {
+                setResultText(response.data.message);
+                setIsDuplicate(false);
+            }
             // For Debug
             console.log('(ERROR) Check nickname duplicate API. respense: ', response);
-            setResultText(response.data.message);
-            setIsDuplicate(false);
         },
     });
     const onPressCheckDuplicate = () => {
