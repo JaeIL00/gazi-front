@@ -12,12 +12,12 @@ import InputEmailTemplate from '../components/templates/joinMember/InputEmailTem
 import CompletedJoinTemplate from '../components/templates/joinMember/CompletedJoinTemplate';
 import EmailWithPasswordTemplate from '../components/templates/joinMember/EmailWithPasswordTemplate';
 import { globalDefaultStyles } from '../styles/styles';
-import { emailAuthAtom, joinMemberData } from '../store/atoms';
+import { emailAuthAtom, joinMemberAtom } from '../store/atoms';
 import { useRootNavigation } from '../navigations/RootStackNavigation';
 
 const JoinMemberScreen = () => {
     const rootNavigation = useRootNavigation();
-    const [joinData, setJoinData] = useRecoilState(joinMemberData);
+    const [joinData, setJoinData] = useRecoilState(joinMemberAtom);
     const [authData, setAuthData] = useRecoilState(emailAuthAtom);
 
     // Move to screen handling

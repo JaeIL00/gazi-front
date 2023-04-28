@@ -10,7 +10,7 @@ import TextButton from '../../molecules/TextButton';
 import SemiBoldText from '../../smallest/SemiBoldText';
 import KeywordsList from '../../organisms/KeywordsList';
 import MoveBackWithPageTitle from '../../organisms/MoveBackWithPageTitle';
-import { userToken } from '../../../store/atoms';
+import { userTokenAtom } from '../../../store/atoms';
 import { likeKeywordsAPI } from '../../../queries/api';
 import { initLikeKeywordTemplateStyles } from '../../../styles/styles';
 import { InitLikeKeywordTemplateProps, KeywordListTypes } from '../../../types/types';
@@ -94,7 +94,7 @@ const InitLikeKeywordTemplate = ({ moveToScreen }: InitLikeKeywordTemplateProps)
     }, [checkTraffic, checkIssue, checkSubway]);
 
     // Send like keywords API
-    const userTk = useRecoilValue(userToken);
+    const userTk = useRecoilValue(userTokenAtom);
     const { mutate } = useMutation(likeKeywordsAPI, {
         onSuccess: () => {
             moveToScreen('OK');

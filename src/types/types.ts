@@ -11,7 +11,7 @@ export type KeywordListTypes = {
 }[];
 
 // ATOM
-export type userTokenTypes = {
+export type userTokenAtomTypes = {
     accessToken: string;
     refreshToken: string;
 };

@@ -12,7 +12,7 @@ import TextButton from '../../molecules/TextButton';
 import useKeyboardMotion from '../../../utils/hooks/useKeyboardMotion';
 import { NicknameTemplateProps } from '../../../types/types';
 import { SingleLineInput } from '../../smallest/SingleLineInput';
-import { joinMemberData, userToken } from '../../../store/atoms';
+import { joinMemberAtom, userTokenAtom } from '../../../store/atoms';
 import { joinMemberAPI, checkNicknameAPI } from '../../../queries/api';
 import { nextStepButtonPosition, nicknameTemplateStyles } from '../../../styles/styles';
 
@@ -29,7 +29,7 @@ const NicknameTemplate = ({ onPressNextStep }: NicknameTemplateProps) => {
     };
 
     // Check nickname duplicate API
-    const [joinData, setJoinData] = useRecoilState(joinMemberData);
+    const [joinData, setJoinData] = useRecoilState(joinMemberAtom);
     const [resultText, setResultText] = useState<string>('');
     const [isDuplicate, setIsDuplicate] = useState<boolean>(false);
     const { refetch, isFetching } = useQuery('duplicateNickname', () => checkNicknameAPI(inputNickname), {
@@ -55,7 +55,7 @@ const NicknameTemplate = ({ onPressNextStep }: NicknameTemplateProps) => {
     };
 
     // Join member API
-    const [tokenAtom, setTokenAtom] = useRecoilState(userToken);
+    const [tokenAtom, setTokenAtom] = useRecoilState(userTokenAtom);
     const { mutate, isLoading } = useMutation(joinMemberAPI, {
         onSuccess: data => {
             successJoinMemberHandler(data.data.data);

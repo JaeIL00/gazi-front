@@ -11,13 +11,13 @@ import InitLikeKeywordScreen from '../screens/InitLikeKeywordScreen';
 import RequestPermissionScreen from '../screens/RequestPermissionScreen';
 import { RootStackParamList } from '../types/types';
 // temporary
-import { userToken } from '../store/atoms';
+import { userTokenAtom } from '../store/atoms';
 
 export const RootStackNavigation = () => {
     const Stack = createNativeStackNavigator<RootStackParamList>();
 
     // temporary
-    const isUser = useRecoilValue(userToken);
+    const isUser = useRecoilValue(userTokenAtom);
 
     return (
         <Stack.Navigator

@@ -13,12 +13,12 @@ import LoginTextInput from '../../molecules/LoginTextInput';
 import useKeyboardMotion from '../../../utils/hooks/useKeyboardMotion';
 import { emailAuthAPI } from '../../../queries/api';
 import { InputEmailTemplateProps } from '../../../types/types';
-import { emailAuthAtom, joinMemberData } from '../../../store/atoms';
+import { emailAuthAtom, joinMemberAtom } from '../../../store/atoms';
 import { inputEmailTemplateStyles, nextStepButtonPosition } from '../../../styles/styles';
 
 const InputEmailTemplate = ({ onPressNextStep, resetTimeHandler, didAuthEmail }: InputEmailTemplateProps) => {
     // Email validation
-    const [joinData, setJoinData] = useRecoilState(joinMemberData);
+    const [joinData, setJoinData] = useRecoilState(joinMemberAtom);
     const [email, setEmail] = useState<string>(joinData.email);
     const [isEmail, setIsEmail] = useState<boolean>(false);
     const onChangeEmailText = (text: string) => {

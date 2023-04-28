@@ -17,11 +17,11 @@ import { emailAuthAPI } from '../../queries/api';
 import { AuthEmailProps } from '../../types/types';
 import { authEmailStyles } from '../../styles/styles';
 import { SingleLineInput } from '../smallest/SingleLineInput';
-import { emailAuthAtom, joinMemberData } from '../../store/atoms';
+import { emailAuthAtom, joinMemberAtom } from '../../store/atoms';
 
 const AuthEmail = ({ min, sec, resetTimeHandler, finishSlideComponentHandler }: AuthEmailProps) => {
     const [authData, setAuthData] = useRecoilState(emailAuthAtom);
-    const joinData = useRecoilValue(joinMemberData);
+    const joinData = useRecoilValue(joinMemberAtom);
 
     // Animation handling
     const { height } = useWindowDimensions();

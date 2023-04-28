@@ -17,7 +17,7 @@ import { loginAPI } from '../../../queries/api';
 import { EmailLoginTemplateProps } from '../../../types/types';
 import { emailLoginTemplateStyles, nextStepButtonPosition } from '../../../styles/styles';
 import { useRecoilState } from 'recoil';
-import { userToken } from '../../../store/atoms';
+import { userTokenAtom } from '../../../store/atoms';
 
 const EmailLoginTemplate = ({ moveServiceHomeHandler }: EmailLoginTemplateProps) => {
     // Text change Handling
@@ -33,7 +33,7 @@ const EmailLoginTemplate = ({ moveServiceHomeHandler }: EmailLoginTemplateProps)
     };
 
     // Login API Handling
-    const [tokenAtom, setTokenAtom] = useRecoilState(userToken);
+    const [tokenAtom, setTokenAtom] = useRecoilState(userTokenAtom);
     const [loginErrorText, setLoginErrorText] = useState<string>('');
     const { mutate, isLoading } = useMutation(loginAPI, {
         onSuccess: data => {

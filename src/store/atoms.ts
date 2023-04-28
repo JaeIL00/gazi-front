@@ -1,9 +1,9 @@
 import { atom } from 'recoil';
-import { emailAuthAtomTypes, joinMemberTypes, userTokenTypes } from '../types/types';
+import { emailAuthAtomTypes, joinMemberTypes, userTokenAtomTypes } from '../types/types';
 
 // AUTH
-export const userToken = atom<userTokenTypes>({
-    key: 'userToken',
+export const userTokenAtom = atom<userTokenAtomTypes>({
+    key: 'userTokenAtom',
     default: {
         accessToken: '',
         refreshToken: '',
@@ -11,8 +11,8 @@ export const userToken = atom<userTokenTypes>({
 });
 
 // JOIN
-export const joinMemberData = atom<joinMemberTypes>({
-    key: 'joinMemberData',
+export const joinMemberAtom = atom<joinMemberTypes>({
+    key: 'joinMemberAtom',
     default: {
         email: '',
         password: '',
