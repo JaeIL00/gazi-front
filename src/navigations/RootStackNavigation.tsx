@@ -1,18 +1,23 @@
 import React from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp, createNativeStackNavigator } from '@react-navigation/native-stack';
+import { useRecoilValue } from 'recoil';
 
 import LoginScreen from '../screens/EmailLoginScreen';
+import BottomTabNavigation from './BottomTabNavigation';
 import JoinMemberScreen from '../screens/JoinMemberScreen';
-import SeviceHomeScreen from '../screens/SeviceHomeScreen';
 import NotLoginHomeScreen from '../screens/NotLoginHomeScreen';
 import InitLikeKeywordScreen from '../screens/InitLikeKeywordScreen';
 import RequestPermissionScreen from '../screens/RequestPermissionScreen';
 import { RootStackParamList } from '../types/types';
-import BottomTabNavigation from './BottomTabNavigation';
+// temporary
+import { userToken } from '../store/atoms';
 
 export const RootStackNavigation = () => {
     const Stack = createNativeStackNavigator<RootStackParamList>();
+
+    // temporary
+    const isUser = useRecoilValue(userToken);
 
     return (
         <Stack.Navigator
@@ -20,13 +25,19 @@ export const RootStackNavigation = () => {
                 headerShown: false,
                 presentation: 'containedModal',
             }}>
-            <Stack.Screen name="BottomTab" component={BottomTabNavigation} />
-            <Stack.Screen name="ServiceHome" component={SeviceHomeScreen} />
-            <Stack.Screen name="NotLoginHome" component={NotLoginHomeScreen} />
-            <Stack.Screen name="JoinMember" component={JoinMemberScreen} />
-            <Stack.Screen name="Login" component={LoginScreen} />
-            <Stack.Screen name="RequestPermission" component={RequestPermissionScreen} />
-            <Stack.Screen name="InitKeyword" component={InitLikeKeywordScreen} />
+            {isUser.accessToken ? (
+                <>
+                    <Stack.Screen name="BottomTab" component={BottomTabNavigation} />
+                </>
+            ) : (
+                <>
+                    <Stack.Screen name="NotLoginHome" component={NotLoginHomeScreen} />
+                    <Stack.Screen name="JoinMember" component={JoinMemberScreen} />
+                    <Stack.Screen name="Login" component={LoginScreen} />
+                    <Stack.Screen name="RequestPermission" component={RequestPermissionScreen} />
+                    <Stack.Screen name="InitKeyword" component={InitLikeKeywordScreen} />
+                </>
+            )}
         </Stack.Navigator>
     );
 };

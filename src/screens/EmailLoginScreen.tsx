@@ -1,5 +1,6 @@
 import React from 'react';
 import { View } from 'react-native';
+
 import EmailLoginTemplate from '../components/templates/emailLogin/EmailLoginTemplate';
 import { globalDefaultStyles } from '../styles/styles';
 import { useRootNavigation } from '../navigations/RootStackNavigation';
@@ -11,7 +12,7 @@ const EmailLoginScreen = () => {
     const moveScreenHandler = (state: string) => {
         switch (state) {
             case 'GO':
-                rootNavigation.navigate('ServiceHome');
+                rootNavigation.navigate('BottomTab');
                 break;
             case 'BACK':
                 rootNavigation.goBack();
