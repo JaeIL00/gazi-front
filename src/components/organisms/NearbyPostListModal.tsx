@@ -47,9 +47,7 @@ const NearbyPostListModal = () => {
                     Animated.spring(animValue, {
                         toValue: 0,
                         useNativeDriver: false,
-                    }).start(({ finished }) => {
-                        if (finished) setIsBack(false);
-                    });
+                    }).start();
                     animType.current = 'mini';
                 }
                 if (dy < 100 && animType.current === 'full') {
@@ -61,6 +59,18 @@ const NearbyPostListModal = () => {
             },
         }),
     ).current;
+
+    useEffect(() => {
+        const subscriptionAnim = animValue.addListener(({ value }) => {
+            if (value < 10) {
+                setIsBack(false);
+            }
+        });
+
+        return () => {
+            animValue.removeListener(subscriptionAnim);
+        };
+    }, [animValue]);
 
     return (
         <>
