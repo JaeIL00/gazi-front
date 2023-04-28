@@ -1,3 +1,4 @@
+import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import { ReactElement } from 'react';
 import { FlexAlignType, KeyboardType, TextStyle } from 'react-native/types';
 
@@ -28,7 +29,14 @@ export type RootStackParamList = {
     RequestPermission: undefined;
     InitKeyword: undefined;
     ServiceHome: undefined;
+    BottomTab: undefined;
 };
+export type BottomTabParamList = {
+    ServiceHome: undefined;
+    Community: undefined;
+    MyProfile: undefined;
+};
+export interface TabBarProps extends BottomTabBarProps {}
 
 // SMALLEST
 export type TouchButtonProps = {

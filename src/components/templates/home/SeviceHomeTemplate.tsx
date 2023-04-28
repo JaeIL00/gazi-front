@@ -1,12 +1,23 @@
 import React from 'react';
 import { View } from 'react-native';
-import BoldText from '../../smallest/BoldText';
+import MapView from 'react-native-maps';
+
+import mapStyle from '../../../styles/mapStyle';
 
 const SeviceHomeTemplate = () => {
     return (
-        <View>
-            <BoldText text="서비스 홈페이지" size={20} color="#333" />
-        </View>
+        <>
+            <MapView
+                style={{ flex: 1 }}
+                initialRegion={{
+                    latitude: 37.531312,
+                    longitude: 126.927384,
+                    latitudeDelta: 0.0522,
+                    longitudeDelta: 0.0221,
+                }}
+                customMapStyle={mapStyle}
+            />
+        </>
     );
 };
 

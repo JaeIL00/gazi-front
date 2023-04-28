@@ -1,11 +1,11 @@
 import React from 'react';
 import { View } from 'react-native';
-import { globalDefaultStyles } from '../styles/styles';
+import { seviceHomeScreenStyles } from '../styles/styles';
 import SeviceHomeTemplate from '../components/templates/home/SeviceHomeTemplate';
 
 const SeviceHomeScreen = () => {
     return (
-        <View style={globalDefaultStyles.container}>
+        <View style={seviceHomeScreenStyles.container}>
             <SeviceHomeTemplate />
         </View>
     );

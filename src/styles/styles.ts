@@ -469,3 +469,13 @@ export const completedJoinTemplateStyles = StyleSheet.create({
         bottom: hegithPercentage(42),
     },
 });
+export const seviceHomeTemplateStyles = StyleSheet.create({
+    container: {},
+});
+
+// SCREEN
+export const seviceHomeScreenStyles = StyleSheet.create({
+    container: {
+        flex: 1,
+    },
+});

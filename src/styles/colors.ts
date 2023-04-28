@@ -10,4 +10,5 @@ export default {
     STATUS_GRAY: '#999999',
     STATUS_GREEN: '#3DC061',
     BACKGROUND_DEFAULT: '#F9F9F9',
+    VIOLET: '#8446E7',
 };
