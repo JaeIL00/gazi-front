@@ -40,7 +40,7 @@ const TabBar = ({ state, navigation }: TabBarProps) => {
                 };
 
                 return (
-                    <TouchButton flex={1} onPress={onPress}>
+                    <TouchButton key={route.key} flex={1} onPress={onPress}>
                         <View style={tabBarStyles.contentBox}>
                             <Image
                                 source={isFocused ? focusImageList[index] : blurImageList[index]}
