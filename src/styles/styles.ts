@@ -340,6 +340,41 @@ export const tabBarStyles = StyleSheet.create({
         width: widthPercentage(24),
         height: widthPercentage(24),
     },
+    contentBox: {
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+});
+export const nearbyPostListModalStyles = StyleSheet.create({
+    container: {
+        position: 'absolute',
+        bottom: 0,
+        width: '100%',
+        backgroundColor: Colors.BACKGROUND_DEFAULT,
+        borderTopStartRadius: fontPercentage(14),
+        borderTopEndRadius: fontPercentage(14),
+        paddingHorizontal: widthPercentage(16),
+    },
+    slideBarBox: {
+        alignItems: 'center',
+        paddingTop: hegithPercentage(12),
+    },
+    slideBar: {
+        width: widthPercentage(24),
+        height: hegithPercentage(4),
+        backgroundColor: Colors.BTN_GRAY,
+        borderRadius: fontPercentage(2),
+    },
+    titleBox: {
+        paddingVertical: hegithPercentage(16),
+    },
+    grayBackground: {
+        width: '100%',
+        height: '100%',
+        backgroundColor: '#000000', // 99
+        position: 'absolute',
+        top: 0,
+    },
 });
 
 // TEMPLATES

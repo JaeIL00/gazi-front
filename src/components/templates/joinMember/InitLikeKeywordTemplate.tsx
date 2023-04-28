@@ -55,7 +55,7 @@ const InitLikeKeywordTemplate = ({ moveToScreen }: InitLikeKeywordTemplateProps)
             case 'SUBWAY':
                 if (id === 9998) {
                     const freshSubway = [...checkSubway];
-                    const checkAll = freshSubway.map(item => !freshSubway[0]);
+                    const checkAll = freshSubway.map(() => !freshSubway[0]);
                     setCheckSubway(checkAll);
                 } else {
                     const freshSubway = [...checkSubway];

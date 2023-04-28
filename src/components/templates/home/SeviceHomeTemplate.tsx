@@ -1,8 +1,8 @@
 import React from 'react';
-import { View } from 'react-native';
 import MapView from 'react-native-maps';
 
 import mapStyle from '../../../styles/mapStyle';
+import NearbyPostListModal from '../../organisms/NearbyPostListModal';
 import { seviceHomeTemplateStyles } from '../../../styles/styles';
 
 const SeviceHomeTemplate = () => {
@@ -18,6 +18,7 @@ const SeviceHomeTemplate = () => {
                 }}
                 customMapStyle={mapStyle}
             />
+            <NearbyPostListModal />
         </>
     );
 };

@@ -1,10 +1,11 @@
 import React from 'react';
-import TouchButton from '../smallest/TouchButton';
 import { Image, View } from 'react-native';
-import NormalText from '../smallest/NormalText';
-import { TabBarProps } from '../../types/types';
-import Colors from '../../styles/Colors';
+
 import Spacer from '../smallest/Spacer';
+import Colors from '../../styles/Colors';
+import NormalText from '../smallest/NormalText';
+import TouchButton from '../smallest/TouchButton';
+import { TabBarProps } from '../../types/types';
 import { tabBarStyles } from '../../styles/styles';
 
 const blurImageList = [
@@ -40,7 +41,7 @@ const TabBar = ({ state, navigation }: TabBarProps) => {
 
                 return (
                     <TouchButton flex={1} onPress={onPress}>
-                        <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                        <View style={tabBarStyles.contentBox}>
                             <Image
                                 source={isFocused ? focusImageList[index] : blurImageList[index]}
                                 style={tabBarStyles.image}
