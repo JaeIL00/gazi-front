@@ -470,7 +470,9 @@ export const completedJoinTemplateStyles = StyleSheet.create({
     },
 });
 export const seviceHomeTemplateStyles = StyleSheet.create({
-    container: {},
+    map: {
+        height: '110%',
+    },
 });
 
 // SCREEN
