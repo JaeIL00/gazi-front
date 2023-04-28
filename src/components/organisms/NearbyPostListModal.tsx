@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Animated, PanResponder, View } from 'react-native';
 import { nearbyPostListModalStyles } from '../../styles/styles';
 import SemiBoldText from '../smallest/SemiBoldText';
@@ -8,47 +8,52 @@ import { hegithPercentage } from '../../utils/changeStyleSize';
 const NearbyPostListModal = () => {
     const modalHeight = hegithPercentage(560);
 
-    const animation = useRef(new Animated.Value(0)).current;
-    const animationRef = useRef('mini');
+    const [isBack, setIsBack] = useState(false);
+
+    const animValue = useRef(new Animated.Value(0)).current;
+    const animType = useRef('mini');
     const panResponder = useRef(
         PanResponder.create({
             onMoveShouldSetPanResponder: () => true,
             onPanResponderMove: (event, gestureState) => {
                 const { dy } = gestureState;
-                if (animationRef.current === 'mini') {
-                    animation.setValue(-dy);
+                if (animType.current === 'mini') {
+                    animValue.setValue(-dy);
+                    setIsBack(true);
                 }
-                if (animationRef.current === 'full') {
-                    animation.setValue(modalHeight - dy);
+                if (animType.current === 'full') {
+                    animValue.setValue(modalHeight - dy);
                 }
             },
             onPanResponderEnd: (event, gestureState) => {
                 const { dy } = gestureState;
 
-                if (dy < -100 && animationRef.current === 'mini') {
-                    Animated.spring(animation, {
+                if (dy < -100 && animType.current === 'mini') {
+                    Animated.spring(animValue, {
                         toValue: modalHeight,
                         useNativeDriver: false,
                     }).start();
-                    animationRef.current = 'full';
+                    animType.current = 'full';
                 }
 
-                if (dy > -100 && animationRef.current === 'mini') {
-                    Animated.spring(animation, {
+                if (dy > -100 && animType.current === 'mini') {
+                    Animated.spring(animValue, {
                         toValue: 0,
                         useNativeDriver: false,
                     }).start();
                 }
 
-                if (dy > 100 && animationRef.current === 'full') {
-                    Animated.spring(animation, {
+                if (dy > 100 && animType.current === 'full') {
+                    Animated.spring(animValue, {
                         toValue: 0,
                         useNativeDriver: false,
-                    }).start();
-                    animationRef.current = 'mini';
+                    }).start(({ finished }) => {
+                        if (finished) setIsBack(false);
+                    });
+                    animType.current = 'mini';
                 }
-                if (dy < 100 && animationRef.current === 'full') {
-                    Animated.spring(animation, {
+                if (dy < 100 && animType.current === 'full') {
+                    Animated.spring(animValue, {
                         toValue: modalHeight,
                         useNativeDriver: false,
                     }).start();
@@ -59,23 +64,26 @@ const NearbyPostListModal = () => {
 
     return (
         <>
-            <Animated.View
-                style={[
-                    nearbyPostListModalStyles.grayBackground,
-                    {
-                        opacity: animation.interpolate({
-                            inputRange: [0, modalHeight],
-                            outputRange: [0, 0.6],
-                        }),
-                    },
-                ]}
-            />
+            {isBack && (
+                <Animated.View
+                    style={[
+                        nearbyPostListModalStyles.grayBackground,
+                        {
+                            opacity: animValue.interpolate({
+                                inputRange: [0, modalHeight],
+                                outputRange: [0, 0.6],
+                            }),
+                        },
+                    ]}
+                />
+            )}
+
             <Animated.View
                 {...panResponder.panHandlers}
                 style={[
                     nearbyPostListModalStyles.container,
                     {
-                        height: animation.interpolate({
+                        height: animValue.interpolate({
                             inputRange: [0, 100],
                             outputRange: [87, 187],
                         }),

@@ -13,7 +13,7 @@ const SeviceHomeTemplate = () => {
                 initialRegion={{
                     latitude: 37.531312,
                     longitude: 126.927384,
-                    latitudeDelta: 0.0522,
+                    latitudeDelta: 0.0822,
                     longitudeDelta: 0.0221,
                 }}
                 customMapStyle={mapStyle}

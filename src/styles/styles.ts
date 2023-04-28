@@ -354,6 +354,7 @@ export const nearbyPostListModalStyles = StyleSheet.create({
         borderTopStartRadius: fontPercentage(14),
         borderTopEndRadius: fontPercentage(14),
         paddingHorizontal: widthPercentage(16),
+        zIndex: 1,
     },
     slideBarBox: {
         alignItems: 'center',
