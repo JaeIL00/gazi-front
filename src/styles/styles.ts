@@ -326,6 +326,21 @@ export const keywordsListStyles = StyleSheet.create({
         marginBottom: hegithPercentage(12),
     },
 });
+export const tabBarStyles = StyleSheet.create({
+    container: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        paddingHorizontal: widthPercentage(20),
+        paddingVertical: hegithPercentage(8),
+        backgroundColor: Colors.BACKGROUND_DEFAULT,
+        borderTopWidth: fontPercentage(0.5),
+        borderColor: Colors.BTN_GRAY,
+    },
+    image: {
+        width: widthPercentage(24),
+        height: widthPercentage(24),
+    },
+});
 
 // TEMPLATES
 export const nicknameTemplateStyles = StyleSheet.create({
