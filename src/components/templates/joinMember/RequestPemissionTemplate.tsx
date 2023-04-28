@@ -20,11 +20,10 @@ const RequestPemissionTemplate = ({ moveToScreen }: RequestPemissionTemplateProp
         if (Platform.OS === 'android') {
             try {
                 await requestMultiple([
+                    PERMISSIONS.ANDROID.POST_NOTIFICATIONS,
                     PERMISSIONS.ANDROID.READ_MEDIA_IMAGES,
                     PERMISSIONS.ANDROID.READ_MEDIA_VIDEO,
-                    PERMISSIONS.ANDROID.CAMERA,
                     PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION,
-                    PERMISSIONS.ANDROID.POST_NOTIFICATIONS,
                 ]);
             } catch (err) {
                 // For Debug
