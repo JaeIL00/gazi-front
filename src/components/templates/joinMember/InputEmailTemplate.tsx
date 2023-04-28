@@ -122,7 +122,7 @@ const InputEmailTemplate = ({ onPressNextStep, resetTimeHandler, didAuthEmail }:
             <Animated.View style={[nextStepButtonPosition.button, { transform: [{ translateY: bottomValue }] }]}>
                 <TextButton
                     onPress={onPressEmailAuth}
-                    text="인증메일 전송"
+                    text={authData.isOk ? '완료' : '인증메일 전송'}
                     height={48}
                     backgroundColor={isEmail && !duplicatedError ? Colors.BLACK : Colors.BTN_GRAY}
                     textColor={Colors.WHITE}
