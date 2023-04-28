@@ -63,6 +63,15 @@ export default [
         ],
     },
     {
+        featureType: 'road',
+        elementType: 'labels.text',
+        stylers: [
+            {
+                visibility: 'off',
+            },
+        ],
+    },
+    {
         featureType: 'road.highway',
         elementType: 'geometry.fill',
         stylers: [
