@@ -20,6 +20,10 @@ export type joinMemberTypes = {
     password: string;
     nickName: string;
 };
+export type emailAuthAtomTypes = {
+    number: number;
+    isOk: boolean;
+};
 
 // NAVIGATION
 export type RootStackParamList = {
@@ -151,6 +155,7 @@ export type KeywordsListProps = {
 export type InputEmailTemplateProps = {
     onPressNextStep: () => void;
     resetTimeHandler: () => void;
+    didAuthEmail: () => void;
 };
 export type EmailWithPasswordProps = {
     onPressNextStep: () => void;

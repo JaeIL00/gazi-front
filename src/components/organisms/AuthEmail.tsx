@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, Animated, Keyboard, View, useWindowDimensions } from 'react-native';
 import { useMutation } from 'react-query';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 
 import Icons from '../smallest/Icons';
 import Spacer from '../smallest/Spacer';
@@ -17,10 +17,10 @@ import { emailAuthAPI } from '../../queries/api';
 import { AuthEmailProps } from '../../types/types';
 import { authEmailStyles } from '../../styles/styles';
 import { SingleLineInput } from '../smallest/SingleLineInput';
-import { emailAuthNumber, joinMemberData } from '../../store/atoms';
+import { emailAuthAtom, joinMemberData } from '../../store/atoms';
 
 const AuthEmail = ({ min, sec, resetTimeHandler, finishSlideComponentHandler }: AuthEmailProps) => {
-    const initAuthNumber = useRecoilValue(emailAuthNumber);
+    const [authData, setAuthData] = useRecoilState(emailAuthAtom);
     const joinData = useRecoilValue(joinMemberData);
 
     // Animation handling
@@ -43,6 +43,7 @@ const AuthEmail = ({ min, sec, resetTimeHandler, finishSlideComponentHandler }: 
                 useNativeDriver: true,
             }).start(({ finished }) => {
                 if (finished) {
+                    setAuthData({ number: 0, isOk: true });
                     finishSlideComponentHandler('OK');
                 }
             });
@@ -68,6 +69,7 @@ const AuthEmail = ({ min, sec, resetTimeHandler, finishSlideComponentHandler }: 
         }
     };
     const validationHandler = (text: string) => {
+        console.log(authNumber);
         if (text === String(authNumber)) {
             setActivityButton(true);
         } else {
@@ -75,9 +77,11 @@ const AuthEmail = ({ min, sec, resetTimeHandler, finishSlideComponentHandler }: 
             setActivityButton(false);
         }
     };
+
+    // Initialized auth number
     useEffect(() => {
-        setAuthNumber(initAuthNumber);
-    }, [initAuthNumber]);
+        setAuthNumber(authData.number);
+    }, [authData]);
 
     // Retry sending auth number
     const { mutate, isLoading } = useMutation(emailAuthAPI, {

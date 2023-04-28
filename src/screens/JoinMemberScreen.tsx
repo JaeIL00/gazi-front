@@ -12,12 +12,13 @@ import InputEmailTemplate from '../components/templates/joinMember/InputEmailTem
 import CompletedJoinTemplate from '../components/templates/joinMember/CompletedJoinTemplate';
 import EmailWithPasswordTemplate from '../components/templates/joinMember/EmailWithPasswordTemplate';
 import { globalDefaultStyles } from '../styles/styles';
-import { emailAuthNumber, joinMemberData } from '../store/atoms';
+import { emailAuthAtom, joinMemberData } from '../store/atoms';
 import { useRootNavigation } from '../navigations/RootStackNavigation';
 
 const JoinMemberScreen = () => {
     const rootNavigation = useRootNavigation();
     const [joinData, setJoinData] = useRecoilState(joinMemberData);
+    const [authData, setAuthData] = useRecoilState(emailAuthAtom);
 
     // Move to screen handling
     const [step, setStep] = useState<number>(1);
@@ -31,6 +32,9 @@ const JoinMemberScreen = () => {
         } else {
             setStep(step + 1);
         }
+    };
+    const didAuthEmail = () => {
+        setStep(2);
     };
     const finishSlideComponentHandler = (state: string) => {
         switch (state) {
@@ -97,10 +101,9 @@ const JoinMemberScreen = () => {
     useBackgroundInterval(timerHandler, min === 0 && sec === 0 ? null : 1000);
 
     // Reset auth number by full time
-    const [authData, setAuthData] = useRecoilState(emailAuthNumber);
     useEffect(() => {
         if (min === 0 && sec === 0) {
-            setAuthData(0);
+            setAuthData({ ...authData, number: 0 });
         }
     }, [min]);
 
@@ -143,7 +146,13 @@ const JoinMemberScreen = () => {
 
             <Spacer height={51} />
 
-            {step === 1 && <InputEmailTemplate resetTimeHandler={resetTimeHandler} onPressNextStep={onPressNextStep} />}
+            {step === 1 && (
+                <InputEmailTemplate
+                    resetTimeHandler={resetTimeHandler}
+                    onPressNextStep={onPressNextStep}
+                    didAuthEmail={didAuthEmail}
+                />
+            )}
             {step === 2 && <EmailWithPasswordTemplate onPressNextStep={onPressNextStep} />}
             {step === 3 && <NicknameTemplate onPressNextStep={onPressNextStep} />}
             {step === 4 && <CompletedJoinTemplate onPressNextStep={onPressNextStep} />}

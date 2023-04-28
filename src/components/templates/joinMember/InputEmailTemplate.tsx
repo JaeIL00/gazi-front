@@ -13,10 +13,10 @@ import LoginTextInput from '../../molecules/LoginTextInput';
 import useKeyboardMotion from '../../../utils/hooks/useKeyboardMotion';
 import { emailAuthAPI } from '../../../queries/api';
 import { InputEmailTemplateProps } from '../../../types/types';
-import { emailAuthNumber, joinMemberData } from '../../../store/atoms';
+import { emailAuthAtom, joinMemberData } from '../../../store/atoms';
 import { inputEmailTemplateStyles, nextStepButtonPosition } from '../../../styles/styles';
 
-const InputEmailTemplate = ({ onPressNextStep, resetTimeHandler }: InputEmailTemplateProps) => {
+const InputEmailTemplate = ({ onPressNextStep, resetTimeHandler, didAuthEmail }: InputEmailTemplateProps) => {
     // Email validation
     const [joinData, setJoinData] = useRecoilState(joinMemberData);
     const [email, setEmail] = useState<string>(joinData.email);
@@ -36,11 +36,11 @@ const InputEmailTemplate = ({ onPressNextStep, resetTimeHandler }: InputEmailTem
     };
 
     // Request email authorization number API
-    const [authData, setAuthData] = useRecoilState(emailAuthNumber);
+    const [authData, setAuthData] = useRecoilState(emailAuthAtom);
     const [duplicatedError, setDuplicatedError] = useState<string>('');
     const { isLoading, mutate } = useMutation(emailAuthAPI, {
         onSuccess: data => {
-            setAuthData(data.data.data);
+            setAuthData({ ...authData, number: data.data.data });
             resetTimeHandler();
             onPressNextStep();
         },
@@ -59,7 +59,7 @@ const InputEmailTemplate = ({ onPressNextStep, resetTimeHandler }: InputEmailTem
             setJoinData({ ...joinData, email });
             mutate(email);
         } else if (!duplicatedError && email === joinData.email) {
-            onPressNextStep();
+            authData.isOk ? didAuthEmail() : onPressNextStep();
         } else {
             // For Debug
             console.log(

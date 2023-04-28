@@ -1,5 +1,5 @@
 import { atom } from 'recoil';
-import { joinMemberTypes, userTokenTypes } from '../types/types';
+import { emailAuthAtomTypes, joinMemberTypes, userTokenTypes } from '../types/types';
 
 // AUTH
 export const userToken = atom<userTokenTypes>({
@@ -19,9 +19,12 @@ export const joinMemberData = atom<joinMemberTypes>({
         nickName: '',
     },
 });
-export const emailAuthNumber = atom<number>({
-    key: 'emailAuthNumber',
-    default: 0,
+export const emailAuthAtom = atom<emailAuthAtomTypes>({
+    key: 'emailAuthAtom',
+    default: {
+        number: 0,
+        isOk: false,
+    },
 });
 
 // For Debug
