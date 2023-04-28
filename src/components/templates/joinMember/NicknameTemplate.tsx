@@ -21,7 +21,11 @@ const NicknameTemplate = ({ onPressNextStep }: NicknameTemplateProps) => {
     const [inputNickname, setInputNickname] = useState<string>('');
     const onChangeNickname = (text: string) => {
         setInputNickname(text);
-        setResultText('');
+        if (text.length === 1) {
+            setResultText('2글자 이상 입력해주세요');
+        } else {
+            setResultText('');
+        }
     };
 
     // Check nickname duplicate API
