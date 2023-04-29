@@ -1,59 +1,84 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Animated, PanResponder, View } from 'react-native';
-import { nearbyPostListModalStyles } from '../../styles/styles';
-import SemiBoldText from '../smallest/SemiBoldText';
+
 import Colors from '../../styles/Colors';
-import { heightPercentage } from '../../utils/changeStyleSize';
+import SemiBoldText from '../smallest/SemiBoldText';
+import { nearbyPostListModalStyles } from '../../styles/styles';
+
+const FULL_VALUE = -640;
+const MINI_VALUE = 0;
 
 const NearbyPostListModal = () => {
-    const modalHeight = heightPercentage(560);
-
     const [isBack, setIsBack] = useState(false);
 
-    const animValue = useRef(new Animated.Value(0)).current;
+    const animRef = useRef(new Animated.Value(0)).current;
+    const opacityRef = useRef(new Animated.Value(0)).current;
     const animType = useRef('mini');
     const panResponder = useRef(
         PanResponder.create({
             onMoveShouldSetPanResponder: () => true,
             onPanResponderMove: (event, gestureState) => {
                 const { dy } = gestureState;
-                if (animType.current === 'mini') {
-                    animValue.setValue(-dy);
+
+                if (dy > -700 && animType.current === 'mini') {
+                    animRef.setValue(dy);
+                    opacityRef.setValue(-dy);
                     setIsBack(true);
                 }
                 if (animType.current === 'full') {
-                    animValue.setValue(modalHeight - dy);
+                    animRef.setValue(FULL_VALUE + dy);
+                    opacityRef.setValue(-FULL_VALUE - dy);
                 }
             },
             onPanResponderEnd: (event, gestureState) => {
                 const { dy } = gestureState;
 
                 if (dy < -100 && animType.current === 'mini') {
-                    Animated.spring(animValue, {
-                        toValue: modalHeight,
-                        useNativeDriver: false,
+                    Animated.spring(animRef, {
+                        toValue: FULL_VALUE,
+                        useNativeDriver: true,
+                    }).start();
+
+                    Animated.spring(opacityRef, {
+                        toValue: -FULL_VALUE,
+                        useNativeDriver: true,
                     }).start();
                     animType.current = 'full';
                 }
 
                 if (dy > -100 && animType.current === 'mini') {
-                    Animated.spring(animValue, {
-                        toValue: 0,
-                        useNativeDriver: false,
+                    Animated.spring(animRef, {
+                        toValue: MINI_VALUE,
+                        useNativeDriver: true,
+                    }).start();
+
+                    Animated.spring(opacityRef, {
+                        toValue: MINI_VALUE,
+                        useNativeDriver: true,
                     }).start();
                 }
 
                 if (dy > 100 && animType.current === 'full') {
-                    Animated.spring(animValue, {
-                        toValue: 0,
-                        useNativeDriver: false,
+                    Animated.spring(animRef, {
+                        toValue: MINI_VALUE,
+                        useNativeDriver: true,
+                    }).start();
+
+                    Animated.spring(opacityRef, {
+                        toValue: MINI_VALUE,
+                        useNativeDriver: true,
                     }).start();
                     animType.current = 'mini';
                 }
                 if (dy < 100 && animType.current === 'full') {
-                    Animated.spring(animValue, {
-                        toValue: modalHeight,
-                        useNativeDriver: false,
+                    Animated.spring(animRef, {
+                        toValue: FULL_VALUE,
+                        useNativeDriver: true,
+                    }).start();
+
+                    Animated.spring(opacityRef, {
+                        toValue: -FULL_VALUE,
+                        useNativeDriver: true,
                     }).start();
                 }
             },
@@ -61,16 +86,16 @@ const NearbyPostListModal = () => {
     ).current;
 
     useEffect(() => {
-        const subscriptionAnim = animValue.addListener(({ value }) => {
+        const subscriptionAnim = opacityRef.addListener(({ value }) => {
             if (value < 10) {
                 setIsBack(false);
             }
         });
 
         return () => {
-            animValue.removeListener(subscriptionAnim);
+            animRef.removeListener(subscriptionAnim);
         };
-    }, [animValue]);
+    }, [animRef]);
 
     return (
         <>
@@ -79,8 +104,8 @@ const NearbyPostListModal = () => {
                     style={[
                         nearbyPostListModalStyles.grayBackground,
                         {
-                            opacity: animValue.interpolate({
-                                inputRange: [0, modalHeight],
+                            opacity: opacityRef.interpolate({
+                                inputRange: [0, -FULL_VALUE],
                                 outputRange: [0, 0.6],
                             }),
                         },
@@ -93,10 +118,14 @@ const NearbyPostListModal = () => {
                 style={[
                     nearbyPostListModalStyles.container,
                     {
-                        height: animValue.interpolate({
-                            inputRange: [0, 100],
-                            outputRange: [87, 187],
-                        }),
+                        transform: [
+                            {
+                                translateY: animRef.interpolate({
+                                    inputRange: [0, 100],
+                                    outputRange: [680, 780],
+                                }),
+                            },
+                        ],
                     },
                 ]}>
                 <View style={nearbyPostListModalStyles.slideBarBox}>
