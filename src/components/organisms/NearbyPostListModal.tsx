@@ -17,11 +17,11 @@ const NearbyPostListModal = () => {
                 const { dy } = gestureState;
 
                 if (dy > -700 && animType.current === 'mini') {
-                    animValue.setValue(-dy);
+                    animValue.setValue(dy);
                     setIsBack(true);
                 }
                 if (animType.current === 'full') {
-                    animValue.setValue(640 - dy);
+                    animValue.setValue(-640 + dy);
                 }
             },
             onPanResponderEnd: (event, gestureState) => {
@@ -29,7 +29,7 @@ const NearbyPostListModal = () => {
 
                 if (dy < -100 && animType.current === 'mini') {
                     Animated.spring(animValue, {
-                        toValue: 640,
+                        toValue: -640,
                         useNativeDriver: false,
                     }).start();
                     animType.current = 'full';
@@ -51,7 +51,7 @@ const NearbyPostListModal = () => {
                 }
                 if (dy < 100 && animType.current === 'full') {
                     Animated.spring(animValue, {
-                        toValue: 640,
+                        toValue: -640,
                         useNativeDriver: false,
                     }).start();
                 }
@@ -92,10 +92,14 @@ const NearbyPostListModal = () => {
                 style={[
                     nearbyPostListModalStyles.container,
                     {
-                        bottom: animValue.interpolate({
-                            inputRange: [0, 100],
-                            outputRange: [-830, -730],
-                        }),
+                        transform: [
+                            {
+                                translateY: animValue.interpolate({
+                                    inputRange: [0, 100],
+                                    outputRange: [680, 780],
+                                }),
+                            },
+                        ],
                     },
                 ]}>
                 <View style={nearbyPostListModalStyles.slideBarBox}>
