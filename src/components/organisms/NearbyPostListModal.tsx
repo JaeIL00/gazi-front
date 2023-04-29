@@ -1,13 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Animated, PanResponder, View } from 'react-native';
-import { nearbyPostListModalStyles } from '../../styles/styles';
-import SemiBoldText from '../smallest/SemiBoldText';
+
 import Colors from '../../styles/Colors';
-import { heightPercentage } from '../../utils/changeStyleSize';
+import SemiBoldText from '../smallest/SemiBoldText';
+import { nearbyPostListModalStyles } from '../../styles/styles';
 
 const NearbyPostListModal = () => {
-    const modalHeight = heightPercentage(560);
-
     const [isBack, setIsBack] = useState(false);
 
     const animValue = useRef(new Animated.Value(0)).current;
@@ -17,12 +15,13 @@ const NearbyPostListModal = () => {
             onMoveShouldSetPanResponder: () => true,
             onPanResponderMove: (event, gestureState) => {
                 const { dy } = gestureState;
-                if (animType.current === 'mini') {
+
+                if (dy > -700 && animType.current === 'mini') {
                     animValue.setValue(-dy);
                     setIsBack(true);
                 }
                 if (animType.current === 'full') {
-                    animValue.setValue(modalHeight - dy);
+                    animValue.setValue(640 - dy);
                 }
             },
             onPanResponderEnd: (event, gestureState) => {
@@ -30,7 +29,7 @@ const NearbyPostListModal = () => {
 
                 if (dy < -100 && animType.current === 'mini') {
                     Animated.spring(animValue, {
-                        toValue: modalHeight,
+                        toValue: 640,
                         useNativeDriver: false,
                     }).start();
                     animType.current = 'full';
@@ -52,7 +51,7 @@ const NearbyPostListModal = () => {
                 }
                 if (dy < 100 && animType.current === 'full') {
                     Animated.spring(animValue, {
-                        toValue: modalHeight,
+                        toValue: 640,
                         useNativeDriver: false,
                     }).start();
                 }
@@ -80,7 +79,7 @@ const NearbyPostListModal = () => {
                         nearbyPostListModalStyles.grayBackground,
                         {
                             opacity: animValue.interpolate({
-                                inputRange: [0, modalHeight],
+                                inputRange: [0, 640],
                                 outputRange: [0, 0.6],
                             }),
                         },
@@ -93,9 +92,9 @@ const NearbyPostListModal = () => {
                 style={[
                     nearbyPostListModalStyles.container,
                     {
-                        height: animValue.interpolate({
+                        bottom: animValue.interpolate({
                             inputRange: [0, 100],
-                            outputRange: [87, 187],
+                            outputRange: [-830, -730],
                         }),
                     },
                 ]}>
