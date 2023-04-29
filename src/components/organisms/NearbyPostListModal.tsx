@@ -30,7 +30,7 @@ const NearbyPostListModal = () => {
                 if (dy < -100 && animType.current === 'mini') {
                     Animated.spring(animValue, {
                         toValue: -640,
-                        useNativeDriver: false,
+                        useNativeDriver: true,
                     }).start();
                     animType.current = 'full';
                 }
@@ -38,21 +38,21 @@ const NearbyPostListModal = () => {
                 if (dy > -100 && animType.current === 'mini') {
                     Animated.spring(animValue, {
                         toValue: 0,
-                        useNativeDriver: false,
+                        useNativeDriver: true,
                     }).start();
                 }
 
                 if (dy > 100 && animType.current === 'full') {
                     Animated.spring(animValue, {
                         toValue: 0,
-                        useNativeDriver: false,
+                        useNativeDriver: true,
                     }).start();
                     animType.current = 'mini';
                 }
                 if (dy < 100 && animType.current === 'full') {
                     Animated.spring(animValue, {
                         toValue: -640,
-                        useNativeDriver: false,
+                        useNativeDriver: true,
                     }).start();
                 }
             },
