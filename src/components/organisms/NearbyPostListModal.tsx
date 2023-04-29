@@ -5,10 +5,14 @@ import Colors from '../../styles/Colors';
 import SemiBoldText from '../smallest/SemiBoldText';
 import { nearbyPostListModalStyles } from '../../styles/styles';
 
+const FULL_VALUE = -640;
+const MINI_VALUE = 0;
+
 const NearbyPostListModal = () => {
     const [isBack, setIsBack] = useState(false);
 
-    const animValue = useRef(new Animated.Value(0)).current;
+    const animRef = useRef(new Animated.Value(0)).current;
+    const opacityRef = useRef(new Animated.Value(0)).current;
     const animType = useRef('mini');
     const panResponder = useRef(
         PanResponder.create({
@@ -17,41 +21,63 @@ const NearbyPostListModal = () => {
                 const { dy } = gestureState;
 
                 if (dy > -700 && animType.current === 'mini') {
-                    animValue.setValue(dy);
+                    animRef.setValue(dy);
+                    opacityRef.setValue(-dy);
                     setIsBack(true);
                 }
                 if (animType.current === 'full') {
-                    animValue.setValue(-640 + dy);
+                    animRef.setValue(FULL_VALUE + dy);
+                    opacityRef.setValue(-FULL_VALUE - dy);
                 }
             },
             onPanResponderEnd: (event, gestureState) => {
                 const { dy } = gestureState;
 
                 if (dy < -100 && animType.current === 'mini') {
-                    Animated.spring(animValue, {
-                        toValue: -640,
+                    Animated.spring(animRef, {
+                        toValue: FULL_VALUE,
+                        useNativeDriver: true,
+                    }).start();
+
+                    Animated.spring(opacityRef, {
+                        toValue: -FULL_VALUE,
                         useNativeDriver: true,
                     }).start();
                     animType.current = 'full';
                 }
 
                 if (dy > -100 && animType.current === 'mini') {
-                    Animated.spring(animValue, {
-                        toValue: 0,
+                    Animated.spring(animRef, {
+                        toValue: MINI_VALUE,
+                        useNativeDriver: true,
+                    }).start();
+
+                    Animated.spring(opacityRef, {
+                        toValue: MINI_VALUE,
                         useNativeDriver: true,
                     }).start();
                 }
 
                 if (dy > 100 && animType.current === 'full') {
-                    Animated.spring(animValue, {
-                        toValue: 0,
+                    Animated.spring(animRef, {
+                        toValue: MINI_VALUE,
+                        useNativeDriver: true,
+                    }).start();
+
+                    Animated.spring(opacityRef, {
+                        toValue: MINI_VALUE,
                         useNativeDriver: true,
                     }).start();
                     animType.current = 'mini';
                 }
                 if (dy < 100 && animType.current === 'full') {
-                    Animated.spring(animValue, {
-                        toValue: -640,
+                    Animated.spring(animRef, {
+                        toValue: FULL_VALUE,
+                        useNativeDriver: true,
+                    }).start();
+
+                    Animated.spring(opacityRef, {
+                        toValue: -FULL_VALUE,
                         useNativeDriver: true,
                     }).start();
                 }
@@ -60,16 +86,16 @@ const NearbyPostListModal = () => {
     ).current;
 
     useEffect(() => {
-        const subscriptionAnim = animValue.addListener(({ value }) => {
+        const subscriptionAnim = opacityRef.addListener(({ value }) => {
             if (value < 10) {
                 setIsBack(false);
             }
         });
 
         return () => {
-            animValue.removeListener(subscriptionAnim);
+            animRef.removeListener(subscriptionAnim);
         };
-    }, [animValue]);
+    }, [animRef]);
 
     return (
         <>
@@ -78,8 +104,8 @@ const NearbyPostListModal = () => {
                     style={[
                         nearbyPostListModalStyles.grayBackground,
                         {
-                            opacity: animValue.interpolate({
-                                inputRange: [0, 640],
+                            opacity: opacityRef.interpolate({
+                                inputRange: [0, -FULL_VALUE],
                                 outputRange: [0, 0.6],
                             }),
                         },
@@ -94,7 +120,7 @@ const NearbyPostListModal = () => {
                     {
                         transform: [
                             {
-                                translateY: animValue.interpolate({
+                                translateY: animRef.interpolate({
                                     inputRange: [0, 100],
                                     outputRange: [680, 780],
                                 }),
