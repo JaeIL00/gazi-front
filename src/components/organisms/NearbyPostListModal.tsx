@@ -3,10 +3,10 @@ import { Animated, PanResponder, View } from 'react-native';
 import { nearbyPostListModalStyles } from '../../styles/styles';
 import SemiBoldText from '../smallest/SemiBoldText';
 import Colors from '../../styles/Colors';
-import { hegithPercentage } from '../../utils/changeStyleSize';
+import { heightPercentage } from '../../utils/changeStyleSize';
 
 const NearbyPostListModal = () => {
-    const modalHeight = hegithPercentage(560);
+    const modalHeight = heightPercentage(560);
 
     const [isBack, setIsBack] = useState(false);
 

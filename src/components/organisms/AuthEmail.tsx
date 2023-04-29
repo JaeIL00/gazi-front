@@ -69,7 +69,6 @@ const AuthEmail = ({ min, sec, resetTimeHandler, finishSlideComponentHandler }: 
         }
     };
     const validationHandler = (text: string) => {
-        console.log(authNumber);
         if (text === String(authNumber)) {
             setActivityButton(true);
         } else {

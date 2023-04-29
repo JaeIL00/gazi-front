@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 import { FlexAlignType, TextStyle } from 'react-native/types';
 import Colors from './Colors';
-import { hegithPercentage, widthPercentage, fontPercentage } from '../utils/changeStyleSize';
+import { heightPercentage, widthPercentage, fontPercentage } from '../utils/changeStyleSize';
 
 // APP
 export const appStyles = StyleSheet.create({
@@ -39,10 +39,10 @@ export const touchButtonStyles = (
     StyleSheet.create({
         container: {
             width: width && widthPercentage(width),
-            height: height && hegithPercentage(height),
+            height: height && heightPercentage(height),
             backgroundColor: backgroundColor,
             paddingHorizontal: paddingHorizontal && widthPercentage(paddingHorizontal),
-            paddingVertical: paddingVertical && hegithPercentage(paddingVertical),
+            paddingVertical: paddingVertical && heightPercentage(paddingVertical),
             borderRadius: borderRadius ? fontPercentage(borderRadius) : fontPercentage(5),
             alignSelf: alignSelf,
             alignItems: 'center',
@@ -61,7 +61,7 @@ export const singleLineInputStyles = (
         input: {
             fontSize: fontSize && fontPercentage(fontSize),
             width: width && widthPercentage(width),
-            height: height && hegithPercentage(height),
+            height: height && heightPercentage(height),
             color: Colors.TXT_BLACK,
             fontFamily: 'Pretendard-Medium',
         },
@@ -83,7 +83,7 @@ export const grayTextStyles = (size: number) =>
 export const SpacerStyles = (height: number | undefined, width: number | undefined) =>
     StyleSheet.create({
         size: {
-            height: height && hegithPercentage(height),
+            height: height && heightPercentage(height),
             width: width && widthPercentage(width),
         },
     });
@@ -134,7 +134,7 @@ export const modalBackgroundStyles = (width: number, height: number) =>
 export const loginTextInputStyles = StyleSheet.create({
     inputBox: {
         borderRadius: fontPercentage(5),
-        height: hegithPercentage(48),
+        height: heightPercentage(48),
         backgroundColor: Colors.LIGHTGRAY,
         paddingHorizontal: widthPercentage(16),
         justifyContent: 'center',
@@ -146,7 +146,7 @@ export const agreementCheckListItemStyles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         paddingHorizontal: widthPercentage(10),
-        paddingVertical: hegithPercentage(12),
+        paddingVertical: heightPercentage(12),
     },
     agreeTitleBox: {
         flexDirection: 'row',
@@ -171,11 +171,11 @@ export const checkBoxBackground = (is: boolean) =>
 export const iconPermissionListItemStyles = StyleSheet.create({
     itemBox: {
         flexDirection: 'row',
-        paddingBottom: hegithPercentage(16),
+        paddingBottom: heightPercentage(16),
     },
     iconBox: {
         width: widthPercentage(40),
-        height: hegithPercentage(40),
+        height: heightPercentage(40),
         backgroundColor: '#E3E3E3',
         justifyContent: 'center',
         alignItems: 'center',
@@ -194,8 +194,8 @@ export const iconPermissionListItemStyles = StyleSheet.create({
 // ORGANISMS
 export const moveBackWithPageTitleStyles = StyleSheet.create({
     buttonContainer: {
-        paddingTop: hegithPercentage(30),
-        paddingBottom: hegithPercentage(43),
+        paddingTop: heightPercentage(30),
+        paddingBottom: heightPercentage(43),
     },
 });
 export const serviceAgreementStyles = StyleSheet.create({
@@ -206,21 +206,21 @@ export const serviceAgreementStyles = StyleSheet.create({
         width: '100%',
         borderRadius: fontPercentage(14),
         backgroundColor: Colors.WHITE,
-        paddingTop: hegithPercentage(33),
+        paddingTop: heightPercentage(33),
         paddingHorizontal: widthPercentage(16),
     },
     allAgreeBox: {
         width: '100%',
         flexDirection: 'row',
         paddingHorizontal: widthPercentage(10),
-        paddingVertical: hegithPercentage(13),
+        paddingVertical: heightPercentage(13),
     },
     agreeBox: {
         width: '100%',
         flexDirection: 'row',
         justifyContent: 'space-between',
         paddingHorizontal: widthPercentage(10),
-        paddingVertical: hegithPercentage(12),
+        paddingVertical: heightPercentage(12),
     },
     agreeTitleBox: {
         flexDirection: 'row',
@@ -235,8 +235,8 @@ export const serviceAgreementStyles = StyleSheet.create({
         marginRight: widthPercentage(10),
     },
     listBox: {
-        paddingTop: hegithPercentage(3),
-        paddingBottom: hegithPercentage(158),
+        paddingTop: heightPercentage(3),
+        paddingBottom: heightPercentage(158),
     },
 });
 export const authEmailStyles = StyleSheet.create({
@@ -254,14 +254,14 @@ export const authEmailStyles = StyleSheet.create({
         width: '100%',
         borderRadius: fontPercentage(14),
         backgroundColor: Colors.WHITE,
-        paddingTop: hegithPercentage(32),
+        paddingTop: heightPercentage(32),
         paddingHorizontal: widthPercentage(16),
     },
     backButtonBox: {
-        paddingBottom: hegithPercentage(28),
+        paddingBottom: heightPercentage(28),
     },
     inputBox: {
-        height: hegithPercentage(48),
+        height: heightPercentage(48),
         backgroundColor: Colors.LIGHTGRAY,
         borderRadius: fontPercentage(5),
         justifyContent: 'flex-start',
@@ -281,7 +281,7 @@ export const authEmailStyles = StyleSheet.create({
         justifyContent: 'flex-start',
         alignItems: 'center',
         position: 'absolute',
-        bottom: hegithPercentage(-21),
+        bottom: heightPercentage(-21),
     },
     retryTextBox: {
         flexDirection: 'row',
@@ -301,8 +301,8 @@ export const failLocationPermisionModalStyles = StyleSheet.create({
         backgroundColor: Colors.WHITE,
         borderRadius: fontPercentage(12),
         alignItems: 'center',
-        paddingTop: hegithPercentage(32),
-        paddingBottom: hegithPercentage(24),
+        paddingTop: heightPercentage(32),
+        paddingBottom: heightPercentage(24),
         paddingHorizontal: widthPercentage(24),
         marginHorizontal: widthPercentage(36),
     },
@@ -323,7 +323,7 @@ export const keywordsListStyles = StyleSheet.create({
     },
     itemBox: {
         marginRight: widthPercentage(6),
-        marginBottom: hegithPercentage(12),
+        marginBottom: heightPercentage(12),
     },
 });
 export const tabBarStyles = StyleSheet.create({
@@ -331,7 +331,7 @@ export const tabBarStyles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         paddingHorizontal: widthPercentage(20),
-        paddingVertical: hegithPercentage(8),
+        paddingVertical: heightPercentage(8),
         backgroundColor: Colors.BACKGROUND_DEFAULT,
         borderTopWidth: fontPercentage(0.5),
         borderColor: Colors.BTN_GRAY,
@@ -358,16 +358,16 @@ export const nearbyPostListModalStyles = StyleSheet.create({
     },
     slideBarBox: {
         alignItems: 'center',
-        paddingTop: hegithPercentage(12),
+        paddingTop: heightPercentage(12),
     },
     slideBar: {
         width: widthPercentage(24),
-        height: hegithPercentage(4),
+        height: heightPercentage(4),
         backgroundColor: Colors.BTN_GRAY,
         borderRadius: fontPercentage(2),
     },
     titleBox: {
-        paddingVertical: hegithPercentage(16),
+        paddingVertical: heightPercentage(16),
     },
     grayBackground: {
         width: '100%',
@@ -387,7 +387,7 @@ export const nicknameTemplateStyles = StyleSheet.create({
     inputBox: {
         flexDirection: 'row',
         borderRadius: fontPercentage(5),
-        height: hegithPercentage(48),
+        height: heightPercentage(48),
         backgroundColor: Colors.LIGHTGRAY,
         paddingHorizontal: widthPercentage(16),
         alignItems: 'center',
@@ -416,7 +416,7 @@ export const emailWithPasswordTemplateStyles = StyleSheet.create({
         flex: 1,
     },
     emainTextBox: {
-        height: hegithPercentage(48),
+        height: heightPercentage(48),
         paddingLeft: widthPercentage(16),
         backgroundColor: Colors.LIGHTGRAY,
         borderRadius: fontPercentage(5),
@@ -431,18 +431,18 @@ export const emailWithPasswordTemplateStyles = StyleSheet.create({
 export const notLoginTemplateStyles = StyleSheet.create({
     container: {
         flex: 1,
-        paddingTop: hegithPercentage(99),
+        paddingTop: heightPercentage(99),
     },
     buttonBox: {
         width: '100%',
         position: 'absolute',
-        bottom: hegithPercentage(70),
+        bottom: heightPercentage(70),
     },
 });
 export const requestPemissionTemplateStyles = StyleSheet.create({
     choicePermission: {
-        paddingTop: hegithPercentage(13),
-        paddingBottom: hegithPercentage(21),
+        paddingTop: heightPercentage(13),
+        paddingBottom: heightPercentage(21),
     },
     lineBar: {
         borderTopWidth: fontPercentage(1),
@@ -463,7 +463,7 @@ export const emailLoginTemplateStyles = StyleSheet.create({
         justifyContent: 'flex-start',
         alignItems: 'center',
         position: 'absolute',
-        bottom: hegithPercentage(-21),
+        bottom: heightPercentage(-21),
     },
 });
 export const initLikeKeywordTemplateStyles = StyleSheet.create({
@@ -472,7 +472,7 @@ export const initLikeKeywordTemplateStyles = StyleSheet.create({
     },
     skipBox: {
         position: 'absolute',
-        top: hegithPercentage(30),
+        top: heightPercentage(30),
         right: 0,
     },
     headerBox: {
@@ -480,31 +480,31 @@ export const initLikeKeywordTemplateStyles = StyleSheet.create({
     },
     upLinear: {
         width: '100%',
-        height: hegithPercentage(32),
+        height: heightPercentage(32),
         position: 'absolute',
-        bottom: -hegithPercentage(32),
+        bottom: -heightPercentage(32),
     },
     scrollBox: {
-        paddingTop: hegithPercentage(35),
-        paddingBottom: hegithPercentage(168),
+        paddingTop: heightPercentage(35),
+        paddingBottom: heightPercentage(168),
     },
     downLinearBox: {
-        height: hegithPercentage(84),
+        height: heightPercentage(84),
     },
     downLinear: {
         width: '100%',
-        height: hegithPercentage(32),
+        height: heightPercentage(32),
         position: 'absolute',
-        top: -hegithPercentage(32),
+        top: -heightPercentage(32),
     },
     button: {
         width: '100%',
         position: 'absolute',
-        bottom: hegithPercentage(42),
+        bottom: heightPercentage(42),
     },
     androidShadow: {
         width: '100%',
-        height: hegithPercentage(42),
+        height: heightPercentage(42),
         borderRadius: fontPercentage(5),
         position: 'absolute',
         bottom: -fontPercentage(4),
@@ -517,7 +517,7 @@ export const completedJoinTemplateStyles = StyleSheet.create({
     button: {
         width: '100%',
         position: 'absolute',
-        bottom: hegithPercentage(42),
+        bottom: heightPercentage(42),
     },
 });
 export const seviceHomeTemplateStyles = StyleSheet.create({
