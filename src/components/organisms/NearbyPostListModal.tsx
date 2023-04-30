@@ -9,8 +9,10 @@ const FULL_VALUE = -640;
 const MINI_VALUE = 0;
 
 const NearbyPostListModal = () => {
+    // The trigger of modal background
     const [isBackground, setIsBackground] = useState(false);
 
+    // Modal animation handling
     const animRef = useRef(new Animated.Value(0)).current;
     const opacityRef = useRef(new Animated.Value(0)).current;
     const animType = useRef('mini');
@@ -19,7 +21,6 @@ const NearbyPostListModal = () => {
             onMoveShouldSetPanResponder: () => true,
             onPanResponderMove: (event, gestureState) => {
                 const { dy } = gestureState;
-
                 if (dy > -700 && animType.current === 'mini') {
                     animRef.setValue(dy);
                     opacityRef.setValue(-dy);
@@ -32,38 +33,32 @@ const NearbyPostListModal = () => {
             },
             onPanResponderEnd: (event, gestureState) => {
                 const { dy } = gestureState;
-
                 if (dy < -100 && animType.current === 'mini') {
                     Animated.spring(animRef, {
                         toValue: FULL_VALUE,
                         useNativeDriver: true,
                     }).start();
-
                     Animated.spring(opacityRef, {
                         toValue: -FULL_VALUE,
                         useNativeDriver: true,
                     }).start();
                     animType.current = 'full';
                 }
-
                 if (dy > -100 && animType.current === 'mini') {
                     Animated.spring(animRef, {
                         toValue: MINI_VALUE,
                         useNativeDriver: true,
                     }).start();
-
                     Animated.spring(opacityRef, {
                         toValue: MINI_VALUE,
                         useNativeDriver: true,
                     }).start();
                 }
-
                 if (dy > 100 && animType.current === 'full') {
                     Animated.spring(animRef, {
                         toValue: MINI_VALUE,
                         useNativeDriver: true,
                     }).start();
-
                     Animated.spring(opacityRef, {
                         toValue: MINI_VALUE,
                         useNativeDriver: true,
@@ -75,7 +70,6 @@ const NearbyPostListModal = () => {
                         toValue: FULL_VALUE,
                         useNativeDriver: true,
                     }).start();
-
                     Animated.spring(opacityRef, {
                         toValue: -FULL_VALUE,
                         useNativeDriver: true,
@@ -84,14 +78,12 @@ const NearbyPostListModal = () => {
             },
         }),
     ).current;
-
     useEffect(() => {
         const subscriptionAnim = opacityRef.addListener(({ value }) => {
             if (value < 10) {
                 setIsBackground(false);
             }
         });
-
         return () => {
             animRef.removeListener(subscriptionAnim);
         };
