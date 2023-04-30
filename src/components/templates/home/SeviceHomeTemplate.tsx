@@ -1,29 +1,59 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Image, View } from 'react-native';
+import Geolocation from '@react-native-community/geolocation';
 
 import Spacer from '../../smallest/Spacer';
+import Colors from '../../../styles/Colors';
+import TouchButton from '../../smallest/TouchButton';
 import MapWithMarker from '../../organisms/MapWithMarker';
 import NearbyPostListModal from '../../organisms/NearbyPostListModal';
+import { UserPositionTypes } from '../../../types/types';
 import { seviceHomeTemplateStyles } from '../../../styles/styles';
 
 const SeviceHomeTemplate = () => {
+    // Get current user position
+    const [currentPosition, setCurrentPosition] = useState<UserPositionTypes>({
+        latitude: 37.531312,
+        longitude: 126.927384,
+    });
+    const onPressGetUserPosition = () => {
+        Geolocation.getCurrentPosition(info => {
+            setCurrentPosition({
+                latitude: info.coords.latitude,
+                longitude: info.coords.longitude,
+            });
+        });
+    };
+
     return (
         <>
-            <MapWithMarker />
+            <MapWithMarker currentPosition={currentPosition} />
             <View style={seviceHomeTemplateStyles.toggleButtonBox}>
-                <View style={[seviceHomeTemplateStyles.toggleButton, seviceHomeTemplateStyles.locationButton]}>
+                <TouchButton
+                    onPress={onPressGetUserPosition}
+                    width={52}
+                    height={52}
+                    borderRadius={52}
+                    backgroundColor={Colors.WHITE}
+                    borderWidth={1}
+                    borderColor="#E3E3E3">
                     <Image
                         source={require('../../../assets/icons/location.png')}
                         style={seviceHomeTemplateStyles.locationIcon}
                     />
-                </View>
+                </TouchButton>
                 <Spacer height={8} />
-                <View style={[seviceHomeTemplateStyles.toggleButton, seviceHomeTemplateStyles.writeButton]}>
+                <TouchButton
+                    onPress={() => {}}
+                    width={52}
+                    height={52}
+                    borderRadius={52}
+                    backgroundColor={Colors.VIOLET}>
                     <Image
                         source={require('../../../assets/icons/write.png')}
                         style={seviceHomeTemplateStyles.writeIcon}
                     />
-                </View>
+                </TouchButton>
             </View>
             <NearbyPostListModal />
         </>

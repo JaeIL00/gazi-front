@@ -38,17 +38,17 @@ export const touchButtonStyles = (
 ) =>
     StyleSheet.create({
         container: {
-            width: width && widthPercentage(width),
-            height: height && heightPercentage(height),
+            width: width && width * widthScreen,
+            height: height && height * heightScreen,
             backgroundColor: backgroundColor,
-            paddingHorizontal: paddingHorizontal && widthPercentage(paddingHorizontal),
-            paddingVertical: paddingVertical && heightPercentage(paddingVertical),
-            borderRadius: borderRadius ? fontPercentage(borderRadius) : fontPercentage(5),
+            paddingHorizontal: paddingHorizontal && paddingHorizontal * widthScreen,
+            paddingVertical: paddingVertical && paddingVertical * heightScreen,
+            borderRadius: borderRadius ? borderRadius * widthScreen : 5 * widthScreen,
             alignSelf: alignSelf,
             alignItems: 'center',
             justifyContent: 'center',
             borderColor: borderColor && borderColor,
-            borderWidth: borderWidth && widthPercentage(borderWidth),
+            borderWidth: borderWidth && borderWidth * widthScreen,
             flex: flex && flex,
         },
     });
@@ -550,21 +550,7 @@ export const seviceHomeTemplateStyles = StyleSheet.create({
         bottom: 94 * heightScreen,
         right: 16 * widthScreen,
     },
-    toggleButton: {
-        width: 52 * widthScreen,
-        height: 52 * widthScreen,
-        borderRadius: 52 * widthScreen,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    locationButton: {
-        backgroundColor: Colors.WHITE,
-        borderWidth: 1 * widthScreen,
-        borderColor: '#E3E3E3',
-    },
-    writeButton: {
-        backgroundColor: Colors.VIOLET,
-    },
+
     locationIcon: {
         width: 20 * widthScreen,
         height: 20 * widthScreen,

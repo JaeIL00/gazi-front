@@ -9,6 +9,10 @@ export type KeywordListTypes = {
     keywordName: string;
     vehicleType: string | null;
 }[];
+export type UserPositionTypes = {
+    latitude: number;
+    longitude: number;
+};
 
 // ATOM
 export type userTokenAtomTypes = {
@@ -149,6 +153,9 @@ export type KeywordsListProps = {
     list: KeywordListTypes;
     isCheck: boolean[];
     checkKeywordHandler: (list: string, index: number, id: number) => void;
+};
+export type MapWithMarkerProps = {
+    currentPosition: UserPositionTypes;
 };
 
 // TEMPLATES
