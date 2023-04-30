@@ -9,7 +9,7 @@ const FULL_VALUE = -640;
 const MINI_VALUE = 0;
 
 const NearbyPostListModal = () => {
-    const [isBack, setIsBack] = useState(false);
+    const [isBackground, setIsBackground] = useState(false);
 
     const animRef = useRef(new Animated.Value(0)).current;
     const opacityRef = useRef(new Animated.Value(0)).current;
@@ -23,7 +23,7 @@ const NearbyPostListModal = () => {
                 if (dy > -700 && animType.current === 'mini') {
                     animRef.setValue(dy);
                     opacityRef.setValue(-dy);
-                    setIsBack(true);
+                    setIsBackground(true);
                 }
                 if (animType.current === 'full') {
                     animRef.setValue(FULL_VALUE + dy);
@@ -88,7 +88,7 @@ const NearbyPostListModal = () => {
     useEffect(() => {
         const subscriptionAnim = opacityRef.addListener(({ value }) => {
             if (value < 10) {
-                setIsBack(false);
+                setIsBackground(false);
             }
         });
 
@@ -99,7 +99,7 @@ const NearbyPostListModal = () => {
 
     return (
         <>
-            {isBack && (
+            {isBackground && (
                 <Animated.View
                     style={[
                         nearbyPostListModalStyles.grayBackground,
