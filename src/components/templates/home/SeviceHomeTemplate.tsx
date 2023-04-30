@@ -1,23 +1,30 @@
 import React from 'react';
-import MapView from 'react-native-maps';
+import { Image, View } from 'react-native';
 
-import mapStyle from '../../../styles/mapStyle';
+import Spacer from '../../smallest/Spacer';
+import MapWithMarker from '../../organisms/MapWithMarker';
 import NearbyPostListModal from '../../organisms/NearbyPostListModal';
 import { seviceHomeTemplateStyles } from '../../../styles/styles';
 
 const SeviceHomeTemplate = () => {
     return (
         <>
-            <MapView
-                style={seviceHomeTemplateStyles.map}
-                initialRegion={{
-                    latitude: 37.531312,
-                    longitude: 126.927384,
-                    latitudeDelta: 0.0822,
-                    longitudeDelta: 0.0221,
-                }}
-                customMapStyle={mapStyle}
-            />
+            <MapWithMarker />
+            <View style={seviceHomeTemplateStyles.toggleButtonBox}>
+                <View style={[seviceHomeTemplateStyles.toggleButton, seviceHomeTemplateStyles.locationButton]}>
+                    <Image
+                        source={require('../../../assets/icons/location.png')}
+                        style={seviceHomeTemplateStyles.locationIcon}
+                    />
+                </View>
+                <Spacer height={8} />
+                <View style={[seviceHomeTemplateStyles.toggleButton, seviceHomeTemplateStyles.writeButton]}>
+                    <Image
+                        source={require('../../../assets/icons/write.png')}
+                        style={seviceHomeTemplateStyles.writeIcon}
+                    />
+                </View>
+            </View>
             <NearbyPostListModal />
         </>
     );

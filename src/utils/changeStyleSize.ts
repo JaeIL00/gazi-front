@@ -1,3 +1,4 @@
+import { Dimensions } from 'react-native';
 import {
     responsiveScreenFontSize,
     responsiveScreenHeight,
@@ -19,3 +20,5 @@ export const fontPercentage = (size: number) => {
     const percentage = size * 0.12;
     return responsiveScreenFontSize(percentage);
 };
+export const heightScreen = Number((Dimensions.get('screen').height * (1 / 800)).toFixed(2));
+export const widthScreen = Number((Dimensions.get('screen').width * (1 / 360)).toFixed(2));

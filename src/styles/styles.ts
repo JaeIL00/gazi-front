@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 import { FlexAlignType, TextStyle } from 'react-native/types';
 import Colors from './Colors';
-import { heightPercentage, widthPercentage, fontPercentage } from '../utils/changeStyleSize';
+import { heightPercentage, widthPercentage, fontPercentage, heightScreen, widthScreen } from '../utils/changeStyleSize';
 
 // APP
 export const appStyles = StyleSheet.create({
@@ -372,9 +372,33 @@ export const nearbyPostListModalStyles = StyleSheet.create({
     grayBackground: {
         width: '100%',
         height: '100%',
-        backgroundColor: '#000000', // 99
+        backgroundColor: '#000000',
         position: 'absolute',
         top: 0,
+    },
+});
+export const mapWithMarkerStyles = StyleSheet.create({
+    map: {
+        height: '110%',
+    },
+    markerBox: {
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    markerBoxInner: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: 103 * widthScreen,
+        height: 103 * widthScreen,
+    },
+    markerRange: {
+        position: 'absolute',
+        width: 103 * widthScreen,
+        height: 103 * widthScreen,
+    },
+    marker: {
+        width: 27 * widthScreen,
+        height: 27 * widthScreen,
     },
 });
 
@@ -521,8 +545,33 @@ export const completedJoinTemplateStyles = StyleSheet.create({
     },
 });
 export const seviceHomeTemplateStyles = StyleSheet.create({
-    map: {
-        height: '110%',
+    toggleButtonBox: {
+        position: 'absolute',
+        bottom: 94 * heightScreen,
+        right: 16 * widthScreen,
+    },
+    toggleButton: {
+        width: 52 * widthScreen,
+        height: 52 * widthScreen,
+        borderRadius: 52 * widthScreen,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    locationButton: {
+        backgroundColor: Colors.WHITE,
+        borderWidth: 1 * widthScreen,
+        borderColor: '#E3E3E3',
+    },
+    writeButton: {
+        backgroundColor: Colors.VIOLET,
+    },
+    locationIcon: {
+        width: 20 * widthScreen,
+        height: 20 * widthScreen,
+    },
+    writeIcon: {
+        width: 14.5 * widthScreen,
+        height: 16 * heightScreen,
     },
 });
 
