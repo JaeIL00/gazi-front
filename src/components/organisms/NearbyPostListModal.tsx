@@ -10,7 +10,7 @@ const MINI_VALUE = 0;
 
 const NearbyPostListModal = () => {
     // The trigger of modal background
-    const [isBackground, setIsBackground] = useState(false);
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     // Modal animation handling
     const animRef = useRef(new Animated.Value(0)).current;
@@ -24,7 +24,7 @@ const NearbyPostListModal = () => {
                 if (dy > -700 && animType.current === 'mini') {
                     animRef.setValue(dy);
                     opacityRef.setValue(-dy);
-                    setIsBackground(true);
+                    setIsModalOpen(true);
                 }
                 if (animType.current === 'full') {
                     animRef.setValue(FULL_VALUE + dy);
@@ -81,7 +81,7 @@ const NearbyPostListModal = () => {
     useEffect(() => {
         const subscriptionAnim = opacityRef.addListener(({ value }) => {
             if (value < 10) {
-                setIsBackground(false);
+                setIsModalOpen(false);
             }
         });
         return () => {
@@ -91,7 +91,7 @@ const NearbyPostListModal = () => {
 
     return (
         <>
-            {isBackground && (
+            {isModalOpen && (
                 <Animated.View
                     style={[
                         nearbyPostListModalStyles.grayBackground,
