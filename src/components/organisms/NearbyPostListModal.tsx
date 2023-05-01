@@ -7,8 +7,9 @@ import Colors from '../../styles/Colors';
 import PostListItem from './PostListItem';
 import SemiBoldText from '../smallest/SemiBoldText';
 import { nearbyPostListModalStyles } from '../../styles/styles';
+import { screenHeight } from '../../utils/changeStyleSize';
 
-const FULL_VALUE = -640;
+const FULL_VALUE = 565 * screenHeight;
 const MINI_VALUE = 0;
 
 const NearbyPostListModal = () => {
@@ -16,23 +17,21 @@ const NearbyPostListModal = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     // Modal animation handling
-    const isTouchingList = useRef(false);
+    const isTouchingList = useRef(true);
     const animRef = useRef(new Animated.Value(0)).current;
-    const opacityRef = useRef(new Animated.Value(0)).current;
     const animType = useRef('mini');
     const panResponder = useRef(
         PanResponder.create({
             onMoveShouldSetPanResponder: () => true,
             onPanResponderMove: (event, gestureState) => {
                 const { dy } = gestureState;
-                if (dy > -700 && animType.current === 'mini' && isTouchingList) {
-                    animRef.setValue(dy);
-                    opacityRef.setValue(-dy);
+                console.log(isTouchingList);
+                if (animType.current === 'mini' && isTouchingList.current) {
+                    animRef.setValue(-dy);
                     setIsModalOpen(true);
                 }
-                if (animType.current === 'full' && isTouchingList) {
-                    animRef.setValue(FULL_VALUE + dy);
-                    opacityRef.setValue(-FULL_VALUE - dy);
+                if (animType.current === 'full' && isTouchingList.current) {
+                    animRef.setValue(FULL_VALUE - dy);
                 }
             },
             onPanResponderEnd: (event, gestureState) => {
@@ -40,50 +39,34 @@ const NearbyPostListModal = () => {
                 if (dy < -50 && animType.current === 'mini') {
                     Animated.timing(animRef, {
                         toValue: FULL_VALUE,
-                        useNativeDriver: true,
-                    }).start();
-                    Animated.timing(opacityRef, {
-                        toValue: -FULL_VALUE,
-                        useNativeDriver: true,
+                        useNativeDriver: false,
                     }).start();
                     animType.current = 'full';
                 }
                 if (dy > -50 && animType.current === 'mini') {
                     Animated.timing(animRef, {
                         toValue: MINI_VALUE,
-                        useNativeDriver: true,
-                    }).start();
-                    Animated.timing(opacityRef, {
-                        toValue: MINI_VALUE,
-                        useNativeDriver: true,
+                        useNativeDriver: false,
                     }).start();
                 }
                 if (dy > 50 && animType.current === 'full') {
                     Animated.timing(animRef, {
                         toValue: MINI_VALUE,
-                        useNativeDriver: true,
-                    }).start();
-                    Animated.timing(opacityRef, {
-                        toValue: MINI_VALUE,
-                        useNativeDriver: true,
+                        useNativeDriver: false,
                     }).start();
                     animType.current = 'mini';
                 }
                 if (dy < 50 && animType.current === 'full') {
                     Animated.timing(animRef, {
                         toValue: FULL_VALUE,
-                        useNativeDriver: true,
-                    }).start();
-                    Animated.timing(opacityRef, {
-                        toValue: -FULL_VALUE,
-                        useNativeDriver: true,
+                        useNativeDriver: false,
                     }).start();
                 }
             },
         }),
     ).current;
     useEffect(() => {
-        const subscriptionAnim = opacityRef.addListener(({ value }) => {
+        const subscriptionAnim = animRef.addListener(({ value }) => {
             if (value < 10) {
                 setIsModalOpen(false);
             }
@@ -100,8 +83,8 @@ const NearbyPostListModal = () => {
                     style={[
                         nearbyPostListModalStyles.grayBackground,
                         {
-                            opacity: opacityRef.interpolate({
-                                inputRange: [0, -FULL_VALUE],
+                            opacity: animRef.interpolate({
+                                inputRange: [0, FULL_VALUE],
                                 outputRange: [0, 0.6],
                             }),
                         },
@@ -114,14 +97,10 @@ const NearbyPostListModal = () => {
                 style={[
                     nearbyPostListModalStyles.container,
                     {
-                        transform: [
-                            {
-                                translateY: animRef.interpolate({
-                                    inputRange: [0, 100],
-                                    outputRange: [680, 780],
-                                }),
-                            },
-                        ],
+                        height: animRef.interpolate({
+                            inputRange: [0, 100],
+                            outputRange: [88, 188],
+                        }),
                     },
                 ]}>
                 <View style={nearbyPostListModalStyles.slideBarBox}>
@@ -136,18 +115,12 @@ const NearbyPostListModal = () => {
                     data={dummy}
                     renderItem={({ item }) => <PostListItem post={item} />}
                     ItemSeparatorComponent={() => <Spacer height={20} />}
-                    ListFooterComponent={() => <Spacer height={200} />}
+                    ListFooterComponent={() => <Spacer height={20} />}
                     showsVerticalScrollIndicator={false}
                     onTouchStart={() => {
                         isTouchingList.current = false;
                     }}
                     onTouchEnd={() => {
-                        isTouchingList.current = true;
-                    }}
-                    onScrollBeginDrag={() => {
-                        isTouchingList.current = false;
-                    }}
-                    onScrollEndDrag={() => {
                         isTouchingList.current = true;
                     }}
                 />

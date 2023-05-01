@@ -338,8 +338,8 @@ export const tabBarStyles = StyleSheet.create({
 export const nearbyPostListModalStyles = StyleSheet.create({
     container: {
         position: 'absolute',
+        bottom: 0,
         width: '100%',
-        height: '120%',
         backgroundColor: Colors.BACKGROUND_DEFAULT,
         borderTopStartRadius: 14 * screenFont,
         borderTopEndRadius: 14 * screenFont,
