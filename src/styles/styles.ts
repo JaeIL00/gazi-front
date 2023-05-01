@@ -65,6 +65,10 @@ export const singleLineInputStyles = (
             color: Colors.TXT_BLACK,
             fontFamily: 'Pretendard-Medium',
         },
+        placeholder: {
+            fontSize: 14 * screenFont,
+            fontFamily: 'Pretendard-Regular',
+        },
     });
 export const SpacerStyles = (height: number | undefined, width: number | undefined) =>
     StyleSheet.create({
@@ -543,6 +547,42 @@ export const seviceHomeTemplateStyles = StyleSheet.create({
     writeIcon: {
         width: 14.5 * screenWidth,
         height: 16 * screenHeight,
+    },
+    searchLayout: {
+        position: 'absolute',
+        top: 16 * screenHeight,
+        width: '100%',
+        height: 44 * screenHeight,
+        paddingHorizontal: 16 * screenWidth,
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    dropshadow: {
+        flex: 1,
+        shadowColor: '#1C0B22',
+        shadowOffset: {
+            width: 0,
+            height: 4 * screenHeight,
+        },
+        shadowOpacity: 0.1,
+        shadowRadius: 10 * screenFont,
+    },
+    inputBox: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: Colors.BACKGROUND_DEFAULT,
+        borderRadius: 28 * screenFont,
+        paddingHorizontal: 19 * screenWidth,
+    },
+    searchIcon: {
+        width: 24 * screenWidth,
+        height: 24 * screenWidth,
+        marginRight: 16 * screenWidth,
+    },
+    bellIcon: {
+        width: 30 * screenWidth,
+        height: 30 * screenWidth,
+        marginLeft: 8 * screenWidth,
     },
 });
 

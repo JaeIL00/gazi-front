@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Image, View } from 'react-native';
+import { Image, Platform, View } from 'react-native';
 import Geolocation from '@react-native-community/geolocation';
+import DropShadow from 'react-native-drop-shadow';
 
 import Spacer from '../../smallest/Spacer';
 import Colors from '../../../styles/Colors';
@@ -8,6 +9,7 @@ import TouchButton from '../../smallest/TouchButton';
 import MapWithMarker from '../../organisms/MapWithMarker';
 import NearbyPostListModal from '../../organisms/NearbyPostListModal';
 import { UserPositionTypes } from '../../../types/types';
+import { SingleLineInput } from '../../smallest/SingleLineInput';
 import { seviceHomeTemplateStyles } from '../../../styles/styles';
 
 const SeviceHomeTemplate = () => {
@@ -25,9 +27,38 @@ const SeviceHomeTemplate = () => {
         });
     };
 
+    const [searchText, setSearchText] = useState('');
+    const onChangeSearchText = (text: string) => {
+        setSearchText(text);
+    };
+
     return (
         <>
             <MapWithMarker currentPosition={currentPosition} />
+            <View style={seviceHomeTemplateStyles.searchLayout}>
+                {Platform.OS === 'android' && (
+                    <DropShadow style={seviceHomeTemplateStyles.dropshadow}>
+                        <View style={seviceHomeTemplateStyles.inputBox}>
+                            <Image
+                                source={require('../../../assets/icons/search.png')}
+                                style={seviceHomeTemplateStyles.searchIcon}
+                            />
+                            <SingleLineInput
+                                value={searchText}
+                                placeholder="지금 어디로 가시나요?"
+                                onChangeText={onChangeSearchText}
+                                fontSize={16}
+                            />
+                        </View>
+                    </DropShadow>
+                )}
+                <View>
+                    <Image
+                        source={require('../../../assets/icons/bell-fill.png')}
+                        style={seviceHomeTemplateStyles.bellIcon}
+                    />
+                </View>
+            </View>
             <View style={seviceHomeTemplateStyles.toggleButtonBox}>
                 <TouchButton
                     onPress={onPressGetUserPosition}

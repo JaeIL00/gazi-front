@@ -15,8 +15,8 @@ const IconPermissionListItem = ({ iconType, iconName, title, explain, image }: I
                 {image && (
                     <Image
                         source={
-                            image === 'bell'
-                                ? require('../../assets/icons/bell.png')
+                            image === 'bell-outline'
+                                ? require('../../assets/icons/bell-outline.png')
                                 : require('../../assets/icons/gallery.png')
                         }
                         style={iconPermissionListItemStyles.imageSize}
