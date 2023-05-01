@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Animated, FlatList, PanResponder, View } from 'react-native';
+import { Animated, Easing, FlatList, PanResponder, View } from 'react-native';
 
 import dummy from '../../utils/dummy';
 import Spacer from '../smallest/Spacer';
@@ -38,43 +38,43 @@ const NearbyPostListModal = () => {
             onPanResponderEnd: (event, gestureState) => {
                 const { dy } = gestureState;
                 if (dy < -50 && animType.current === 'mini') {
-                    Animated.spring(animRef, {
+                    Animated.timing(animRef, {
                         toValue: FULL_VALUE,
                         useNativeDriver: true,
                     }).start();
-                    Animated.spring(opacityRef, {
+                    Animated.timing(opacityRef, {
                         toValue: -FULL_VALUE,
                         useNativeDriver: true,
                     }).start();
                     animType.current = 'full';
                 }
                 if (dy > -50 && animType.current === 'mini') {
-                    Animated.spring(animRef, {
+                    Animated.timing(animRef, {
                         toValue: MINI_VALUE,
                         useNativeDriver: true,
                     }).start();
-                    Animated.spring(opacityRef, {
+                    Animated.timing(opacityRef, {
                         toValue: MINI_VALUE,
                         useNativeDriver: true,
                     }).start();
                 }
                 if (dy > 50 && animType.current === 'full') {
-                    Animated.spring(animRef, {
+                    Animated.timing(animRef, {
                         toValue: MINI_VALUE,
                         useNativeDriver: true,
                     }).start();
-                    Animated.spring(opacityRef, {
+                    Animated.timing(opacityRef, {
                         toValue: MINI_VALUE,
                         useNativeDriver: true,
                     }).start();
                     animType.current = 'mini';
                 }
                 if (dy < 50 && animType.current === 'full') {
-                    Animated.spring(animRef, {
+                    Animated.timing(animRef, {
                         toValue: FULL_VALUE,
                         useNativeDriver: true,
                     }).start();
-                    Animated.spring(opacityRef, {
+                    Animated.timing(opacityRef, {
                         toValue: -FULL_VALUE,
                         useNativeDriver: true,
                     }).start();
