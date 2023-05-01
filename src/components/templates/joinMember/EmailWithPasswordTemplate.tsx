@@ -84,7 +84,7 @@ const EmailWithPasswordTemplate = ({ onPressNextStep }: EmailWithPasswordProps) 
                     type="octicons"
                     name="check"
                     iconColor={isPasswordReg ? Colors.STATUS_GREEN : Colors.STATUS_GRAY}
-                    text="영어/숫자/특수문자 중 3개 포함"
+                    text="영어, 숫자, 특수문자 포함"
                     textColor={isPasswordReg ? Colors.STATUS_GREEN : Colors.STATUS_GRAY}
                 />
             </View>
