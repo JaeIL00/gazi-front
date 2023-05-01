@@ -5,10 +5,10 @@ import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 
 import { IconsProps } from '../../types/types';
-import { fontScreen } from '../../utils/changeStyleSize';
+import { screenFont } from '../../utils/changeStyleSize';
 
 const Icons = ({ type, name, size, color }: IconsProps) => {
-    let freshSize = size * fontScreen;
+    let freshSize = size * screenFont;
     return (
         <>
             {type === 'octicons' && <Octicons name={name} size={freshSize} color={color} />}

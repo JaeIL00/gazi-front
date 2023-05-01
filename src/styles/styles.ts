@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 import { FlexAlignType, TextStyle } from 'react-native/types';
 import Colors from './Colors';
-import { fontScreen, heightScreen, widthScreen } from '../utils/changeStyleSize';
+import { screenFont, screenHeight, screenWidth } from '../utils/changeStyleSize';
 
 // APP
 export const appStyles = StyleSheet.create({
@@ -12,7 +12,7 @@ export const appStyles = StyleSheet.create({
 export const globalDefaultStyles = StyleSheet.create({
     container: {
         flex: 1,
-        paddingHorizontal: 16 * widthScreen,
+        paddingHorizontal: 16 * screenWidth,
         backgroundColor: Colors.BACKGROUND_DEFAULT,
     },
 });
@@ -38,17 +38,17 @@ export const touchButtonStyles = (
 ) =>
     StyleSheet.create({
         container: {
-            width: width && width * widthScreen,
-            height: height && height * heightScreen,
+            width: width && width * screenWidth,
+            height: height && height * screenHeight,
             backgroundColor: backgroundColor,
-            paddingHorizontal: paddingHorizontal && paddingHorizontal * widthScreen,
-            paddingVertical: paddingVertical && paddingVertical * heightScreen,
-            borderRadius: borderRadius ? borderRadius * fontScreen : 5 * fontScreen,
+            paddingHorizontal: paddingHorizontal && paddingHorizontal * screenWidth,
+            paddingVertical: paddingVertical && paddingVertical * screenHeight,
+            borderRadius: borderRadius ? borderRadius * screenFont : 5 * screenFont,
             alignSelf: alignSelf,
             alignItems: 'center',
             justifyContent: 'center',
             borderColor: borderColor && borderColor,
-            borderWidth: borderWidth && borderWidth * fontScreen,
+            borderWidth: borderWidth && borderWidth * screenFont,
             flex: flex && flex,
         },
     });
@@ -59,9 +59,9 @@ export const singleLineInputStyles = (
 ) =>
     StyleSheet.create({
         input: {
-            fontSize: fontSize && fontSize * fontScreen,
-            width: width && width * widthScreen,
-            height: height && height * heightScreen,
+            fontSize: fontSize && fontSize * screenFont,
+            width: width && width * screenWidth,
+            height: height && height * screenHeight,
             color: Colors.TXT_BLACK,
             fontFamily: 'Pretendard-Medium',
         },
@@ -69,14 +69,14 @@ export const singleLineInputStyles = (
 export const SpacerStyles = (height: number | undefined, width: number | undefined) =>
     StyleSheet.create({
         size: {
-            height: height && height * heightScreen,
-            width: width && width * widthScreen,
+            height: height && height * screenHeight,
+            width: width && width * screenWidth,
         },
     });
 export const appTextStyles = (size: number, color: string, textAlign: TextStyle['textAlign'] | undefined) =>
     StyleSheet.create({
         textStyle: {
-            fontSize: size * fontScreen,
+            fontSize: size * screenFont,
             color: color,
             textAlign: textAlign && textAlign,
         },
@@ -100,7 +100,7 @@ export const normalTextStyles = (lineHeight: number | undefined) =>
     StyleSheet.create({
         family: {
             fontFamily: 'Pretendard-Regular',
-            lineHeight: lineHeight && 19 * fontScreen,
+            lineHeight: lineHeight && 19 * screenFont,
         },
     });
 export const modalBackgroundStyles = (width: number, height: number) =>
@@ -119,10 +119,10 @@ export const modalBackgroundStyles = (width: number, height: number) =>
 // MOLECULES
 export const loginTextInputStyles = StyleSheet.create({
     inputBox: {
-        borderRadius: 5 * fontScreen,
-        height: 48 * heightScreen,
+        borderRadius: 5 * screenFont,
+        height: 48 * screenHeight,
         backgroundColor: Colors.LIGHTGRAY,
-        paddingHorizontal: 16 * widthScreen,
+        paddingHorizontal: 16 * screenWidth,
         justifyContent: 'center',
     },
 });
@@ -131,21 +131,21 @@ export const agreementCheckListItemStyles = StyleSheet.create({
         width: '100%',
         flexDirection: 'row',
         justifyContent: 'space-between',
-        paddingHorizontal: 10 * widthScreen,
-        paddingVertical: 12 * heightScreen,
+        paddingHorizontal: 10 * screenWidth,
+        paddingVertical: 12 * screenHeight,
     },
     agreeTitleBox: {
         flexDirection: 'row',
         width: '100%',
     },
     checkBox: {
-        width: 22 * widthScreen,
-        height: 22 * widthScreen,
+        width: 22 * screenWidth,
+        height: 22 * screenWidth,
         backgroundColor: '#E3E3E3',
         justifyContent: 'center',
         alignItems: 'center',
-        borderRadius: 3 * fontScreen,
-        marginRight: 10 * widthScreen,
+        borderRadius: 3 * screenFont,
+        marginRight: 10 * screenWidth,
     },
 });
 export const checkBoxBackground = (is: boolean) =>
@@ -157,20 +157,20 @@ export const checkBoxBackground = (is: boolean) =>
 export const iconPermissionListItemStyles = StyleSheet.create({
     itemBox: {
         flexDirection: 'row',
-        paddingBottom: 16 * heightScreen,
+        paddingBottom: 16 * screenHeight,
     },
     iconBox: {
-        width: 40 * widthScreen,
-        height: 40 * heightScreen,
+        width: 40 * screenWidth,
+        height: 40 * screenHeight,
         backgroundColor: '#E3E3E3',
         justifyContent: 'center',
         alignItems: 'center',
-        borderRadius: 40 * fontScreen,
-        marginRight: 18 * widthScreen,
+        borderRadius: 40 * screenFont,
+        marginRight: 18 * screenWidth,
     },
     imageSize: {
-        width: 25 * widthScreen,
-        height: 25 * widthScreen,
+        width: 25 * screenWidth,
+        height: 25 * screenWidth,
     },
     textBox: {
         justifyContent: 'center',
@@ -180,8 +180,8 @@ export const iconPermissionListItemStyles = StyleSheet.create({
 // ORGANISMS
 export const moveBackWithPageTitleStyles = StyleSheet.create({
     buttonContainer: {
-        paddingTop: 30 * heightScreen,
-        paddingBottom: 43 * heightScreen,
+        paddingTop: 30 * screenHeight,
+        paddingBottom: 43 * screenHeight,
     },
 });
 export const serviceAgreementStyles = StyleSheet.create({
@@ -190,39 +190,39 @@ export const serviceAgreementStyles = StyleSheet.create({
         position: 'absolute',
         height: '100%',
         width: '100%',
-        borderRadius: 14 * fontScreen,
+        borderRadius: 14 * screenFont,
         backgroundColor: Colors.WHITE,
-        paddingTop: 33 * heightScreen,
-        paddingHorizontal: 16 * widthScreen,
+        paddingTop: 33 * screenHeight,
+        paddingHorizontal: 16 * screenWidth,
     },
     allAgreeBox: {
         width: '100%',
         flexDirection: 'row',
-        paddingHorizontal: 10 * widthScreen,
-        paddingVertical: 13 * heightScreen,
+        paddingHorizontal: 10 * screenWidth,
+        paddingVertical: 13 * screenHeight,
     },
     agreeBox: {
         width: '100%',
         flexDirection: 'row',
         justifyContent: 'space-between',
-        paddingHorizontal: 10 * widthScreen,
-        paddingVertical: 12 * heightScreen,
+        paddingHorizontal: 10 * screenWidth,
+        paddingVertical: 12 * screenHeight,
     },
     agreeTitleBox: {
         flexDirection: 'row',
         width: '100%',
     },
     checkBox: {
-        width: 22 * widthScreen,
-        height: 22 * widthScreen,
+        width: 22 * screenWidth,
+        height: 22 * screenWidth,
         justifyContent: 'center',
         alignItems: 'center',
-        borderRadius: 3 * fontScreen,
-        marginRight: 10 * widthScreen,
+        borderRadius: 3 * screenFont,
+        marginRight: 10 * screenWidth,
     },
     listBox: {
-        paddingTop: 3 * heightScreen,
-        paddingBottom: 158 * heightScreen,
+        paddingTop: 3 * screenHeight,
+        paddingBottom: 158 * screenHeight,
     },
 });
 export const authEmailStyles = StyleSheet.create({
@@ -238,20 +238,20 @@ export const authEmailStyles = StyleSheet.create({
         position: 'absolute',
         height: '100%',
         width: '100%',
-        borderRadius: 14 * fontScreen,
+        borderRadius: 14 * screenFont,
         backgroundColor: Colors.WHITE,
-        paddingTop: 32 * heightScreen,
-        paddingHorizontal: 16 * widthScreen,
+        paddingTop: 32 * screenHeight,
+        paddingHorizontal: 16 * screenWidth,
     },
     backButtonBox: {
-        paddingBottom: 28 * heightScreen,
+        paddingBottom: 28 * screenHeight,
     },
     inputBox: {
-        height: 48 * heightScreen,
+        height: 48 * screenHeight,
         backgroundColor: Colors.LIGHTGRAY,
-        borderRadius: 5 * fontScreen,
+        borderRadius: 5 * screenFont,
         justifyContent: 'flex-start',
-        paddingHorizontal: 16 * widthScreen,
+        paddingHorizontal: 16 * screenWidth,
         flexDirection: 'row',
     },
     inputRange: {
@@ -263,11 +263,11 @@ export const authEmailStyles = StyleSheet.create({
     },
     emailErrorTextBox: {
         flexDirection: 'row',
-        paddingLeft: 10 * widthScreen,
+        paddingLeft: 10 * screenWidth,
         justifyContent: 'flex-start',
         alignItems: 'center',
         position: 'absolute',
-        bottom: -21 * heightScreen,
+        bottom: -21 * screenHeight,
     },
     retryTextBox: {
         flexDirection: 'row',
@@ -276,7 +276,7 @@ export const authEmailStyles = StyleSheet.create({
     },
     underBar: {
         borderBottomColor: Colors.TXT_GRAY,
-        borderBottomWidth: 2 * fontScreen,
+        borderBottomWidth: 2 * screenFont,
     },
     finishButton: {
         width: '100%',
@@ -285,16 +285,16 @@ export const authEmailStyles = StyleSheet.create({
 export const failLocationPermisionModalStyles = StyleSheet.create({
     container: {
         backgroundColor: Colors.WHITE,
-        borderRadius: 12 * fontScreen,
+        borderRadius: 12 * screenFont,
         alignItems: 'center',
-        paddingTop: 32 * heightScreen,
-        paddingBottom: 24 * heightScreen,
-        paddingHorizontal: 24 * widthScreen,
-        marginHorizontal: 36 * widthScreen,
+        paddingTop: 32 * screenHeight,
+        paddingBottom: 24 * screenHeight,
+        paddingHorizontal: 24 * screenWidth,
+        marginHorizontal: 36 * screenWidth,
     },
     textBox: {
         alignItems: 'center',
-        paddingHorizontal: 12 * widthScreen,
+        paddingHorizontal: 12 * screenWidth,
     },
     buttonBox: {
         width: '100%',
@@ -308,23 +308,23 @@ export const keywordsListStyles = StyleSheet.create({
         width: '90%',
     },
     itemBox: {
-        marginRight: 6 * widthScreen,
-        marginBottom: 12 * heightScreen,
+        marginRight: 6 * screenWidth,
+        marginBottom: 12 * screenHeight,
     },
 });
 export const tabBarStyles = StyleSheet.create({
     container: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        paddingHorizontal: 20 * widthScreen,
-        paddingVertical: 8 * widthScreen,
+        paddingHorizontal: 20 * screenWidth,
+        paddingVertical: 8 * screenWidth,
         backgroundColor: Colors.BACKGROUND_DEFAULT,
-        borderTopWidth: 0.5 * fontScreen,
+        borderTopWidth: 0.5 * screenFont,
         borderColor: Colors.BTN_GRAY,
     },
     image: {
-        width: 24 * widthScreen,
-        height: 24 * widthScreen,
+        width: 24 * screenWidth,
+        height: 24 * screenWidth,
     },
     contentBox: {
         justifyContent: 'center',
@@ -337,20 +337,20 @@ export const nearbyPostListModalStyles = StyleSheet.create({
         width: '100%',
         height: '120%',
         backgroundColor: Colors.BACKGROUND_DEFAULT,
-        borderTopStartRadius: 14 * fontScreen,
-        borderTopEndRadius: 14 * fontScreen,
-        paddingHorizontal: 16 * widthScreen,
+        borderTopStartRadius: 14 * screenFont,
+        borderTopEndRadius: 14 * screenFont,
+        paddingHorizontal: 16 * screenWidth,
         zIndex: 1,
     },
     slideBarBox: {
         alignItems: 'center',
-        paddingTop: 12 * heightScreen,
+        paddingTop: 12 * screenHeight,
     },
     slideBar: {
-        width: 24 * widthScreen,
+        width: 24 * screenWidth,
         height: 4,
         backgroundColor: Colors.BTN_GRAY,
-        borderRadius: 2 * fontScreen,
+        borderRadius: 2 * screenFont,
     },
     titleBox: {
         paddingVertical: 16,
@@ -374,17 +374,17 @@ export const mapWithMarkerStyles = StyleSheet.create({
     markerBoxInner: {
         justifyContent: 'center',
         alignItems: 'center',
-        width: 103 * widthScreen,
-        height: 103 * widthScreen,
+        width: 103 * screenWidth,
+        height: 103 * screenWidth,
     },
     markerRange: {
         position: 'absolute',
-        width: 103 * widthScreen,
-        height: 103 * widthScreen,
+        width: 103 * screenWidth,
+        height: 103 * screenWidth,
     },
     marker: {
-        width: 27 * widthScreen,
-        height: 27 * widthScreen,
+        width: 27 * screenWidth,
+        height: 27 * screenWidth,
     },
 });
 
@@ -396,16 +396,16 @@ export const nicknameTemplateStyles = StyleSheet.create({
     },
     inputBox: {
         flexDirection: 'row',
-        borderRadius: 5 * widthScreen,
-        height: 48 * heightScreen,
+        borderRadius: 5 * screenWidth,
+        height: 48 * screenHeight,
         backgroundColor: Colors.LIGHTGRAY,
-        paddingHorizontal: 16 * widthScreen,
+        paddingHorizontal: 16 * screenWidth,
         alignItems: 'center',
         justifyContent: 'space-between',
     },
     emailErrorTextBox: {
         flexDirection: 'row',
-        paddingLeft: 10 * widthScreen,
+        paddingLeft: 10 * screenWidth,
         justifyContent: 'flex-start',
         alignItems: 'center',
     },
@@ -416,7 +416,7 @@ export const inputEmailTemplateStyles = StyleSheet.create({
     },
     emailErrorTextBox: {
         flexDirection: 'row',
-        paddingLeft: 10 * widthScreen,
+        paddingLeft: 10 * screenWidth,
         justifyContent: 'flex-start',
         alignItems: 'center',
     },
@@ -426,36 +426,36 @@ export const emailWithPasswordTemplateStyles = StyleSheet.create({
         flex: 1,
     },
     emainTextBox: {
-        height: 48 * heightScreen,
-        paddingLeft: 16 * widthScreen,
+        height: 48 * screenHeight,
+        paddingLeft: 16 * screenWidth,
         backgroundColor: Colors.LIGHTGRAY,
-        borderRadius: 5 * fontScreen,
+        borderRadius: 5 * screenFont,
         justifyContent: 'center',
     },
     emailErrorTextBox: {
         flexDirection: 'row',
         alignItems: 'center',
-        paddingLeft: 10 * widthScreen,
+        paddingLeft: 10 * screenWidth,
     },
 });
 export const notLoginTemplateStyles = StyleSheet.create({
     container: {
         flex: 1,
-        paddingTop: 99 * heightScreen,
+        paddingTop: 99 * screenHeight,
     },
     buttonBox: {
         width: '100%',
         position: 'absolute',
-        bottom: 70 * heightScreen,
+        bottom: 70 * screenHeight,
     },
 });
 export const requestPemissionTemplateStyles = StyleSheet.create({
     choicePermission: {
-        paddingTop: 13 * heightScreen,
-        paddingBottom: 21 * heightScreen,
+        paddingTop: 13 * screenHeight,
+        paddingBottom: 21 * screenHeight,
     },
     lineBar: {
-        borderTopWidth: 1 * fontScreen,
+        borderTopWidth: 1 * screenFont,
         borderColor: '#EBEBEB',
     },
 });
@@ -465,15 +465,15 @@ export const emailLoginTemplateStyles = StyleSheet.create({
     },
     underBar: {
         borderBottomColor: Colors.TXT_GRAY,
-        borderBottomWidth: 2 * fontScreen,
+        borderBottomWidth: 2 * screenFont,
     },
     emailErrorTextBox: {
         flexDirection: 'row',
-        paddingLeft: 10 * widthScreen,
+        paddingLeft: 10 * screenWidth,
         justifyContent: 'flex-start',
         alignItems: 'center',
         position: 'absolute',
-        bottom: -21 * heightScreen,
+        bottom: -21 * screenHeight,
     },
 });
 export const initLikeKeywordTemplateStyles = StyleSheet.create({
@@ -482,7 +482,7 @@ export const initLikeKeywordTemplateStyles = StyleSheet.create({
     },
     skipBox: {
         position: 'absolute',
-        top: 30 * heightScreen,
+        top: 30 * screenHeight,
         right: 0,
     },
     headerBox: {
@@ -490,34 +490,34 @@ export const initLikeKeywordTemplateStyles = StyleSheet.create({
     },
     upLinear: {
         width: '100%',
-        height: 32 * heightScreen,
+        height: 32 * screenHeight,
         position: 'absolute',
-        bottom: -32 * heightScreen,
+        bottom: -32 * screenHeight,
     },
     scrollBox: {
-        paddingTop: 35 * heightScreen,
-        paddingBottom: 168 * heightScreen,
+        paddingTop: 35 * screenHeight,
+        paddingBottom: 168 * screenHeight,
     },
     downLinearBox: {
-        height: 84 * heightScreen,
+        height: 84 * screenHeight,
     },
     downLinear: {
         width: '100%',
-        height: 32 * heightScreen,
+        height: 32 * screenHeight,
         position: 'absolute',
-        top: -32 * heightScreen,
+        top: -32 * screenHeight,
     },
     button: {
         width: '100%',
         position: 'absolute',
-        bottom: 42 * heightScreen,
+        bottom: 42 * screenHeight,
     },
     androidShadow: {
         width: '100%',
-        height: 42 * heightScreen,
-        borderRadius: 5 * fontScreen,
+        height: 42 * screenHeight,
+        borderRadius: 5 * screenFont,
         position: 'absolute',
-        bottom: -4 * widthScreen,
+        bottom: -4 * screenWidth,
     },
 });
 export const completedJoinTemplateStyles = StyleSheet.create({
@@ -527,22 +527,22 @@ export const completedJoinTemplateStyles = StyleSheet.create({
     button: {
         width: '100%',
         position: 'absolute',
-        bottom: 42 * heightScreen,
+        bottom: 42 * screenHeight,
     },
 });
 export const seviceHomeTemplateStyles = StyleSheet.create({
     toggleButtonBox: {
         position: 'absolute',
-        bottom: 94 * heightScreen,
-        right: 16 * widthScreen,
+        bottom: 94 * screenHeight,
+        right: 16 * screenWidth,
     },
     locationIcon: {
-        width: 20 * widthScreen,
-        height: 20 * widthScreen,
+        width: 20 * screenWidth,
+        height: 20 * screenWidth,
     },
     writeIcon: {
-        width: 14.5 * widthScreen,
-        height: 16 * heightScreen,
+        width: 14.5 * screenWidth,
+        height: 16 * screenHeight,
     },
 });
 
