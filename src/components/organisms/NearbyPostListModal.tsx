@@ -9,8 +9,10 @@ const FULL_VALUE = -640;
 const MINI_VALUE = 0;
 
 const NearbyPostListModal = () => {
-    const [isBack, setIsBack] = useState(false);
+    // The trigger of modal background
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
+    // Modal animation handling
     const animRef = useRef(new Animated.Value(0)).current;
     const opacityRef = useRef(new Animated.Value(0)).current;
     const animType = useRef('mini');
@@ -19,11 +21,10 @@ const NearbyPostListModal = () => {
             onMoveShouldSetPanResponder: () => true,
             onPanResponderMove: (event, gestureState) => {
                 const { dy } = gestureState;
-
                 if (dy > -700 && animType.current === 'mini') {
                     animRef.setValue(dy);
                     opacityRef.setValue(-dy);
-                    setIsBack(true);
+                    setIsModalOpen(true);
                 }
                 if (animType.current === 'full') {
                     animRef.setValue(FULL_VALUE + dy);
@@ -32,38 +33,32 @@ const NearbyPostListModal = () => {
             },
             onPanResponderEnd: (event, gestureState) => {
                 const { dy } = gestureState;
-
                 if (dy < -100 && animType.current === 'mini') {
                     Animated.spring(animRef, {
                         toValue: FULL_VALUE,
                         useNativeDriver: true,
                     }).start();
-
                     Animated.spring(opacityRef, {
                         toValue: -FULL_VALUE,
                         useNativeDriver: true,
                     }).start();
                     animType.current = 'full';
                 }
-
                 if (dy > -100 && animType.current === 'mini') {
                     Animated.spring(animRef, {
                         toValue: MINI_VALUE,
                         useNativeDriver: true,
                     }).start();
-
                     Animated.spring(opacityRef, {
                         toValue: MINI_VALUE,
                         useNativeDriver: true,
                     }).start();
                 }
-
                 if (dy > 100 && animType.current === 'full') {
                     Animated.spring(animRef, {
                         toValue: MINI_VALUE,
                         useNativeDriver: true,
                     }).start();
-
                     Animated.spring(opacityRef, {
                         toValue: MINI_VALUE,
                         useNativeDriver: true,
@@ -75,7 +70,6 @@ const NearbyPostListModal = () => {
                         toValue: FULL_VALUE,
                         useNativeDriver: true,
                     }).start();
-
                     Animated.spring(opacityRef, {
                         toValue: -FULL_VALUE,
                         useNativeDriver: true,
@@ -84,14 +78,12 @@ const NearbyPostListModal = () => {
             },
         }),
     ).current;
-
     useEffect(() => {
         const subscriptionAnim = opacityRef.addListener(({ value }) => {
             if (value < 10) {
-                setIsBack(false);
+                setIsModalOpen(false);
             }
         });
-
         return () => {
             animRef.removeListener(subscriptionAnim);
         };
@@ -99,7 +91,7 @@ const NearbyPostListModal = () => {
 
     return (
         <>
-            {isBack && (
+            {isModalOpen && (
                 <Animated.View
                     style={[
                         nearbyPostListModalStyles.grayBackground,
@@ -133,7 +125,7 @@ const NearbyPostListModal = () => {
                 </View>
 
                 <View style={nearbyPostListModalStyles.titleBox}>
-                    <SemiBoldText text="유저이름님 주변에서 일어나고 있는 일" color={Colors.BLACK} size={18} />
+                    <SemiBoldText text="00님 주변에서 일어나고 있는 일" color={Colors.BLACK} size={18} />
                 </View>
 
                 <View

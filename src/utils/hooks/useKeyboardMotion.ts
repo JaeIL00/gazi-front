@@ -1,19 +1,19 @@
 import { useRef } from 'react';
 import { Animated } from 'react-native';
-import { heightPercentage } from '../changeStyleSize';
+import { screenHeight } from '../changeStyleSize';
 
 const useKeyboardMotion = (upNum: number, downNum: number) => {
-    const bottomValue = useRef(new Animated.Value(heightPercentage(downNum))).current;
+    const bottomValue = useRef(new Animated.Value(downNum * screenHeight)).current;
     const buttonUpAnimationHandler = () => {
         Animated.timing(bottomValue, {
-            toValue: heightPercentage(upNum),
+            toValue: upNum * screenHeight,
             duration: 300,
             useNativeDriver: true,
         }).start();
     };
     const buttonDownAnimationHandler = () => {
         Animated.timing(bottomValue, {
-            toValue: heightPercentage(downNum),
+            toValue: downNum * screenHeight,
             duration: 50,
             useNativeDriver: true,
         }).start();
