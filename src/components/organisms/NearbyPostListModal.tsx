@@ -25,7 +25,6 @@ const NearbyPostListModal = () => {
             onMoveShouldSetPanResponder: () => true,
             onPanResponderMove: (event, gestureState) => {
                 const { dy } = gestureState;
-                console.log(dy);
                 if (dy > -700 && animType.current === 'mini' && isTouchingList) {
                     animRef.setValue(dy);
                     opacityRef.setValue(-dy);
@@ -38,7 +37,7 @@ const NearbyPostListModal = () => {
             },
             onPanResponderEnd: (event, gestureState) => {
                 const { dy } = gestureState;
-                if (dy < -100 && animType.current === 'mini') {
+                if (dy < -50 && animType.current === 'mini') {
                     Animated.spring(animRef, {
                         toValue: FULL_VALUE,
                         useNativeDriver: true,
@@ -49,7 +48,7 @@ const NearbyPostListModal = () => {
                     }).start();
                     animType.current = 'full';
                 }
-                if (dy > -100 && animType.current === 'mini') {
+                if (dy > -50 && animType.current === 'mini') {
                     Animated.spring(animRef, {
                         toValue: MINI_VALUE,
                         useNativeDriver: true,
@@ -59,7 +58,7 @@ const NearbyPostListModal = () => {
                         useNativeDriver: true,
                     }).start();
                 }
-                if (dy > 100 && animType.current === 'full') {
+                if (dy > 50 && animType.current === 'full') {
                     Animated.spring(animRef, {
                         toValue: MINI_VALUE,
                         useNativeDriver: true,
@@ -70,7 +69,7 @@ const NearbyPostListModal = () => {
                     }).start();
                     animType.current = 'mini';
                 }
-                if (dy < 100 && animType.current === 'full') {
+                if (dy < 50 && animType.current === 'full') {
                     Animated.spring(animRef, {
                         toValue: FULL_VALUE,
                         useNativeDriver: true,
