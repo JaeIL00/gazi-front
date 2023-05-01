@@ -24,6 +24,7 @@ const RequestPemissionTemplate = ({ moveToScreen }: RequestPemissionTemplateProp
                     PERMISSIONS.ANDROID.READ_MEDIA_IMAGES,
                     PERMISSIONS.ANDROID.READ_MEDIA_VIDEO,
                     PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION,
+                    PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
                 ]);
             } catch (err) {
                 // For Debug
