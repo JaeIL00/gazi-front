@@ -125,7 +125,7 @@ const NearbyPostListModal = () => {
                 </View>
 
                 <View style={nearbyPostListModalStyles.titleBox}>
-                    <SemiBoldText text="유저이름님 주변에서 일어나고 있는 일" color={Colors.BLACK} size={18} />
+                    <SemiBoldText text="00님 주변에서 일어나고 있는 일" color={Colors.BLACK} size={18} />
                 </View>
 
                 <View
