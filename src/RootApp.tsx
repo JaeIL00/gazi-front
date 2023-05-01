@@ -18,6 +18,7 @@ export const RootApp = () => {
 
     const queryClient = new QueryClient();
 
+    // Ignore font setting of device
     if (Platform.OS === 'android') {
         (Text as unknown as TextWithDefaultProps).defaultProps =
             (Text as unknown as TextWithDefaultProps).defaultProps || {};
