@@ -1,5 +1,5 @@
-import React from 'react';
-import { TextInput } from 'react-native';
+import React, { RefObject, useEffect, useRef } from 'react';
+import { Keyboard, TextInput } from 'react-native';
 
 import Colors from '../../styles/Colors';
 import { SingleLineInputProps } from '../../types/types';
@@ -17,8 +17,20 @@ export const SingleLineInput = ({
     width,
     height,
 }: SingleLineInputProps) => {
+    // When keyboard hide, input is blur
+    const textInputRef = useRef() as RefObject<TextInput>;
+    const blurTextInput = () => {
+        textInputRef.current?.blur();
+    };
+    useEffect(() => {
+        const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', blurTextInput);
+        return () => {
+            keyboardDidHideListener.remove();
+        };
+    });
     return (
         <TextInput
+            ref={textInputRef}
             autoCorrect={false}
             autoCapitalize="none"
             value={value}
