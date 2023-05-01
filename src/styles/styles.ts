@@ -391,6 +391,19 @@ export const mapWithMarkerStyles = StyleSheet.create({
         height: 27 * screenWidth,
     },
 });
+export const postListItemStyles = StyleSheet.create({
+    container: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        width: '100%',
+    },
+    postImage: {
+        width: 77 * screenWidth,
+        height: 77 * screenWidth,
+        borderRadius: 5 * screenFont,
+    },
+});
 
 // TEMPLATES
 export const nicknameTemplateStyles = StyleSheet.create({

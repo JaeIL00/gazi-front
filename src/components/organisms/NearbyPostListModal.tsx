@@ -1,7 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Animated, PanResponder, View } from 'react-native';
+import { Animated, FlatList, PanResponder, View } from 'react-native';
 
+import dummy from '../../utils/dummy';
+import Spacer from '../smallest/Spacer';
 import Colors from '../../styles/Colors';
+import PostListItem from './PostListItem';
 import SemiBoldText from '../smallest/SemiBoldText';
 import { nearbyPostListModalStyles } from '../../styles/styles';
 
@@ -13,6 +16,7 @@ const NearbyPostListModal = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     // Modal animation handling
+    const isTouchingList = useRef(false);
     const animRef = useRef(new Animated.Value(0)).current;
     const opacityRef = useRef(new Animated.Value(0)).current;
     const animType = useRef('mini');
@@ -21,12 +25,13 @@ const NearbyPostListModal = () => {
             onMoveShouldSetPanResponder: () => true,
             onPanResponderMove: (event, gestureState) => {
                 const { dy } = gestureState;
-                if (dy > -700 && animType.current === 'mini') {
+                console.log(dy);
+                if (dy > -700 && animType.current === 'mini' && isTouchingList) {
                     animRef.setValue(dy);
                     opacityRef.setValue(-dy);
                     setIsModalOpen(true);
                 }
-                if (animType.current === 'full') {
+                if (animType.current === 'full' && isTouchingList) {
                     animRef.setValue(FULL_VALUE + dy);
                     opacityRef.setValue(-FULL_VALUE - dy);
                 }
@@ -127,13 +132,26 @@ const NearbyPostListModal = () => {
                 <View style={nearbyPostListModalStyles.titleBox}>
                     <SemiBoldText text="00님 주변에서 일어나고 있는 일" color={Colors.BLACK} size={18} />
                 </View>
-
-                <View
-                    style={{
-                        height: 800,
-                    }}>
-                    <SemiBoldText text="게시글" color={Colors.BLACK} size={18} />
-                </View>
+                <Spacer height={10} />
+                <FlatList
+                    data={dummy}
+                    renderItem={({ item }) => <PostListItem post={item} />}
+                    ItemSeparatorComponent={() => <Spacer height={20} />}
+                    ListFooterComponent={() => <Spacer height={200} />}
+                    showsVerticalScrollIndicator={false}
+                    onTouchStart={() => {
+                        isTouchingList.current = false;
+                    }}
+                    onTouchEnd={() => {
+                        isTouchingList.current = true;
+                    }}
+                    onScrollBeginDrag={() => {
+                        isTouchingList.current = false;
+                    }}
+                    onScrollEndDrag={() => {
+                        isTouchingList.current = true;
+                    }}
+                />
             </Animated.View>
         </>
     );

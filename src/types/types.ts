@@ -157,6 +157,20 @@ export type KeywordsListProps = {
 export type MapWithMarkerProps = {
     currentPosition: UserPositionTypes;
 };
+export type PostListItemProps = {
+    post: {
+        id: number;
+        title: string;
+        distance: string;
+        time: string;
+        rePostCount: number;
+        content: string;
+        latitude: number;
+        longitude: number;
+        thumbnail: string;
+        represent: string;
+    };
+};
 
 // TEMPLATES
 export type InputEmailTemplateProps = {
