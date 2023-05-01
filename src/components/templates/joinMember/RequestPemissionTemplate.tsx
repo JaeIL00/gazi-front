@@ -85,7 +85,7 @@ const RequestPemissionTemplate = ({ moveToScreen }: RequestPemissionTemplateProp
 
                 <ScrollView contentContainerStyle={requestPemissionTemplateStyles.choicePermission}>
                     <IconPermissionListItem
-                        image="bell"
+                        image="bell-outline"
                         title="푸시알림"
                         explain="내 주변이나 관심있는 키워드에 관한 소식"
                     />

@@ -29,7 +29,11 @@ export const SingleLineInput = ({
             keyboardType={keyboardType ?? 'default'}
             maxLength={maxLength}
             secureTextEntry={secureTextEntry}
-            style={singleLineInputStyles(fontSize, width, height).input}
+            style={
+                value
+                    ? singleLineInputStyles(fontSize, width, height).input
+                    : singleLineInputStyles(fontSize, width, height).placeholder
+            }
         />
     );
 };
