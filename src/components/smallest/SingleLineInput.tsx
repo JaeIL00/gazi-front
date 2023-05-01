@@ -27,7 +27,7 @@ export const SingleLineInput = ({
         return () => {
             keyboardDidHideListener.remove();
         };
-    });
+    }, []);
     return (
         <TextInput
             ref={textInputRef}
