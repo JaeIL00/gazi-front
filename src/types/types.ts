@@ -174,6 +174,7 @@ export type PostListItemProps = {
 export type NearbyPostListModalProps = {
     isModalRef: React.MutableRefObject<boolean>;
     handleModalTrigger: boolean;
+    onPressGetUserPosition: () => void;
 };
 
 // TEMPLATES

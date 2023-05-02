@@ -368,6 +368,28 @@ export const nearbyPostListModalStyles = StyleSheet.create({
         backgroundColor: Colors.BACKGROUND_DEFAULT,
         marginTop: -1,
     },
+    toggleButtonBox: {
+        position: 'absolute',
+        bottom: 18 * screenHeight,
+        right: 16 * screenWidth,
+    },
+    locationIcon: {
+        width: 20 * screenWidth,
+        height: 20 * screenWidth,
+    },
+    writeIcon: {
+        width: 14.5 * screenWidth,
+        height: 16 * screenHeight,
+    },
+    dropshadow: {
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 4,
+        },
+        shadowOpacity: 0.14,
+        shadowRadius: 5,
+    },
 });
 export const mapWithMarkerStyles = StyleSheet.create({
     map: {
@@ -550,19 +572,6 @@ export const completedJoinTemplateStyles = StyleSheet.create({
     },
 });
 export const seviceHomeTemplateStyles = StyleSheet.create({
-    toggleButtonBox: {
-        position: 'absolute',
-        bottom: 94 * screenHeight,
-        right: 16 * screenWidth,
-    },
-    locationIcon: {
-        width: 20 * screenWidth,
-        height: 20 * screenWidth,
-    },
-    writeIcon: {
-        width: 14.5 * screenWidth,
-        height: 16 * screenHeight,
-    },
     searchLayout: {
         position: 'absolute',
         top: 16 * screenHeight,

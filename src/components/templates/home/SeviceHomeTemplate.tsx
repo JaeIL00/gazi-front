@@ -3,15 +3,11 @@ import { Image, Platform, View } from 'react-native';
 import Geolocation from '@react-native-community/geolocation';
 import DropShadow from 'react-native-drop-shadow';
 
-import Spacer from '../../smallest/Spacer';
-import Colors from '../../../styles/Colors';
-import TouchButton from '../../smallest/TouchButton';
 import MapWithMarker from '../../organisms/MapWithMarker';
 import NearbyPostListModal from '../../organisms/NearbyPostListModal';
-import { SeviceHomeTemplateProps, UserPositionTypes } from '../../../types/types';
 import { SingleLineInput } from '../../smallest/SingleLineInput';
 import { seviceHomeTemplateStyles } from '../../../styles/styles';
-import { useFocusEffect } from '@react-navigation/native';
+import { SeviceHomeTemplateProps, UserPositionTypes } from '../../../types/types';
 
 const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger }: SeviceHomeTemplateProps) => {
     // Get current user position
@@ -61,34 +57,12 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger }: SeviceHomeTempla
                     />
                 </View>
             </View>
-            <View style={seviceHomeTemplateStyles.toggleButtonBox}>
-                <TouchButton
-                    onPress={onPressGetUserPosition}
-                    width={52}
-                    height={52}
-                    borderRadius={52}
-                    backgroundColor={Colors.WHITE}
-                    borderWidth={1}
-                    borderColor="#E3E3E3">
-                    <Image
-                        source={require('../../../assets/icons/location.png')}
-                        style={seviceHomeTemplateStyles.locationIcon}
-                    />
-                </TouchButton>
-                <Spacer height={8} />
-                <TouchButton
-                    onPress={() => {}}
-                    width={52}
-                    height={52}
-                    borderRadius={52}
-                    backgroundColor={Colors.VIOLET}>
-                    <Image
-                        source={require('../../../assets/icons/write.png')}
-                        style={seviceHomeTemplateStyles.writeIcon}
-                    />
-                </TouchButton>
-            </View>
-            <NearbyPostListModal isModalRef={isModalRef} handleModalTrigger={handleModalTrigger} />
+
+            <NearbyPostListModal
+                isModalRef={isModalRef}
+                handleModalTrigger={handleModalTrigger}
+                onPressGetUserPosition={onPressGetUserPosition}
+            />
         </>
     );
 };

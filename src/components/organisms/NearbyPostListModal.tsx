@@ -1,21 +1,23 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Animated, FlatList, PanResponder, View } from 'react-native';
+import { Animated, FlatList, Image, PanResponder, Platform, View } from 'react-native';
+import DropShadow from 'react-native-drop-shadow';
 
 import dummy from '../../utils/dummy';
 import Spacer from '../smallest/Spacer';
 import Colors from '../../styles/Colors';
 import PostListItem from './PostListItem';
+import TouchButton from '../smallest/TouchButton';
 import SemiBoldText from '../smallest/SemiBoldText';
-import { nearbyPostListModalStyles } from '../../styles/styles';
 import { screenHeight } from '../../utils/changeStyleSize';
 import { NearbyPostListModalProps } from '../../types/types';
+import { nearbyPostListModalStyles } from '../../styles/styles';
 
 const FULL_ANIVALUE = -565 * screenHeight;
 const MINI_ANIVALUE = 0;
 const INIT_MINI = 600 * screenHeight;
 const INIT_OUTPUT = INIT_MINI + 100;
 
-const NearbyPostListModal = ({ isModalRef, handleModalTrigger }: NearbyPostListModalProps) => {
+const NearbyPostListModal = ({ isModalRef, handleModalTrigger, onPressGetUserPosition }: NearbyPostListModalProps) => {
     // The trigger of modal background
     const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -131,7 +133,49 @@ const NearbyPostListModal = ({ isModalRef, handleModalTrigger }: NearbyPostListM
                     ]}
                 />
             )}
-
+            <Animated.View
+                style={{
+                    transform: [
+                        {
+                            translateY: animRef.interpolate({
+                                inputRange: [0, 100],
+                                outputRange: [INIT_MINI, INIT_OUTPUT],
+                            }),
+                        },
+                    ],
+                }}>
+                <View style={nearbyPostListModalStyles.toggleButtonBox}>
+                    <TouchButton
+                        onPress={onPressGetUserPosition}
+                        width={52}
+                        height={52}
+                        borderRadius={52}
+                        backgroundColor={Colors.WHITE}
+                        borderWidth={1}
+                        borderColor="#E3E3E3">
+                        <Image
+                            source={require('../../assets/icons/location.png')}
+                            style={nearbyPostListModalStyles.locationIcon}
+                        />
+                    </TouchButton>
+                    <Spacer height={8} />
+                    {Platform.OS === 'android' && (
+                        <DropShadow style={nearbyPostListModalStyles.dropshadow}>
+                            <TouchButton
+                                onPress={() => {}}
+                                width={52}
+                                height={52}
+                                borderRadius={52}
+                                backgroundColor={Colors.VIOLET}>
+                                <Image
+                                    source={require('../../assets/icons/write.png')}
+                                    style={nearbyPostListModalStyles.writeIcon}
+                                />
+                            </TouchButton>
+                        </DropShadow>
+                    )}
+                </View>
+            </Animated.View>
             <Animated.View
                 {...panResponder.panHandlers}
                 style={[
