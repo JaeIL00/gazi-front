@@ -337,9 +337,6 @@ export const tabBarStyles = StyleSheet.create({
 });
 export const nearbyPostListModalStyles = StyleSheet.create({
     container: {
-        position: 'absolute',
-        bottom: 0,
-        width: '100%',
         backgroundColor: Colors.BACKGROUND_DEFAULT,
         borderTopStartRadius: 14 * screenFont,
         borderTopEndRadius: 14 * screenFont,
@@ -365,6 +362,11 @@ export const nearbyPostListModalStyles = StyleSheet.create({
         backgroundColor: '#000000',
         position: 'absolute',
         top: 0,
+    },
+    listBox: {
+        paddingHorizontal: 16 * screenWidth,
+        backgroundColor: Colors.BACKGROUND_DEFAULT,
+        marginTop: -1,
     },
 });
 export const mapWithMarkerStyles = StyleSheet.create({

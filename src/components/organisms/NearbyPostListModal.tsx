@@ -9,72 +9,91 @@ import SemiBoldText from '../smallest/SemiBoldText';
 import { nearbyPostListModalStyles } from '../../styles/styles';
 import { screenHeight } from '../../utils/changeStyleSize';
 
-const FULL_VALUE = 565 * screenHeight;
-const MINI_VALUE = 0;
+const FULL_ANIVALUE = -565 * screenHeight;
+const MINI_ANIVALUE = 0;
+const INIT_MINI = 600 * screenHeight;
+const INIT_OUTPUT = INIT_MINI + 100;
 
 const NearbyPostListModal = () => {
     // The trigger of modal background
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     // Modal animation handling
-    const isTouchingList = useRef(true);
     const animRef = useRef(new Animated.Value(0)).current;
+    const opacityRef = useRef(new Animated.Value(0)).current;
     const animType = useRef('mini');
     const panResponder = useRef(
         PanResponder.create({
             onMoveShouldSetPanResponder: () => true,
             onPanResponderMove: (event, gestureState) => {
                 const { dy } = gestureState;
-                console.log(isTouchingList);
-                if (animType.current === 'mini' && isTouchingList.current) {
-                    animRef.setValue(-dy);
+                if (animType.current === 'mini') {
+                    animRef.setValue(dy);
+                    opacityRef.setValue(-dy);
                     setIsModalOpen(true);
                 }
-                if (animType.current === 'full' && isTouchingList.current) {
-                    animRef.setValue(FULL_VALUE - dy);
+                if (animType.current === 'full') {
+                    animRef.setValue(FULL_ANIVALUE + dy);
+                    opacityRef.setValue(-FULL_ANIVALUE - dy);
                 }
             },
             onPanResponderEnd: (event, gestureState) => {
                 const { dy } = gestureState;
                 if (dy < -50 && animType.current === 'mini') {
                     Animated.timing(animRef, {
-                        toValue: FULL_VALUE,
-                        useNativeDriver: false,
+                        toValue: FULL_ANIVALUE,
+                        useNativeDriver: true,
+                    }).start();
+                    Animated.spring(opacityRef, {
+                        toValue: -FULL_ANIVALUE,
+                        useNativeDriver: true,
                     }).start();
                     animType.current = 'full';
                 }
                 if (dy > -50 && animType.current === 'mini') {
                     Animated.timing(animRef, {
-                        toValue: MINI_VALUE,
-                        useNativeDriver: false,
+                        toValue: MINI_ANIVALUE,
+                        useNativeDriver: true,
+                    }).start();
+                    Animated.spring(opacityRef, {
+                        toValue: MINI_ANIVALUE,
+                        useNativeDriver: true,
                     }).start();
                 }
                 if (dy > 50 && animType.current === 'full') {
                     Animated.timing(animRef, {
-                        toValue: MINI_VALUE,
-                        useNativeDriver: false,
+                        toValue: MINI_ANIVALUE,
+                        useNativeDriver: true,
+                    }).start();
+                    Animated.spring(opacityRef, {
+                        toValue: MINI_ANIVALUE,
+                        useNativeDriver: true,
                     }).start();
                     animType.current = 'mini';
                 }
                 if (dy < 50 && animType.current === 'full') {
                     Animated.timing(animRef, {
-                        toValue: FULL_VALUE,
-                        useNativeDriver: false,
+                        toValue: FULL_ANIVALUE,
+                        useNativeDriver: true,
+                    }).start();
+                    Animated.spring(opacityRef, {
+                        toValue: -FULL_ANIVALUE,
+                        useNativeDriver: true,
                     }).start();
                 }
             },
         }),
     ).current;
     useEffect(() => {
-        const subscriptionAnim = animRef.addListener(({ value }) => {
+        const subscriptionAnim = opacityRef.addListener(({ value }) => {
             if (value < 10) {
                 setIsModalOpen(false);
             }
         });
         return () => {
-            animRef.removeListener(subscriptionAnim);
+            opacityRef.removeListener(subscriptionAnim);
         };
-    }, [animRef]);
+    }, [opacityRef]);
 
     return (
         <>
@@ -83,8 +102,8 @@ const NearbyPostListModal = () => {
                     style={[
                         nearbyPostListModalStyles.grayBackground,
                         {
-                            opacity: animRef.interpolate({
-                                inputRange: [0, FULL_VALUE],
+                            opacity: opacityRef.interpolate({
+                                inputRange: [0, -FULL_ANIVALUE],
                                 outputRange: [0, 0.6],
                             }),
                         },
@@ -97,10 +116,14 @@ const NearbyPostListModal = () => {
                 style={[
                     nearbyPostListModalStyles.container,
                     {
-                        height: animRef.interpolate({
-                            inputRange: [0, 100],
-                            outputRange: [88, 188],
-                        }),
+                        transform: [
+                            {
+                                translateY: animRef.interpolate({
+                                    inputRange: [0, 100],
+                                    outputRange: [INIT_MINI, INIT_OUTPUT],
+                                }),
+                            },
+                        ],
                     },
                 ]}>
                 <View style={nearbyPostListModalStyles.slideBarBox}>
@@ -111,18 +134,27 @@ const NearbyPostListModal = () => {
                     <SemiBoldText text="00님 주변에서 일어나고 있는 일" color={Colors.BLACK} size={18} />
                 </View>
                 <Spacer height={10} />
+            </Animated.View>
+            <Animated.View
+                style={[
+                    nearbyPostListModalStyles.listBox,
+                    {
+                        transform: [
+                            {
+                                translateY: animRef.interpolate({
+                                    inputRange: [0, 100],
+                                    outputRange: [INIT_MINI, INIT_OUTPUT],
+                                }),
+                            },
+                        ],
+                    },
+                ]}>
                 <FlatList
                     data={dummy}
                     renderItem={({ item }) => <PostListItem post={item} />}
                     ItemSeparatorComponent={() => <Spacer height={20} />}
                     ListFooterComponent={() => <Spacer height={20} />}
                     showsVerticalScrollIndicator={false}
-                    onTouchStart={() => {
-                        isTouchingList.current = false;
-                    }}
-                    onTouchEnd={() => {
-                        isTouchingList.current = true;
-                    }}
                 />
             </Animated.View>
         </>
