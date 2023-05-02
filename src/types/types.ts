@@ -171,6 +171,10 @@ export type PostListItemProps = {
         represent: string;
     };
 };
+export type NearbyPostListModalProps = {
+    isModalRef: React.MutableRefObject<boolean>;
+    handleModalTrigger: boolean;
+};
 
 // TEMPLATES
 export type InputEmailTemplateProps = {
@@ -190,3 +194,4 @@ export type EmailLoginTemplateProps = {
     moveServiceHomeHandler: (state: string) => void;
 };
 export interface InitLikeKeywordTemplateProps extends RequestPemissionTemplateProps {}
+export interface SeviceHomeTemplateProps extends NearbyPostListModalProps {}

@@ -8,11 +8,12 @@ import Colors from '../../../styles/Colors';
 import TouchButton from '../../smallest/TouchButton';
 import MapWithMarker from '../../organisms/MapWithMarker';
 import NearbyPostListModal from '../../organisms/NearbyPostListModal';
-import { UserPositionTypes } from '../../../types/types';
+import { SeviceHomeTemplateProps, UserPositionTypes } from '../../../types/types';
 import { SingleLineInput } from '../../smallest/SingleLineInput';
 import { seviceHomeTemplateStyles } from '../../../styles/styles';
+import { useFocusEffect } from '@react-navigation/native';
 
-const SeviceHomeTemplate = () => {
+const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger }: SeviceHomeTemplateProps) => {
     // Get current user position
     const [currentPosition, setCurrentPosition] = useState<UserPositionTypes>({
         latitude: 37.531312,
@@ -27,6 +28,7 @@ const SeviceHomeTemplate = () => {
         });
     };
 
+    // Search text handling
     const [searchText, setSearchText] = useState('');
     const onChangeSearchText = (text: string) => {
         setSearchText(text);
@@ -86,7 +88,7 @@ const SeviceHomeTemplate = () => {
                     />
                 </TouchButton>
             </View>
-            <NearbyPostListModal />
+            <NearbyPostListModal isModalRef={isModalRef} handleModalTrigger={handleModalTrigger} />
         </>
     );
 };

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Animated, Easing, FlatList, PanResponder, View } from 'react-native';
+import { Animated, FlatList, PanResponder, View } from 'react-native';
 
 import dummy from '../../utils/dummy';
 import Spacer from '../smallest/Spacer';
@@ -8,13 +8,14 @@ import PostListItem from './PostListItem';
 import SemiBoldText from '../smallest/SemiBoldText';
 import { nearbyPostListModalStyles } from '../../styles/styles';
 import { screenHeight } from '../../utils/changeStyleSize';
+import { NearbyPostListModalProps } from '../../types/types';
 
 const FULL_ANIVALUE = -565 * screenHeight;
 const MINI_ANIVALUE = 0;
 const INIT_MINI = 600 * screenHeight;
 const INIT_OUTPUT = INIT_MINI + 100;
 
-const NearbyPostListModal = () => {
+const NearbyPostListModal = ({ isModalRef, handleModalTrigger }: NearbyPostListModalProps) => {
     // The trigger of modal background
     const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -39,6 +40,7 @@ const NearbyPostListModal = () => {
             },
             onPanResponderEnd: (event, gestureState) => {
                 const { dy } = gestureState;
+                // Off modal
                 if (dy < -50 && animType.current === 'mini') {
                     Animated.timing(animRef, {
                         toValue: FULL_ANIVALUE,
@@ -48,6 +50,7 @@ const NearbyPostListModal = () => {
                         toValue: -FULL_ANIVALUE,
                         useNativeDriver: true,
                     }).start();
+                    isModalRef.current = true;
                     animType.current = 'full';
                 }
                 if (dy > -50 && animType.current === 'mini') {
@@ -60,6 +63,7 @@ const NearbyPostListModal = () => {
                         useNativeDriver: true,
                     }).start();
                 }
+                // On modal
                 if (dy > 50 && animType.current === 'full') {
                     Animated.timing(animRef, {
                         toValue: MINI_ANIVALUE,
@@ -69,6 +73,7 @@ const NearbyPostListModal = () => {
                         toValue: MINI_ANIVALUE,
                         useNativeDriver: true,
                     }).start();
+                    isModalRef.current = false;
                     animType.current = 'mini';
                 }
                 if (dy < 50 && animType.current === 'full') {
@@ -84,7 +89,23 @@ const NearbyPostListModal = () => {
             },
         }),
     ).current;
+
     useEffect(() => {
+        // Press hardware back key
+        if (handleModalTrigger) {
+            Animated.timing(animRef, {
+                toValue: MINI_ANIVALUE,
+                useNativeDriver: true,
+            }).start();
+            Animated.spring(opacityRef, {
+                toValue: MINI_ANIVALUE,
+                useNativeDriver: true,
+            }).start();
+            isModalRef.current = false;
+            animType.current = 'mini';
+        }
+
+        // Off modal background
         const subscriptionAnim = opacityRef.addListener(({ value }) => {
             if (value < 10) {
                 setIsModalOpen(false);
@@ -93,7 +114,7 @@ const NearbyPostListModal = () => {
         return () => {
             opacityRef.removeListener(subscriptionAnim);
         };
-    }, [opacityRef]);
+    }, [opacityRef, handleModalTrigger]);
 
     return (
         <>
