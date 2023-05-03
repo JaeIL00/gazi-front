@@ -32,7 +32,7 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger }: SeviceHomeTempla
 
     return (
         <>
-            {/* <MapWithMarker currentPosition={currentPosition} /> */}
+            <MapWithMarker currentPosition={currentPosition} />
             <View style={seviceHomeTemplateStyles.searchLayout}>
                 {Platform.OS === 'android' && (
                     <DropShadow style={seviceHomeTemplateStyles.dropshadow}>

@@ -349,12 +349,12 @@ export const nearbyPostListModalStyles = StyleSheet.create({
     },
     slideBar: {
         width: 24 * screenWidth,
-        height: 4,
+        height: 4 * screenWidth,
         backgroundColor: Colors.BTN_GRAY,
         borderRadius: 2 * screenFont,
     },
     titleBox: {
-        paddingVertical: 16,
+        paddingVertical: 16 * screenHeight,
     },
     grayBackground: {
         width: '100%',
@@ -382,18 +382,20 @@ export const nearbyPostListModalStyles = StyleSheet.create({
         height: 16 * screenHeight,
     },
     dropshadow: {
-        shadowColor: '#000',
+        shadowColor: '#000000',
         shadowOffset: {
             width: 0,
-            height: 4,
+            height: 4 * screenHeight,
         },
         shadowOpacity: 0.14,
-        shadowRadius: 5,
+        shadowRadius: 5 * screenFont,
     },
 });
 export const mapWithMarkerStyles = StyleSheet.create({
     map: {
+        width: '100%',
         height: '110%',
+        position: 'absolute',
     },
     markerBox: {
         justifyContent: 'center',
