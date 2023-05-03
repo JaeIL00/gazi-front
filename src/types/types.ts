@@ -1,6 +1,6 @@
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import { ReactElement } from 'react';
-import { FlexAlignType, KeyboardType, TextStyle } from 'react-native/types';
+import { Animated, FlexAlignType, KeyboardType, TextStyle } from 'react-native/types';
 
 //COMMON
 export type KeywordListTypes = {
@@ -174,6 +174,7 @@ export type PostListItemProps = {
 export type NearbyPostListModalProps = {
     isModalRef: React.MutableRefObject<boolean>;
     handleModalTrigger: boolean;
+    mapRef: Animated.Value;
     onPressGetUserPosition: () => void;
 };
 

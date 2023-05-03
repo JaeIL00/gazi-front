@@ -18,7 +18,12 @@ const MINI_ANIVALUE = 0;
 const INIT_MINI = 595 * screenHeight;
 const INIT_OUTPUT = INIT_MINI + 100;
 
-const NearbyPostListModal = ({ isModalRef, handleModalTrigger, onPressGetUserPosition }: NearbyPostListModalProps) => {
+const NearbyPostListModal = ({
+    isModalRef,
+    handleModalTrigger,
+    mapRef,
+    onPressGetUserPosition,
+}: NearbyPostListModalProps) => {
     // Modal animation handling
     const animRef = useRef(new Animated.Value(0)).current;
     const opacityRef = useRef(new Animated.Value(0)).current;
@@ -32,11 +37,16 @@ const NearbyPostListModal = ({ isModalRef, handleModalTrigger, onPressGetUserPos
                 if (animType.current === 'mini') {
                     animRef.setValue(dy);
                     opacityRef.setValue(-dy);
+                    mapRef.setValue(dy);
                 }
                 if (animType.current === 'middle') {
-                    isModalBackground.current = true;
-                    animRef.setValue(MIDDLE_ANIVALUE + dy);
-                    opacityRef.setValue(-MIDDLE_ANIVALUE - dy);
+                    if (dy > -1) {
+                        mapRef.setValue(MIDDLE_ANIVALUE + dy);
+                    } else {
+                        isModalBackground.current = true;
+                        animRef.setValue(MIDDLE_ANIVALUE + dy);
+                        opacityRef.setValue(-MIDDLE_ANIVALUE - dy);
+                    }
                 }
                 if (animType.current === 'full') {
                     animRef.setValue(FULL_ANIVALUE + dy);
@@ -50,7 +60,7 @@ const NearbyPostListModal = ({ isModalRef, handleModalTrigger, onPressGetUserPos
                     // To full from middle
                     Animated.timing(animRef, {
                         toValue: FULL_ANIVALUE,
-                        duration: 300,
+                        duration: 200,
                         useNativeDriver: true,
                     }).start();
                     Animated.spring(opacityRef, {
@@ -64,8 +74,13 @@ const NearbyPostListModal = ({ isModalRef, handleModalTrigger, onPressGetUserPos
                     // To mini from middle
                     Animated.timing(animRef, {
                         toValue: MINI_ANIVALUE,
-                        duration: 500,
+                        duration: 200,
                         useNativeDriver: true,
+                    }).start();
+                    Animated.timing(mapRef, {
+                        toValue: MINI_ANIVALUE,
+                        duration: 200,
+                        useNativeDriver: false,
                     }).start();
                     isModalRef.current = false;
                     return (animType.current = 'mini');
@@ -75,8 +90,13 @@ const NearbyPostListModal = ({ isModalRef, handleModalTrigger, onPressGetUserPos
                     // To middile from mini
                     Animated.timing(animRef, {
                         toValue: MIDDLE_ANIVALUE,
-                        duration: 300,
+                        duration: 200,
                         useNativeDriver: true,
+                    }).start();
+                    Animated.timing(mapRef, {
+                        toValue: MIDDLE_ANIVALUE,
+                        duration: 200,
+                        useNativeDriver: false,
                     }).start();
                     isModalRef.current = true;
                     return (animType.current = 'middle');
@@ -93,7 +113,7 @@ const NearbyPostListModal = ({ isModalRef, handleModalTrigger, onPressGetUserPos
                     isModalBackground.current = true;
                     Animated.timing(animRef, {
                         toValue: FULL_ANIVALUE,
-                        duration: 300,
+                        duration: 200,
                         useNativeDriver: true,
                     }).start(({ finished }) => {
                         if (finished) {
@@ -111,7 +131,7 @@ const NearbyPostListModal = ({ isModalRef, handleModalTrigger, onPressGetUserPos
                     // To middile from full
                     Animated.timing(animRef, {
                         toValue: MIDDLE_ANIVALUE,
-                        duration: 300,
+                        duration: 200,
                         useNativeDriver: true,
                     }).start();
                     Animated.spring(opacityRef, {
@@ -124,6 +144,7 @@ const NearbyPostListModal = ({ isModalRef, handleModalTrigger, onPressGetUserPos
                     // To mini from full
                     Animated.timing(animRef, {
                         toValue: MINI_ANIVALUE,
+                        duration: 200,
                         useNativeDriver: true,
                     }).start();
                     Animated.spring(opacityRef, {
@@ -153,11 +174,11 @@ const NearbyPostListModal = ({ isModalRef, handleModalTrigger, onPressGetUserPos
         if (handleModalTrigger) {
             Animated.timing(animRef, {
                 toValue: MINI_ANIVALUE,
-                useNativeDriver: true,
+                useNativeDriver: false,
             }).start();
             Animated.spring(opacityRef, {
                 toValue: MINI_ANIVALUE,
-                useNativeDriver: true,
+                useNativeDriver: false,
             }).start();
             isModalRef.current = false;
             animType.current = 'mini';

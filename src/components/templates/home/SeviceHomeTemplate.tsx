@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
-import { Image, Platform, View } from 'react-native';
+import React, { useRef, useState } from 'react';
+import { Animated, Image, Platform, View } from 'react-native';
 import Geolocation from '@react-native-community/geolocation';
 import DropShadow from 'react-native-drop-shadow';
 
 import MapWithMarker from '../../organisms/MapWithMarker';
 import NearbyPostListModal from '../../organisms/NearbyPostListModal';
+import { screenHeight } from '../../../utils/changeStyleSize';
 import { SingleLineInput } from '../../smallest/SingleLineInput';
 import { seviceHomeTemplateStyles } from '../../../styles/styles';
 import { SeviceHomeTemplateProps, UserPositionTypes } from '../../../types/types';
@@ -30,9 +31,22 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger }: SeviceHomeTempla
         setSearchText(text);
     };
 
+    const mapRef = useRef(new Animated.Value(0)).current;
+
     return (
         <>
-            <MapWithMarker currentPosition={currentPosition} />
+            <Animated.View
+                style={[
+                    seviceHomeTemplateStyles.mapContainer,
+                    {
+                        height: mapRef.interpolate({
+                            inputRange: [0, 100],
+                            outputRange: [600 * screenHeight, 685 * screenHeight],
+                        }),
+                    },
+                ]}>
+                <MapWithMarker currentPosition={currentPosition} />
+            </Animated.View>
             <View style={seviceHomeTemplateStyles.searchLayout}>
                 {Platform.OS === 'android' && (
                     <DropShadow style={seviceHomeTemplateStyles.dropshadow}>
@@ -61,6 +75,7 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger }: SeviceHomeTempla
             <NearbyPostListModal
                 isModalRef={isModalRef}
                 handleModalTrigger={handleModalTrigger}
+                mapRef={mapRef}
                 onPressGetUserPosition={onPressGetUserPosition}
             />
         </>
