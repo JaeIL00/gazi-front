@@ -28,7 +28,6 @@ const NearbyPostListModal = ({
     // Modal animation handling
     const animRef = useRef(new Animated.Value(0)).current;
     const opacityRef = useRef(new Animated.Value(0)).current;
-    const isModalBackground = useRef(false);
     const animType = useRef('mini');
     const panResponder = useRef(
         PanResponder.create({
@@ -36,18 +35,18 @@ const NearbyPostListModal = ({
             onPanResponderMove: (event, gestureState) => {
                 const { dy } = gestureState;
                 if (animType.current === 'mini') {
+                    if (dy > MIDDLE_ANIVALUE) {
+                        mapRef.setValue(dy);
+                    }
                     animRef.setValue(dy);
                     opacityRef.setValue(-dy);
-                    mapRef.setValue(dy);
                 }
                 if (animType.current === 'middle') {
-                    if (dy > -1) {
+                    if (dy > 0) {
                         mapRef.setValue(MIDDLE_ANIVALUE + dy);
-                    } else {
-                        isModalBackground.current = true;
-                        animRef.setValue(MIDDLE_ANIVALUE + dy);
-                        opacityRef.setValue(-MIDDLE_ANIVALUE - dy);
                     }
+                    animRef.setValue(MIDDLE_ANIVALUE + dy);
+                    opacityRef.setValue(-MIDDLE_ANIVALUE - dy);
                 }
                 if (animType.current === 'full') {
                     animRef.setValue(FULL_ANIVALUE + dy);
@@ -64,7 +63,7 @@ const NearbyPostListModal = ({
                         duration: 200,
                         useNativeDriver: true,
                     }).start();
-                    Animated.spring(opacityRef, {
+                    Animated.timing(opacityRef, {
                         toValue: -FULL_ANIVALUE,
                         useNativeDriver: true,
                     }).start();
@@ -111,14 +110,13 @@ const NearbyPostListModal = ({
                 }
                 if (dy < -330 && animType.current === 'mini') {
                     // To full from mini
-                    isModalBackground.current = true;
                     Animated.timing(animRef, {
                         toValue: FULL_ANIVALUE,
                         duration: 200,
                         useNativeDriver: true,
                     }).start(({ finished }) => {
                         if (finished) {
-                            Animated.spring(opacityRef, {
+                            Animated.timing(opacityRef, {
                                 toValue: -FULL_ANIVALUE,
                                 useNativeDriver: true,
                             }).start();
@@ -135,7 +133,7 @@ const NearbyPostListModal = ({
                         duration: 200,
                         useNativeDriver: true,
                     }).start();
-                    Animated.spring(opacityRef, {
+                    Animated.timing(opacityRef, {
                         toValue: -MIDDLE_ANIVALUE,
                         useNativeDriver: true,
                     }).start();
@@ -148,7 +146,7 @@ const NearbyPostListModal = ({
                         duration: 200,
                         useNativeDriver: true,
                     }).start();
-                    Animated.spring(opacityRef, {
+                    Animated.timing(opacityRef, {
                         toValue: -MINI_ANIVALUE,
                         useNativeDriver: true,
                     }).start();
@@ -161,7 +159,7 @@ const NearbyPostListModal = ({
                         toValue: FULL_ANIVALUE,
                         useNativeDriver: true,
                     }).start();
-                    Animated.spring(opacityRef, {
+                    Animated.timing(opacityRef, {
                         toValue: -FULL_ANIVALUE,
                         useNativeDriver: true,
                     }).start();
@@ -175,10 +173,17 @@ const NearbyPostListModal = ({
         if (handleModalTrigger) {
             Animated.timing(animRef, {
                 toValue: MINI_ANIVALUE,
-                useNativeDriver: false,
+                duration: 200,
+                useNativeDriver: true,
             }).start();
-            Animated.spring(opacityRef, {
+            Animated.timing(opacityRef, {
                 toValue: MINI_ANIVALUE,
+                duration: 200,
+                useNativeDriver: true,
+            }).start();
+            Animated.timing(mapRef, {
+                toValue: MINI_ANIVALUE,
+                duration: 200,
                 useNativeDriver: false,
             }).start();
             isModalRef.current = false;
