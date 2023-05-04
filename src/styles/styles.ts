@@ -414,6 +414,10 @@ export const mapWithMarkerStyles = StyleSheet.create({
         width: 27 * screenWidth,
         height: 27 * screenWidth,
     },
+    issueMarker: {
+        width: 25 * screenWidth,
+        height: 25 * screenWidth,
+    },
 });
 export const postListItemStyles = StyleSheet.create({
     container: {

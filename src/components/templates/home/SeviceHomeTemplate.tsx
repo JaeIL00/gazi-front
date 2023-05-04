@@ -1,18 +1,23 @@
-import React, { useRef, useState } from 'react';
-import { Animated, Image, Platform, View } from 'react-native';
+import React, { RefObject, useRef, useState } from 'react';
+import { ActivityIndicator, Animated, Image, Platform, View } from 'react-native';
 import Geolocation from '@react-native-community/geolocation';
 import DropShadow from 'react-native-drop-shadow';
+import { useRecoilValue } from 'recoil';
+import MapView, { BoundingBox } from 'react-native-maps';
+import { useInfiniteQuery } from 'react-query';
 
 import MapWithMarker from '../../organisms/MapWithMarker';
 import NearbyPostListModal from '../../organisms/NearbyPostListModal';
+import { userTokenAtom } from '../../../store/atoms';
+import { nearByUserPostsAPI } from '../../../queries/api';
 import { screenHeight } from '../../../utils/changeStyleSize';
 import { SingleLineInput } from '../../smallest/SingleLineInput';
 import { seviceHomeTemplateStyles } from '../../../styles/styles';
-import { SeviceHomeTemplateProps, UserPositionTypes } from '../../../types/types';
+import { SeviceHomeTemplateProps, MapLocationTypes, PostTypes } from '../../../types/types';
 
 const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger }: SeviceHomeTemplateProps) => {
     // Get current user position
-    const [currentPosition, setCurrentPosition] = useState<UserPositionTypes>({
+    const [currentPosition, setCurrentPosition] = useState<MapLocationTypes>({
         latitude: 37.531312,
         longitude: 126.927384,
     });
@@ -23,6 +28,11 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger }: SeviceHomeTempla
                 longitude: info.coords.longitude,
             });
         });
+        setTimeout(async () => {
+            const boundaryValue = (await mapRef.current?.getMapBoundaries()) as BoundingBox;
+            setNorthEast(boundaryValue.northEast);
+            setSouthWest(boundaryValue.southWest);
+        }, 500);
     };
 
     // Search text handling
@@ -31,7 +41,67 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger }: SeviceHomeTempla
         setSearchText(text);
     };
 
-    const mapRef = useRef(new Animated.Value(0)).current;
+    // Animation map height style
+    const mapAnimRef = useRef(new Animated.Value(0)).current;
+
+    // Get post of near by user API
+    const mapRef = useRef() as RefObject<MapView>;
+    const userTk = useRecoilValue(userTokenAtom);
+    const [northEast, setNorthEast] = useState<MapLocationTypes>({
+        latitude: 37.60380328673927,
+        longitude: 126.97738375514747,
+    });
+    const [southWest, setSouthWest] = useState<MapLocationTypes>({
+        latitude: 37.45878314300355,
+        longitude: 126.8773839622736,
+    });
+    const [nearPostList, setNearPostList] = useState<PostTypes[]>([]);
+    const { hasNextPage, isFetching, isFetchingNextPage, fetchNextPage } = useInfiniteQuery(
+        ['getNearPosts'],
+        ({ pageParam = 0 }) =>
+            nearByUserPostsAPI({
+                minLat: southWest.latitude,
+                minLon: southWest.longitude,
+                maxLat: northEast.latitude,
+                maxLon: northEast.longitude,
+                curLat: currentPosition.latitude,
+                curLon: currentPosition.longitude,
+                accessToken: userTk.accessToken,
+                page: pageParam,
+            }),
+        {
+            enabled: false,
+            getNextPageParam: (lastPage, allPages) => {
+                const total = lastPage.data.data.totalPages;
+                const nextPage = lastPage.data.data.pageable.pageNumber + 1;
+                return nextPage > total ? undefined : nextPage;
+            },
+            onSuccess: data => {
+                setNearPostList([...nearPostList, ...data.pages[0].data.data.content]);
+            },
+            onError: ({ response }) => {
+                // For Debug
+                console.log('(ERROR) Get post of near by user API. respense: ', response);
+            },
+        },
+    );
+
+    // Call next page API
+    const callNextPageHandler = () => {
+        if (!hasNextPage) {
+            fetchNextPage();
+        }
+    };
+
+    // Fisrt render of map
+    const mapRenderCompleteHandler = async () => {
+        const boundaryValue = (await mapRef.current?.getMapBoundaries()) as BoundingBox;
+        setNorthEast(boundaryValue.northEast);
+        setSouthWest(boundaryValue.southWest);
+        setTimeout(() => {
+            fetchNextPage();
+        }, 1000);
+    };
 
     return (
         <>
@@ -39,13 +109,18 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger }: SeviceHomeTempla
                 style={[
                     seviceHomeTemplateStyles.mapContainer,
                     {
-                        height: mapRef.interpolate({
+                        height: mapAnimRef.interpolate({
                             inputRange: [0, 100],
                             outputRange: [600 * screenHeight, 685 * screenHeight],
                         }),
                     },
                 ]}>
-                <MapWithMarker currentPosition={currentPosition} />
+                <MapWithMarker
+                    currentPosition={currentPosition}
+                    mapRef={mapRef}
+                    mapRenderCompleteHandler={mapRenderCompleteHandler}
+                    nearPostList={nearPostList}
+                />
             </Animated.View>
             <View style={seviceHomeTemplateStyles.searchLayout}>
                 {Platform.OS === 'android' && (
@@ -75,9 +150,23 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger }: SeviceHomeTempla
             <NearbyPostListModal
                 isModalRef={isModalRef}
                 handleModalTrigger={handleModalTrigger}
-                mapRef={mapRef}
+                mapRef={mapAnimRef}
+                nearPostList={nearPostList}
                 onPressGetUserPosition={onPressGetUserPosition}
+                callNextPageHandler={callNextPageHandler}
             />
+            {isFetching && (
+                <View
+                    style={{
+                        position: 'absolute',
+                        width: '100%',
+                        height: '100%',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                    }}>
+                    <ActivityIndicator size="large" />
+                </View>
+            )}
         </>
     );
 };

@@ -12,7 +12,7 @@ import { postListItemStyles } from '../../styles/styles';
 
 const PostListItem = ({ post }: PostListItemProps) => {
     return (
-        <TouchButton key={post.id} onPress={() => {}}>
+        <TouchButton onPress={() => {}}>
             <View style={postListItemStyles.container}>
                 <View>
                     <SemiBoldText text={post.title} size={16} color={Colors.BLACK} />
@@ -24,7 +24,7 @@ const PostListItem = ({ post }: PostListItemProps) => {
                     <Spacer height={5} />
                     <NormalText text={post.content} size={12} color="#6A6A6A" />
                 </View>
-                <Image source={{ uri: post.thumbnail }} style={postListItemStyles.postImage} />
+                <Image source={{ uri: post.thumbNail }} style={postListItemStyles.postImage} />
             </View>
         </TouchButton>
     );

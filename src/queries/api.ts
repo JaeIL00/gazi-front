@@ -1,5 +1,7 @@
 import axios from 'axios';
 import Config from 'react-native-config';
+import { useRecoilValue } from 'recoil';
+import { userTokenAtom } from '../store/atoms';
 
 const Axios = axios.create({
     baseURL: Config.API_BASE_URL,
@@ -65,17 +67,39 @@ export const deleteMemberAPI = async (token: string) => {
 };
 
 // KEYWORD
-export const likeKeywordsAPI = async (props: { token: string; data: number[] }) => {
+export const likeKeywordsAPI = async (param: { token: string; data: number[] }) => {
     const response = await Axios({
         url: '/api/v1/keyword/interest-keyword',
         method: 'post',
         headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${props.token}`,
+            Authorization: `Bearer ${param.token}`,
         },
         data: JSON.stringify({
-            myKeywordList: props.data,
+            myKeywordList: param.data,
         }),
+    });
+    return response;
+};
+
+// MAP
+export const nearByUserPostsAPI = async (param: {
+    minLat: number;
+    minLon: number;
+    maxLat: number;
+    maxLon: number;
+    curLat: number;
+    curLon: number;
+    accessToken: string;
+    page: number;
+}) => {
+    const response = await Axios({
+        url: `/api/v1/post/locationPost?minLat=${param.minLat}&minLon=${param.minLon}&maxLat=${param.maxLat}&maxLon=${param.maxLon}&curLat=${param.curLat}&curLon=${param.curLon}&page=${param.page}`,
+        method: 'get',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${param.accessToken}`,
+        },
     });
     return response;
 };
