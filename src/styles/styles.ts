@@ -367,6 +367,7 @@ export const nearbyPostListModalStyles = StyleSheet.create({
         paddingHorizontal: 16 * screenWidth,
         backgroundColor: Colors.BACKGROUND_DEFAULT,
         marginTop: -1,
+        height: 565 * screenHeight,
     },
     toggleButtonBox: {
         position: 'absolute',
