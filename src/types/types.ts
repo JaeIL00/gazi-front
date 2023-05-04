@@ -1,6 +1,6 @@
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import { ReactElement } from 'react';
-import { FlexAlignType, KeyboardType, TextStyle } from 'react-native/types';
+import { Animated, FlexAlignType, KeyboardType, TextStyle } from 'react-native/types';
 
 //COMMON
 export type KeywordListTypes = {
@@ -157,6 +157,26 @@ export type KeywordsListProps = {
 export type MapWithMarkerProps = {
     currentPosition: UserPositionTypes;
 };
+export type PostListItemProps = {
+    post: {
+        id: number;
+        title: string;
+        distance: string;
+        time: string;
+        rePostCount: number;
+        content: string;
+        latitude: number;
+        longitude: number;
+        thumbnail: string;
+        represent: string;
+    };
+};
+export type NearbyPostListModalProps = {
+    isModalRef: React.MutableRefObject<boolean>;
+    handleModalTrigger: boolean;
+    mapRef: Animated.Value;
+    onPressGetUserPosition: () => void;
+};
 
 // TEMPLATES
 export type InputEmailTemplateProps = {
@@ -176,3 +196,4 @@ export type EmailLoginTemplateProps = {
     moveServiceHomeHandler: (state: string) => void;
 };
 export interface InitLikeKeywordTemplateProps extends RequestPemissionTemplateProps {}
+export interface SeviceHomeTemplateProps extends NearbyPostListModalProps {}

@@ -337,9 +337,6 @@ export const tabBarStyles = StyleSheet.create({
 });
 export const nearbyPostListModalStyles = StyleSheet.create({
     container: {
-        position: 'absolute',
-        width: '100%',
-        height: '120%',
         backgroundColor: Colors.BACKGROUND_DEFAULT,
         borderTopStartRadius: 14 * screenFont,
         borderTopEndRadius: 14 * screenFont,
@@ -352,12 +349,12 @@ export const nearbyPostListModalStyles = StyleSheet.create({
     },
     slideBar: {
         width: 24 * screenWidth,
-        height: 4,
+        height: 4 * screenWidth,
         backgroundColor: Colors.BTN_GRAY,
         borderRadius: 2 * screenFont,
     },
     titleBox: {
-        paddingVertical: 16,
+        paddingVertical: 16 * screenHeight,
     },
     grayBackground: {
         width: '100%',
@@ -365,6 +362,33 @@ export const nearbyPostListModalStyles = StyleSheet.create({
         backgroundColor: '#000000',
         position: 'absolute',
         top: 0,
+    },
+    listBox: {
+        paddingHorizontal: 16 * screenWidth,
+        backgroundColor: Colors.BACKGROUND_DEFAULT,
+        marginTop: -1,
+    },
+    toggleButtonBox: {
+        position: 'absolute',
+        bottom: 18 * screenHeight,
+        right: 16 * screenWidth,
+    },
+    locationIcon: {
+        width: 20 * screenWidth,
+        height: 20 * screenWidth,
+    },
+    writeIcon: {
+        width: 14.5 * screenWidth,
+        height: 16 * screenHeight,
+    },
+    dropshadow: {
+        shadowColor: '#000000',
+        shadowOffset: {
+            width: 0,
+            height: 4 * screenHeight,
+        },
+        shadowOpacity: 0.14,
+        shadowRadius: 5 * screenFont,
     },
 });
 export const mapWithMarkerStyles = StyleSheet.create({
@@ -389,6 +413,19 @@ export const mapWithMarkerStyles = StyleSheet.create({
     marker: {
         width: 27 * screenWidth,
         height: 27 * screenWidth,
+    },
+});
+export const postListItemStyles = StyleSheet.create({
+    container: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        width: '100%',
+    },
+    postImage: {
+        width: 77 * screenWidth,
+        height: 77 * screenWidth,
+        borderRadius: 5 * screenFont,
     },
 });
 
@@ -535,18 +572,10 @@ export const completedJoinTemplateStyles = StyleSheet.create({
     },
 });
 export const seviceHomeTemplateStyles = StyleSheet.create({
-    toggleButtonBox: {
+    mapContainer: {
+        width: '100%',
+        height: '100%',
         position: 'absolute',
-        bottom: 94 * screenHeight,
-        right: 16 * screenWidth,
-    },
-    locationIcon: {
-        width: 20 * screenWidth,
-        height: 20 * screenWidth,
-    },
-    writeIcon: {
-        width: 14.5 * screenWidth,
-        height: 16 * screenHeight,
     },
     searchLayout: {
         position: 'absolute',

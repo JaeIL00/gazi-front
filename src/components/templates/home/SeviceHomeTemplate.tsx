@@ -1,18 +1,16 @@
-import React, { useState } from 'react';
-import { Image, Platform, View } from 'react-native';
+import React, { useRef, useState } from 'react';
+import { Animated, Image, Platform, View } from 'react-native';
 import Geolocation from '@react-native-community/geolocation';
 import DropShadow from 'react-native-drop-shadow';
 
-import Spacer from '../../smallest/Spacer';
-import Colors from '../../../styles/Colors';
-import TouchButton from '../../smallest/TouchButton';
 import MapWithMarker from '../../organisms/MapWithMarker';
 import NearbyPostListModal from '../../organisms/NearbyPostListModal';
-import { UserPositionTypes } from '../../../types/types';
+import { screenHeight } from '../../../utils/changeStyleSize';
 import { SingleLineInput } from '../../smallest/SingleLineInput';
 import { seviceHomeTemplateStyles } from '../../../styles/styles';
+import { SeviceHomeTemplateProps, UserPositionTypes } from '../../../types/types';
 
-const SeviceHomeTemplate = () => {
+const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger }: SeviceHomeTemplateProps) => {
     // Get current user position
     const [currentPosition, setCurrentPosition] = useState<UserPositionTypes>({
         latitude: 37.531312,
@@ -27,14 +25,28 @@ const SeviceHomeTemplate = () => {
         });
     };
 
+    // Search text handling
     const [searchText, setSearchText] = useState('');
     const onChangeSearchText = (text: string) => {
         setSearchText(text);
     };
 
+    const mapRef = useRef(new Animated.Value(0)).current;
+
     return (
         <>
-            <MapWithMarker currentPosition={currentPosition} />
+            <Animated.View
+                style={[
+                    seviceHomeTemplateStyles.mapContainer,
+                    {
+                        height: mapRef.interpolate({
+                            inputRange: [0, 100],
+                            outputRange: [600 * screenHeight, 685 * screenHeight],
+                        }),
+                    },
+                ]}>
+                <MapWithMarker currentPosition={currentPosition} />
+            </Animated.View>
             <View style={seviceHomeTemplateStyles.searchLayout}>
                 {Platform.OS === 'android' && (
                     <DropShadow style={seviceHomeTemplateStyles.dropshadow}>
@@ -59,34 +71,13 @@ const SeviceHomeTemplate = () => {
                     />
                 </View>
             </View>
-            <View style={seviceHomeTemplateStyles.toggleButtonBox}>
-                <TouchButton
-                    onPress={onPressGetUserPosition}
-                    width={52}
-                    height={52}
-                    borderRadius={52}
-                    backgroundColor={Colors.WHITE}
-                    borderWidth={1}
-                    borderColor="#E3E3E3">
-                    <Image
-                        source={require('../../../assets/icons/location.png')}
-                        style={seviceHomeTemplateStyles.locationIcon}
-                    />
-                </TouchButton>
-                <Spacer height={8} />
-                <TouchButton
-                    onPress={() => {}}
-                    width={52}
-                    height={52}
-                    borderRadius={52}
-                    backgroundColor={Colors.VIOLET}>
-                    <Image
-                        source={require('../../../assets/icons/write.png')}
-                        style={seviceHomeTemplateStyles.writeIcon}
-                    />
-                </TouchButton>
-            </View>
-            <NearbyPostListModal />
+
+            <NearbyPostListModal
+                isModalRef={isModalRef}
+                handleModalTrigger={handleModalTrigger}
+                mapRef={mapRef}
+                onPressGetUserPosition={onPressGetUserPosition}
+            />
         </>
     );
 };
