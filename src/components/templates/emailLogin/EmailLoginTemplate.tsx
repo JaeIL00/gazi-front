@@ -21,12 +21,12 @@ import { emailLoginTemplateStyles, nextStepButtonPosition } from '../../../style
 
 const EmailLoginTemplate = ({ moveServiceHomeHandler }: EmailLoginTemplateProps) => {
     // Text change Handling
-    const [email, setEmail] = useState<string>('ekvm555@naver.com');
+    const [email, setEmail] = useState<string>('');
     const onChangeEmail = (text: string) => {
         setEmail(text);
         setLoginErrorText('');
     };
-    const [password, setPassword] = useState('1234qwer!');
+    const [password, setPassword] = useState('');
     const onChangePassword = (text: string) => {
         setPassword(text);
         setLoginErrorText('');
