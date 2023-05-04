@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef } from 'react';
-import { Animated, FlatList, Image, PanResponder, Platform, View, VirtualizedList } from 'react-native';
+import { Animated, FlatList, Image, PanResponder, Platform, View } from 'react-native';
 import DropShadow from 'react-native-drop-shadow';
 
 import Spacer from '../smallest/Spacer';
@@ -8,8 +8,8 @@ import PostListItem from './PostListItem';
 import TouchButton from '../smallest/TouchButton';
 import SemiBoldText from '../smallest/SemiBoldText';
 import { screenHeight } from '../../utils/changeStyleSize';
-import { NearbyPostListModalProps, PostTypes } from '../../types/types';
 import { nearbyPostListModalStyles } from '../../styles/styles';
+import { NearbyPostListModalProps, PostTypes } from '../../types/types';
 
 const FULL_ANIVALUE = -565 * screenHeight;
 const MIDDLE_ANIVALUE = -340 * screenHeight;

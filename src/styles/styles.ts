@@ -426,6 +426,9 @@ export const postListItemStyles = StyleSheet.create({
         justifyContent: 'space-between',
         width: '100%',
     },
+    textBox: {
+        width: '68%',
+    },
     postImage: {
         width: 77 * screenWidth,
         height: 77 * screenWidth,

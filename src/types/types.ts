@@ -110,6 +110,7 @@ export type AppTextProps = {
     color: string;
     textAlign?: TextStyle['textAlign'];
     lineHeight?: number;
+    numberOfLines?: number;
 };
 export type ModalBackgroundProps = {
     children?: ReactElement;
