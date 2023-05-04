@@ -14,7 +14,7 @@ import { NearbyPostListModalProps, PostTypes } from '../../types/types';
 const FULL_ANIVALUE = -565 * screenHeight;
 const MIDDLE_ANIVALUE = -340 * screenHeight;
 const MINI_ANIVALUE = 0;
-const INIT_MINI = 595 * screenHeight;
+const INIT_MINI = 590 * screenHeight;
 const INIT_OUTPUT = INIT_MINI + 100;
 
 const NearbyPostListModal = ({
