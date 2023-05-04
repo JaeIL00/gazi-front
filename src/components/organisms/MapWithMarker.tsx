@@ -40,65 +40,42 @@ const MapWithMarker = ({ currentPosition, mapRef, mapRenderCompleteHandler, near
                     <Image source={MARKER_IMAGE} style={mapWithMarkerStyles.marker} />
                 </View>
             </Marker>
-            {nearPostList.map((item, index) => (
-                <Marker
-                    key={item.postId + 'marker' + index}
-                    coordinate={{
-                        latitude: item.latitude,
-                        longitude: item.longitude,
-                    }}
-                    anchor={{ x: 0.5, y: 0.5 }}
-                    style={mapWithMarkerStyles.markerBox}>
-                    {item.headKeyword.id === 1 && (
-                        <Image
-                            source={require('../../assets/icons/protest-marker.png')}
-                            style={mapWithMarkerStyles.issueMarker}
-                        />
-                    )}
-                    {item.headKeyword.id === 2 && (
-                        <Image
-                            source={require('../../assets/icons/delay-marker.png')}
-                            style={mapWithMarkerStyles.issueMarker}
-                        />
-                    )}
-                    {item.headKeyword.id === 3 && (
-                        <Image
-                            source={require('../../assets/icons/disaster-marker.png')}
-                            style={mapWithMarkerStyles.issueMarker}
-                        />
-                    )}
-                    {item.headKeyword.id === 4 && (
-                        <Image
-                            source={require('../../assets/icons/construction-marker.png')}
-                            style={mapWithMarkerStyles.issueMarker}
-                        />
-                    )}
-                    {item.headKeyword.id === 5 && (
-                        <Image
-                            source={require('../../assets/icons/congestion-marker.png')}
-                            style={mapWithMarkerStyles.issueMarker}
-                        />
-                    )}
-                    {item.headKeyword.id === 6 && (
-                        <Image
-                            source={require('../../assets/icons/traffic-jam-marker.png')}
-                            style={mapWithMarkerStyles.issueMarker}
-                        />
-                    )}
-                    {item.headKeyword.id === 7 && (
-                        <Image
-                            source={require('../../assets/icons/festival-marker.png')}
-                            style={mapWithMarkerStyles.issueMarker}
-                        />
-                    )}
-                    {item.headKeyword.id === 8 && (
-                        <Image
-                            source={require('../../assets/icons/etc-marker.png')}
-                            style={mapWithMarkerStyles.issueMarker}
-                        />
-                    )}
-                </Marker>
-            ))}
+            {nearPostList.map((item, index) => {
+                const markertypeIcon = () => {
+                    switch (item.headKeyword.id) {
+                        case 1:
+                            return require('../../assets/icons/protest-marker.png');
+                        case 2:
+                            return require('../../assets/icons/delay-marker.png');
+                        case 3:
+                            return require('../../assets/icons/disaster-marker.png');
+                        case 4:
+                            return require('../../assets/icons/construction-marker.png');
+                        case 5:
+                            return require('../../assets/icons/congestion-marker.png');
+                        case 6:
+                            return require('../../assets/icons/traffic-jam-marker.png');
+                        case 7:
+                            return require('../../assets/icons/festival-marker.png');
+                        case 8:
+                            return require('../../assets/icons/etc-marker.png');
+                        default:
+                            return;
+                    }
+                };
+                return (
+                    <Marker
+                        key={item.postId + 'marker' + index}
+                        coordinate={{
+                            latitude: item.latitude,
+                            longitude: item.longitude,
+                        }}
+                        anchor={{ x: 0.5, y: 0.5 }}
+                        style={mapWithMarkerStyles.markerBox}>
+                        <Image source={markertypeIcon()} style={mapWithMarkerStyles.issueMarker} />
+                    </Marker>
+                );
+            })}
         </MapView>
     );
 };
