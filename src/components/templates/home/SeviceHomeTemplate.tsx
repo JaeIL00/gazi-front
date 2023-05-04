@@ -5,17 +5,17 @@ import DropShadow from 'react-native-drop-shadow';
 import { useRecoilValue } from 'recoil';
 import MapView, { BoundingBox } from 'react-native-maps';
 import { useInfiniteQuery } from 'react-query';
+import { PERMISSIONS, RESULTS, check } from 'react-native-permissions';
 
 import MapWithMarker from '../../organisms/MapWithMarker';
 import NearbyPostListModal from '../../organisms/NearbyPostListModal';
+import FailLocationPermisionModal from '../../organisms/FailLocationPermisionModal';
 import { userTokenAtom } from '../../../store/atoms';
 import { nearByUserPostsAPI } from '../../../queries/api';
 import { screenHeight } from '../../../utils/changeStyleSize';
 import { SingleLineInput } from '../../smallest/SingleLineInput';
 import { seviceHomeTemplateStyles } from '../../../styles/styles';
 import { SeviceHomeTemplateProps, MapLocationTypes, PostTypes } from '../../../types/types';
-import { PERMISSIONS, RESULTS, check } from 'react-native-permissions';
-import FailLocationPermisionModal from '../../organisms/FailLocationPermisionModal';
 
 const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger }: SeviceHomeTemplateProps) => {
     // Check Location Permission
@@ -52,13 +52,19 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger }: SeviceHomeTempla
         }
     };
     const getBoundaryMap = async () => {
+        let boundaryValue;
         try {
-            const boundaryValue = (await mapRef.current?.getMapBoundaries()) as BoundingBox;
+            boundaryValue = (await mapRef.current?.getMapBoundaries()) as BoundingBox;
             setNorthEast(boundaryValue.northEast);
             setSouthWest(boundaryValue.southWest);
         } catch (err) {
             // For Debug
             console.log('(ERROR) Get boundary of map.', err);
+        } finally {
+            if (boundaryValue) {
+                remove();
+                refetch();
+            }
         }
     };
 
