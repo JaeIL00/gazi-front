@@ -1,5 +1,6 @@
 import React from 'react';
 import { View } from 'react-native';
+
 import { globalDefaultStyles } from '../styles/styles';
 import InitLikeKeywordTemplate from '../components/templates/joinMember/InitLikeKeywordTemplate';
 import { useRootNavigation } from '../navigations/RootStackNavigation';

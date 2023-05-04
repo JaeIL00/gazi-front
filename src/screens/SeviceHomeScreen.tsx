@@ -1,8 +1,9 @@
 import React, { useCallback, useRef, useState } from 'react';
 import { BackHandler, Platform, ToastAndroid, View } from 'react-native';
-import { seviceHomeScreenStyles } from '../styles/styles';
 import SeviceHomeTemplate from '../components/templates/home/SeviceHomeTemplate';
 import { useFocusEffect } from '@react-navigation/native';
+
+import { seviceHomeScreenStyles } from '../styles/styles';
 
 const SeviceHomeScreen = () => {
     // Android back button & Header Back Button Handling
