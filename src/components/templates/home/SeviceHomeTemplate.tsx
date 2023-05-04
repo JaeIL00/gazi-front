@@ -162,7 +162,7 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger }: SeviceHomeTempla
                     {
                         height: mapAnimRef.interpolate({
                             inputRange: [0, 100],
-                            outputRange: [600 * screenHeight, 685 * screenHeight],
+                            outputRange: [250 * screenHeight, 350 * screenHeight],
                         }),
                     },
                 ]}>

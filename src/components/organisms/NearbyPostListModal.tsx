@@ -11,10 +11,10 @@ import { screenHeight } from '../../utils/changeStyleSize';
 import { nearbyPostListModalStyles } from '../../styles/styles';
 import { NearbyPostListModalProps, PostTypes } from '../../types/types';
 
-const FULL_ANIVALUE = -565 * screenHeight;
-const MIDDLE_ANIVALUE = -340 * screenHeight;
-const MINI_ANIVALUE = 0;
-const INIT_MINI = 590 * screenHeight;
+const FULL_ANIVALUE = -225 * screenHeight; // 340
+const MIDDLE_ANIVALUE = 0;
+const MINI_ANIVALUE = 345 * screenHeight;
+const INIT_MINI = 250 * screenHeight; //590
 const INIT_OUTPUT = INIT_MINI + 100;
 
 const NearbyPostListModal = ({
@@ -28,7 +28,7 @@ const NearbyPostListModal = ({
     // Modal animation handling
     const animRef = useRef(new Animated.Value(0)).current;
     const opacityRef = useRef(new Animated.Value(0)).current;
-    const animType = useRef('mini');
+    const animType = useRef('middle');
     const panResponder = useRef(
         PanResponder.create({
             onMoveShouldSetPanResponder: () => true,
@@ -36,20 +36,23 @@ const NearbyPostListModal = ({
                 const { dy } = gestureState;
                 if (animType.current === 'mini') {
                     if (dy > 0) return;
-                    if (dy > MIDDLE_ANIVALUE) {
+                    if (dy > -MINI_ANIVALUE) {
+                        mapRef.setValue(MINI_ANIVALUE + dy);
+                    }
+                    animRef.setValue(MINI_ANIVALUE + dy);
+                    opacityRef.setValue(-MINI_ANIVALUE - dy);
+                }
+                if (animType.current === 'middle') {
+                    if (dy > 0) {
                         mapRef.setValue(dy);
                     }
                     animRef.setValue(dy);
                     opacityRef.setValue(-dy);
                 }
-                if (animType.current === 'middle') {
-                    if (dy > 0) {
-                        mapRef.setValue(MIDDLE_ANIVALUE + dy);
-                    }
-                    animRef.setValue(MIDDLE_ANIVALUE + dy);
-                    opacityRef.setValue(-MIDDLE_ANIVALUE - dy);
-                }
                 if (animType.current === 'full') {
+                    if (dy > -FULL_ANIVALUE) {
+                        mapRef.setValue(FULL_ANIVALUE + dy);
+                    }
                     animRef.setValue(FULL_ANIVALUE + dy);
                     opacityRef.setValue(-FULL_ANIVALUE - dy);
                 }
@@ -74,21 +77,21 @@ const NearbyPostListModal = ({
                 if (dy > -30 && animType.current === 'middle') {
                     // To mini from middle
                     Animated.timing(animRef, {
-                        toValue: MINI_ANIVALUE,
+                        toValue: 345 * screenHeight,
                         duration: 200,
                         useNativeDriver: true,
                     }).start();
                     Animated.timing(mapRef, {
-                        toValue: MINI_ANIVALUE,
+                        toValue: 345 * screenHeight,
                         duration: 200,
                         useNativeDriver: false,
                     }).start();
-                    isModalRef.current = false;
+                    isModalRef.current = true;
                     return (animType.current = 'mini');
                 }
-                // Animating start mini modal
+                // // Animating start mini modal
                 if (-330 < dy && dy < -30 && animType.current === 'mini') {
-                    // To middile from mini
+                    // To middle from mini
                     Animated.timing(animRef, {
                         toValue: MIDDLE_ANIVALUE,
                         duration: 200,
@@ -99,7 +102,7 @@ const NearbyPostListModal = ({
                         duration: 200,
                         useNativeDriver: false,
                     }).start();
-                    isModalRef.current = true;
+                    isModalRef.current = false;
                     return (animType.current = 'middle');
                 }
                 if (dy > -30 && animType.current === 'mini') {
@@ -115,18 +118,15 @@ const NearbyPostListModal = ({
                         toValue: FULL_ANIVALUE,
                         duration: 200,
                         useNativeDriver: true,
-                    }).start(({ finished }) => {
-                        if (finished) {
-                            Animated.timing(opacityRef, {
-                                toValue: -FULL_ANIVALUE,
-                                useNativeDriver: true,
-                            }).start();
-                        }
-                    });
+                    }).start();
+                    Animated.timing(opacityRef, {
+                        toValue: -FULL_ANIVALUE,
+                        useNativeDriver: true,
+                    }).start();
                     isModalRef.current = true;
                     return (animType.current = 'full');
                 }
-                // Animating start full modal
+                // // Animating start full modal
                 if (330 > dy && dy > 30 && animType.current === 'full') {
                     // To middile from full
                     Animated.timing(animRef, {
@@ -138,6 +138,7 @@ const NearbyPostListModal = ({
                         toValue: -MIDDLE_ANIVALUE,
                         useNativeDriver: true,
                     }).start();
+                    isModalRef.current = false;
                     animType.current = 'middle';
                 }
                 if (dy > 330 && animType.current === 'full') {
@@ -151,7 +152,6 @@ const NearbyPostListModal = ({
                         toValue: -MINI_ANIVALUE,
                         useNativeDriver: true,
                     }).start();
-                    isModalRef.current = false;
                     animType.current = 'mini';
                 }
                 if (dy < 30 && animType.current === 'full') {
@@ -173,22 +173,22 @@ const NearbyPostListModal = ({
     useEffect(() => {
         if (handleModalTrigger) {
             Animated.timing(animRef, {
-                toValue: MINI_ANIVALUE,
+                toValue: MIDDLE_ANIVALUE,
                 duration: 200,
                 useNativeDriver: true,
             }).start();
             Animated.timing(opacityRef, {
-                toValue: MINI_ANIVALUE,
+                toValue: MIDDLE_ANIVALUE,
                 duration: 200,
                 useNativeDriver: true,
             }).start();
             Animated.timing(mapRef, {
-                toValue: MINI_ANIVALUE,
+                toValue: MIDDLE_ANIVALUE,
                 duration: 200,
                 useNativeDriver: false,
             }).start();
             isModalRef.current = false;
-            animType.current = 'mini';
+            animType.current = 'middle';
         }
     }, [handleModalTrigger]);
 
