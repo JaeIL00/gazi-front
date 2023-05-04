@@ -1,5 +1,5 @@
 import React, { RefObject, useRef, useState } from 'react';
-import { ActivityIndicator, Animated, Image, Platform, View } from 'react-native';
+import { ActivityIndicator, Animated, Image, Linking, Platform, View } from 'react-native';
 import Geolocation from '@react-native-community/geolocation';
 import DropShadow from 'react-native-drop-shadow';
 import { useRecoilValue } from 'recoil';
@@ -14,25 +14,69 @@ import { screenHeight } from '../../../utils/changeStyleSize';
 import { SingleLineInput } from '../../smallest/SingleLineInput';
 import { seviceHomeTemplateStyles } from '../../../styles/styles';
 import { SeviceHomeTemplateProps, MapLocationTypes, PostTypes } from '../../../types/types';
+import { PERMISSIONS, RESULTS, check } from 'react-native-permissions';
+import FailLocationPermisionModal from '../../organisms/FailLocationPermisionModal';
 
 const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger }: SeviceHomeTemplateProps) => {
+    // Check Location Permission
+    const checkLocationPermission = async () => {
+        try {
+            const locationPermmission = await check(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION);
+            const isAllow = locationPermmission === RESULTS.GRANTED;
+            return isAllow;
+        } catch (err) {
+            // For Debug
+            console.log('(ERROR) Check Location Permission.', err);
+        }
+    };
+
     // Get current user position
     const [currentPosition, setCurrentPosition] = useState<MapLocationTypes>({
         latitude: 37.531312,
         longitude: 126.927384,
     });
-    const onPressGetUserPosition = () => {
-        Geolocation.getCurrentPosition(info => {
-            setCurrentPosition({
-                latitude: info.coords.latitude,
-                longitude: info.coords.longitude,
+    const onPressGetUserPosition = async () => {
+        const isOkPermission = await checkLocationPermission();
+        if (isOkPermission) {
+            Geolocation.getCurrentPosition(info => {
+                setCurrentPosition({
+                    latitude: info.coords.latitude,
+                    longitude: info.coords.longitude,
+                });
             });
-        });
-        setTimeout(async () => {
+            setTimeout(() => {
+                getBoundaryMap();
+            }, 500);
+        } else {
+            setOnModal(true);
+        }
+    };
+    const getBoundaryMap = async () => {
+        try {
             const boundaryValue = (await mapRef.current?.getMapBoundaries()) as BoundingBox;
             setNorthEast(boundaryValue.northEast);
             setSouthWest(boundaryValue.southWest);
-        }, 500);
+        } catch (err) {
+            // For Debug
+            console.log('(ERROR) Get boundary of map.', err);
+        }
+    };
+
+    // Again request modal button Handling
+    const [onModal, setOnModal] = useState<boolean>(false);
+    const onPressModalButton = async (state: string) => {
+        switch (state) {
+            case 'CLOSE':
+                setOnModal(false);
+                break;
+            case 'MOVE':
+                setOnModal(false);
+                await Linking.openSettings();
+                break;
+            default:
+                // For Debug
+                console.log('(ERROR) Again request modal button Handling. state: ', state);
+        }
     };
 
     // Search text handling
@@ -167,6 +211,7 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger }: SeviceHomeTempla
                     <ActivityIndicator size="large" />
                 </View>
             )}
+            {onModal && <FailLocationPermisionModal onPressModalButton={onPressModalButton} />}
         </>
     );
 };
