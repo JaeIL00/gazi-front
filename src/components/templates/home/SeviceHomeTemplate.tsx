@@ -100,7 +100,7 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger }: SeviceHomeTempla
         longitude: 126.8773839622736,
     });
     const [nearPostList, setNearPostList] = useState<PostTypes[]>([]);
-    const { hasNextPage, isFetching, isFetchingNextPage, fetchNextPage } = useInfiniteQuery(
+    const { hasNextPage, isFetching, isFetchingNextPage, fetchNextPage, refetch, remove } = useInfiniteQuery(
         ['getNearPosts'],
         ({ pageParam = 0 }) =>
             nearByUserPostsAPI({
@@ -143,7 +143,8 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger }: SeviceHomeTempla
         setNorthEast(boundaryValue.northEast);
         setSouthWest(boundaryValue.southWest);
         setTimeout(() => {
-            fetchNextPage();
+            remove();
+            refetch();
         }, 1000);
     };
 
