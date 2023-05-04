@@ -35,6 +35,7 @@ const NearbyPostListModal = ({
             onPanResponderMove: (event, gestureState) => {
                 const { dy } = gestureState;
                 if (animType.current === 'mini') {
+                    if (dy > 0) return;
                     if (dy > MIDDLE_ANIVALUE) {
                         mapRef.setValue(dy);
                     }
