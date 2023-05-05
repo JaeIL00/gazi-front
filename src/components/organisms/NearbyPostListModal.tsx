@@ -111,6 +111,7 @@ const NearbyPostListModal = ({
                         toValue: -FULL_ANIVALUE,
                         useNativeDriver: true,
                     }).start();
+                    moveToBottomSheetFull('FULL');
                     isModalRef.current = true;
                     return (animType.current = 'full');
                 }
@@ -172,6 +173,7 @@ const NearbyPostListModal = ({
                 duration: 200,
                 useNativeDriver: true,
             }).start();
+            moveToBottomSheetFull('NOT');
             notBottomSheetMini();
             isModalRef.current = false;
             animType.current = 'middle';
