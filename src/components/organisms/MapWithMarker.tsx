@@ -12,7 +12,8 @@ const MapWithMarker = ({
     nearPostList,
     isAllowLocation,
     mapRenderCompleteHandler,
-    isGestureforBottomSheet,
+    checkZoomLevelWarning,
+    checkGestureforBottomSheet,
 }: MapWithMarkerProps) => {
     const MARKER_RANGE_IMAGE = require('../../assets/icons/map-marker-range.png');
     const MARKER_IMAGE = require('../../assets/icons/map-marker.png');
@@ -27,11 +28,13 @@ const MapWithMarker = ({
                 latitudeDelta: 0.04,
                 longitudeDelta: 0.027,
             }}
+            maxZoomLevel={20}
             customMapStyle={mapStyle}
             showsBuildings={false}
             pitchEnabled={false}
-            onMapReady={mapRenderCompleteHandler}
-            onRegionChange={isGestureforBottomSheet}>
+            onRegionChangeComplete={checkZoomLevelWarning}
+            onRegionChange={checkGestureforBottomSheet}
+            onMapReady={mapRenderCompleteHandler}>
             {isAllowLocation && (
                 <Marker
                     coordinate={{

@@ -15,6 +15,9 @@ import { nearByUserPostsAPI } from '../../../queries/api';
 import { SingleLineInput } from '../../smallest/SingleLineInput';
 import { seviceHomeTemplateStyles } from '../../../styles/styles';
 import { SeviceHomeTemplateProps, MapLocationTypes, PostTypes, MapBoundaryTypes } from '../../../types/types';
+import MediumText from '../../smallest/MediumText';
+import Colors from '../../../styles/Colors';
+import { screenFont, screenHeight, screenWidth } from '../../../utils/changeStyleSize';
 
 const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger }: SeviceHomeTemplateProps) => {
     // Check Location Permission
@@ -198,13 +201,26 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger }: SeviceHomeTempla
     const notBottomSheetMini = () => {
         setIsBottomSheetMini(false);
     };
-    const isGestureforBottomSheet = useCallback(
+    const checkGestureforBottomSheet = useCallback(
         (region: Region, details: Details) => {
             if (details.isGesture) {
                 moveToBottomSheetMini();
             }
         },
         [isBottomSheetMini],
+    );
+
+    // Check map zoom level for warning
+    const [isFarMapLevel, setIsFarMapLevel] = useState(false);
+    const checkZoomLevelWarning = useCallback(
+        (region: Region) => {
+            if (region.latitudeDelta > 0.15) {
+                setIsFarMapLevel(true);
+            } else {
+                setIsFarMapLevel(false);
+            }
+        },
+        [isFarMapLevel],
     );
 
     // Move to mini bottom sheet by move map
@@ -229,7 +245,8 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger }: SeviceHomeTempla
                 currentPosition={currentPosition}
                 nearPostList={nearPostList}
                 isAllowLocation={isAllowLocation}
-                isGestureforBottomSheet={isGestureforBottomSheet}
+                checkGestureforBottomSheet={checkGestureforBottomSheet}
+                checkZoomLevelWarning={checkZoomLevelWarning}
                 mapRenderCompleteHandler={mapRenderCompleteHandler}
             />
             <View style={seviceHomeTemplateStyles.searchLayout}>
@@ -284,6 +301,21 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger }: SeviceHomeTempla
                 </View>
             )}
             {onModal && <FailLocationPermisionModal onPressModalButton={onPressModalButton} />}
+
+            {isFarMapLevel && (
+                <View
+                    style={{
+                        paddingHorizontal: 38 * screenWidth,
+                        paddingVertical: 9 * screenHeight,
+                        backgroundColor: '#00000099',
+                        borderRadius: 25 * screenFont,
+                        position: 'absolute',
+                        top: 300 * screenHeight,
+                        alignSelf: 'center',
+                    }}>
+                    <MediumText text="사건 확인을 위해 지도를 확인해 주세요" size={14} color={Colors.WHITE} />
+                </View>
+            )}
         </>
     );
 };
