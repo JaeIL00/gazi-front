@@ -56,18 +56,18 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger }: SeviceHomeTempla
                         latitude: info.coords.latitude,
                         longitude: info.coords.longitude,
                     });
+                    setTimeout(() => {
+                        getBoundaryMap();
+                    }, 1000);
                 } else {
                     mapRef.current?.animateToRegion({
                         latitude: currentPosition.latitude,
                         longitude: currentPosition.longitude,
-                        latitudeDelta: 0.1,
-                        longitudeDelta: 0.1,
+                        latitudeDelta: 0.04,
+                        longitudeDelta: 0.027,
                     });
                 }
             });
-            setTimeout(() => {
-                getBoundaryMap();
-            }, 1000);
         } else {
             setOnModal(true);
         }

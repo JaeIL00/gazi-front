@@ -23,8 +23,8 @@ const MapWithMarker = ({
             region={{
                 latitude: currentPosition.latitude,
                 longitude: currentPosition.longitude,
-                latitudeDelta: 0.1,
-                longitudeDelta: 0.1,
+                latitudeDelta: 0.04,
+                longitudeDelta: 0.027,
             }}
             customMapStyle={mapStyle}
             showsBuildings={false}
