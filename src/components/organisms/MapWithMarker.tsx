@@ -28,7 +28,7 @@ const MapWithMarker = ({
                 latitudeDelta: 0.04,
                 longitudeDelta: 0.027,
             }}
-            maxZoomLevel={20}
+            maxZoomLevel={17}
             customMapStyle={mapStyle}
             showsBuildings={false}
             pitchEnabled={false}
