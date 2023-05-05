@@ -11,10 +11,10 @@ import { screenHeight } from '../../utils/changeStyleSize';
 import { nearbyPostListModalStyles } from '../../styles/styles';
 import { NearbyPostListModalProps, PostTypes } from '../../types/types';
 
-const FULL_ANIVALUE = -225 * screenHeight; // 340
+const FULL_ANIVALUE = -225 * screenHeight;
 const MIDDLE_ANIVALUE = 0;
 const MINI_ANIVALUE = 345 * screenHeight;
-const INIT_MINI = 250 * screenHeight; //590
+const INIT_MINI = 250 * screenHeight;
 const INIT_OUTPUT = INIT_MINI + 100;
 
 const NearbyPostListModal = ({
@@ -39,16 +39,19 @@ const NearbyPostListModal = ({
             onMoveShouldSetPanResponder: () => true,
             onPanResponderMove: (event, gestureState) => {
                 const { dy } = gestureState;
+                console.log(dy);
                 if (animType.current === 'mini') {
                     if (dy > 0) return;
                     animRef.setValue(MINI_ANIVALUE + dy);
                     opacityRef.setValue(-MINI_ANIVALUE - dy);
                 }
                 if (animType.current === 'middle') {
+                    if (dy > MINI_ANIVALUE) return;
                     animRef.setValue(dy);
                     opacityRef.setValue(-dy);
                 }
                 if (animType.current === 'full') {
+                    if (dy > MINI_ANIVALUE - FULL_ANIVALUE) return;
                     animRef.setValue(FULL_ANIVALUE + dy);
                     opacityRef.setValue(-FULL_ANIVALUE - dy);
                 }
