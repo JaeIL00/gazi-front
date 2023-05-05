@@ -14,12 +14,6 @@ const MapWithMarker = ({ currentPosition, mapRef, mapRenderCompleteHandler, near
         <MapView
             ref={mapRef}
             style={mapWithMarkerStyles.map}
-            initialRegion={{
-                latitude: 37.531312,
-                longitude: 126.927384,
-                latitudeDelta: 0.1,
-                longitudeDelta: 0.1,
-            }}
             region={{
                 latitude: currentPosition.latitude,
                 longitude: currentPosition.longitude,
@@ -27,6 +21,8 @@ const MapWithMarker = ({ currentPosition, mapRef, mapRenderCompleteHandler, near
                 longitudeDelta: 0.1,
             }}
             customMapStyle={mapStyle}
+            showsBuildings={false}
+            pitchEnabled={false}
             onMapReady={mapRenderCompleteHandler}>
             <Marker
                 coordinate={{

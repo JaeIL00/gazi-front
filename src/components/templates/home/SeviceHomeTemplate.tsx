@@ -32,8 +32,8 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger }: SeviceHomeTempla
 
     // Get current user position
     const [currentPosition, setCurrentPosition] = useState<MapLocationTypes>({
-        latitude: 37.531312,
-        longitude: 126.927384,
+        latitude: 37.49795103144074,
+        longitude: 127.02760985223079,
     });
     const onPressGetUserPosition = async () => {
         const isOkPermission = await checkLocationPermission();
