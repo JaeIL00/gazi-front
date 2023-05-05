@@ -394,7 +394,10 @@ export const nearbyPostListModalStyles = StyleSheet.create({
 });
 export const mapWithMarkerStyles = StyleSheet.create({
     map: {
-        height: '110%',
+        width: '100%',
+        height: '100%',
+        position: 'absolute',
+        top: 0,
     },
     markerBox: {
         justifyContent: 'center',
@@ -580,11 +583,6 @@ export const completedJoinTemplateStyles = StyleSheet.create({
     },
 });
 export const seviceHomeTemplateStyles = StyleSheet.create({
-    mapContainer: {
-        width: '100%',
-        height: '100%',
-        position: 'absolute',
-    },
     searchLayout: {
         position: 'absolute',
         top: 16 * screenHeight,

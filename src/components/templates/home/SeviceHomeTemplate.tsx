@@ -91,9 +91,6 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger }: SeviceHomeTempla
         setSearchText(text);
     };
 
-    // Animation map height style
-    const mapAnimRef = useRef(new Animated.Value(0)).current;
-
     // Get post of near by user API
     const mapRef = useRef() as RefObject<MapView>;
     const userTk = useRecoilValue(userTokenAtom);
@@ -156,23 +153,11 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger }: SeviceHomeTempla
 
     return (
         <>
-            <Animated.View
-                style={[
-                    seviceHomeTemplateStyles.mapContainer,
-                    {
-                        height: mapAnimRef.interpolate({
-                            inputRange: [0, 100],
-                            outputRange: [250 * screenHeight, 350 * screenHeight],
-                        }),
-                    },
-                ]}>
-                <MapWithMarker
-                    currentPosition={currentPosition}
-                    mapRef={mapRef}
-                    mapRenderCompleteHandler={mapRenderCompleteHandler}
-                    nearPostList={nearPostList}
-                />
-            </Animated.View>
+            <MapWithMarker
+                currentPosition={currentPosition}
+                mapRenderCompleteHandler={mapRenderCompleteHandler}
+                nearPostList={nearPostList}
+            />
             <View style={seviceHomeTemplateStyles.searchLayout}>
                 {Platform.OS === 'android' && (
                     <DropShadow style={seviceHomeTemplateStyles.dropshadow}>
@@ -201,7 +186,6 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger }: SeviceHomeTempla
             <NearbyPostListModal
                 isModalRef={isModalRef}
                 handleModalTrigger={handleModalTrigger}
-                mapRef={mapAnimRef}
                 nearPostList={nearPostList}
                 onPressGetUserPosition={onPressGetUserPosition}
                 callNextPageHandler={callNextPageHandler}

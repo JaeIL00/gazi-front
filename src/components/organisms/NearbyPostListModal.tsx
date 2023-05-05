@@ -20,7 +20,6 @@ const INIT_OUTPUT = INIT_MINI + 100;
 const NearbyPostListModal = ({
     isModalRef,
     handleModalTrigger,
-    mapRef,
     nearPostList,
     onPressGetUserPosition,
     callNextPageHandler,
@@ -36,23 +35,14 @@ const NearbyPostListModal = ({
                 const { dy } = gestureState;
                 if (animType.current === 'mini') {
                     if (dy > 0) return;
-                    if (dy > -MINI_ANIVALUE) {
-                        mapRef.setValue(MINI_ANIVALUE + dy);
-                    }
                     animRef.setValue(MINI_ANIVALUE + dy);
                     opacityRef.setValue(-MINI_ANIVALUE - dy);
                 }
                 if (animType.current === 'middle') {
-                    if (dy > 0) {
-                        mapRef.setValue(dy);
-                    }
                     animRef.setValue(dy);
                     opacityRef.setValue(-dy);
                 }
                 if (animType.current === 'full') {
-                    if (dy > -FULL_ANIVALUE) {
-                        mapRef.setValue(FULL_ANIVALUE + dy);
-                    }
                     animRef.setValue(FULL_ANIVALUE + dy);
                     opacityRef.setValue(-FULL_ANIVALUE - dy);
                 }
@@ -81,11 +71,6 @@ const NearbyPostListModal = ({
                         duration: 200,
                         useNativeDriver: true,
                     }).start();
-                    Animated.timing(mapRef, {
-                        toValue: 345 * screenHeight,
-                        duration: 200,
-                        useNativeDriver: false,
-                    }).start();
                     isModalRef.current = true;
                     return (animType.current = 'mini');
                 }
@@ -96,11 +81,6 @@ const NearbyPostListModal = ({
                         toValue: MIDDLE_ANIVALUE,
                         duration: 200,
                         useNativeDriver: true,
-                    }).start();
-                    Animated.timing(mapRef, {
-                        toValue: MIDDLE_ANIVALUE,
-                        duration: 200,
-                        useNativeDriver: false,
                     }).start();
                     isModalRef.current = false;
                     return (animType.current = 'middle');
@@ -181,11 +161,6 @@ const NearbyPostListModal = ({
                 toValue: MIDDLE_ANIVALUE,
                 duration: 200,
                 useNativeDriver: true,
-            }).start();
-            Animated.timing(mapRef, {
-                toValue: MIDDLE_ANIVALUE,
-                duration: 200,
-                useNativeDriver: false,
             }).start();
             isModalRef.current = false;
             animType.current = 'middle';

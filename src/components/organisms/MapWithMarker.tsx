@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { RefObject, useRef } from 'react';
 import { Image, View } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 
@@ -6,13 +6,16 @@ import mapStyle from '../../styles/mapStyle';
 import { MapWithMarkerProps } from '../../types/types';
 import { mapWithMarkerStyles } from '../../styles/styles';
 
-const MapWithMarker = ({ currentPosition, mapRef, mapRenderCompleteHandler, nearPostList }: MapWithMarkerProps) => {
+const MapWithMarker = ({ currentPosition, mapRenderCompleteHandler, nearPostList }: MapWithMarkerProps) => {
     const MARKER_RANGE_IMAGE = require('../../assets/icons/map-marker-range.png');
     const MARKER_IMAGE = require('../../assets/icons/map-marker.png');
 
+    // Animation map height style
+    const mapAnimRef = useRef() as RefObject<MapView>;
+
     return (
         <MapView
-            ref={mapRef}
+            ref={mapAnimRef}
             style={mapWithMarkerStyles.map}
             region={{
                 latitude: currentPosition.latitude,

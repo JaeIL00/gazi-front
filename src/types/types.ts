@@ -175,7 +175,6 @@ export type KeywordsListProps = {
 };
 export type MapWithMarkerProps = {
     currentPosition: MapLocationTypes;
-    mapRef: RefObject<MapView>;
     nearPostList: PostTypes[];
     mapRenderCompleteHandler: () => void;
 };
@@ -185,7 +184,6 @@ export type PostListItemProps = {
 export type NearbyPostListModalProps = {
     isModalRef: React.MutableRefObject<boolean>;
     handleModalTrigger: boolean;
-    mapRef: Animated.Value;
     nearPostList: PostTypes[];
     onPressGetUserPosition: () => void;
     callNextPageHandler: () => void;
