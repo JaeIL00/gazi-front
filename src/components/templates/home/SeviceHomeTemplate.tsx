@@ -7,6 +7,8 @@ import MapView, { BoundingBox, Details, Region } from 'react-native-maps';
 import { useInfiniteQuery } from 'react-query';
 import { PERMISSIONS, RESULTS, check } from 'react-native-permissions';
 
+import Colors from '../../../styles/Colors';
+import MediumText from '../../smallest/MediumText';
 import MapWithMarker from '../../organisms/MapWithMarker';
 import NearbyPostListModal from '../../organisms/NearbyPostListModal';
 import FailLocationPermisionModal from '../../organisms/FailLocationPermisionModal';
@@ -15,8 +17,6 @@ import { nearByUserPostsAPI } from '../../../queries/api';
 import { SingleLineInput } from '../../smallest/SingleLineInput';
 import { seviceHomeTemplateStyles } from '../../../styles/styles';
 import { SeviceHomeTemplateProps, MapLocationTypes, PostTypes, MapBoundaryTypes } from '../../../types/types';
-import MediumText from '../../smallest/MediumText';
-import Colors from '../../../styles/Colors';
 import { screenFont, screenHeight, screenWidth } from '../../../utils/changeStyleSize';
 
 const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger }: SeviceHomeTemplateProps) => {
@@ -54,16 +54,22 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger }: SeviceHomeTempla
     }, []);
 
     // Fisrt render of map
+    const mapRef = useRef() as RefObject<MapView>;
     const mapRenderCompleteHandler = async () => {
-        const boundaryValue = (await mapRef.current?.getMapBoundaries()) as BoundingBox;
-        setMapBoundaryState({
-            northEast: boundaryValue.northEast,
-            southWest: boundaryValue.southWest,
-        });
-        setTimeout(() => {
-            remove();
-            refetch();
-        }, 1000);
+        try {
+            const boundaryValue = (await mapRef.current?.getMapBoundaries()) as BoundingBox;
+            setMapBoundaryState({
+                northEast: boundaryValue.northEast,
+                southWest: boundaryValue.southWest,
+            });
+            setTimeout(() => {
+                remove();
+                refetch();
+            }, 1000);
+        } catch (error) {
+            // For Debug
+            console.log('(ERROR) Fisrt render of map.', error);
+        }
     };
 
     // Get current user position
@@ -151,7 +157,6 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger }: SeviceHomeTempla
     };
 
     // Get post of near by user API
-    const mapRef = useRef() as RefObject<MapView>;
     const userTk = useRecoilValue(userTokenAtom);
     const [nearPostList, setNearPostList] = useState<PostTypes[]>([]);
     const { hasNextPage, isFetching, isFetchingNextPage, fetchNextPage, refetch, remove } = useInfiniteQuery(
