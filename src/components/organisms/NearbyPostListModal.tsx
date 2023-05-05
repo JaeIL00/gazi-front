@@ -24,6 +24,7 @@ const NearbyPostListModal = ({
     isBottomSheetMini,
     isBottomSheetFull,
     currentPosition,
+    mapBoundaryState,
     moveToBottomSheetMini,
     moveToBottomSheetFull,
     notBottomSheetMini,
@@ -39,7 +40,6 @@ const NearbyPostListModal = ({
             onMoveShouldSetPanResponder: () => true,
             onPanResponderMove: (event, gestureState) => {
                 const { dy } = gestureState;
-                console.log(dy);
                 if (animType.current === 'mini') {
                     if (dy > 0) return;
                     animRef.setValue(MINI_ANIVALUE + dy);
@@ -204,7 +204,7 @@ const NearbyPostListModal = ({
     const onPressCurrentPositionToggle = useCallback(() => {
         onPressGetUserPosition();
         moveToBottomSheetMini();
-    }, [currentPosition]);
+    }, [currentPosition, mapBoundaryState]);
 
     return (
         <>

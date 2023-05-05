@@ -14,7 +14,7 @@ import { userTokenAtom } from '../../../store/atoms';
 import { nearByUserPostsAPI } from '../../../queries/api';
 import { SingleLineInput } from '../../smallest/SingleLineInput';
 import { seviceHomeTemplateStyles } from '../../../styles/styles';
-import { SeviceHomeTemplateProps, MapLocationTypes, PostTypes } from '../../../types/types';
+import { SeviceHomeTemplateProps, MapLocationTypes, PostTypes, MapBoundaryTypes } from '../../../types/types';
 
 const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger }: SeviceHomeTemplateProps) => {
     // Check Location Permission
@@ -33,6 +33,16 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger }: SeviceHomeTempla
     const [currentPosition, setCurrentPosition] = useState<MapLocationTypes>({
         latitude: 37.49795103144074,
         longitude: 127.02760985223079,
+    });
+    const [mapBoundaryState, setMapBoundaryState] = useState<MapBoundaryTypes>({
+        northEast: {
+            latitude: 37.45878314300355,
+            longitude: 126.8773839622736,
+        },
+        southWest: {
+            latitude: 37.45878314300355,
+            longitude: 126.8773839622736,
+        },
     });
     const onPressGetUserPosition = async () => {
         const isOkPermission = await checkLocationPermission();
@@ -55,9 +65,9 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger }: SeviceHomeTempla
                     });
                 }
             });
-            // setTimeout(() => {
-            //     getBoundaryMap();
-            // }, 500);
+            setTimeout(() => {
+                getBoundaryMap();
+            }, 1000);
         } else {
             setOnModal(true);
         }
@@ -66,8 +76,10 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger }: SeviceHomeTempla
         let boundaryValue;
         try {
             boundaryValue = (await mapRef.current?.getMapBoundaries()) as BoundingBox;
-            setNorthEast(boundaryValue.northEast);
-            setSouthWest(boundaryValue.southWest);
+            setMapBoundaryState({
+                northEast: boundaryValue.northEast,
+                southWest: boundaryValue.southWest,
+            });
         } catch (err) {
             // For Debug
             console.log('(ERROR) Get boundary of map.', err);
@@ -105,23 +117,15 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger }: SeviceHomeTempla
     // Get post of near by user API
     const mapRef = useRef() as RefObject<MapView>;
     const userTk = useRecoilValue(userTokenAtom);
-    const [northEast, setNorthEast] = useState<MapLocationTypes>({
-        latitude: 37.60380328673927,
-        longitude: 126.97738375514747,
-    });
-    const [southWest, setSouthWest] = useState<MapLocationTypes>({
-        latitude: 37.45878314300355,
-        longitude: 126.8773839622736,
-    });
     const [nearPostList, setNearPostList] = useState<PostTypes[]>([]);
     const { hasNextPage, isFetching, isFetchingNextPage, fetchNextPage, refetch, remove } = useInfiniteQuery(
         ['getNearPosts'],
         ({ pageParam = 0 }) =>
             nearByUserPostsAPI({
-                minLat: southWest.latitude,
-                minLon: southWest.longitude,
-                maxLat: northEast.latitude,
-                maxLon: northEast.longitude,
+                minLat: mapBoundaryState.southWest.latitude,
+                minLon: mapBoundaryState.southWest.longitude,
+                maxLat: mapBoundaryState.northEast.latitude,
+                maxLon: mapBoundaryState.northEast.longitude,
                 curLat: currentPosition.latitude,
                 curLon: currentPosition.longitude,
                 accessToken: userTk.accessToken,
@@ -154,8 +158,10 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger }: SeviceHomeTempla
     // Fisrt render of map
     const mapRenderCompleteHandler = async () => {
         const boundaryValue = (await mapRef.current?.getMapBoundaries()) as BoundingBox;
-        setNorthEast(boundaryValue.northEast);
-        setSouthWest(boundaryValue.southWest);
+        setMapBoundaryState({
+            northEast: boundaryValue.northEast,
+            southWest: boundaryValue.southWest,
+        });
         setTimeout(() => {
             remove();
             refetch();
@@ -237,6 +243,7 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger }: SeviceHomeTempla
                 isBottomSheetMini={isBottomSheetMini}
                 isBottomSheetFull={isBottomSheetFull}
                 currentPosition={currentPosition}
+                mapBoundaryState={mapBoundaryState}
                 moveToBottomSheetMini={moveToBottomSheetMini}
                 moveToBottomSheetFull={moveToBottomSheetFull}
                 notBottomSheetMini={notBottomSheetMini}

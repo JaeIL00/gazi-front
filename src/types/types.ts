@@ -14,6 +14,10 @@ export type MapLocationTypes = {
     latitude: number;
     longitude: number;
 };
+export type MapBoundaryTypes = {
+    northEast: MapLocationTypes;
+    southWest: MapLocationTypes;
+};
 export type PostTypes = {
     title: string;
     distance: string;
@@ -190,6 +194,7 @@ export type NearbyPostListModalProps = {
     isBottomSheetMini: boolean;
     isBottomSheetFull: boolean;
     currentPosition: MapLocationTypes;
+    mapBoundaryState: MapBoundaryTypes;
     moveToBottomSheetMini: () => void;
     moveToBottomSheetFull: (state: string) => void;
     notBottomSheetMini: () => void;
