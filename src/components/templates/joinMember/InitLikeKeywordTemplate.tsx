@@ -6,7 +6,9 @@ import { useMutation } from 'react-query';
 
 import Spacer from '../../smallest/Spacer';
 import Colors from '../../../styles/Colors';
+import MediumText from '../../smallest/MediumText';
 import TextButton from '../../molecules/TextButton';
+import TouchButton from '../../smallest/TouchButton';
 import SemiBoldText from '../../smallest/SemiBoldText';
 import KeywordsList from '../../organisms/KeywordsList';
 import MoveBackWithPageTitle from '../../organisms/MoveBackWithPageTitle';
@@ -15,8 +17,6 @@ import { likeKeywordsAPI } from '../../../queries/api';
 import { initLikeKeywordTemplateStyles } from '../../../styles/styles';
 import { InitLikeKeywordTemplateProps, KeywordListTypes } from '../../../types/types';
 import { issueKeywords, subwayKeywords, trafficKeywords } from '../../../utils/allKeywords';
-import TouchButton from '../../smallest/TouchButton';
-import MediumText from '../../smallest/MediumText';
 
 const InitLikeKeywordTemplate = ({ moveToScreen }: InitLikeKeywordTemplateProps) => {
     // Initialized check keywords

@@ -367,6 +367,7 @@ export const nearbyPostListModalStyles = StyleSheet.create({
         paddingHorizontal: 16 * screenWidth,
         backgroundColor: Colors.BACKGROUND_DEFAULT,
         marginTop: -1,
+        height: 565 * screenHeight,
     },
     toggleButtonBox: {
         position: 'absolute',
@@ -414,6 +415,10 @@ export const mapWithMarkerStyles = StyleSheet.create({
         width: 27 * screenWidth,
         height: 27 * screenWidth,
     },
+    issueMarker: {
+        width: 25 * screenWidth,
+        height: 25 * screenWidth,
+    },
 });
 export const postListItemStyles = StyleSheet.create({
     container: {
@@ -421,6 +426,9 @@ export const postListItemStyles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between',
         width: '100%',
+    },
+    textBox: {
+        width: '68%',
     },
     postImage: {
         width: 77 * screenWidth,

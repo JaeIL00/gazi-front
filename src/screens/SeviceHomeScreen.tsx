@@ -1,8 +1,9 @@
 import React, { useCallback, useRef, useState } from 'react';
 import { BackHandler, Platform, ToastAndroid, View } from 'react-native';
-import { seviceHomeScreenStyles } from '../styles/styles';
 import SeviceHomeTemplate from '../components/templates/home/SeviceHomeTemplate';
 import { useFocusEffect } from '@react-navigation/native';
+
+import { seviceHomeScreenStyles } from '../styles/styles';
 
 const SeviceHomeScreen = () => {
     // Android back button & Header Back Button Handling
@@ -11,11 +12,13 @@ const SeviceHomeScreen = () => {
     const isModalRef = useRef(false);
     const handleBackButton = (): boolean => {
         if (isModalRef.current) {
+            // Bottom sheet doesn't initialized position. So move to init position
             setHandleModalTrigger(true);
             setTimeout(() => {
                 setHandleModalTrigger(false);
             }, 2000);
         } else {
+            // Android back button touch twice
             if (Platform.OS === 'android' && !isAppExit) {
                 ToastAndroid.show('한번 더 눌러주세요', 1000);
                 setIsAppExit(true);

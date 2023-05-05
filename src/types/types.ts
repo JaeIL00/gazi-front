@@ -1,5 +1,6 @@
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
-import { ReactElement } from 'react';
+import { ReactElement, RefObject } from 'react';
+import MapView from 'react-native-maps';
 import { Animated, FlexAlignType, KeyboardType, TextStyle } from 'react-native/types';
 
 //COMMON
@@ -9,9 +10,26 @@ export type KeywordListTypes = {
     keywordName: string;
     vehicleType: string | null;
 }[];
-export type UserPositionTypes = {
+export type MapLocationTypes = {
     latitude: number;
     longitude: number;
+};
+export type PostTypes = {
+    title: string;
+    distance: string;
+    time: string;
+    rePostCount: number;
+    content: string;
+    latitude: number;
+    longitude: number;
+    headKeyword: {
+        id: number;
+        keywordEnum: string;
+        vehicleType: string;
+        keywordName: string;
+    };
+    thumbNail: string;
+    postId: number;
 };
 
 // ATOM
@@ -92,6 +110,7 @@ export type AppTextProps = {
     color: string;
     textAlign?: TextStyle['textAlign'];
     lineHeight?: number;
+    numberOfLines?: number;
 };
 export type ModalBackgroundProps = {
     children?: ReactElement;
@@ -155,27 +174,21 @@ export type KeywordsListProps = {
     checkKeywordHandler: (list: string, index: number, id: number) => void;
 };
 export type MapWithMarkerProps = {
-    currentPosition: UserPositionTypes;
+    currentPosition: MapLocationTypes;
+    mapRef: RefObject<MapView>;
+    nearPostList: PostTypes[];
+    mapRenderCompleteHandler: () => void;
 };
 export type PostListItemProps = {
-    post: {
-        id: number;
-        title: string;
-        distance: string;
-        time: string;
-        rePostCount: number;
-        content: string;
-        latitude: number;
-        longitude: number;
-        thumbnail: string;
-        represent: string;
-    };
+    post: PostTypes;
 };
 export type NearbyPostListModalProps = {
     isModalRef: React.MutableRefObject<boolean>;
     handleModalTrigger: boolean;
     mapRef: Animated.Value;
+    nearPostList: PostTypes[];
     onPressGetUserPosition: () => void;
+    callNextPageHandler: () => void;
 };
 
 // TEMPLATES
@@ -196,4 +209,7 @@ export type EmailLoginTemplateProps = {
     moveServiceHomeHandler: (state: string) => void;
 };
 export interface InitLikeKeywordTemplateProps extends RequestPemissionTemplateProps {}
-export interface SeviceHomeTemplateProps extends NearbyPostListModalProps {}
+export type SeviceHomeTemplateProps = {
+    isModalRef: React.MutableRefObject<boolean>;
+    handleModalTrigger: boolean;
+};
