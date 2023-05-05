@@ -1,7 +1,7 @@
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import { ReactElement, RefObject } from 'react';
-import MapView from 'react-native-maps';
-import { Animated, FlexAlignType, KeyboardType, TextStyle } from 'react-native/types';
+import MapView, { Details, Region } from 'react-native-maps';
+import { FlexAlignType, KeyboardType, TextStyle } from 'react-native/types';
 
 //COMMON
 export type KeywordListTypes = {
@@ -174,11 +174,11 @@ export type KeywordsListProps = {
     checkKeywordHandler: (list: string, index: number, id: number) => void;
 };
 export type MapWithMarkerProps = {
+    mapRef: RefObject<MapView>;
     currentPosition: MapLocationTypes;
     nearPostList: PostTypes[];
-    isBottomSheetMini: boolean;
     mapRenderCompleteHandler: () => void;
-    moveToBottomSheetMini: () => void;
+    isGestureforBottomSheet: (region: Region, details: Details) => void;
 };
 export type PostListItemProps = {
     post: PostTypes;

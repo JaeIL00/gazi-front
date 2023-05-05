@@ -1,9 +1,9 @@
-import React, { RefObject, useRef, useState } from 'react';
+import React, { RefObject, useCallback, useRef, useState } from 'react';
 import { ActivityIndicator, Image, Linking, Platform, View } from 'react-native';
 import Geolocation from '@react-native-community/geolocation';
 import DropShadow from 'react-native-drop-shadow';
 import { useRecoilValue } from 'recoil';
-import MapView, { BoundingBox } from 'react-native-maps';
+import MapView, { BoundingBox, Details, Region } from 'react-native-maps';
 import { useInfiniteQuery } from 'react-query';
 import { PERMISSIONS, RESULTS, check } from 'react-native-permissions';
 
@@ -54,6 +54,7 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger }: SeviceHomeTempla
         let boundaryValue;
         try {
             boundaryValue = (await mapRef.current?.getMapBoundaries()) as BoundingBox;
+            console.log(boundaryValue);
             setNorthEast(boundaryValue.northEast);
             setSouthWest(boundaryValue.southWest);
         } catch (err) {
@@ -160,6 +161,14 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger }: SeviceHomeTempla
     const notBottomSheetMini = () => {
         setIsBottomSheetMini(false);
     };
+    const isGestureforBottomSheet = useCallback(
+        (region: Region, details: Details) => {
+            if (details.isGesture) {
+                moveToBottomSheetMini();
+            }
+        },
+        [isBottomSheetMini],
+    );
 
     // Move to mini bottom sheet by move map
     const [isBottomSheetFull, setIsBottomSheetFull] = useState(false);
@@ -179,11 +188,11 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger }: SeviceHomeTempla
     return (
         <>
             <MapWithMarker
+                mapRef={mapRef}
                 currentPosition={currentPosition}
                 nearPostList={nearPostList}
-                isBottomSheetMini={isBottomSheetMini}
+                isGestureforBottomSheet={isGestureforBottomSheet}
                 mapRenderCompleteHandler={mapRenderCompleteHandler}
-                moveToBottomSheetMini={moveToBottomSheetMini}
             />
             <View style={seviceHomeTemplateStyles.searchLayout}>
                 {Platform.OS === 'android' && (
