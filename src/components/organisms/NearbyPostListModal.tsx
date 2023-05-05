@@ -11,10 +11,10 @@ import { screenHeight } from '../../utils/changeStyleSize';
 import { nearbyPostListModalStyles } from '../../styles/styles';
 import { NearbyPostListModalProps, PostTypes } from '../../types/types';
 
-const FULL_ANIVALUE = -225 * screenHeight;
+const FULL_ANIVALUE = -415 * screenHeight; // 290
 const MIDDLE_ANIVALUE = 0;
-const MINI_ANIVALUE = 345 * screenHeight;
-const INIT_MINI = 250 * screenHeight;
+const MINI_ANIVALUE = 152 * screenHeight;
+const INIT_MINI = 440 * screenHeight; // 440
 const INIT_OUTPUT = INIT_MINI + 100;
 
 const NearbyPostListModal = ({
@@ -77,7 +77,7 @@ const NearbyPostListModal = ({
                 if (dy > -30 && animType.current === 'middle') {
                     // To mini from middle
                     Animated.timing(animRef, {
-                        toValue: 345 * screenHeight,
+                        toValue: MINI_ANIVALUE,
                         duration: 200,
                         useNativeDriver: true,
                     }).start();
