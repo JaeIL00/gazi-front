@@ -369,6 +369,14 @@ export const nearbyPostListModalStyles = StyleSheet.create({
         marginTop: -1,
         height: 565 * screenHeight,
     },
+    listTouchBox: {
+        position: 'absolute',
+        top: 20,
+        width: '100%',
+        height: 445 * screenHeight,
+        paddingHorizontal: 16 * screenWidth,
+        marginTop: -1,
+    },
     toggleButtonBox: {
         position: 'absolute',
         bottom: 18 * screenHeight,

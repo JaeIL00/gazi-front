@@ -161,6 +161,21 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger }: SeviceHomeTempla
         setIsBottomSheetMini(false);
     };
 
+    // Move to mini bottom sheet by move map
+    const [isBottomSheetFull, setIsBottomSheetFull] = useState(false);
+    const moveToBottomSheetFull = (state: string) => {
+        switch (state) {
+            case 'FULL':
+                setIsBottomSheetFull(true);
+                break;
+            case 'NOT':
+                setIsBottomSheetFull(false);
+                break;
+            default:
+                console.log('(ERROR) Move to mini bottom sheet by move map function');
+        }
+    };
+
     return (
         <>
             <MapWithMarker
@@ -200,6 +215,8 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger }: SeviceHomeTempla
                 handleModalTrigger={handleModalTrigger}
                 nearPostList={nearPostList}
                 isBottomSheetMini={isBottomSheetMini}
+                isBottomSheetFull={isBottomSheetFull}
+                moveToBottomSheetFull={moveToBottomSheetFull}
                 notBottomSheetMini={notBottomSheetMini}
                 onPressGetUserPosition={onPressGetUserPosition}
                 callNextPageHandler={callNextPageHandler}

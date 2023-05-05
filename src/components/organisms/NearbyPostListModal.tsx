@@ -22,6 +22,8 @@ const NearbyPostListModal = ({
     handleModalTrigger,
     nearPostList,
     isBottomSheetMini,
+    isBottomSheetFull,
+    moveToBottomSheetFull,
     notBottomSheetMini,
     onPressGetUserPosition,
     callNextPageHandler,
@@ -63,6 +65,7 @@ const NearbyPostListModal = ({
                         toValue: -FULL_ANIVALUE,
                         useNativeDriver: true,
                     }).start();
+                    moveToBottomSheetFull('FULL');
                     isModalRef.current = true;
                     return (animType.current = 'full');
                 }
@@ -121,6 +124,7 @@ const NearbyPostListModal = ({
                         toValue: -MIDDLE_ANIVALUE,
                         useNativeDriver: true,
                     }).start();
+                    moveToBottomSheetFull('NOT');
                     isModalRef.current = false;
                     animType.current = 'middle';
                 }
@@ -135,6 +139,7 @@ const NearbyPostListModal = ({
                         toValue: -MINI_ANIVALUE,
                         useNativeDriver: true,
                     }).start();
+                    moveToBottomSheetFull('NOT');
                     animType.current = 'mini';
                 }
                 if (dy < 30 && animType.current === 'full') {
@@ -314,6 +319,24 @@ const NearbyPostListModal = ({
                     maxToRenderPerBatch={9}
                 />
             </Animated.View>
+            {!isBottomSheetFull && (
+                <Animated.View
+                    {...panResponder.panHandlers}
+                    style={[
+                        nearbyPostListModalStyles.listTouchBox,
+                        {
+                            transform: [
+                                {
+                                    translateY: animRef.interpolate({
+                                        inputRange: [0, 100],
+                                        outputRange: [INIT_MINI, INIT_OUTPUT],
+                                    }),
+                                },
+                            ],
+                        },
+                    ]}
+                />
+            )}
         </>
     );
 };
