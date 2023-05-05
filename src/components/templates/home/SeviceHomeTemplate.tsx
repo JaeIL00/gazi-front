@@ -210,7 +210,7 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger }: SeviceHomeTempla
         [isBottomSheetMini],
     );
 
-    // Move to mini bottom sheet by move map
+    // Move to full bottom sheet by move map
     const [isBottomSheetFull, setIsBottomSheetFull] = useState(false);
     const moveToBottomSheetFull = (state: string) => {
         switch (state) {
