@@ -38,14 +38,26 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger }: SeviceHomeTempla
         const isOkPermission = await checkLocationPermission();
         if (isOkPermission) {
             Geolocation.getCurrentPosition(info => {
-                setCurrentPosition({
-                    latitude: info.coords.latitude,
-                    longitude: info.coords.longitude,
-                });
+                if (
+                    info.coords.latitude !== currentPosition.latitude &&
+                    info.coords.longitude !== currentPosition.longitude
+                ) {
+                    setCurrentPosition({
+                        latitude: info.coords.latitude,
+                        longitude: info.coords.longitude,
+                    });
+                } else {
+                    mapRef.current?.animateToRegion({
+                        latitude: currentPosition.latitude,
+                        longitude: currentPosition.longitude,
+                        latitudeDelta: 0.1,
+                        longitudeDelta: 0.1,
+                    });
+                }
             });
-            setTimeout(() => {
-                getBoundaryMap();
-            }, 500);
+            // setTimeout(() => {
+            //     getBoundaryMap();
+            // }, 500);
         } else {
             setOnModal(true);
         }
@@ -54,7 +66,6 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger }: SeviceHomeTempla
         let boundaryValue;
         try {
             boundaryValue = (await mapRef.current?.getMapBoundaries()) as BoundingBox;
-            console.log(boundaryValue);
             setNorthEast(boundaryValue.northEast);
             setSouthWest(boundaryValue.southWest);
         } catch (err) {
@@ -225,6 +236,7 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger }: SeviceHomeTempla
                 nearPostList={nearPostList}
                 isBottomSheetMini={isBottomSheetMini}
                 isBottomSheetFull={isBottomSheetFull}
+                currentPosition={currentPosition}
                 moveToBottomSheetMini={moveToBottomSheetMini}
                 moveToBottomSheetFull={moveToBottomSheetFull}
                 notBottomSheetMini={notBottomSheetMini}

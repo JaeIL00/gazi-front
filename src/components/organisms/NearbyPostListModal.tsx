@@ -23,6 +23,7 @@ const NearbyPostListModal = ({
     nearPostList,
     isBottomSheetMini,
     isBottomSheetFull,
+    currentPosition,
     moveToBottomSheetMini,
     moveToBottomSheetFull,
     notBottomSheetMini,
@@ -198,7 +199,7 @@ const NearbyPostListModal = ({
     const onPressCurrentPositionToggle = useCallback(() => {
         onPressGetUserPosition();
         moveToBottomSheetMini();
-    }, []);
+    }, [currentPosition]);
 
     return (
         <>
