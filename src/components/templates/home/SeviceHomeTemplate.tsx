@@ -216,6 +216,7 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger }: SeviceHomeTempla
                 nearPostList={nearPostList}
                 isBottomSheetMini={isBottomSheetMini}
                 isBottomSheetFull={isBottomSheetFull}
+                moveToBottomSheetMini={moveToBottomSheetMini}
                 moveToBottomSheetFull={moveToBottomSheetFull}
                 notBottomSheetMini={notBottomSheetMini}
                 onPressGetUserPosition={onPressGetUserPosition}

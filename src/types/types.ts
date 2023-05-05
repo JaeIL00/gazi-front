@@ -189,6 +189,7 @@ export type NearbyPostListModalProps = {
     nearPostList: PostTypes[];
     isBottomSheetMini: boolean;
     isBottomSheetFull: boolean;
+    moveToBottomSheetMini: () => void;
     moveToBottomSheetFull: (state: string) => void;
     notBottomSheetMini: () => void;
     onPressGetUserPosition: () => void;

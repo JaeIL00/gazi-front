@@ -23,6 +23,7 @@ const NearbyPostListModal = ({
     nearPostList,
     isBottomSheetMini,
     isBottomSheetFull,
+    moveToBottomSheetMini,
     moveToBottomSheetFull,
     notBottomSheetMini,
     onPressGetUserPosition,
@@ -194,6 +195,11 @@ const NearbyPostListModal = ({
     const ItemSeparatorComponent = useCallback(() => <Spacer height={20} />, []);
     const ListFooterComponent = useCallback(() => <Spacer height={20} />, []);
 
+    const onPressCurrentPositionToggle = useCallback(() => {
+        onPressGetUserPosition();
+        moveToBottomSheetMini();
+    }, []);
+
     return (
         <>
             <Animated.View
@@ -229,7 +235,7 @@ const NearbyPostListModal = ({
                 }}>
                 <View style={nearbyPostListModalStyles.toggleButtonBox}>
                     <TouchButton
-                        onPress={onPressGetUserPosition}
+                        onPress={onPressCurrentPositionToggle}
                         width={52}
                         height={52}
                         borderRadius={52}
