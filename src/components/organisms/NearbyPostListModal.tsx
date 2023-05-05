@@ -69,8 +69,11 @@ const NearbyPostListModal = ({
                     Animated.timing(opacityRef, {
                         toValue: -FULL_ANIVALUE,
                         useNativeDriver: true,
-                    }).start();
-                    moveToBottomSheetFull('FULL');
+                    }).start(({ finished }) => {
+                        if (finished) {
+                            moveToBottomSheetFull('FULL');
+                        }
+                    });
                     isModalRef.current = true;
                     return (animType.current = 'full');
                 }
@@ -113,8 +116,11 @@ const NearbyPostListModal = ({
                     Animated.timing(opacityRef, {
                         toValue: -FULL_ANIVALUE,
                         useNativeDriver: true,
-                    }).start();
-                    moveToBottomSheetFull('FULL');
+                    }).start(({ finished }) => {
+                        if (finished) {
+                            moveToBottomSheetFull('FULL');
+                        }
+                    });
                     isModalRef.current = true;
                     return (animType.current = 'full');
                 }
@@ -129,8 +135,11 @@ const NearbyPostListModal = ({
                     Animated.timing(opacityRef, {
                         toValue: -MIDDLE_ANIVALUE,
                         useNativeDriver: true,
-                    }).start();
-                    moveToBottomSheetFull('NOT');
+                    }).start(({ finished }) => {
+                        if (finished) {
+                            moveToBottomSheetFull('NOT');
+                        }
+                    });
                     isModalRef.current = false;
                     animType.current = 'middle';
                 }
@@ -144,8 +153,11 @@ const NearbyPostListModal = ({
                     Animated.timing(opacityRef, {
                         toValue: -MINI_ANIVALUE,
                         useNativeDriver: true,
-                    }).start();
-                    moveToBottomSheetFull('NOT');
+                    }).start(({ finished }) => {
+                        if (finished) {
+                            moveToBottomSheetFull('NOT');
+                        }
+                    });
                     animType.current = 'mini';
                 }
                 if (dy < 30 && animType.current === 'full') {
@@ -175,8 +187,11 @@ const NearbyPostListModal = ({
                 toValue: MIDDLE_ANIVALUE,
                 duration: 200,
                 useNativeDriver: true,
-            }).start();
-            moveToBottomSheetFull('NOT');
+            }).start(({ finished }) => {
+                if (finished) {
+                    moveToBottomSheetFull('NOT');
+                }
+            });
             notBottomSheetMini();
             isModalRef.current = false;
             animType.current = 'middle';

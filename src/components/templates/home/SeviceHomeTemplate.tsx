@@ -210,19 +210,6 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger }: SeviceHomeTempla
         [isBottomSheetMini],
     );
 
-    // Check map zoom level for warning
-    const [isFarMapLevel, setIsFarMapLevel] = useState(false);
-    const checkZoomLevelWarning = useCallback(
-        (region: Region) => {
-            if (region.latitudeDelta > 0.15) {
-                setIsFarMapLevel(true);
-            } else {
-                setIsFarMapLevel(false);
-            }
-        },
-        [isFarMapLevel],
-    );
-
     // Move to mini bottom sheet by move map
     const [isBottomSheetFull, setIsBottomSheetFull] = useState(false);
     const moveToBottomSheetFull = (state: string) => {
@@ -237,6 +224,19 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger }: SeviceHomeTempla
                 console.log('(ERROR) Move to mini bottom sheet by move map function');
         }
     };
+
+    // Check map zoom level for warning
+    const [isFarMapLevel, setIsFarMapLevel] = useState(false);
+    const checkZoomLevelWarning = useCallback(
+        (region: Region) => {
+            if (region.latitudeDelta > 0.15) {
+                setIsFarMapLevel(true);
+            } else {
+                setIsFarMapLevel(false);
+            }
+        },
+        [isFarMapLevel],
+    );
 
     return (
         <>
