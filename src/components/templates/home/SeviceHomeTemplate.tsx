@@ -1,4 +1,4 @@
-import React, { RefObject, useCallback, useRef, useState } from 'react';
+import React, { RefObject, useCallback, useLayoutEffect, useRef, useState } from 'react';
 import { ActivityIndicator, Image, Linking, Platform, View } from 'react-native';
 import Geolocation from '@react-native-community/geolocation';
 import DropShadow from 'react-native-drop-shadow';
@@ -29,11 +29,42 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger }: SeviceHomeTempla
         }
     };
 
-    // Get current user position
+    // Init first map rendering
     const [currentPosition, setCurrentPosition] = useState<MapLocationTypes>({
         latitude: 37.49795103144074,
         longitude: 127.02760985223079,
     });
+    const isAllowPermissionInit = async () => {
+        const isOkPermission = await checkLocationPermission();
+        if (isOkPermission) {
+            Geolocation.getCurrentPosition(info => {
+                setCurrentPosition({
+                    latitude: info.coords.latitude,
+                    longitude: info.coords.longitude,
+                });
+                setIsAllowLocation(true);
+            });
+        }
+    };
+    useLayoutEffect(() => {
+        isAllowPermissionInit();
+    }, []);
+
+    // Fisrt render of map
+    const mapRenderCompleteHandler = async () => {
+        const boundaryValue = (await mapRef.current?.getMapBoundaries()) as BoundingBox;
+        setMapBoundaryState({
+            northEast: boundaryValue.northEast,
+            southWest: boundaryValue.southWest,
+        });
+        setTimeout(() => {
+            remove();
+            refetch();
+        }, 1000);
+    };
+
+    // Get current user position
+    const [isAllowLocation, setIsAllowLocation] = useState<boolean>(false);
     const [mapBoundaryState, setMapBoundaryState] = useState<MapBoundaryTypes>({
         northEast: {
             latitude: 37.45878314300355,
@@ -56,6 +87,7 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger }: SeviceHomeTempla
                         latitude: info.coords.latitude,
                         longitude: info.coords.longitude,
                     });
+                    setIsAllowLocation(true);
                     setTimeout(() => {
                         getBoundaryMap();
                     }, 1000);
@@ -70,6 +102,7 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger }: SeviceHomeTempla
             });
         } else {
             setOnModal(true);
+            setIsAllowLocation(false);
         }
     };
     const getBoundaryMap = async () => {
@@ -155,19 +188,6 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger }: SeviceHomeTempla
         }
     };
 
-    // Fisrt render of map
-    const mapRenderCompleteHandler = async () => {
-        const boundaryValue = (await mapRef.current?.getMapBoundaries()) as BoundingBox;
-        setMapBoundaryState({
-            northEast: boundaryValue.northEast,
-            southWest: boundaryValue.southWest,
-        });
-        setTimeout(() => {
-            remove();
-            refetch();
-        }, 1000);
-    };
-
     // Move to mini bottom sheet by move map
     const [isBottomSheetMini, setIsBottomSheetMini] = useState(false);
     const moveToBottomSheetMini = () => {
@@ -208,6 +228,7 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger }: SeviceHomeTempla
                 mapRef={mapRef}
                 currentPosition={currentPosition}
                 nearPostList={nearPostList}
+                isAllowLocation={isAllowLocation}
                 isGestureforBottomSheet={isGestureforBottomSheet}
                 mapRenderCompleteHandler={mapRenderCompleteHandler}
             />

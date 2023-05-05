@@ -10,6 +10,7 @@ const MapWithMarker = ({
     mapRef,
     currentPosition,
     nearPostList,
+    isAllowLocation,
     mapRenderCompleteHandler,
     isGestureforBottomSheet,
 }: MapWithMarkerProps) => {
@@ -31,18 +32,24 @@ const MapWithMarker = ({
             pitchEnabled={false}
             onMapReady={mapRenderCompleteHandler}
             onRegionChange={isGestureforBottomSheet}>
-            <Marker
-                coordinate={{
-                    latitude: currentPosition.latitude,
-                    longitude: currentPosition.longitude,
-                }}
-                anchor={{ x: 0.5, y: 0.5 }}
-                style={mapWithMarkerStyles.markerBox}>
-                <View style={mapWithMarkerStyles.markerBoxInner}>
-                    <Image source={MARKER_RANGE_IMAGE} style={mapWithMarkerStyles.markerRange} resizeMode="contain" />
-                    <Image source={MARKER_IMAGE} style={mapWithMarkerStyles.marker} />
-                </View>
-            </Marker>
+            {isAllowLocation && (
+                <Marker
+                    coordinate={{
+                        latitude: currentPosition.latitude,
+                        longitude: currentPosition.longitude,
+                    }}
+                    anchor={{ x: 0.5, y: 0.5 }}
+                    style={mapWithMarkerStyles.markerBox}>
+                    <View style={mapWithMarkerStyles.markerBoxInner}>
+                        <Image
+                            source={MARKER_RANGE_IMAGE}
+                            style={mapWithMarkerStyles.markerRange}
+                            resizeMode="contain"
+                        />
+                        <Image source={MARKER_IMAGE} style={mapWithMarkerStyles.marker} />
+                    </View>
+                </Marker>
+            )}
             {nearPostList.map((item, index) => {
                 const markertypeIcon = () => {
                     switch (item.headKeyword.id) {

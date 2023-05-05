@@ -181,6 +181,7 @@ export type MapWithMarkerProps = {
     mapRef: RefObject<MapView>;
     currentPosition: MapLocationTypes;
     nearPostList: PostTypes[];
+    isAllowLocation: boolean;
     mapRenderCompleteHandler: () => void;
     isGestureforBottomSheet: (region: Region, details: Details) => void;
 };
