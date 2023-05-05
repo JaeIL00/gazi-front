@@ -1,18 +1,31 @@
-import React, { RefObject, useRef } from 'react';
+import React, { RefObject, useCallback, useRef } from 'react';
 import { Image, View } from 'react-native';
-import MapView, { Marker } from 'react-native-maps';
+import MapView, { Details, Marker, Region } from 'react-native-maps';
 
 import mapStyle from '../../styles/mapStyle';
 import { MapWithMarkerProps } from '../../types/types';
 import { mapWithMarkerStyles } from '../../styles/styles';
 
-const MapWithMarker = ({ currentPosition, mapRenderCompleteHandler, nearPostList }: MapWithMarkerProps) => {
+const MapWithMarker = ({
+    currentPosition,
+    isBottomSheetMini,
+    nearPostList,
+    mapRenderCompleteHandler,
+    moveToBottomSheetMini,
+}: MapWithMarkerProps) => {
     const MARKER_RANGE_IMAGE = require('../../assets/icons/map-marker-range.png');
     const MARKER_IMAGE = require('../../assets/icons/map-marker.png');
 
     // Animation map height style
     const mapAnimRef = useRef() as RefObject<MapView>;
-
+    const isGestureforBottomSheet = useCallback(
+        (region: Region, details: Details) => {
+            if (details.isGesture) {
+                moveToBottomSheetMini();
+            }
+        },
+        [isBottomSheetMini],
+    );
     return (
         <MapView
             ref={mapAnimRef}
@@ -26,7 +39,8 @@ const MapWithMarker = ({ currentPosition, mapRenderCompleteHandler, nearPostList
             customMapStyle={mapStyle}
             showsBuildings={false}
             pitchEnabled={false}
-            onMapReady={mapRenderCompleteHandler}>
+            onMapReady={mapRenderCompleteHandler}
+            onRegionChange={isGestureforBottomSheet}>
             <Marker
                 coordinate={{
                     latitude: currentPosition.latitude,

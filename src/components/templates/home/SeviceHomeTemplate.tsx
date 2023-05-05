@@ -1,5 +1,5 @@
 import React, { RefObject, useRef, useState } from 'react';
-import { ActivityIndicator, Animated, Image, Linking, Platform, View } from 'react-native';
+import { ActivityIndicator, Image, Linking, Platform, View } from 'react-native';
 import Geolocation from '@react-native-community/geolocation';
 import DropShadow from 'react-native-drop-shadow';
 import { useRecoilValue } from 'recoil';
@@ -12,7 +12,6 @@ import NearbyPostListModal from '../../organisms/NearbyPostListModal';
 import FailLocationPermisionModal from '../../organisms/FailLocationPermisionModal';
 import { userTokenAtom } from '../../../store/atoms';
 import { nearByUserPostsAPI } from '../../../queries/api';
-import { screenHeight } from '../../../utils/changeStyleSize';
 import { SingleLineInput } from '../../smallest/SingleLineInput';
 import { seviceHomeTemplateStyles } from '../../../styles/styles';
 import { SeviceHomeTemplateProps, MapLocationTypes, PostTypes } from '../../../types/types';
@@ -151,12 +150,25 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger }: SeviceHomeTempla
         }, 1000);
     };
 
+    // Move to mini bottom sheet by move map
+    const [isBottomSheetMini, setIsBottomSheetMini] = useState(false);
+    const moveToBottomSheetMini = () => {
+        if (!isBottomSheetMini) {
+            setIsBottomSheetMini(true);
+        }
+    };
+    const notBottomSheetMini = () => {
+        setIsBottomSheetMini(false);
+    };
+
     return (
         <>
             <MapWithMarker
                 currentPosition={currentPosition}
-                mapRenderCompleteHandler={mapRenderCompleteHandler}
                 nearPostList={nearPostList}
+                isBottomSheetMini={isBottomSheetMini}
+                mapRenderCompleteHandler={mapRenderCompleteHandler}
+                moveToBottomSheetMini={moveToBottomSheetMini}
             />
             <View style={seviceHomeTemplateStyles.searchLayout}>
                 {Platform.OS === 'android' && (
@@ -187,6 +199,8 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger }: SeviceHomeTempla
                 isModalRef={isModalRef}
                 handleModalTrigger={handleModalTrigger}
                 nearPostList={nearPostList}
+                isBottomSheetMini={isBottomSheetMini}
+                notBottomSheetMini={notBottomSheetMini}
                 onPressGetUserPosition={onPressGetUserPosition}
                 callNextPageHandler={callNextPageHandler}
             />

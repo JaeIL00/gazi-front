@@ -21,6 +21,8 @@ const NearbyPostListModal = ({
     isModalRef,
     handleModalTrigger,
     nearPostList,
+    isBottomSheetMini,
+    notBottomSheetMini,
     onPressGetUserPosition,
     callNextPageHandler,
 }: NearbyPostListModalProps) => {
@@ -82,6 +84,7 @@ const NearbyPostListModal = ({
                         duration: 200,
                         useNativeDriver: true,
                     }).start();
+                    notBottomSheetMini();
                     isModalRef.current = false;
                     return (animType.current = 'middle');
                 }
@@ -162,10 +165,24 @@ const NearbyPostListModal = ({
                 duration: 200,
                 useNativeDriver: true,
             }).start();
+            notBottomSheetMini();
             isModalRef.current = false;
             animType.current = 'middle';
         }
     }, [handleModalTrigger]);
+
+    // Move to mini bottom sheet by move map
+    useEffect(() => {
+        if (isBottomSheetMini) {
+            Animated.timing(animRef, {
+                toValue: MINI_ANIVALUE,
+                duration: 200,
+                useNativeDriver: true,
+            }).start();
+            isModalRef.current = true;
+            animType.current = 'mini';
+        }
+    }, [isBottomSheetMini]);
 
     const keyExtractor = useCallback((item: PostTypes) => item.postId + 'list', []);
     const postList = useCallback(({ item }: { item: PostTypes }) => <PostListItem post={item} />, []);

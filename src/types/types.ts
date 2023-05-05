@@ -176,7 +176,9 @@ export type KeywordsListProps = {
 export type MapWithMarkerProps = {
     currentPosition: MapLocationTypes;
     nearPostList: PostTypes[];
+    isBottomSheetMini: boolean;
     mapRenderCompleteHandler: () => void;
+    moveToBottomSheetMini: () => void;
 };
 export type PostListItemProps = {
     post: PostTypes;
@@ -185,6 +187,8 @@ export type NearbyPostListModalProps = {
     isModalRef: React.MutableRefObject<boolean>;
     handleModalTrigger: boolean;
     nearPostList: PostTypes[];
+    isBottomSheetMini: boolean;
+    notBottomSheetMini: () => void;
     onPressGetUserPosition: () => void;
     callNextPageHandler: () => void;
 };
