@@ -11,17 +11,23 @@ import { screenHeight } from '../../utils/changeStyleSize';
 import { nearbyPostListModalStyles } from '../../styles/styles';
 import { NearbyPostListModalProps, PostTypes } from '../../types/types';
 
-const FULL_ANIVALUE = -225 * screenHeight; // 340
+const FULL_ANIVALUE = -415 * screenHeight; // 290
 const MIDDLE_ANIVALUE = 0;
-const MINI_ANIVALUE = 345 * screenHeight;
-const INIT_MINI = 250 * screenHeight; //590
+const MINI_ANIVALUE = 152 * screenHeight;
+const INIT_MINI = 440 * screenHeight; // 440
 const INIT_OUTPUT = INIT_MINI + 100;
 
 const NearbyPostListModal = ({
     isModalRef,
     handleModalTrigger,
-    mapRef,
     nearPostList,
+    isBottomSheetMini,
+    isBottomSheetFull,
+    currentPosition,
+    mapBoundaryState,
+    moveToBottomSheetMini,
+    moveToBottomSheetFull,
+    notBottomSheetMini,
     onPressGetUserPosition,
     callNextPageHandler,
 }: NearbyPostListModalProps) => {
@@ -36,23 +42,16 @@ const NearbyPostListModal = ({
                 const { dy } = gestureState;
                 if (animType.current === 'mini') {
                     if (dy > 0) return;
-                    if (dy > -MINI_ANIVALUE) {
-                        mapRef.setValue(MINI_ANIVALUE + dy);
-                    }
                     animRef.setValue(MINI_ANIVALUE + dy);
                     opacityRef.setValue(-MINI_ANIVALUE - dy);
                 }
                 if (animType.current === 'middle') {
-                    if (dy > 0) {
-                        mapRef.setValue(dy);
-                    }
+                    if (dy > MINI_ANIVALUE) return;
                     animRef.setValue(dy);
                     opacityRef.setValue(-dy);
                 }
                 if (animType.current === 'full') {
-                    if (dy > -FULL_ANIVALUE) {
-                        mapRef.setValue(FULL_ANIVALUE + dy);
-                    }
+                    if (dy > MINI_ANIVALUE - FULL_ANIVALUE) return;
                     animRef.setValue(FULL_ANIVALUE + dy);
                     opacityRef.setValue(-FULL_ANIVALUE - dy);
                 }
@@ -70,21 +69,20 @@ const NearbyPostListModal = ({
                     Animated.timing(opacityRef, {
                         toValue: -FULL_ANIVALUE,
                         useNativeDriver: true,
-                    }).start();
+                    }).start(({ finished }) => {
+                        if (finished) {
+                            moveToBottomSheetFull('FULL');
+                        }
+                    });
                     isModalRef.current = true;
                     return (animType.current = 'full');
                 }
                 if (dy > -30 && animType.current === 'middle') {
                     // To mini from middle
                     Animated.timing(animRef, {
-                        toValue: 345 * screenHeight,
+                        toValue: MINI_ANIVALUE,
                         duration: 200,
                         useNativeDriver: true,
-                    }).start();
-                    Animated.timing(mapRef, {
-                        toValue: 345 * screenHeight,
-                        duration: 200,
-                        useNativeDriver: false,
                     }).start();
                     isModalRef.current = true;
                     return (animType.current = 'mini');
@@ -97,11 +95,7 @@ const NearbyPostListModal = ({
                         duration: 200,
                         useNativeDriver: true,
                     }).start();
-                    Animated.timing(mapRef, {
-                        toValue: MIDDLE_ANIVALUE,
-                        duration: 200,
-                        useNativeDriver: false,
-                    }).start();
+                    notBottomSheetMini();
                     isModalRef.current = false;
                     return (animType.current = 'middle');
                 }
@@ -122,7 +116,11 @@ const NearbyPostListModal = ({
                     Animated.timing(opacityRef, {
                         toValue: -FULL_ANIVALUE,
                         useNativeDriver: true,
-                    }).start();
+                    }).start(({ finished }) => {
+                        if (finished) {
+                            moveToBottomSheetFull('FULL');
+                        }
+                    });
                     isModalRef.current = true;
                     return (animType.current = 'full');
                 }
@@ -137,7 +135,11 @@ const NearbyPostListModal = ({
                     Animated.timing(opacityRef, {
                         toValue: -MIDDLE_ANIVALUE,
                         useNativeDriver: true,
-                    }).start();
+                    }).start(({ finished }) => {
+                        if (finished) {
+                            moveToBottomSheetFull('NOT');
+                        }
+                    });
                     isModalRef.current = false;
                     animType.current = 'middle';
                 }
@@ -151,7 +153,11 @@ const NearbyPostListModal = ({
                     Animated.timing(opacityRef, {
                         toValue: -MINI_ANIVALUE,
                         useNativeDriver: true,
-                    }).start();
+                    }).start(({ finished }) => {
+                        if (finished) {
+                            moveToBottomSheetFull('NOT');
+                        }
+                    });
                     animType.current = 'mini';
                 }
                 if (dy < 30 && animType.current === 'full') {
@@ -181,21 +187,39 @@ const NearbyPostListModal = ({
                 toValue: MIDDLE_ANIVALUE,
                 duration: 200,
                 useNativeDriver: true,
-            }).start();
-            Animated.timing(mapRef, {
-                toValue: MIDDLE_ANIVALUE,
-                duration: 200,
-                useNativeDriver: false,
-            }).start();
+            }).start(({ finished }) => {
+                if (finished) {
+                    moveToBottomSheetFull('NOT');
+                }
+            });
+            notBottomSheetMini();
             isModalRef.current = false;
             animType.current = 'middle';
         }
     }, [handleModalTrigger]);
 
+    // Move to mini bottom sheet by move map
+    useEffect(() => {
+        if (isBottomSheetMini) {
+            Animated.timing(animRef, {
+                toValue: MINI_ANIVALUE,
+                duration: 200,
+                useNativeDriver: true,
+            }).start();
+            isModalRef.current = true;
+            animType.current = 'mini';
+        }
+    }, [isBottomSheetMini]);
+
     const keyExtractor = useCallback((item: PostTypes) => item.postId + 'list', []);
     const postList = useCallback(({ item }: { item: PostTypes }) => <PostListItem post={item} />, []);
     const ItemSeparatorComponent = useCallback(() => <Spacer height={20} />, []);
     const ListFooterComponent = useCallback(() => <Spacer height={20} />, []);
+
+    const onPressCurrentPositionToggle = useCallback(() => {
+        onPressGetUserPosition();
+        moveToBottomSheetMini();
+    }, [currentPosition, mapBoundaryState]);
 
     return (
         <>
@@ -232,7 +256,7 @@ const NearbyPostListModal = ({
                 }}>
                 <View style={nearbyPostListModalStyles.toggleButtonBox}>
                     <TouchButton
-                        onPress={onPressGetUserPosition}
+                        onPress={onPressCurrentPositionToggle}
                         width={52}
                         height={52}
                         borderRadius={52}
@@ -322,6 +346,24 @@ const NearbyPostListModal = ({
                     maxToRenderPerBatch={9}
                 />
             </Animated.View>
+            {!isBottomSheetFull && (
+                <Animated.View
+                    {...panResponder.panHandlers}
+                    style={[
+                        nearbyPostListModalStyles.listTouchBox,
+                        {
+                            transform: [
+                                {
+                                    translateY: animRef.interpolate({
+                                        inputRange: [0, 100],
+                                        outputRange: [INIT_MINI, INIT_OUTPUT],
+                                    }),
+                                },
+                            ],
+                        },
+                    ]}
+                />
+            )}
         </>
     );
 };

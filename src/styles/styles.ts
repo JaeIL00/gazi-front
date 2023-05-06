@@ -335,6 +335,7 @@ export const tabBarStyles = StyleSheet.create({
         alignItems: 'center',
     },
 });
+const NEAR_LIST_HEIGHT = 565 * screenHeight;
 export const nearbyPostListModalStyles = StyleSheet.create({
     container: {
         backgroundColor: Colors.BACKGROUND_DEFAULT,
@@ -367,7 +368,17 @@ export const nearbyPostListModalStyles = StyleSheet.create({
         paddingHorizontal: 16 * screenWidth,
         backgroundColor: Colors.BACKGROUND_DEFAULT,
         marginTop: -1,
-        height: 565 * screenHeight,
+        height: NEAR_LIST_HEIGHT,
+        zIndex: 1,
+    },
+    listTouchBox: {
+        position: 'absolute',
+        top: 20 * screenHeight,
+        width: '100%',
+        height: NEAR_LIST_HEIGHT,
+        paddingHorizontal: 16 * screenWidth,
+        marginTop: -1,
+        zIndex: 1,
     },
     toggleButtonBox: {
         position: 'absolute',
@@ -394,7 +405,10 @@ export const nearbyPostListModalStyles = StyleSheet.create({
 });
 export const mapWithMarkerStyles = StyleSheet.create({
     map: {
-        height: '110%',
+        width: '100%',
+        height: '100%',
+        position: 'absolute',
+        top: 0,
     },
     markerBox: {
         justifyContent: 'center',
@@ -580,11 +594,6 @@ export const completedJoinTemplateStyles = StyleSheet.create({
     },
 });
 export const seviceHomeTemplateStyles = StyleSheet.create({
-    mapContainer: {
-        width: '100%',
-        height: '100%',
-        position: 'absolute',
-    },
     searchLayout: {
         position: 'absolute',
         top: 16 * screenHeight,

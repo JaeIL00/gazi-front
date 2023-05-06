@@ -1,21 +1,23 @@
-import React, { RefObject, useRef, useState } from 'react';
-import { ActivityIndicator, Animated, Image, Linking, Platform, View } from 'react-native';
+import React, { RefObject, useCallback, useLayoutEffect, useRef, useState } from 'react';
+import { ActivityIndicator, Image, Linking, Platform, View } from 'react-native';
 import Geolocation from '@react-native-community/geolocation';
 import DropShadow from 'react-native-drop-shadow';
 import { useRecoilValue } from 'recoil';
-import MapView, { BoundingBox } from 'react-native-maps';
+import MapView, { BoundingBox, Details, Region } from 'react-native-maps';
 import { useInfiniteQuery } from 'react-query';
 import { PERMISSIONS, RESULTS, check } from 'react-native-permissions';
 
+import Colors from '../../../styles/Colors';
+import MediumText from '../../smallest/MediumText';
 import MapWithMarker from '../../organisms/MapWithMarker';
 import NearbyPostListModal from '../../organisms/NearbyPostListModal';
 import FailLocationPermisionModal from '../../organisms/FailLocationPermisionModal';
 import { userTokenAtom } from '../../../store/atoms';
 import { nearByUserPostsAPI } from '../../../queries/api';
-import { screenHeight } from '../../../utils/changeStyleSize';
 import { SingleLineInput } from '../../smallest/SingleLineInput';
 import { seviceHomeTemplateStyles } from '../../../styles/styles';
-import { SeviceHomeTemplateProps, MapLocationTypes, PostTypes } from '../../../types/types';
+import { SeviceHomeTemplateProps, MapLocationTypes, PostTypes, MapBoundaryTypes } from '../../../types/types';
+import { screenFont, screenHeight, screenWidth } from '../../../utils/changeStyleSize';
 
 const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger }: SeviceHomeTemplateProps) => {
     // Check Location Permission
@@ -30,12 +32,12 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger }: SeviceHomeTempla
         }
     };
 
-    // Get current user position
+    // Init first map rendering
     const [currentPosition, setCurrentPosition] = useState<MapLocationTypes>({
-        latitude: 37.531312,
-        longitude: 126.927384,
+        latitude: 37.49795103144074,
+        longitude: 127.02760985223079,
     });
-    const onPressGetUserPosition = async () => {
+    const isAllowPermissionInit = async () => {
         const isOkPermission = await checkLocationPermission();
         if (isOkPermission) {
             Geolocation.getCurrentPosition(info => {
@@ -43,20 +45,83 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger }: SeviceHomeTempla
                     latitude: info.coords.latitude,
                     longitude: info.coords.longitude,
                 });
+                setIsAllowLocation(true);
+            });
+        }
+    };
+    useLayoutEffect(() => {
+        isAllowPermissionInit();
+    }, []);
+
+    // Fisrt render of map
+    const mapRef = useRef() as RefObject<MapView>;
+    const mapRenderCompleteHandler = async () => {
+        try {
+            const boundaryValue = (await mapRef.current?.getMapBoundaries()) as BoundingBox;
+            setMapBoundaryState({
+                northEast: boundaryValue.northEast,
+                southWest: boundaryValue.southWest,
             });
             setTimeout(() => {
-                getBoundaryMap();
-            }, 500);
+                remove();
+                refetch();
+            }, 1000);
+        } catch (error) {
+            // For Debug
+            console.log('(ERROR) Fisrt render of map.', error);
+        }
+    };
+
+    // Get current user position
+    const [isAllowLocation, setIsAllowLocation] = useState<boolean>(false);
+    const [mapBoundaryState, setMapBoundaryState] = useState<MapBoundaryTypes>({
+        northEast: {
+            latitude: 37.45878314300355,
+            longitude: 126.8773839622736,
+        },
+        southWest: {
+            latitude: 37.45878314300355,
+            longitude: 126.8773839622736,
+        },
+    });
+    const onPressGetUserPosition = async () => {
+        const isOkPermission = await checkLocationPermission();
+        if (isOkPermission) {
+            Geolocation.getCurrentPosition(info => {
+                if (
+                    info.coords.latitude !== currentPosition.latitude &&
+                    info.coords.longitude !== currentPosition.longitude
+                ) {
+                    setCurrentPosition({
+                        latitude: info.coords.latitude,
+                        longitude: info.coords.longitude,
+                    });
+                    setIsAllowLocation(true);
+                    setTimeout(() => {
+                        getBoundaryMap();
+                    }, 1000);
+                } else {
+                    mapRef.current?.animateToRegion({
+                        latitude: currentPosition.latitude,
+                        longitude: currentPosition.longitude,
+                        latitudeDelta: 0.04,
+                        longitudeDelta: 0.027,
+                    });
+                }
+            });
         } else {
             setOnModal(true);
+            setIsAllowLocation(false);
         }
     };
     const getBoundaryMap = async () => {
         let boundaryValue;
         try {
             boundaryValue = (await mapRef.current?.getMapBoundaries()) as BoundingBox;
-            setNorthEast(boundaryValue.northEast);
-            setSouthWest(boundaryValue.southWest);
+            setMapBoundaryState({
+                northEast: boundaryValue.northEast,
+                southWest: boundaryValue.southWest,
+            });
         } catch (err) {
             // For Debug
             console.log('(ERROR) Get boundary of map.', err);
@@ -91,29 +156,17 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger }: SeviceHomeTempla
         setSearchText(text);
     };
 
-    // Animation map height style
-    const mapAnimRef = useRef(new Animated.Value(0)).current;
-
     // Get post of near by user API
-    const mapRef = useRef() as RefObject<MapView>;
     const userTk = useRecoilValue(userTokenAtom);
-    const [northEast, setNorthEast] = useState<MapLocationTypes>({
-        latitude: 37.60380328673927,
-        longitude: 126.97738375514747,
-    });
-    const [southWest, setSouthWest] = useState<MapLocationTypes>({
-        latitude: 37.45878314300355,
-        longitude: 126.8773839622736,
-    });
     const [nearPostList, setNearPostList] = useState<PostTypes[]>([]);
     const { hasNextPage, isFetching, isFetchingNextPage, fetchNextPage, refetch, remove } = useInfiniteQuery(
         ['getNearPosts'],
         ({ pageParam = 0 }) =>
             nearByUserPostsAPI({
-                minLat: southWest.latitude,
-                minLon: southWest.longitude,
-                maxLat: northEast.latitude,
-                maxLon: northEast.longitude,
+                minLat: mapBoundaryState.southWest.latitude,
+                minLon: mapBoundaryState.southWest.longitude,
+                maxLat: mapBoundaryState.northEast.latitude,
+                maxLon: mapBoundaryState.northEast.longitude,
                 curLat: currentPosition.latitude,
                 curLon: currentPosition.longitude,
                 accessToken: userTk.accessToken,
@@ -143,36 +196,64 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger }: SeviceHomeTempla
         }
     };
 
-    // Fisrt render of map
-    const mapRenderCompleteHandler = async () => {
-        const boundaryValue = (await mapRef.current?.getMapBoundaries()) as BoundingBox;
-        setNorthEast(boundaryValue.northEast);
-        setSouthWest(boundaryValue.southWest);
-        setTimeout(() => {
-            remove();
-            refetch();
-        }, 1000);
+    // Move to mini bottom sheet by move map
+    const [isBottomSheetMini, setIsBottomSheetMini] = useState(false);
+    const moveToBottomSheetMini = () => {
+        if (!isBottomSheetMini) {
+            setIsBottomSheetMini(true);
+        }
     };
+    const notBottomSheetMini = () => {
+        setIsBottomSheetMini(false);
+    };
+    const checkGestureforBottomSheet = useCallback(
+        (region: Region, details: Details) => {
+            if (details.isGesture) {
+                moveToBottomSheetMini();
+            }
+        },
+        [isBottomSheetMini],
+    );
+
+    // Move to full bottom sheet by move map
+    const [isBottomSheetFull, setIsBottomSheetFull] = useState(false);
+    const moveToBottomSheetFull = (state: string) => {
+        switch (state) {
+            case 'FULL':
+                setIsBottomSheetFull(true);
+                break;
+            case 'NOT':
+                setIsBottomSheetFull(false);
+                break;
+            default:
+                console.log('(ERROR) Move to mini bottom sheet by move map function');
+        }
+    };
+
+    // Check map zoom level for warning
+    const [isFarMapLevel, setIsFarMapLevel] = useState(false);
+    const checkZoomLevelWarning = useCallback(
+        (region: Region) => {
+            if (region.latitudeDelta > 0.15) {
+                setIsFarMapLevel(true);
+            } else {
+                setIsFarMapLevel(false);
+            }
+        },
+        [isFarMapLevel],
+    );
 
     return (
         <>
-            <Animated.View
-                style={[
-                    seviceHomeTemplateStyles.mapContainer,
-                    {
-                        height: mapAnimRef.interpolate({
-                            inputRange: [0, 100],
-                            outputRange: [250 * screenHeight, 350 * screenHeight],
-                        }),
-                    },
-                ]}>
-                <MapWithMarker
-                    currentPosition={currentPosition}
-                    mapRef={mapRef}
-                    mapRenderCompleteHandler={mapRenderCompleteHandler}
-                    nearPostList={nearPostList}
-                />
-            </Animated.View>
+            <MapWithMarker
+                mapRef={mapRef}
+                currentPosition={currentPosition}
+                nearPostList={nearPostList}
+                isAllowLocation={isAllowLocation}
+                checkGestureforBottomSheet={checkGestureforBottomSheet}
+                checkZoomLevelWarning={checkZoomLevelWarning}
+                mapRenderCompleteHandler={mapRenderCompleteHandler}
+            />
             <View style={seviceHomeTemplateStyles.searchLayout}>
                 {Platform.OS === 'android' && (
                     <DropShadow style={seviceHomeTemplateStyles.dropshadow}>
@@ -201,8 +282,14 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger }: SeviceHomeTempla
             <NearbyPostListModal
                 isModalRef={isModalRef}
                 handleModalTrigger={handleModalTrigger}
-                mapRef={mapAnimRef}
                 nearPostList={nearPostList}
+                isBottomSheetMini={isBottomSheetMini}
+                isBottomSheetFull={isBottomSheetFull}
+                currentPosition={currentPosition}
+                mapBoundaryState={mapBoundaryState}
+                moveToBottomSheetMini={moveToBottomSheetMini}
+                moveToBottomSheetFull={moveToBottomSheetFull}
+                notBottomSheetMini={notBottomSheetMini}
                 onPressGetUserPosition={onPressGetUserPosition}
                 callNextPageHandler={callNextPageHandler}
             />
@@ -219,6 +306,21 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger }: SeviceHomeTempla
                 </View>
             )}
             {onModal && <FailLocationPermisionModal onPressModalButton={onPressModalButton} />}
+
+            {isFarMapLevel && (
+                <View
+                    style={{
+                        paddingHorizontal: 38 * screenWidth,
+                        paddingVertical: 9 * screenHeight,
+                        backgroundColor: '#00000099',
+                        borderRadius: 25 * screenFont,
+                        position: 'absolute',
+                        top: 300 * screenHeight,
+                        alignSelf: 'center',
+                    }}>
+                    <MediumText text="사건 확인을 위해 지도를 확인해 주세요" size={14} color={Colors.WHITE} />
+                </View>
+            )}
         </>
     );
 };

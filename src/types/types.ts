@@ -1,7 +1,7 @@
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import { ReactElement, RefObject } from 'react';
-import MapView from 'react-native-maps';
-import { Animated, FlexAlignType, KeyboardType, TextStyle } from 'react-native/types';
+import MapView, { Details, Region } from 'react-native-maps';
+import { FlexAlignType, KeyboardType, TextStyle } from 'react-native/types';
 
 //COMMON
 export type KeywordListTypes = {
@@ -13,6 +13,10 @@ export type KeywordListTypes = {
 export type MapLocationTypes = {
     latitude: number;
     longitude: number;
+};
+export type MapBoundaryTypes = {
+    northEast: MapLocationTypes;
+    southWest: MapLocationTypes;
 };
 export type PostTypes = {
     title: string;
@@ -174,10 +178,13 @@ export type KeywordsListProps = {
     checkKeywordHandler: (list: string, index: number, id: number) => void;
 };
 export type MapWithMarkerProps = {
-    currentPosition: MapLocationTypes;
     mapRef: RefObject<MapView>;
+    currentPosition: MapLocationTypes;
     nearPostList: PostTypes[];
+    isAllowLocation: boolean;
     mapRenderCompleteHandler: () => void;
+    checkGestureforBottomSheet: (region: Region, details: Details) => void;
+    checkZoomLevelWarning: (region: Region) => void;
 };
 export type PostListItemProps = {
     post: PostTypes;
@@ -185,8 +192,14 @@ export type PostListItemProps = {
 export type NearbyPostListModalProps = {
     isModalRef: React.MutableRefObject<boolean>;
     handleModalTrigger: boolean;
-    mapRef: Animated.Value;
     nearPostList: PostTypes[];
+    isBottomSheetMini: boolean;
+    isBottomSheetFull: boolean;
+    currentPosition: MapLocationTypes;
+    mapBoundaryState: MapBoundaryTypes;
+    moveToBottomSheetMini: () => void;
+    moveToBottomSheetFull: (state: string) => void;
+    notBottomSheetMini: () => void;
     onPressGetUserPosition: () => void;
     callNextPageHandler: () => void;
 };
