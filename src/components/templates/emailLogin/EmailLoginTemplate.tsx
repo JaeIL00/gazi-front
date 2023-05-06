@@ -49,7 +49,9 @@ const EmailLoginTemplate = ({ moveServiceHomeHandler }: EmailLoginTemplateProps)
         },
     });
     const onPressLoginButton = debounce(() => {
-        mutate({ email, password });
+        if (email && password) {
+            mutate({ email, password });
+        }
     }, 300);
     const successJoinMemberHandler = async (data: { accessToken: string; refreshToken: string }) => {
         try {
