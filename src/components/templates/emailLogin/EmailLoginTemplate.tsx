@@ -99,7 +99,7 @@ const EmailLoginTemplate = ({ moveServiceHomeHandler }: EmailLoginTemplateProps)
                 />
                 <Spacer height={20} />
                 <LoginTextInput
-                    title="password"
+                    title="Password"
                     value={password}
                     placeholder="비밀번호 입력"
                     onChangeText={onChangePassword}
