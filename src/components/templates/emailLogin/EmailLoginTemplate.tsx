@@ -85,7 +85,7 @@ const EmailLoginTemplate = ({ moveServiceHomeHandler }: EmailLoginTemplateProps)
             <MoveBackWithPageTitle
                 oneTitle="이메일로 로그인"
                 twoTitle=""
-                onPress={() => moveServiceHomeHandler('GO')}
+                onPress={() => moveServiceHomeHandler('BACK')}
             />
 
             <Spacer height={75} />
