@@ -19,7 +19,6 @@ import { likeKeywordsAPI } from '../../../queries/api';
 import { initLikeKeywordTemplateStyles } from '../../../styles/styles';
 import { InitLikeKeywordTemplateProps, KeywordListTypes } from '../../../types/types';
 import { issueKeywords, subwayKeywords, trafficKeywords } from '../../../utils/allKeywords';
-import { screenHeight } from '../../../utils/changeStyleSize';
 
 const InitLikeKeywordTemplate = ({ moveToScreen }: InitLikeKeywordTemplateProps) => {
     // Initialized check keywords

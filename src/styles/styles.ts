@@ -164,7 +164,7 @@ export const checkBoxBackground = (is: boolean) =>
 export const iconPermissionListItemStyles = StyleSheet.create({
     itemBox: {
         flexDirection: 'row',
-        paddingBottom: 16 * screenHeight,
+        paddingBottom: 19 * screenHeight,
     },
     iconBox: {
         width: 40 * screenWidth,
@@ -516,13 +516,20 @@ export const notLoginTemplateStyles = StyleSheet.create({
     },
 });
 export const requestPemissionTemplateStyles = StyleSheet.create({
+    container: {
+        flex: 1,
+    },
     choicePermission: {
-        paddingTop: 13 * screenHeight,
-        paddingBottom: 21 * screenHeight,
+        paddingBottom: 17 * screenHeight,
     },
     lineBar: {
         borderTopWidth: 1 * screenFont,
         borderColor: '#EBEBEB',
+    },
+    buttonBox: {
+        position: 'absolute',
+        bottom: 42 * screenHeight,
+        width: '100%',
     },
 });
 export const emailLoginTemplateStyles = StyleSheet.create({

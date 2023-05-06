@@ -4,7 +4,6 @@ import { PERMISSIONS, RESULTS, check, requestMultiple } from 'react-native-permi
 
 import Spacer from '../../smallest/Spacer';
 import Colors from '../../../styles/Colors';
-import MediumText from '../../smallest/MediumText';
 import NormalText from '../../smallest/NormalText';
 import TextButton from '../../molecules/TextButton';
 import MoveBackWithPageTitle from '../../organisms/MoveBackWithPageTitle';
@@ -12,6 +11,7 @@ import IconPermissionListItem from '../../molecules/IconPermissionListItem';
 import FailLocationPermisionModal from '../../organisms/FailLocationPermisionModal';
 import { RequestPemissionTemplateProps } from '../../../types/types';
 import { requestPemissionTemplateStyles } from '../../../styles/styles';
+import { screenHeight } from '../../../utils/changeStyleSize';
 
 const RequestPemissionTemplate = ({ moveToScreen }: RequestPemissionTemplateProps) => {
     // Request Permissions
@@ -58,32 +58,23 @@ const RequestPemissionTemplate = ({ moveToScreen }: RequestPemissionTemplateProp
     };
 
     return (
-        <>
+        <View style={requestPemissionTemplateStyles.container}>
             <MoveBackWithPageTitle
                 oneTitle="앱 사용을 위해"
                 twoTitle="접근 권한을 허용해주세요"
                 onPress={() => moveToScreen('BACK')}
             />
 
-            <Spacer height={51} />
+            <Spacer height={63} />
 
             <View>
-                <MediumText text="필수 권한" size={14} color={Colors.TXT_GRAY} />
-                <Spacer height={13} />
-                <IconPermissionListItem
-                    iconType="simpleLineIcons"
-                    iconName="location-pin"
-                    title="위치"
-                    explain="내 주변의 교통 돌발상황을 확인"
-                />
-            </View>
-
-            <Spacer height={17} />
-
-            <View>
-                <MediumText text="선택 권한" size={14} color={Colors.TXT_GRAY} />
-
                 <ScrollView contentContainerStyle={requestPemissionTemplateStyles.choicePermission}>
+                    <IconPermissionListItem
+                        iconType="simpleLineIcons"
+                        iconName="location-pin"
+                        title="위치"
+                        explain="내 주변의 교통 돌발상황을 확인"
+                    />
                     <IconPermissionListItem
                         image="bell-outline"
                         title="푸시알림"
@@ -116,19 +107,18 @@ const RequestPemissionTemplate = ({ moveToScreen }: RequestPemissionTemplateProp
                 <NormalText text="일부 서비스 이용이 제한될 수 있습니다" size={12} color={Colors.TXT_GRAY} />
             </View>
 
-            <Spacer height={61} />
-
-            <TextButton
-                onPress={onPressrequstPermission}
-                text="확인"
-                height={48}
-                backgroundColor={Colors.BLACK}
-                textColor={Colors.WHITE}
-                fontSize={17}
-            />
-
+            <View style={requestPemissionTemplateStyles.buttonBox}>
+                <TextButton
+                    onPress={onPressrequstPermission}
+                    text="확인"
+                    height={48}
+                    backgroundColor={Colors.BLACK}
+                    textColor={Colors.WHITE}
+                    fontSize={17}
+                />
+            </View>
             {onModal && <FailLocationPermisionModal onPressModalButton={onPressModalButton} />}
-        </>
+        </View>
     );
 };
 

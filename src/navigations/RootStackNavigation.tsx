@@ -25,7 +25,7 @@ export const RootStackNavigation = () => {
                 headerShown: false,
                 presentation: 'containedModal',
             }}>
-            {isUser.accessToken ? (
+            {!isUser.accessToken ? (
                 <>
                     <Stack.Screen name="RequestPermission" component={RequestPermissionScreen} />
                     <Stack.Screen name="InitKeyword" component={InitLikeKeywordScreen} />

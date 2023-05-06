@@ -4,15 +4,15 @@ import { useRecoilState } from 'recoil';
 
 import Spacer from '../../smallest/Spacer';
 import Colors from '../../../styles/Colors';
-import TextButton from '../../molecules/TextButton';
+import NormalText from '../../smallest/NormalText';
 import MediumText from '../../smallest/MediumText';
+import TextButton from '../../molecules/TextButton';
 import LoginTextInput from '../../molecules/LoginTextInput';
 import IconWithMediumText from '../../molecules/IconWithMediumText';
 import useKeyboardMotion from '../../../utils/hooks/useKeyboardMotion';
 import { joinMemberAtom } from '../../../store/atoms';
 import { EmailWithPasswordProps } from '../../../types/types';
 import { emailWithPasswordTemplateStyles, nextStepButtonPosition } from '../../../styles/styles';
-import NormalText from '../../smallest/NormalText';
 
 const EmailWithPasswordTemplate = ({ onPressNextStep }: EmailWithPasswordProps) => {
     // Password validation handling
