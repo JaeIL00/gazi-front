@@ -32,10 +32,10 @@ const NearbyPostListModal = ({
     callNextPageHandler,
 }: NearbyPostListModalProps) => {
     // Modal animation handling
-    const animRef: Animated.Value = useRef(new Animated.Value(0)).current;
-    const opacityRef: Animated.Value = useRef(new Animated.Value(0)).current;
-    const animType: React.MutableRefObject<string> = useRef('middle');
-    const panResponder: PanResponderInstance = useRef(
+    const animRef = useRef<Animated.Value>(new Animated.Value(0)).current;
+    const opacityRef = useRef<Animated.Value>(new Animated.Value(0)).current;
+    const animType = useRef<string>('middle');
+    const panResponder = useRef<PanResponderInstance>(
         PanResponder.create({
             onMoveShouldSetPanResponder: () => true,
             onPanResponderMove: (event, gestureState) => {
