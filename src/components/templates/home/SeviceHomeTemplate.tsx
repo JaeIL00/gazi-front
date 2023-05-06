@@ -10,6 +10,7 @@ import { debounce } from 'lodash';
 
 import Colors from '../../../styles/Colors';
 import MediumText from '../../smallest/MediumText';
+import TouchButton from '../../smallest/TouchButton';
 import MapWithMarker from '../../organisms/MapWithMarker';
 import NearbyPostListModal from '../../organisms/NearbyPostListModal';
 import FailLocationPermisionModal from '../../organisms/FailLocationPermisionModal';
@@ -17,8 +18,8 @@ import { userTokenAtom } from '../../../store/atoms';
 import { nearByUserPostsAPI } from '../../../queries/api';
 import { SingleLineInput } from '../../smallest/SingleLineInput';
 import { seviceHomeTemplateStyles } from '../../../styles/styles';
-import { SeviceHomeTemplateProps, MapLocationTypes, PostTypes, MapBoundaryTypes } from '../../../types/types';
 import { screenFont, screenHeight, screenWidth } from '../../../utils/changeStyleSize';
+import { SeviceHomeTemplateProps, MapLocationTypes, PostTypes, MapBoundaryTypes } from '../../../types/types';
 
 const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger }: SeviceHomeTemplateProps) => {
     // Check Location Permission
@@ -58,20 +59,7 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger }: SeviceHomeTempla
     // Fisrt render of map
     const mapRef = useRef() as RefObject<MapView>;
     const mapRenderCompleteHandler = async () => {
-        try {
-            const boundaryValue = (await mapRef.current?.getMapBoundaries()) as BoundingBox;
-            setMapBoundaryState({
-                northEast: boundaryValue.northEast,
-                southWest: boundaryValue.southWest,
-            });
-            setTimeout(() => {
-                remove();
-                refetch();
-            }, 1000);
-        } catch (error) {
-            // For Debug
-            console.log('(ERROR) Fisrt render of map.', error);
-        }
+        getBoundaryMap();
     };
 
     // Get current user position
@@ -323,6 +311,33 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger }: SeviceHomeTempla
                     }}>
                     <MediumText text="사건 확인을 위해 지도를 확인해 주세요" size={14} color={Colors.WHITE} />
                 </View>
+            )}
+
+            {true && Platform.OS === 'android' && (
+                <DropShadow
+                    style={{
+                        position: 'absolute',
+                        top: 86 * screenHeight,
+                        alignSelf: 'center',
+                        shadowColor: '#000000',
+                        shadowOffset: {
+                            width: 0,
+                            height: -4 * screenHeight,
+                        },
+                        shadowOpacity: 0.05,
+                        shadowRadius: 34 * screenFont,
+                    }}>
+                    <TouchButton
+                        onPress={() => {}}
+                        backgroundColor="#F8F7FA"
+                        borderRadius={54 * screenFont}
+                        borderWidth={1 * screenFont}
+                        borderColor="#B29ECC"
+                        paddingVertical={5 * screenHeight}
+                        paddingHorizontal={23 * screenWidth}>
+                        <MediumText text="현 지도에서 검색" size={14} color={Colors.VIOLET} />
+                    </TouchButton>
+                </DropShadow>
             )}
         </>
     );
