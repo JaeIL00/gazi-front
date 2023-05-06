@@ -42,7 +42,7 @@ const AuthEmail = ({ min, sec, resetTimeHandler, finishSlideComponentHandler }: 
                 toValue: height,
                 duration: 300,
                 useNativeDriver: true,
-            }).start(({ finished }) => {
+            }).start(({ finished }: { finished: boolean }) => {
                 if (finished) {
                     setAuthData({ number: 0, isOk: true });
                     finishSlideComponentHandler('OK');

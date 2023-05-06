@@ -70,7 +70,7 @@ const ServiceAgreement = ({ finishSlideComponentHandler }: ServiceAgreementProps
                 toValue: height,
                 duration: 300,
                 useNativeDriver: true,
-            }).start(({ finished }) => {
+            }).start(({ finished }: { finished: boolean }) => {
                 if (finished) {
                     finishSlideComponentHandler('OK');
                 }

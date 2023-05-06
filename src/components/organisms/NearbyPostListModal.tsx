@@ -69,7 +69,7 @@ const NearbyPostListModal = ({
                     Animated.timing(opacityRef, {
                         toValue: -FULL_ANIVALUE,
                         useNativeDriver: true,
-                    }).start(({ finished }) => {
+                    }).start(({ finished }: { finished: boolean }) => {
                         if (finished) {
                             moveToBottomSheetFull('FULL');
                         }
@@ -116,7 +116,7 @@ const NearbyPostListModal = ({
                     Animated.timing(opacityRef, {
                         toValue: -FULL_ANIVALUE,
                         useNativeDriver: true,
-                    }).start(({ finished }) => {
+                    }).start(({ finished }: { finished: boolean }) => {
                         if (finished) {
                             moveToBottomSheetFull('FULL');
                         }
@@ -135,7 +135,7 @@ const NearbyPostListModal = ({
                     Animated.timing(opacityRef, {
                         toValue: -MIDDLE_ANIVALUE,
                         useNativeDriver: true,
-                    }).start(({ finished }) => {
+                    }).start(({ finished }: { finished: boolean }) => {
                         if (finished) {
                             moveToBottomSheetFull('NOT');
                         }
@@ -153,7 +153,7 @@ const NearbyPostListModal = ({
                     Animated.timing(opacityRef, {
                         toValue: -MINI_ANIVALUE,
                         useNativeDriver: true,
-                    }).start(({ finished }) => {
+                    }).start(({ finished }: { finished: boolean }) => {
                         if (finished) {
                             moveToBottomSheetFull('NOT');
                         }
@@ -187,7 +187,7 @@ const NearbyPostListModal = ({
                 toValue: MIDDLE_ANIVALUE,
                 duration: 200,
                 useNativeDriver: true,
-            }).start(({ finished }) => {
+            }).start(({ finished }: { finished: boolean }) => {
                 if (finished) {
                     moveToBottomSheetFull('NOT');
                 }
