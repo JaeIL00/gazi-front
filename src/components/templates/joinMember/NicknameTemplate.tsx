@@ -110,7 +110,7 @@ const NicknameTemplate = ({ onPressNextStep }: NicknameTemplateProps) => {
                 <SingleLineInput
                     value={inputNickname}
                     onChangeText={onChangeNickname}
-                    maxLength={12}
+                    maxLength={7}
                     placeholder="닉네임을 입력해주세요."
                     fontSize={16}
                 />
