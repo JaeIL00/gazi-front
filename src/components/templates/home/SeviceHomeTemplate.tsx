@@ -6,6 +6,7 @@ import { useRecoilValue } from 'recoil';
 import MapView, { BoundingBox, Details, Region } from 'react-native-maps';
 import { useInfiniteQuery } from 'react-query';
 import { PERMISSIONS, RESULTS, check } from 'react-native-permissions';
+import { debounce } from 'lodash';
 
 import Colors from '../../../styles/Colors';
 import MediumText from '../../smallest/MediumText';
@@ -85,7 +86,7 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger }: SeviceHomeTempla
             longitude: 126.8773839622736,
         },
     });
-    const onPressGetUserPosition = async () => {
+    const onPressGetUserPosition = debounce(async () => {
         const isOkPermission = await checkLocationPermission();
         if (isOkPermission) {
             Geolocation.getCurrentPosition(info => {
@@ -114,7 +115,7 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger }: SeviceHomeTempla
             setOnModal(true);
             setIsAllowLocation(false);
         }
-    };
+    }, 300);
     const getBoundaryMap = async () => {
         let boundaryValue;
         try {

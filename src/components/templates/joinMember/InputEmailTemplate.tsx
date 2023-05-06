@@ -3,6 +3,7 @@ import { ActivityIndicator, Animated, Keyboard, View } from 'react-native';
 import { useRecoilState } from 'recoil';
 import validator from 'validator';
 import { useMutation } from 'react-query';
+import { debounce } from 'lodash';
 
 import Icons from '../../smallest/Icons';
 import Spacer from '../../smallest/Spacer';
@@ -54,7 +55,7 @@ const InputEmailTemplate = ({ onPressNextStep, resetTimeHandler, didAuthEmail }:
     });
 
     // Request email authorization number API handling by button
-    const onPressEmailAuth = () => {
+    const onPressEmailAuth = debounce(() => {
         if (!duplicatedError && isEmail && email !== joinData.email) {
             setJoinData({ ...joinData, email });
             mutate(email);
@@ -66,7 +67,7 @@ const InputEmailTemplate = ({ onPressNextStep, resetTimeHandler, didAuthEmail }:
                 `(ERROR) Request email authorization number API handling. isEmail: ${isEmail}, email: ${email}, atomEmail: ${joinData.email}, duplicatedError: ${duplicatedError}`,
             );
         }
-    };
+    }, 300);
 
     //
 

@@ -3,6 +3,7 @@ import { Platform, ScrollView, View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { useRecoilValue } from 'recoil';
 import { useMutation } from 'react-query';
+import { debounce } from 'lodash';
 
 import Spacer from '../../smallest/Spacer';
 import Colors from '../../../styles/Colors';
@@ -104,14 +105,14 @@ const InitLikeKeywordTemplate = ({ moveToScreen }: InitLikeKeywordTemplateProps)
             console.log('(ERROR) Send like keywords API', response);
         },
     });
-    const onPressLikedKeyword = () => {
+    const onPressLikedKeyword = debounce(() => {
         if (checkedKeywords.length > 0) {
             mutate({
                 token: userTk.accessToken,
                 data: checkedKeywords,
             });
         }
-    };
+    }, 300);
 
     return (
         <View style={initLikeKeywordTemplateStyles.container}>

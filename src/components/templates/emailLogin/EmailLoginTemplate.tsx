@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, Animated, Keyboard, ToastAndroid, View } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useMutation } from 'react-query';
+import { debounce } from 'lodash';
 
 import Icons from '../../smallest/Icons';
 import Spacer from '../../smallest/Spacer';
@@ -47,9 +48,9 @@ const EmailLoginTemplate = ({ moveServiceHomeHandler }: EmailLoginTemplateProps)
             console.log('(ERROR) Login API Handling. response: ', response);
         },
     });
-    const onPressLoginButton = () => {
+    const onPressLoginButton = debounce(() => {
         mutate({ email, password });
-    };
+    }, 300);
     const successJoinMemberHandler = async (data: { accessToken: string; refreshToken: string }) => {
         try {
             await AsyncStorage.setItem('GAZI_ac_tk', data.accessToken);

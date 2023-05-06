@@ -3,6 +3,7 @@ import { ActivityIndicator, Animated, Keyboard, ToastAndroid, View } from 'react
 import { useRecoilState } from 'recoil';
 import { useMutation, useQuery } from 'react-query';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { debounce } from 'lodash';
 
 import Icons from '../../smallest/Icons';
 import Spacer from '../../smallest/Spacer';
@@ -49,11 +50,11 @@ const NicknameTemplate = ({ onPressNextStep }: NicknameTemplateProps) => {
             console.log('(ERROR) Check nickname duplicate API. respense: ', response);
         },
     });
-    const onPressCheckDuplicate = () => {
+    const onPressCheckDuplicate = debounce(() => {
         if (inputNickname.length > 1) {
             refetch();
         }
-    };
+    }, 300);
 
     // Join member API
     const [tokenAtom, setTokenAtom] = useRecoilState(userTokenAtom);
@@ -85,11 +86,11 @@ const NicknameTemplate = ({ onPressNextStep }: NicknameTemplateProps) => {
     };
 
     // Finish button for join member API
-    const onPressJoinMember = () => {
+    const onPressJoinMember = debounce(() => {
         if (isDuplicate) {
             mutate(joinData);
         }
-    };
+    }, 300);
 
     // Change button Position by keyboard activity
     const { bottomValue, buttonUpAnimationHandler, buttonDownAnimationHandler } = useKeyboardMotion(180, 400);
