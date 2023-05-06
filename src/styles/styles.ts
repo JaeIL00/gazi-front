@@ -335,6 +335,7 @@ export const tabBarStyles = StyleSheet.create({
         alignItems: 'center',
     },
 });
+const NEAR_LIST_HEIGHT = 565 * screenHeight;
 export const nearbyPostListModalStyles = StyleSheet.create({
     container: {
         backgroundColor: Colors.BACKGROUND_DEFAULT,
@@ -367,14 +368,14 @@ export const nearbyPostListModalStyles = StyleSheet.create({
         paddingHorizontal: 16 * screenWidth,
         backgroundColor: Colors.BACKGROUND_DEFAULT,
         marginTop: -1,
-        height: 565 * screenHeight,
+        height: NEAR_LIST_HEIGHT,
         zIndex: 1,
     },
     listTouchBox: {
         position: 'absolute',
-        top: 20,
+        top: 20 * screenHeight,
         width: '100%',
-        height: 445 * screenHeight,
+        height: NEAR_LIST_HEIGHT,
         paddingHorizontal: 16 * screenWidth,
         marginTop: -1,
         zIndex: 1,
