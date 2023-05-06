@@ -46,6 +46,7 @@ export const SingleLineInput = ({
                     ? singleLineInputStyles(fontSize, width, height).input
                     : singleLineInputStyles(fontSize, width, height).placeholder
             }
+            underlineColorAndroid={'transparent'}
         />
     );
 };
