@@ -21,6 +21,7 @@ const NicknameTemplate = ({ onPressNextStep }: NicknameTemplateProps) => {
     const [inputNickname, setInputNickname] = useState<string>('');
     const onChangeNickname = (text: string) => {
         setInputNickname(text);
+        setIsDuplicate(false);
         if (text.length === 1) {
             setResultText('2글자 이상 입력해주세요');
         } else {
@@ -85,7 +86,7 @@ const NicknameTemplate = ({ onPressNextStep }: NicknameTemplateProps) => {
 
     // Finish button for join member API
     const onPressJoinMember = () => {
-        if (resultText) {
+        if (isDuplicate) {
             mutate(joinData);
         }
     };
