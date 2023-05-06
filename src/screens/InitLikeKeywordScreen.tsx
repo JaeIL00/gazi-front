@@ -1,8 +1,8 @@
 import React from 'react';
 import { View } from 'react-native';
 
-import { globalDefaultStyles } from '../styles/styles';
 import InitLikeKeywordTemplate from '../components/templates/joinMember/InitLikeKeywordTemplate';
+import { globalDefaultStyles } from '../styles/styles';
 import { useRootNavigation } from '../navigations/RootStackNavigation';
 
 const InitLikeKeywordScreen = () => {
@@ -12,7 +12,7 @@ const InitLikeKeywordScreen = () => {
     const moveToScreen = (state: string) => {
         switch (state) {
             case 'OK':
-                rootNavigation.navigate('ServiceHome');
+                rootNavigation.navigate('BottomTab');
                 break;
             case 'BACK':
                 rootNavigation.goBack();
@@ -22,6 +22,7 @@ const InitLikeKeywordScreen = () => {
                 console.log('(ERROR) Move to screen handling. state: ', state);
         }
     };
+
     return (
         <View style={globalDefaultStyles.container}>
             <InitLikeKeywordTemplate moveToScreen={moveToScreen} />
