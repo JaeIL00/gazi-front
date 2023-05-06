@@ -579,11 +579,13 @@ export const initLikeKeywordTemplateStyles = StyleSheet.create({
         bottom: 42 * screenHeight,
     },
     androidShadow: {
-        width: '100%',
-        height: 42 * screenHeight,
-        borderRadius: 5 * screenFont,
-        position: 'absolute',
-        bottom: -4 * screenWidth,
+        shadowColor: '#000000',
+        shadowOffset: {
+            width: 0,
+            height: 4 * screenHeight,
+        },
+        shadowOpacity: 0.15,
+        shadowRadius: 4 * screenFont,
     },
 });
 export const completedJoinTemplateStyles = StyleSheet.create({

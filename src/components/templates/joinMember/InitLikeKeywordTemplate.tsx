@@ -4,6 +4,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import { useRecoilValue } from 'recoil';
 import { useMutation } from 'react-query';
 import { debounce } from 'lodash';
+import DropShadow from 'react-native-drop-shadow';
 
 import Spacer from '../../smallest/Spacer';
 import Colors from '../../../styles/Colors';
@@ -18,6 +19,7 @@ import { likeKeywordsAPI } from '../../../queries/api';
 import { initLikeKeywordTemplateStyles } from '../../../styles/styles';
 import { InitLikeKeywordTemplateProps, KeywordListTypes } from '../../../types/types';
 import { issueKeywords, subwayKeywords, trafficKeywords } from '../../../utils/allKeywords';
+import { screenHeight } from '../../../utils/changeStyleSize';
 
 const InitLikeKeywordTemplate = ({ moveToScreen }: InitLikeKeywordTemplateProps) => {
     // Initialized check keywords
@@ -173,21 +175,21 @@ const InitLikeKeywordTemplate = ({ moveToScreen }: InitLikeKeywordTemplateProps)
             </View>
 
             <View style={initLikeKeywordTemplateStyles.button}>
-                {Platform.OS === 'android' && checkedKeywords.length > 0 && (
-                    <LinearGradient
-                        colors={['#000000', '#00000000']}
-                        style={initLikeKeywordTemplateStyles.androidShadow}
+                <DropShadow
+                    style={
+                        Platform.OS === 'android' &&
+                        checkedKeywords.length > 0 &&
+                        initLikeKeywordTemplateStyles.androidShadow
+                    }>
+                    <TextButton
+                        onPress={onPressLikedKeyword}
+                        text={checkedKeywords.length > 0 ? '확인' : '키워드를 골라주세요'}
+                        height={48}
+                        backgroundColor={checkedKeywords.length > 0 ? Colors.BLACK : Colors.BTN_GRAY}
+                        textColor={Colors.WHITE}
+                        fontSize={17}
                     />
-                )}
-
-                <TextButton
-                    onPress={onPressLikedKeyword}
-                    text={checkedKeywords.length > 0 ? '확인' : '키워드를 골라주세요'}
-                    height={48}
-                    backgroundColor={checkedKeywords.length > 0 ? Colors.BLACK : Colors.BTN_GRAY}
-                    textColor={Colors.WHITE}
-                    fontSize={17}
-                />
+                </DropShadow>
             </View>
         </View>
     );
