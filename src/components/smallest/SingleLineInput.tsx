@@ -16,6 +16,8 @@ export const SingleLineInput = ({
     secureTextEntry,
     width,
     height,
+    fontFamily = 'Pretendard-Medium',
+    placeFontFamily = 'Pretendard-Regular',
 }: SingleLineInputProps) => {
     // When keyboard hide, input is blur
     const textInputRef = useRef() as RefObject<TextInput>;
@@ -43,8 +45,8 @@ export const SingleLineInput = ({
             secureTextEntry={secureTextEntry}
             style={
                 value
-                    ? singleLineInputStyles(fontSize, width, height).input
-                    : singleLineInputStyles(fontSize, width, height).placeholder
+                    ? singleLineInputStyles(fontSize, width, height, fontFamily).input
+                    : singleLineInputStyles(fontSize, width, height, placeFontFamily).placeholder
             }
             underlineColorAndroid={'transparent'}
         />

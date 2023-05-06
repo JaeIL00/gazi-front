@@ -112,6 +112,7 @@ const NicknameTemplate = ({ onPressNextStep }: NicknameTemplateProps) => {
                     onChangeText={onChangeNickname}
                     maxLength={12}
                     placeholder="닉네임을 입력해주세요."
+                    fontSize={16}
                 />
                 <TextButton
                     text="중복 확인"

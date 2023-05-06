@@ -12,6 +12,7 @@ import useKeyboardMotion from '../../../utils/hooks/useKeyboardMotion';
 import { joinMemberAtom } from '../../../store/atoms';
 import { EmailWithPasswordProps } from '../../../types/types';
 import { emailWithPasswordTemplateStyles, nextStepButtonPosition } from '../../../styles/styles';
+import NormalText from '../../smallest/NormalText';
 
 const EmailWithPasswordTemplate = ({ onPressNextStep }: EmailWithPasswordProps) => {
     // Password validation handling
@@ -55,7 +56,7 @@ const EmailWithPasswordTemplate = ({ onPressNextStep }: EmailWithPasswordProps) 
             <Spacer height={6} />
 
             <View style={emailWithPasswordTemplateStyles.emainTextBox}>
-                <MediumText text={joinData.email} size={16} color={Colors.BLACK} />
+                <NormalText text={joinData.email} size={16} color={Colors.BLACK} />
             </View>
 
             <Spacer height={20} />

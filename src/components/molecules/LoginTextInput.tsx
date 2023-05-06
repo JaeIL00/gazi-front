@@ -29,6 +29,8 @@ const LoginTextInput = ({
                     keyboardType={keyboardType}
                     secureTextEntry={secureTextEntry}
                     fontSize={16}
+                    fontFamily={null}
+                    placeFontFamily={null}
                 />
             </View>
         </View>

@@ -56,6 +56,8 @@ export const singleLineInputStyles = (
     fontSize: number | undefined,
     width: number | undefined,
     height: number | undefined,
+    fontFamily?: string | null,
+    placeFontFamily?: string | null,
 ) =>
     StyleSheet.create({
         input: {
@@ -63,11 +65,12 @@ export const singleLineInputStyles = (
             width: width && width * screenWidth,
             height: height && height * screenHeight,
             color: Colors.TXT_BLACK,
-            fontFamily: 'Pretendard-Medium',
+            fontFamily: fontFamily ? fontFamily : undefined,
         },
         placeholder: {
             fontSize: 14 * screenFont,
-            fontFamily: 'Pretendard-Regular',
+            color: Colors.TXT_LIGHTGRAY,
+            fontFamily: placeFontFamily ? placeFontFamily : undefined,
         },
     });
 export const SpacerStyles = (height: number | undefined, width: number | undefined) =>
