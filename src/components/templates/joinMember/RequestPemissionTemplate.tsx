@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { Linking, Platform, ScrollView, View } from 'react-native';
-import { PERMISSIONS, RESULTS, check, requestMultiple } from 'react-native-permissions';
+import React from 'react';
+import { Platform, ScrollView, View } from 'react-native';
+import { PERMISSIONS, requestMultiple } from 'react-native-permissions';
 
 import Spacer from '../../smallest/Spacer';
 import Colors from '../../../styles/Colors';
@@ -8,14 +8,11 @@ import NormalText from '../../smallest/NormalText';
 import TextButton from '../../molecules/TextButton';
 import MoveBackWithPageTitle from '../../organisms/MoveBackWithPageTitle';
 import IconPermissionListItem from '../../molecules/IconPermissionListItem';
-import FailLocationPermisionModal from '../../organisms/FailLocationPermisionModal';
 import { RequestPemissionTemplateProps } from '../../../types/types';
 import { requestPemissionTemplateStyles } from '../../../styles/styles';
-import { screenHeight } from '../../../utils/changeStyleSize';
 
 const RequestPemissionTemplate = ({ moveToScreen }: RequestPemissionTemplateProps) => {
     // Request Permissions
-    const [onModal, setOnModal] = useState<boolean>(false);
     const onPressrequstPermission = async () => {
         if (Platform.OS === 'android') {
             try {
@@ -30,30 +27,8 @@ const RequestPemissionTemplate = ({ moveToScreen }: RequestPemissionTemplateProp
                 // For Debug
                 console.log('(ERROR) Request Permissions. err: ', err);
             } finally {
-                const locationPermmission = await check(PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION);
-                const isAllow = locationPermmission === RESULTS.GRANTED;
-                if (isAllow) {
-                    moveToScreen('OK');
-                } else {
-                    setOnModal(true);
-                }
+                moveToScreen('OK');
             }
-        }
-    };
-
-    // Again request modal button Handling
-    const onPressModalButton = async (state: string) => {
-        switch (state) {
-            case 'CLOSE':
-                setOnModal(false);
-                break;
-            case 'MOVE':
-                setOnModal(false);
-                await Linking.openSettings();
-                break;
-            default:
-                // For Debug
-                console.log('(ERROR) Again request modal button Handling. state: ', state);
         }
     };
 
@@ -117,7 +92,6 @@ const RequestPemissionTemplate = ({ moveToScreen }: RequestPemissionTemplateProp
                     fontSize={17}
                 />
             </View>
-            {onModal && <FailLocationPermisionModal onPressModalButton={onPressModalButton} />}
         </View>
     );
 };
