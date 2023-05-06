@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef } from 'react';
-import { Animated, FlatList, Image, PanResponder, Platform, View } from 'react-native';
+import { Animated, FlatList, Image, PanResponder, PanResponderInstance, Platform, View } from 'react-native';
 import DropShadow from 'react-native-drop-shadow';
 
 import Spacer from '../smallest/Spacer';
@@ -32,10 +32,10 @@ const NearbyPostListModal = ({
     callNextPageHandler,
 }: NearbyPostListModalProps) => {
     // Modal animation handling
-    const animRef = useRef(new Animated.Value(0)).current;
-    const opacityRef = useRef(new Animated.Value(0)).current;
-    const animType = useRef('middle');
-    const panResponder = useRef(
+    const animRef: Animated.Value = useRef(new Animated.Value(0)).current;
+    const opacityRef: Animated.Value = useRef(new Animated.Value(0)).current;
+    const animType: React.MutableRefObject<string> = useRef('middle');
+    const panResponder: PanResponderInstance = useRef(
         PanResponder.create({
             onMoveShouldSetPanResponder: () => true,
             onPanResponderMove: (event, gestureState) => {

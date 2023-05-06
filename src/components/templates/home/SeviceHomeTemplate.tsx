@@ -21,7 +21,7 @@ import { screenFont, screenHeight, screenWidth } from '../../../utils/changeStyl
 
 const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger }: SeviceHomeTemplateProps) => {
     // Check Location Permission
-    const checkLocationPermission = async () => {
+    const checkLocationPermission = async (): Promise<boolean> => {
         try {
             const locationPermmission = await check(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION);
             const isAllow = locationPermmission === RESULTS.GRANTED;
@@ -29,6 +29,7 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger }: SeviceHomeTempla
         } catch (err) {
             // For Debug
             console.log('(ERROR) Check Location Permission.', err);
+            return false;
         }
     };
 
@@ -151,7 +152,7 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger }: SeviceHomeTempla
     };
 
     // Search text handling
-    const [searchText, setSearchText] = useState('');
+    const [searchText, setSearchText] = useState<string>('');
     const onChangeSearchText = (text: string) => {
         setSearchText(text);
     };
@@ -197,7 +198,7 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger }: SeviceHomeTempla
     };
 
     // Move to mini bottom sheet by move map
-    const [isBottomSheetMini, setIsBottomSheetMini] = useState(false);
+    const [isBottomSheetMini, setIsBottomSheetMini] = useState<boolean>(false);
     const moveToBottomSheetMini = () => {
         if (!isBottomSheetMini) {
             setIsBottomSheetMini(true);
@@ -216,7 +217,7 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger }: SeviceHomeTempla
     );
 
     // Move to full bottom sheet by move map
-    const [isBottomSheetFull, setIsBottomSheetFull] = useState(false);
+    const [isBottomSheetFull, setIsBottomSheetFull] = useState<boolean>(false);
     const moveToBottomSheetFull = (state: string) => {
         switch (state) {
             case 'FULL':
@@ -226,12 +227,13 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger }: SeviceHomeTempla
                 setIsBottomSheetFull(false);
                 break;
             default:
+                // For Debug
                 console.log('(ERROR) Move to mini bottom sheet by move map function');
         }
     };
 
     // Check map zoom level for warning
-    const [isFarMapLevel, setIsFarMapLevel] = useState(false);
+    const [isFarMapLevel, setIsFarMapLevel] = useState<boolean>(false);
     const checkZoomLevelWarning = useCallback(
         (region: Region) => {
             if (region.latitudeDelta > 0.15) {
