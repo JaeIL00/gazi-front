@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, Animated, Keyboard, View, useWindowDimensions } from 'react-native';
 import { useMutation } from 'react-query';
 import { useRecoilState, useRecoilValue } from 'recoil';
+import { debounce } from 'lodash';
 
 import Icons from '../smallest/Icons';
 import Spacer from '../smallest/Spacer';
@@ -41,7 +42,7 @@ const AuthEmail = ({ min, sec, resetTimeHandler, finishSlideComponentHandler }: 
                 toValue: height,
                 duration: 300,
                 useNativeDriver: true,
-            }).start(({ finished }) => {
+            }).start(({ finished }: { finished: boolean }) => {
                 if (finished) {
                     setAuthData({ number: 0, isOk: true });
                     finishSlideComponentHandler('OK');
@@ -91,11 +92,9 @@ const AuthEmail = ({ min, sec, resetTimeHandler, finishSlideComponentHandler }: 
             resetTimeHandler();
         },
     });
-    const onPressEmailAuth = () => {
-        if (min > 0) {
-            mutate(joinData.email);
-        }
-    };
+    const onPressEmailAuth = debounce(() => {
+        mutate(joinData.email);
+    }, 300);
 
     // Finish button transitionY handling
     const { bottomValue, buttonUpAnimationHandler, buttonDownAnimationHandler } = useKeyboardMotion(51, 271);

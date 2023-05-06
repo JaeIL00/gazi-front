@@ -27,6 +27,8 @@ export const RootStackNavigation = () => {
             }}>
             {!isUser.accessToken ? (
                 <>
+                    <Stack.Screen name="RequestPermission" component={RequestPermissionScreen} />
+                    <Stack.Screen name="InitKeyword" component={InitLikeKeywordScreen} />
                     <Stack.Screen name="BottomTab" component={BottomTabNavigation} />
                 </>
             ) : (
@@ -34,8 +36,6 @@ export const RootStackNavigation = () => {
                     <Stack.Screen name="NotLoginHome" component={NotLoginHomeScreen} />
                     <Stack.Screen name="JoinMember" component={JoinMemberScreen} />
                     <Stack.Screen name="Login" component={LoginScreen} />
-                    <Stack.Screen name="RequestPermission" component={RequestPermissionScreen} />
-                    <Stack.Screen name="InitKeyword" component={InitLikeKeywordScreen} />
                 </>
             )}
         </Stack.Navigator>

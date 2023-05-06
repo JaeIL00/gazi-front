@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, Animated, Keyboard, ToastAndroid, View } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useMutation } from 'react-query';
+import { debounce } from 'lodash';
 
 import Icons from '../../smallest/Icons';
 import Spacer from '../../smallest/Spacer';
@@ -47,9 +48,11 @@ const EmailLoginTemplate = ({ moveServiceHomeHandler }: EmailLoginTemplateProps)
             console.log('(ERROR) Login API Handling. response: ', response);
         },
     });
-    const onPressLoginButton = () => {
-        mutate({ email, password });
-    };
+    const onPressLoginButton = debounce(() => {
+        if (email && password) {
+            mutate({ email, password });
+        }
+    }, 300);
     const successJoinMemberHandler = async (data: { accessToken: string; refreshToken: string }) => {
         try {
             await AsyncStorage.setItem('GAZI_ac_tk', data.accessToken);
@@ -84,7 +87,7 @@ const EmailLoginTemplate = ({ moveServiceHomeHandler }: EmailLoginTemplateProps)
             <MoveBackWithPageTitle
                 oneTitle="이메일로 로그인"
                 twoTitle=""
-                onPress={() => moveServiceHomeHandler('GO')}
+                onPress={() => moveServiceHomeHandler('BACK')}
             />
 
             <Spacer height={75} />
@@ -98,7 +101,7 @@ const EmailLoginTemplate = ({ moveServiceHomeHandler }: EmailLoginTemplateProps)
                 />
                 <Spacer height={20} />
                 <LoginTextInput
-                    title="password"
+                    title="Password"
                     value={password}
                     placeholder="비밀번호 입력"
                     onChangeText={onChangePassword}

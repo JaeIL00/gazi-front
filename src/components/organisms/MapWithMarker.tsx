@@ -73,6 +73,8 @@ const MapWithMarker = ({
                         case 8:
                             return require('../../assets/icons/etc-marker.png');
                         default:
+                            // For Debug
+                            console.log('(ERROR) Near post marker image');
                             return;
                     }
                 };

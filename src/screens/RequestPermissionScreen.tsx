@@ -1,5 +1,5 @@
-import React from 'react';
-import { View } from 'react-native';
+import React, { useEffect } from 'react';
+import { BackHandler, Platform, View } from 'react-native';
 
 import RequestPemissionTemplate from '../components/templates/joinMember/RequestPemissionTemplate';
 import { globalDefaultStyles } from '../styles/styles';
@@ -15,13 +15,25 @@ const RequestPermissionScreen = () => {
                 rootNavigation.navigate('InitKeyword');
                 break;
             case 'BACK':
-                rootNavigation.goBack();
+                rootNavigation.navigate('BottomTab');
                 break;
             default:
                 // For Debug
                 console.log('(ERROR) Move to screen handling. state: ', state);
         }
     };
+
+    // Android back button & Header Back Button Handling
+    const handleBackButton = (): boolean => {
+        rootNavigation.navigate('BottomTab');
+        return true;
+    };
+    useEffect(() => {
+        if (Platform.OS === 'android') {
+            BackHandler.addEventListener('hardwareBackPress', handleBackButton);
+            return () => BackHandler.removeEventListener('hardwareBackPress', handleBackButton);
+        }
+    }, []);
 
     return (
         <View style={globalDefaultStyles.container}>

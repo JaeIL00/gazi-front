@@ -4,8 +4,9 @@ import { useRecoilState } from 'recoil';
 
 import Spacer from '../../smallest/Spacer';
 import Colors from '../../../styles/Colors';
-import TextButton from '../../molecules/TextButton';
+import NormalText from '../../smallest/NormalText';
 import MediumText from '../../smallest/MediumText';
+import TextButton from '../../molecules/TextButton';
 import LoginTextInput from '../../molecules/LoginTextInput';
 import IconWithMediumText from '../../molecules/IconWithMediumText';
 import useKeyboardMotion from '../../../utils/hooks/useKeyboardMotion';
@@ -55,7 +56,7 @@ const EmailWithPasswordTemplate = ({ onPressNextStep }: EmailWithPasswordProps) 
             <Spacer height={6} />
 
             <View style={emailWithPasswordTemplateStyles.emainTextBox}>
-                <MediumText text={joinData.email} size={16} color={Colors.BLACK} />
+                <NormalText text={joinData.email} size={16} color={Colors.BLACK} />
             </View>
 
             <Spacer height={20} />

@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef } from 'react';
-import { Animated, FlatList, Image, PanResponder, Platform, View } from 'react-native';
+import { Animated, FlatList, Image, PanResponder, PanResponderInstance, Platform, View } from 'react-native';
 import DropShadow from 'react-native-drop-shadow';
 
 import Spacer from '../smallest/Spacer';
@@ -32,10 +32,10 @@ const NearbyPostListModal = ({
     callNextPageHandler,
 }: NearbyPostListModalProps) => {
     // Modal animation handling
-    const animRef = useRef(new Animated.Value(0)).current;
-    const opacityRef = useRef(new Animated.Value(0)).current;
-    const animType = useRef('middle');
-    const panResponder = useRef(
+    const animRef = useRef<Animated.Value>(new Animated.Value(0)).current;
+    const opacityRef = useRef<Animated.Value>(new Animated.Value(0)).current;
+    const animType = useRef<string>('middle');
+    const panResponder = useRef<PanResponderInstance>(
         PanResponder.create({
             onMoveShouldSetPanResponder: () => true,
             onPanResponderMove: (event, gestureState) => {
@@ -69,7 +69,7 @@ const NearbyPostListModal = ({
                     Animated.timing(opacityRef, {
                         toValue: -FULL_ANIVALUE,
                         useNativeDriver: true,
-                    }).start(({ finished }) => {
+                    }).start(({ finished }: { finished: boolean }) => {
                         if (finished) {
                             moveToBottomSheetFull('FULL');
                         }
@@ -116,7 +116,7 @@ const NearbyPostListModal = ({
                     Animated.timing(opacityRef, {
                         toValue: -FULL_ANIVALUE,
                         useNativeDriver: true,
-                    }).start(({ finished }) => {
+                    }).start(({ finished }: { finished: boolean }) => {
                         if (finished) {
                             moveToBottomSheetFull('FULL');
                         }
@@ -135,7 +135,7 @@ const NearbyPostListModal = ({
                     Animated.timing(opacityRef, {
                         toValue: -MIDDLE_ANIVALUE,
                         useNativeDriver: true,
-                    }).start(({ finished }) => {
+                    }).start(({ finished }: { finished: boolean }) => {
                         if (finished) {
                             moveToBottomSheetFull('NOT');
                         }
@@ -153,7 +153,7 @@ const NearbyPostListModal = ({
                     Animated.timing(opacityRef, {
                         toValue: -MINI_ANIVALUE,
                         useNativeDriver: true,
-                    }).start(({ finished }) => {
+                    }).start(({ finished }: { finished: boolean }) => {
                         if (finished) {
                             moveToBottomSheetFull('NOT');
                         }
@@ -187,7 +187,7 @@ const NearbyPostListModal = ({
                 toValue: MIDDLE_ANIVALUE,
                 duration: 200,
                 useNativeDriver: true,
-            }).start(({ finished }) => {
+            }).start(({ finished }: { finished: boolean }) => {
                 if (finished) {
                     moveToBottomSheetFull('NOT');
                 }

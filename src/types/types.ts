@@ -92,6 +92,8 @@ export type SingleLineInputProps = {
     secureTextEntry?: boolean;
     width?: number;
     height?: number;
+    fontFamily?: string | null;
+    placeFontFamily?: string | null;
     onChangeText: (text: string) => void;
     onSubmitEditing?: () => void;
 };

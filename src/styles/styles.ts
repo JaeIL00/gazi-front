@@ -56,6 +56,8 @@ export const singleLineInputStyles = (
     fontSize: number | undefined,
     width: number | undefined,
     height: number | undefined,
+    fontFamily?: string | null,
+    placeFontFamily?: string | null,
 ) =>
     StyleSheet.create({
         input: {
@@ -63,11 +65,12 @@ export const singleLineInputStyles = (
             width: width && width * screenWidth,
             height: height && height * screenHeight,
             color: Colors.TXT_BLACK,
-            fontFamily: 'Pretendard-Medium',
+            fontFamily: fontFamily ? fontFamily : undefined,
         },
         placeholder: {
             fontSize: 14 * screenFont,
-            fontFamily: 'Pretendard-Regular',
+            color: Colors.TXT_LIGHTGRAY,
+            fontFamily: placeFontFamily ? placeFontFamily : undefined,
         },
     });
 export const SpacerStyles = (height: number | undefined, width: number | undefined) =>
@@ -161,7 +164,7 @@ export const checkBoxBackground = (is: boolean) =>
 export const iconPermissionListItemStyles = StyleSheet.create({
     itemBox: {
         flexDirection: 'row',
-        paddingBottom: 16 * screenHeight,
+        paddingBottom: 19 * screenHeight,
     },
     iconBox: {
         width: 40 * screenWidth,
@@ -513,13 +516,20 @@ export const notLoginTemplateStyles = StyleSheet.create({
     },
 });
 export const requestPemissionTemplateStyles = StyleSheet.create({
+    container: {
+        flex: 1,
+    },
     choicePermission: {
-        paddingTop: 13 * screenHeight,
-        paddingBottom: 21 * screenHeight,
+        paddingBottom: 17 * screenHeight,
     },
     lineBar: {
         borderTopWidth: 1 * screenFont,
         borderColor: '#EBEBEB',
+    },
+    buttonBox: {
+        position: 'absolute',
+        bottom: 42 * screenHeight,
+        width: '100%',
     },
 });
 export const emailLoginTemplateStyles = StyleSheet.create({
@@ -576,11 +586,13 @@ export const initLikeKeywordTemplateStyles = StyleSheet.create({
         bottom: 42 * screenHeight,
     },
     androidShadow: {
-        width: '100%',
-        height: 42 * screenHeight,
-        borderRadius: 5 * screenFont,
-        position: 'absolute',
-        bottom: -4 * screenWidth,
+        shadowColor: '#000000',
+        shadowOffset: {
+            width: 0,
+            height: 4 * screenHeight,
+        },
+        shadowOpacity: 0.15,
+        shadowRadius: 4 * screenFont,
     },
 });
 export const completedJoinTemplateStyles = StyleSheet.create({
