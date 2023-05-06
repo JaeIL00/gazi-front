@@ -185,7 +185,7 @@ export type MapWithMarkerProps = {
     nearPostList: PostTypes[];
     isAllowLocation: boolean;
     mapRenderCompleteHandler: () => void;
-    checkGestureforBottomSheet: (region: Region, details: Details) => void;
+    checkMapGesture: (region: Region, details: Details) => void;
     checkZoomLevelWarning: (region: Region) => void;
 };
 export type PostListItemProps = {

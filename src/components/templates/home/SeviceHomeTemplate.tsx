@@ -97,6 +97,7 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger }: SeviceHomeTempla
                         latitudeDelta: 0.04,
                         longitudeDelta: 0.027,
                     });
+                    setIsNearPostSearch(false);
                 }
             });
         } else {
@@ -104,7 +105,10 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger }: SeviceHomeTempla
             setIsAllowLocation(false);
         }
     }, 300);
-    const getBoundaryMap = async () => {
+
+    // Get boundary of map
+    const [isNearPostSearch, setIsNearPostSearch] = useState<boolean>(false);
+    const getBoundaryMap = useCallback(async () => {
         let boundaryValue;
         try {
             boundaryValue = (await mapRef.current?.getMapBoundaries()) as BoundingBox;
@@ -117,10 +121,14 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger }: SeviceHomeTempla
             console.log('(ERROR) Get boundary of map.', err);
         } finally {
             if (boundaryValue) {
-                remove();
-                refetch();
+                setIsNearPostSearch(false);
+                initNearPosts();
             }
         }
+    }, []);
+    const initNearPosts = () => {
+        remove();
+        refetch();
     };
 
     // Again request modal button Handling
@@ -196,10 +204,13 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger }: SeviceHomeTempla
     const notBottomSheetMini = () => {
         setIsBottomSheetMini(false);
     };
-    const checkGestureforBottomSheet = useCallback(
+
+    // Check map gesture
+    const checkMapGesture = useCallback(
         (region: Region, details: Details) => {
             if (details.isGesture) {
                 moveToBottomSheetMini();
+                setIsNearPostSearch(true);
             }
         },
         [isBottomSheetMini],
@@ -241,7 +252,7 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger }: SeviceHomeTempla
                 currentPosition={currentPosition}
                 nearPostList={nearPostList}
                 isAllowLocation={isAllowLocation}
-                checkGestureforBottomSheet={checkGestureforBottomSheet}
+                checkMapGesture={checkMapGesture}
                 checkZoomLevelWarning={checkZoomLevelWarning}
                 mapRenderCompleteHandler={mapRenderCompleteHandler}
             />
@@ -313,7 +324,7 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger }: SeviceHomeTempla
                 </View>
             )}
 
-            {true && Platform.OS === 'android' && (
+            {isNearPostSearch && Platform.OS === 'android' && (
                 <DropShadow
                     style={{
                         position: 'absolute',
@@ -328,7 +339,7 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger }: SeviceHomeTempla
                         shadowRadius: 34 * screenFont,
                     }}>
                     <TouchButton
-                        onPress={() => {}}
+                        onPress={getBoundaryMap}
                         backgroundColor="#F8F7FA"
                         borderRadius={54 * screenFont}
                         borderWidth={1 * screenFont}
