@@ -11,10 +11,10 @@ import { screenHeight } from '../../utils/changeStyleSize';
 import { nearbyPostListModalStyles } from '../../styles/styles';
 import { NearbyPostListModalProps, PostTypes } from '../../types/types';
 
-const FULL_ANIVALUE = -415 * screenHeight; // 290
+const FULL_ANIVALUE = -415 * screenHeight;
 const MIDDLE_ANIVALUE = 0;
 const MINI_ANIVALUE = 152 * screenHeight;
-const INIT_MINI = 440 * screenHeight; // 440
+const INIT_MINI = 440 * screenHeight;
 const INIT_OUTPUT = INIT_MINI + 100;
 
 const NearbyPostListModal = ({
@@ -30,6 +30,7 @@ const NearbyPostListModal = ({
     notBottomSheetMini,
     onPressGetUserPosition,
     callNextPageHandler,
+    moveToWritePost,
 }: NearbyPostListModalProps) => {
     // Modal animation handling
     const animRef = useRef<Animated.Value>(new Animated.Value(0)).current;
@@ -211,11 +212,13 @@ const NearbyPostListModal = ({
         }
     }, [isBottomSheetMini]);
 
+    // Flatlist function
     const keyExtractor = useCallback((item: PostTypes) => item.postId + 'list', []);
     const postList = useCallback(({ item }: { item: PostTypes }) => <PostListItem post={item} />, []);
     const ItemSeparatorComponent = useCallback(() => <Spacer height={20} />, []);
     const ListFooterComponent = useCallback(() => <Spacer height={20} />, []);
 
+    // Going to current position by toggle button
     const onPressCurrentPositionToggle = useCallback(() => {
         onPressGetUserPosition();
         moveToBottomSheetMini();
@@ -272,7 +275,7 @@ const NearbyPostListModal = ({
                     {Platform.OS === 'android' && (
                         <DropShadow style={nearbyPostListModalStyles.dropshadow}>
                             <TouchButton
-                                onPress={() => {}}
+                                onPress={moveToWritePost}
                                 width={52}
                                 height={52}
                                 borderRadius={52}

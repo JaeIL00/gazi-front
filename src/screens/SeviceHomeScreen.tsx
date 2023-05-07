@@ -4,8 +4,14 @@ import { useFocusEffect } from '@react-navigation/native';
 
 import SeviceHomeTemplate from '../components/templates/home/SeviceHomeTemplate';
 import { seviceHomeScreenStyles } from '../styles/styles';
+import { useRootNavigation } from '../navigations/RootStackNavigation';
 
 const SeviceHomeScreen = () => {
+    const rootNavigation = useRootNavigation();
+    const moveToWritePost = () => {
+        rootNavigation.navigate('WritePost');
+    };
+
     // Android back button & Header Back Button Handling
     const [isAppExit, setIsAppExit] = useState(false);
     const [handleModalTrigger, setHandleModalTrigger] = useState(false);
@@ -46,7 +52,11 @@ const SeviceHomeScreen = () => {
     );
     return (
         <View style={seviceHomeScreenStyles.container}>
-            <SeviceHomeTemplate isModalRef={isModalRef} handleModalTrigger={handleModalTrigger} />
+            <SeviceHomeTemplate
+                isModalRef={isModalRef}
+                handleModalTrigger={handleModalTrigger}
+                moveToWritePost={moveToWritePost}
+            />
         </View>
     );
 };

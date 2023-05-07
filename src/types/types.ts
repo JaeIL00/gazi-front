@@ -60,6 +60,7 @@ export type RootStackParamList = {
     InitKeyword: undefined;
     ServiceHome: undefined;
     BottomTab: undefined;
+    WritePost: undefined;
 };
 export type BottomTabParamList = {
     ServiceHome: undefined;
@@ -204,6 +205,7 @@ export type NearbyPostListModalProps = {
     notBottomSheetMini: () => void;
     onPressGetUserPosition: () => void;
     callNextPageHandler: () => void;
+    moveToWritePost: () => void;
 };
 
 // TEMPLATES
@@ -227,4 +229,5 @@ export interface InitLikeKeywordTemplateProps extends RequestPemissionTemplatePr
 export type SeviceHomeTemplateProps = {
     isModalRef: React.MutableRefObject<boolean>;
     handleModalTrigger: boolean;
+    moveToWritePost: () => void;
 };
