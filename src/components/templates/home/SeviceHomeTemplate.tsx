@@ -324,7 +324,7 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger }: SeviceHomeTempla
                 </View>
             )}
 
-            {isNearPostSearch && Platform.OS === 'android' && (
+            {isNearPostSearch && !isFarMapLevel && Platform.OS === 'android' && (
                 <DropShadow
                     style={{
                         position: 'absolute',
