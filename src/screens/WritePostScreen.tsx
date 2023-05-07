@@ -23,9 +23,9 @@ const WritePostScreen = () => {
     };
 
     return (
-        <View style={globalDefaultStyles.container}>
+        <>
             <WritePostTemplate moveToScreen={moveToScreen} />
-        </View>
+        </>
     );
 };
 

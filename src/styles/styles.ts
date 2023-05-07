@@ -643,6 +643,31 @@ export const seviceHomeTemplateStyles = StyleSheet.create({
         marginLeft: 8 * screenWidth,
     },
 });
+export const writePostTemplateStyles = StyleSheet.create({
+    container: {
+        backgroundColor: Colors.BACKGROUND_DEFAULT,
+        flex: 1,
+    },
+    headerBox: {
+        paddingHorizontal: 16 * screenWidth,
+        paddingBottom: 12 * screenHeight,
+        borderWidth: 1 * screenFont,
+        borderColor: '#EBEBEB',
+    },
+    headerNavigateBox: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        paddingTop: 18 * screenHeight,
+        paddingBottom: 26 * screenHeight,
+    },
+    settingBox: {
+        flexDirection: 'row',
+    },
+    settingButton: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+});
 
 // SCREEN
 export const seviceHomeScreenStyles = StyleSheet.create({

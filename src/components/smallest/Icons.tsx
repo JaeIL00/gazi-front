@@ -4,6 +4,7 @@ import Feather from 'react-native-vector-icons/Feather';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import Entypo from 'react-native-vector-icons/Entypo';
 
 import { IconsProps } from '../../types/types';
 import { screenFont } from '../../utils/changeStyleSize';
@@ -17,6 +18,7 @@ const Icons = ({ type, name, size, color }: IconsProps) => {
             {type === 'simpleLineIcons' && <SimpleLineIcons name={name} size={freshSize} color={color} />}
             {type === 'fontisto' && <Fontisto name={name} size={freshSize} color={color} />}
             {type === 'ionicons' && <Ionicons name={name} size={freshSize} color={color} />}
+            {type === 'entypo' && <Entypo name={name} size={freshSize} color={color} />}
         </>
     );
 };
