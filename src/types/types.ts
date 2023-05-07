@@ -231,3 +231,6 @@ export type SeviceHomeTemplateProps = {
     handleModalTrigger: boolean;
     moveToWritePost: () => void;
 };
+export type WritePostTemplateProps = {
+    moveToScreen: (state: string) => void;
+};
