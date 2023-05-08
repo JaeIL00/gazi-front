@@ -467,6 +467,13 @@ export const searchLocationStyles = StyleSheet.create({
         alignItems: 'center',
         paddingLeft: 20 * screenWidth,
     },
+    listItemBox: {
+        flexDirection: 'row',
+        paddingHorizontal: 16 * screenWidth,
+        paddingVertical: 12 * screenHeight,
+        borderBottomWidth: 1 * screenFont,
+        borderColor: '#BEBEBE',
+    },
 });
 
 // TEMPLATES

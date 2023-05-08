@@ -6,12 +6,13 @@ const Axios = axios.create({
 });
 
 // GOOGLE
-export const searchGoogleAPI = async (searchInput: string) => {
+export const searchGoogleAPI = async (searchInput: string, nextPageToken: string) => {
+    const url = nextPageToken
+        ? `https://maps.googleapis.com/maps/api/place/textsearch/json?pagetoken=${nextPageToken}&key=${Config.GOOGLE_PLACE_API_KEY}`
+        : `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${searchInput}%20in%20Korea&key=${Config.GOOGLE_PLACE_API_KEY}`;
     const response = await axios({
         method: 'get',
-        url: `https://maps.googleapis.com/maps/api/place/textsearch/json
-			?query=${searchInput}%20in%20Korea
-			&key=${Config.GOOGLE_PLACE_API_KEY}`,
+        url,
         headers: {
             'Accept-Language': 'ko',
         },
