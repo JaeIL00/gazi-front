@@ -1,21 +1,21 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { ActivityIndicator, FlatList, Text, ToastAndroid, View } from 'react-native';
+import React, { useCallback, useState } from 'react';
+import { ActivityIndicator, FlatList, ToastAndroid, View } from 'react-native';
 import { debounce } from 'lodash';
 import { useQuery } from 'react-query';
 
 import Icons from '../smallest/Icons';
-import TouchButton from '../smallest/TouchButton';
-import { searchGoogleAPI } from '../../queries/api';
-import { screenFont, screenHeight, screenWidth } from '../../utils/changeStyleSize';
-import { searchLocationStyles } from '../../styles/styles';
-import { SingleLineInput } from '../smallest/SingleLineInput';
-import { LocationResultTypes } from '../../types/types';
+import Spacer from '../smallest/Spacer';
 import Colors from '../../styles/Colors';
 import MediumText from '../smallest/MediumText';
 import NormalText from '../smallest/NormalText';
-import Spacer from '../smallest/Spacer';
+import TouchButton from '../smallest/TouchButton';
+import { searchGoogleAPI } from '../../queries/api';
+import { searchLocationStyles } from '../../styles/styles';
+import { SingleLineInput } from '../smallest/SingleLineInput';
+import { LocationResultTypes, SearchLocationProps } from '../../types/types';
+import { screenFont, screenHeight, screenWidth } from '../../utils/changeStyleSize';
 
-const SearchLocation = () => {
+const SearchLocation = ({ getLocationHandler }: SearchLocationProps) => {
     // Input text for searching location
     const [searchText, setSearchText] = useState<string>('');
     const onChangeSearchText = (text: string) => {
@@ -65,16 +65,21 @@ const SearchLocation = () => {
         if (nextPageToken) {
             refetch();
         } else {
-            ToastAndroid.show('검색 결과 끝', 4000);
+            ToastAndroid.show('검색 결과 끝', 2000);
         }
     };
 
     // Flatlist function
     const keyExtractor = useCallback((item: LocationResultTypes) => item.place_id, []);
-    const renderItem = useCallback(
-        ({ item }: { item: LocationResultTypes }) => {
-            const freshAddress = item.formatted_address.replace('대한민국 ', '');
-            return (
+    const renderItem = useCallback(({ item }: { item: LocationResultTypes }) => {
+        const freshAddress = item.formatted_address.replace('대한민국 ', '');
+        return (
+            <TouchButton
+                onPress={() => getLocationHandler(item.geometry.location, item.name)}
+                paddingHorizontal={16 * screenWidth}
+                paddingVertical={12 * screenHeight}
+                borderColor="#BEBEBE"
+                borderBottomWidth={1 * screenFont}>
                 <View style={searchLocationStyles.listItemBox}>
                     <Icons type="ionicons" name="location-sharp" size={25} color={Colors.BTN_GRAY} />
                     <Spacer width={11} />
@@ -84,10 +89,9 @@ const SearchLocation = () => {
                         <NormalText text={freshAddress} size={14} color={Colors.TXT_GRAY} />
                     </View>
                 </View>
-            );
-        },
-        [resultsData],
-    );
+            </TouchButton>
+        );
+    }, []);
 
     return (
         <View>
@@ -117,7 +121,7 @@ const SearchLocation = () => {
                     offset: resultsData.length * index,
                     index,
                 })}
-                onEndReachedThreshold={0.6}
+                onEndReachedThreshold={0.7}
                 onEndReached={({ distanceFromEnd }) => {
                     if (distanceFromEnd > 0) {
                         getNextPageResults();

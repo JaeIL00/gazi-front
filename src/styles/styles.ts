@@ -34,6 +34,7 @@ export const touchButtonStyles = (
     borderColor: string | undefined,
     borderWidth: number | undefined,
     borderRadius: number | undefined,
+    borderBottomWidth: number | undefined,
     flex: number | undefined,
 ) =>
     StyleSheet.create({
@@ -49,6 +50,7 @@ export const touchButtonStyles = (
             justifyContent: 'center',
             borderColor: borderColor && borderColor,
             borderWidth: borderWidth && borderWidth * screenFont,
+            borderBottomWidth: borderBottomWidth && borderBottomWidth * screenFont,
             flex: flex && flex,
         },
     });
@@ -469,10 +471,7 @@ export const searchLocationStyles = StyleSheet.create({
     },
     listItemBox: {
         flexDirection: 'row',
-        paddingHorizontal: 16 * screenWidth,
-        paddingVertical: 12 * screenHeight,
-        borderBottomWidth: 1 * screenFont,
-        borderColor: '#BEBEBE',
+        width: '100%',
     },
 });
 

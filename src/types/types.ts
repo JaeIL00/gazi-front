@@ -53,7 +53,7 @@ export type LocationResultTypes = {
                 lng: number;
             };
         };
-    }[];
+    };
     icon: string;
     icon_background_color: string;
     icon_mask_base_uri: string;
@@ -80,6 +80,17 @@ export type joinMemberTypes = {
 export type emailAuthAtomTypes = {
     number: number;
     isOk: boolean;
+};
+export type writePostTypes = {
+    dto: {
+        title: string;
+        placeName: string;
+        content: string;
+        latitude: number | null;
+        longitude: number | null;
+        keywordIdList: number[] | null;
+        headKeywordId: number | null;
+    };
 };
 
 // NAVIGATION
@@ -113,6 +124,7 @@ export type TouchButtonProps = {
     borderColor?: string;
     borderWidth?: number;
     borderRadius?: number;
+    borderBottomWidth?: number;
     flex?: number;
 };
 export type SingleLineInputProps = {
@@ -237,6 +249,9 @@ export type NearbyPostListModalProps = {
     onPressGetUserPosition: () => void;
     callNextPageHandler: () => void;
     moveToWritePost: () => void;
+};
+export type SearchLocationProps = {
+    getLocationHandler: (location: { lat: number; lng: number }, placeName: string) => void;
 };
 
 // TEMPLATES

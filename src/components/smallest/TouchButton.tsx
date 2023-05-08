@@ -16,6 +16,7 @@ const TouchButton = ({
     borderColor,
     borderWidth,
     borderRadius,
+    borderBottomWidth,
     flex,
 }: TouchButtonProps) => {
     return (
@@ -32,6 +33,7 @@ const TouchButton = ({
                     borderColor,
                     borderWidth,
                     borderRadius,
+                    borderBottomWidth,
                     flex,
                 ).container
             }
