@@ -474,6 +474,25 @@ export const searchLocationStyles = StyleSheet.create({
         width: '100%',
     },
 });
+export const writePostAddKeywordStyles = StyleSheet.create({
+    container: {
+        position: 'absolute',
+        width: '100%',
+        height: '100%',
+        backgroundColor: Colors.BACKGROUND_DEFAULT,
+    },
+    headerBox: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        paddingHorizontal: 16 * screenWidth,
+        paddingTop: 17 * screenHeight,
+    },
+    titleBox: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+});
 
 // TEMPLATES
 export const nicknameTemplateStyles = StyleSheet.create({

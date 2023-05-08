@@ -253,6 +253,9 @@ export type NearbyPostListModalProps = {
 export type SearchLocationProps = {
     getLocationHandler: (location: { lat: number; lng: number }, placeName: string) => void;
 };
+export type WritePostAddKeywordProps = {
+    keywordModalHandler: (isOpen: boolean) => void;
+};
 
 // TEMPLATES
 export type InputEmailTemplateProps = {

@@ -8,6 +8,7 @@ import MediumText from '../../smallest/MediumText';
 import TouchButton from '../../smallest/TouchButton';
 import SemiBoldText from '../../smallest/SemiBoldText';
 import SearchLocation from '../../organisms/SearchLocation';
+import WritePostAddKeyword from '../../organisms/cummunity/WritePostAddKeyword';
 import { screenWidth } from '../../../utils/changeStyleSize';
 import { writePostTemplateStyles } from '../../../styles/styles';
 import { WritePostTemplateProps, writePostTypes } from '../../../types/types';
@@ -29,12 +30,23 @@ const WritePostTemplate = ({ moveToScreen }: WritePostTemplateProps) => {
         setWritePostData({ dto: { ...writePostData.dto, latitude: location.lat, longitude: location.lng, placeName } });
     };
 
+    // Search location modal
     const [loactionModal, setLoactionModal] = useState(false);
     const locationModalHandler = (isOpen: boolean) => {
         if (isOpen) {
             setLoactionModal(true);
         } else {
             setLoactionModal(false);
+        }
+    };
+
+    // Set post keyword modal
+    const [keywordModal, setKeywordModal] = useState(true);
+    const keywordModalHandler = (isOpen: boolean) => {
+        if (isOpen) {
+            setKeywordModal(true);
+        } else {
+            setKeywordModal(false);
         }
     };
 
@@ -70,7 +82,7 @@ const WritePostTemplate = ({ moveToScreen }: WritePostTemplateProps) => {
                         </View>
                     </TouchButton>
                     <Spacer width={13} />
-                    <TouchButton onPress={() => {}}>
+                    <TouchButton onPress={() => keywordModalHandler(true)}>
                         <View style={writePostTemplateStyles.settingBox}>
                             <MediumText text="키워드설정" size={13} color={Colors.BLACK} />
                             <Spacer width={4} />
@@ -105,6 +117,8 @@ const WritePostTemplate = ({ moveToScreen }: WritePostTemplateProps) => {
                     <SearchLocation getLocationHandler={getLocationHandler} />
                 </View>
             )}
+
+            {keywordModal && <WritePostAddKeyword keywordModalHandler={keywordModalHandler} />}
         </View>
     );
 };
