@@ -70,7 +70,7 @@ export const singleLineInputStyles = (
             fontFamily: fontFamily ? fontFamily : undefined,
         },
         placeholder: {
-            fontSize: 16 * screenFont,
+            fontSize: fontSize ? fontSize * screenFont : 14 * screenFont,
             color: Colors.TXT_LIGHTGRAY,
             fontFamily: placeFontFamily ? placeFontFamily : undefined,
         },

@@ -141,6 +141,18 @@ export type SingleLineInputProps = {
     onChangeText: (text: string) => void;
     onSubmitEditing?: () => void;
 };
+export type MultiLineInputProps = {
+    value: string;
+    placeholder: string;
+    fontSize?: number;
+    maxLength?: number;
+    width?: number;
+    height?: number;
+    fontFamily?: string | null;
+    placeFontFamily?: string | null;
+    onChangeText: (text: string) => void;
+    onSubmitEditing?: () => void;
+};
 export type IconsProps = {
     type: string;
     name: string;

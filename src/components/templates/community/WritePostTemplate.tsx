@@ -10,9 +10,11 @@ import SemiBoldText from '../../smallest/SemiBoldText';
 import SearchLocation from '../../organisms/SearchLocation';
 import WritePostAddKeyword from '../../organisms/cummunity/WritePostAddKeyword';
 import { issueKeywords } from '../../../utils/allKeywords';
-import { screenWidth } from '../../../utils/changeStyleSize';
+import { screenHeight, screenWidth } from '../../../utils/changeStyleSize';
 import { writePostTemplateStyles } from '../../../styles/styles';
 import { WritePostTemplateProps, writePostTypes } from '../../../types/types';
+import { SingleLineInput } from '../../smallest/SingleLineInput';
+import MultiLineInput from '../../smallest/MultiLineInput';
 
 const WritePostTemplate = ({ moveToScreen }: WritePostTemplateProps) => {
     // Write post data for API request
@@ -76,6 +78,16 @@ const WritePostTemplate = ({ moveToScreen }: WritePostTemplateProps) => {
         }
     };
 
+    // Input text title and content
+    const [title, setTitle] = useState('');
+    const [content, setcontent] = useState('');
+    const onChangeTitleText = (text: string) => {
+        setTitle(text);
+    };
+    const onChangeContentText = (text: string) => {
+        setcontent(text);
+    };
+
     return (
         <View style={writePostTemplateStyles.container}>
             <View style={writePostTemplateStyles.headerBox}>
@@ -130,6 +142,23 @@ const WritePostTemplate = ({ moveToScreen }: WritePostTemplateProps) => {
                         </View>
                     </TouchButton>
                 </View>
+            </View>
+
+            <View style={{ paddingHorizontal: 16 * screenWidth }}>
+                <SingleLineInput
+                    value={title}
+                    onChangeText={text => onChangeTitleText(text)}
+                    placeFontFamily="Pretendard-SemiBold"
+                    fontFamily="Pretendard-SemiBold"
+                    placeholder="제목을 입력해주세요"
+                    fontSize={24}
+                />
+                <MultiLineInput
+                    value={content}
+                    onChangeText={text => onChangeContentText(text)}
+                    placeholder="무슨일이 일어나고 있나요?"
+                    height={220 * screenHeight}
+                />
             </View>
 
             {loactionModal && (
