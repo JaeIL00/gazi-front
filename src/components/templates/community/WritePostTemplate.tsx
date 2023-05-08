@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView, View } from 'react-native';
+import { View } from 'react-native';
 
 import Icons from '../../smallest/Icons';
 import Spacer from '../../smallest/Spacer';
@@ -7,10 +7,9 @@ import Colors from '../../../styles/Colors';
 import MediumText from '../../smallest/MediumText';
 import TouchButton from '../../smallest/TouchButton';
 import SemiBoldText from '../../smallest/SemiBoldText';
+import SearchLocation from '../../organisms/SearchLocation';
 import { WritePostTemplateProps } from '../../../types/types';
 import { writePostTemplateStyles } from '../../../styles/styles';
-import { screenWidth } from '../../../utils/changeStyleSize';
-import SearchLocation from '../../organisms/SearchLocation';
 
 const WritePostTemplate = ({ moveToScreen }: WritePostTemplateProps) => {
     return (
@@ -46,6 +45,17 @@ const WritePostTemplate = ({ moveToScreen }: WritePostTemplateProps) => {
 
             {true && (
                 <View style={writePostTemplateStyles.searchContainer}>
+                    <View style={writePostTemplateStyles.searchHeaderBox}>
+                        <View style={writePostTemplateStyles.searchTitleBox}>
+                            <Icons type="ionicons" name="close-sharp" size={24} color={Colors.BLACK} />
+                            <Spacer width={16.8} />
+                            <MediumText text="위치 설정" size={18} color={Colors.BLACK} />
+                        </View>
+                        <SemiBoldText text="완료" size={16} color={Colors.TXT_GRAY} />
+                    </View>
+
+                    <Spacer height={28} />
+
                     <SearchLocation />
                 </View>
             )}

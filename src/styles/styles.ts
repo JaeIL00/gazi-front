@@ -672,7 +672,7 @@ export const writePostTemplateStyles = StyleSheet.create({
     headerNavigateBox: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        paddingTop: 18 * screenHeight,
+        paddingTop: 17 * screenHeight,
         paddingBottom: 26 * screenHeight,
     },
     settingBox: {
@@ -687,6 +687,17 @@ export const writePostTemplateStyles = StyleSheet.create({
         width: '100%',
         height: '100%',
         backgroundColor: Colors.BACKGROUND_DEFAULT,
+    },
+    searchHeaderBox: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        paddingHorizontal: 16 * screenWidth,
+        paddingTop: 17 * screenHeight,
+    },
+    searchTitleBox: {
+        flexDirection: 'row',
+        alignItems: 'center',
     },
 });
 
