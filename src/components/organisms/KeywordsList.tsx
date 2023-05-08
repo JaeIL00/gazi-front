@@ -7,7 +7,15 @@ import TouchButton from '../smallest/TouchButton';
 import { KeywordsListProps } from '../../types/types';
 import { keywordsListStyles } from '../../styles/styles';
 
-const KeywordsList = ({ type, list, isCheck, checkKeywordHandler }: KeywordsListProps) => {
+const KeywordsList = ({
+    type,
+    list,
+    isCheck,
+    checkKeywordHandler,
+    checkTextColor,
+    checkBorderColor,
+    checkBackColor,
+}: KeywordsListProps) => {
     return (
         <ScrollView contentContainerStyle={keywordsListStyles.container}>
             {list.map((item, index) => (
@@ -16,24 +24,24 @@ const KeywordsList = ({ type, list, isCheck, checkKeywordHandler }: KeywordsList
                         onPress={() => {
                             checkKeywordHandler(type, index, item.id);
                         }}
-                        borderColor={isCheck[index] ? Colors.BLACK : Colors.TXT_GRAY}
+                        borderColor={isCheck[index] ? checkBorderColor : Colors.TXT_GRAY}
                         borderRadius={30}
                         borderWidth={1.1}
                         paddingHorizontal={14}
                         paddingVertical={8}
-                        backgroundColor={type === 'SUBWAY' && isCheck[index] ? Colors.BLACK : undefined}>
+                        backgroundColor={isCheck[index] ? checkBackColor : Colors.WHITE}>
                         <>
                             {type === 'SUBWAY' && (
                                 <NormalText
                                     text={item.keywordName}
-                                    color={isCheck[index] ? Colors.WHITE : Colors.TXT_GRAY}
+                                    color={isCheck[index] ? checkTextColor : Colors.TXT_GRAY}
                                     size={16}
                                 />
                             )}
                             {type !== 'SUBWAY' && (
                                 <NormalText
                                     text={item.keywordName}
-                                    color={isCheck[index] ? Colors.BLACK : Colors.TXT_GRAY}
+                                    color={isCheck[index] ? checkTextColor : Colors.TXT_GRAY}
                                     size={16}
                                 />
                             )}

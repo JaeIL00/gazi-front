@@ -314,7 +314,7 @@ export const keywordsListStyles = StyleSheet.create({
     container: {
         flexDirection: 'row',
         flexWrap: 'wrap',
-        width: '90%',
+        width: '100%',
     },
     itemBox: {
         marginRight: 6 * screenWidth,
@@ -480,12 +480,12 @@ export const writePostAddKeywordStyles = StyleSheet.create({
         width: '100%',
         height: '100%',
         backgroundColor: Colors.BACKGROUND_DEFAULT,
+        paddingHorizontal: 16 * screenWidth,
     },
     headerBox: {
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        paddingHorizontal: 16 * screenWidth,
         paddingTop: 17 * screenHeight,
     },
     titleBox: {

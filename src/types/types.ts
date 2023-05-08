@@ -222,6 +222,9 @@ export type KeywordsListProps = {
     list: KeywordListTypes;
     isCheck: boolean[];
     checkKeywordHandler: (list: string, index: number, id: number) => void;
+    checkTextColor: string;
+    checkBorderColor: string;
+    checkBackColor: string;
 };
 export type MapWithMarkerProps = {
     mapRef: RefObject<MapView>;
@@ -255,6 +258,7 @@ export type SearchLocationProps = {
 };
 export type WritePostAddKeywordProps = {
     keywordModalHandler: (state: string) => void;
+    getKeywordHandler: (state: string, keyword: number[]) => void;
 };
 
 // TEMPLATES

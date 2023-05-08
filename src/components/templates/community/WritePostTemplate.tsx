@@ -29,6 +29,18 @@ const WritePostTemplate = ({ moveToScreen }: WritePostTemplateProps) => {
     const getLocationHandler = (location: { lat: number; lng: number }, placeName: string) => {
         setWritePostData({ dto: { ...writePostData.dto, latitude: location.lat, longitude: location.lng, placeName } });
     };
+    const getKeywordHandler = (state: string, keyword: number[]) => {
+        switch (state) {
+            case 'LIST':
+                setWritePostData({ dto: { ...writePostData.dto, keywordIdList: keyword } });
+                break;
+            case 'HEAD':
+                break;
+            default:
+                // For Debug
+                console.log('(ERROR) Get keyword function of keyword modal.', state);
+        }
+    };
 
     // Search location modal
     const [loactionModal, setLoactionModal] = useState(false);
@@ -130,7 +142,9 @@ const WritePostTemplate = ({ moveToScreen }: WritePostTemplateProps) => {
                 </View>
             )}
 
-            {keywordModal && <WritePostAddKeyword keywordModalHandler={keywordModalHandler} />}
+            {keywordModal && (
+                <WritePostAddKeyword keywordModalHandler={keywordModalHandler} getKeywordHandler={getKeywordHandler} />
+            )}
         </View>
     );
 };
