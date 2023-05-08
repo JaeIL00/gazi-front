@@ -254,7 +254,7 @@ export type SearchLocationProps = {
     getLocationHandler: (location: { lat: number; lng: number }, placeName: string) => void;
 };
 export type WritePostAddKeywordProps = {
-    keywordModalHandler: (isOpen: boolean) => void;
+    keywordModalHandler: (state: string) => void;
 };
 
 // TEMPLATES

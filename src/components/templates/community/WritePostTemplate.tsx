@@ -32,21 +32,33 @@ const WritePostTemplate = ({ moveToScreen }: WritePostTemplateProps) => {
 
     // Search location modal
     const [loactionModal, setLoactionModal] = useState(false);
-    const locationModalHandler = (isOpen: boolean) => {
-        if (isOpen) {
-            setLoactionModal(true);
-        } else {
-            setLoactionModal(false);
+    const locationModalHandler = (state: string) => {
+        switch (state) {
+            case 'OPEN':
+                setLoactionModal(true);
+                break;
+            case 'CLOSE':
+                setLoactionModal(false);
+                break;
+            default:
+                // For Debug
+                console.log('(ERROR) Search location modal.', state);
         }
     };
 
     // Set post keyword modal
     const [keywordModal, setKeywordModal] = useState(true);
-    const keywordModalHandler = (isOpen: boolean) => {
-        if (isOpen) {
-            setKeywordModal(true);
-        } else {
-            setKeywordModal(false);
+    const keywordModalHandler = (state: string) => {
+        switch (state) {
+            case 'OPEN':
+                setKeywordModal(true);
+                break;
+            case 'CLOSE':
+                setKeywordModal(false);
+                break;
+            default:
+                // For Debug
+                console.log('(ERROR) Set post keyword modal.', state);
         }
     };
 
@@ -63,7 +75,7 @@ const WritePostTemplate = ({ moveToScreen }: WritePostTemplateProps) => {
                 </View>
 
                 <View style={writePostTemplateStyles.settingBox}>
-                    <TouchButton onPress={() => locationModalHandler(true)}>
+                    <TouchButton onPress={() => locationModalHandler('OPEN')}>
                         <View style={writePostTemplateStyles.settingButton}>
                             {writePostData.dto.latitude && writePostData.dto.placeName ? (
                                 <>
@@ -82,7 +94,7 @@ const WritePostTemplate = ({ moveToScreen }: WritePostTemplateProps) => {
                         </View>
                     </TouchButton>
                     <Spacer width={13} />
-                    <TouchButton onPress={() => keywordModalHandler(true)}>
+                    <TouchButton onPress={() => keywordModalHandler('OPEN')}>
                         <View style={writePostTemplateStyles.settingBox}>
                             <MediumText text="키워드설정" size={13} color={Colors.BLACK} />
                             <Spacer width={4} />
@@ -95,7 +107,7 @@ const WritePostTemplate = ({ moveToScreen }: WritePostTemplateProps) => {
             {loactionModal && (
                 <View style={writePostTemplateStyles.searchContainer}>
                     <View style={writePostTemplateStyles.searchHeaderBox}>
-                        <TouchButton onPress={() => locationModalHandler(false)}>
+                        <TouchButton onPress={() => locationModalHandler('CLOSE')}>
                             <View style={writePostTemplateStyles.searchTitleBox}>
                                 <Icons type="ionicons" name="close-sharp" size={24} color={Colors.BLACK} />
                                 <Spacer width={16.8} />
@@ -103,7 +115,7 @@ const WritePostTemplate = ({ moveToScreen }: WritePostTemplateProps) => {
                             </View>
                         </TouchButton>
                         <TouchButton
-                            onPress={() => (writePostData.dto.latitude ? locationModalHandler(false) : undefined)}>
+                            onPress={() => (writePostData.dto.latitude ? locationModalHandler('CLOSE') : undefined)}>
                             <SemiBoldText
                                 text="완료"
                                 size={16}

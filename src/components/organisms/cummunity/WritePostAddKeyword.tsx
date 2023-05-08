@@ -14,7 +14,7 @@ const WritePostAddKeyword = ({ keywordModalHandler }: WritePostAddKeywordProps) 
     return (
         <View style={writePostAddKeywordStyles.container}>
             <View style={writePostAddKeywordStyles.headerBox}>
-                <TouchButton onPress={() => keywordModalHandler(false)}>
+                <TouchButton onPress={() => keywordModalHandler('CLOSE')}>
                     <View style={writePostAddKeywordStyles.titleBox}>
                         <Icons type="ionicons" name="close-sharp" size={24} color={Colors.BLACK} />
                         <Spacer width={16.8} />
