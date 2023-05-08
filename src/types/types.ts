@@ -35,6 +35,37 @@ export type PostTypes = {
     thumbNail: string;
     postId: number;
 };
+export type LocationResultTypes = {
+    business_status: string;
+    formatted_address: string;
+    geometry: {
+        location: {
+            lat: number;
+            lng: number;
+        };
+        viewport: {
+            northeast: {
+                lat: number;
+                lng: number;
+            };
+            southwest: {
+                lat: number;
+                lng: number;
+            };
+        };
+    }[];
+    icon: string;
+    icon_background_color: string;
+    icon_mask_base_uri: string;
+    name: string;
+    photos: [];
+    place_id: string;
+    plus_code: [];
+    rating: number;
+    reference: string;
+    types: [];
+    user_ratings_total: number;
+};
 
 // ATOM
 export type userTokenAtomTypes = {
