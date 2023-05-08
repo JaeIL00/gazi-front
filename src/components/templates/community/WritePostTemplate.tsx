@@ -1,13 +1,16 @@
 import React from 'react';
-import { View } from 'react-native';
-import TouchButton from '../../smallest/TouchButton';
+import { ScrollView, View } from 'react-native';
+
 import Icons from '../../smallest/Icons';
-import SemiBoldText from '../../smallest/SemiBoldText';
-import Colors from '../../../styles/Colors';
-import { WritePostTemplateProps } from '../../../types/types';
-import MediumText from '../../smallest/MediumText';
 import Spacer from '../../smallest/Spacer';
+import Colors from '../../../styles/Colors';
+import MediumText from '../../smallest/MediumText';
+import TouchButton from '../../smallest/TouchButton';
+import SemiBoldText from '../../smallest/SemiBoldText';
+import { WritePostTemplateProps } from '../../../types/types';
 import { writePostTemplateStyles } from '../../../styles/styles';
+import { screenWidth } from '../../../utils/changeStyleSize';
+import SearchLocation from '../../organisms/SearchLocation';
 
 const WritePostTemplate = ({ moveToScreen }: WritePostTemplateProps) => {
     return (
@@ -41,7 +44,11 @@ const WritePostTemplate = ({ moveToScreen }: WritePostTemplateProps) => {
                 </View>
             </View>
 
-            <View></View>
+            {true && (
+                <View style={writePostTemplateStyles.searchContainer}>
+                    <SearchLocation />
+                </View>
+            )}
         </View>
     );
 };

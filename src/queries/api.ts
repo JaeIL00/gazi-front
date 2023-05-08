@@ -1,11 +1,23 @@
 import axios from 'axios';
 import Config from 'react-native-config';
-import { useRecoilValue } from 'recoil';
-import { userTokenAtom } from '../store/atoms';
 
 const Axios = axios.create({
     baseURL: Config.API_BASE_URL,
 });
+
+// GOOGLE
+export const searchGoogleAPI = async (searchInput: string) => {
+    const response = await axios({
+        method: 'get',
+        url: `https://maps.googleapis.com/maps/api/place/textsearch/json
+			?query=${searchInput}%20in%20Korea
+			&key=${Config.GOOGLE_PLACE_API_KEY}`,
+        headers: {
+            'Accept-Language': 'ko',
+        },
+    });
+    return response;
+};
 
 // JOIN
 export const emailAuthAPI = async (email: string) => {

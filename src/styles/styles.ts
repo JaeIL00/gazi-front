@@ -61,14 +61,14 @@ export const singleLineInputStyles = (
 ) =>
     StyleSheet.create({
         input: {
-            fontSize: fontSize && fontSize * screenFont,
+            fontSize: fontSize ? fontSize * screenFont : 16 * screenFont,
             width: width && width * screenWidth,
             height: height && height * screenHeight,
             color: Colors.TXT_BLACK,
             fontFamily: fontFamily ? fontFamily : undefined,
         },
         placeholder: {
-            fontSize: 14 * screenFont,
+            fontSize: 16 * screenFont,
             color: Colors.TXT_LIGHTGRAY,
             fontFamily: placeFontFamily ? placeFontFamily : undefined,
         },
@@ -453,6 +453,21 @@ export const postListItemStyles = StyleSheet.create({
         borderRadius: 5 * screenFont,
     },
 });
+export const searchLocationStyles = StyleSheet.create({
+    inputContainer: {
+        paddingHorizontal: 16 * screenWidth,
+    },
+    inputBox: {
+        width: '100%',
+        borderWidth: 1 * screenFont,
+        borderColor: '#D4D4D4',
+        borderRadius: 28 * screenFont,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        paddingLeft: 20 * screenWidth,
+    },
+});
 
 // TEMPLATES
 export const nicknameTemplateStyles = StyleSheet.create({
@@ -666,6 +681,12 @@ export const writePostTemplateStyles = StyleSheet.create({
     settingButton: {
         flexDirection: 'row',
         alignItems: 'center',
+    },
+    searchContainer: {
+        position: 'absolute',
+        width: '100%',
+        height: '100%',
+        backgroundColor: Colors.BACKGROUND_DEFAULT,
     },
 });
 
