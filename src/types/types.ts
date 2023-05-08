@@ -223,7 +223,7 @@ export type KeywordsListProps = {
     isCheck: boolean[];
     checkKeywordHandler: (list: string, index: number, id: number) => void;
     checkTextColor: string;
-    checkBorderColor: string;
+    checkBorderColor: string | undefined;
     checkBackColor: string;
 };
 export type MapWithMarkerProps = {

@@ -144,6 +144,9 @@ const InitLikeKeywordTemplate = ({ moveToScreen }: InitLikeKeywordTemplateProps)
                         list={trafficKeywords}
                         isCheck={checkTraffic}
                         checkKeywordHandler={checkKeywordHandler}
+                        checkTextColor={Colors.BLACK}
+                        checkBorderColor={Colors.BLACK}
+                        checkBackColor={Colors.WHITE}
                     />
                     {checkTraffic[2] && (
                         <KeywordsList
@@ -151,6 +154,9 @@ const InitLikeKeywordTemplate = ({ moveToScreen }: InitLikeKeywordTemplateProps)
                             list={subwayKeywords}
                             isCheck={checkSubway}
                             checkKeywordHandler={checkKeywordHandler}
+                            checkTextColor={Colors.WHITE}
+                            checkBorderColor={undefined}
+                            checkBackColor={Colors.BLACK}
                         />
                     )}
                 </View>
@@ -165,6 +171,9 @@ const InitLikeKeywordTemplate = ({ moveToScreen }: InitLikeKeywordTemplateProps)
                         list={issueKeywords}
                         isCheck={checkIssue}
                         checkKeywordHandler={checkKeywordHandler}
+                        checkTextColor={Colors.WHITE}
+                        checkBorderColor={undefined}
+                        checkBackColor={Colors.BLACK}
                     />
                 </View>
             </ScrollView>
