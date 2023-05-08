@@ -104,7 +104,10 @@ const WritePostTemplate = ({ moveToScreen }: WritePostTemplateProps) => {
                                 <MediumText text="위치설정" size={13} color={Colors.BLACK} />
                             )}
                             <Spacer width={4} />
-                            <Icons type="entypo" name="triangle-down" size={14} color={Colors.BLACK} />
+                            <Image
+                                source={require('../../../assets/icons/triangle-down.png')}
+                                style={{ width: 10 * screenWidth, height: 10 * screenWidth }}
+                            />
                         </View>
                     </TouchButton>
                     <Spacer width={13} />
@@ -120,7 +123,10 @@ const WritePostTemplate = ({ moveToScreen }: WritePostTemplateProps) => {
                                 <MediumText text="키워드설정" size={13} color={Colors.BLACK} />
                             )}
                             <Spacer width={4} />
-                            <Icons type="entypo" name="triangle-down" size={14} color={Colors.BLACK} />
+                            <Image
+                                source={require('../../../assets/icons/triangle-down.png')}
+                                style={{ width: 10 * screenWidth, height: 10 * screenWidth }}
+                            />
                         </View>
                     </TouchButton>
                 </View>
