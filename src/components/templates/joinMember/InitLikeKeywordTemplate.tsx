@@ -80,7 +80,7 @@ const InitLikeKeywordTemplate = ({ moveToScreen }: InitLikeKeywordTemplateProps)
 
     // Checked state handling
     const [checkedKeywords, setCheckedKeywords] = useState<number[]>([]);
-    const checkedKeywordsHandler = (list: KeywordListTypes, isChecked: boolean[]) => {
+    const checkedKeywordsHandler = (list: KeywordListTypes[], isChecked: boolean[]) => {
         const getId = list.map((item, index) => {
             if (item.id !== 9999 && item.id !== 9998 && isChecked[index]) {
                 return item.id;
@@ -90,9 +90,9 @@ const InitLikeKeywordTemplate = ({ moveToScreen }: InitLikeKeywordTemplateProps)
         setCheckedKeywords(cleanType);
     };
     useEffect(() => {
-        const asd = [...trafficKeywords, ...subwayKeywords, ...issueKeywords];
-        const df = [...checkTraffic, ...checkSubway, ...checkIssue];
-        checkedKeywordsHandler(asd, df);
+        const allList = [...trafficKeywords, ...subwayKeywords, ...issueKeywords];
+        const checkedList = [...checkTraffic, ...checkSubway, ...checkIssue];
+        checkedKeywordsHandler(allList, checkedList);
     }, [checkTraffic, checkIssue, checkSubway]);
 
     // Send like keywords API

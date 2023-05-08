@@ -9,7 +9,7 @@ export type KeywordListTypes = {
     keywordEnum: string;
     keywordName: string;
     vehicleType: string | null;
-}[];
+};
 export type MapLocationTypes = {
     latitude: number;
     longitude: number;
@@ -219,7 +219,7 @@ export type FailLocationPermisionModalProps = {
 };
 export type KeywordsListProps = {
     type: string;
-    list: KeywordListTypes;
+    list: KeywordListTypes[];
     isCheck: boolean[];
     checkKeywordHandler: (list: string, index: number, id: number) => void;
     checkTextColor: string;

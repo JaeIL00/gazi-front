@@ -487,6 +487,7 @@ export const writePostAddKeywordStyles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between',
         paddingTop: 17 * screenHeight,
+        paddingBottom: 42 * screenHeight,
     },
     titleBox: {
         flexDirection: 'row',
@@ -702,6 +703,7 @@ export const writePostTemplateStyles = StyleSheet.create({
     },
     settingBox: {
         flexDirection: 'row',
+        alignItems: 'center',
     },
     settingButton: {
         flexDirection: 'row',

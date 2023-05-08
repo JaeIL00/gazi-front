@@ -24,12 +24,14 @@ const KeywordsList = ({
                         onPress={() => {
                             checkKeywordHandler(type, index, item.id);
                         }}
-                        borderColor={isCheck[index] ? checkBorderColor : Colors.TXT_GRAY}
+                        borderColor={
+                            isCheck[index] ? checkBorderColor : type === 'HEAD' ? Colors.VIOLET : Colors.TXT_GRAY
+                        }
                         borderRadius={30}
                         borderWidth={1.1}
                         paddingHorizontal={14}
                         paddingVertical={8}
-                        backgroundColor={isCheck[index] ? checkBackColor : Colors.WHITE}>
+                        backgroundColor={isCheck[index] ? checkBackColor : type === 'HEAD' ? '#F1E9FF' : Colors.WHITE}>
                         <>
                             {type === 'SUBWAY' && (
                                 <NormalText
@@ -41,7 +43,9 @@ const KeywordsList = ({
                             {type !== 'SUBWAY' && (
                                 <NormalText
                                     text={item.keywordName}
-                                    color={isCheck[index] ? checkTextColor : Colors.TXT_GRAY}
+                                    color={
+                                        isCheck[index] ? checkTextColor : type === 'HEAD' ? '#7949C6' : Colors.TXT_GRAY
+                                    }
                                     size={16}
                                 />
                             )}

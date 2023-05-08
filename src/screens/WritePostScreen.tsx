@@ -1,7 +1,5 @@
 import React from 'react';
-import { View } from 'react-native';
 
-import { globalDefaultStyles } from '../styles/styles';
 import WritePostTemplate from '../components/templates/community/WritePostTemplate';
 import { useRootNavigation } from '../navigations/RootStackNavigation';
 
@@ -14,7 +12,7 @@ const WritePostScreen = () => {
                 // rootNavigation.navigate('');
                 break;
             case 'BACK':
-                rootNavigation.goBack();
+                rootNavigation.navigate('BottomTab');
                 break;
             default:
                 // For Debug

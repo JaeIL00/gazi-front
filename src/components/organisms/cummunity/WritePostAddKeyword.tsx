@@ -2,24 +2,45 @@ import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { ScrollView, View } from 'react-native';
 
 import Icons from '../../smallest/Icons';
+import KeywordsList from '../KeywordsList';
 import Spacer from '../../smallest/Spacer';
 import Colors from '../../../styles/Colors';
+import NormalText from '../../smallest/NormalText';
 import MediumText from '../../smallest/MediumText';
+import TextButton from '../../molecules/TextButton';
 import TouchButton from '../../smallest/TouchButton';
 import SemiBoldText from '../../smallest/SemiBoldText';
-import { KeywordListTypes, WritePostAddKeywordProps } from '../../../types/types';
+import { screenHeight } from '../../../utils/changeStyleSize';
 import { writePostAddKeywordStyles } from '../../../styles/styles';
+import { KeywordListTypes, WritePostAddKeywordProps } from '../../../types/types';
 import { issueKeywords, subwayKeywords, trafficKeywords } from '../../../utils/allKeywords';
-import KeywordsList from '../KeywordsList';
-import { screenHeight, screenWidth } from '../../../utils/changeStyleSize';
-import NormalText from '../../smallest/NormalText';
-import TextButton from '../../molecules/TextButton';
 
 const WritePostAddKeyword = ({ keywordModalHandler, getKeywordHandler }: WritePostAddKeywordProps) => {
+    // Choose keyword step. all keyword and head keyword
+    const [step, setStep] = useState(1);
+    const stepHandler = () => {
+        if (step === 1) {
+            let newCheckHead: boolean[] = [];
+            for (const index in chooseIssueList) {
+                newCheckHead = [...newCheckHead, false];
+            }
+            setCheckHead(newCheckHead);
+            getKeywordHandler('LIST', checkedKeywords);
+            setStep(2);
+        } else if (step === 2) {
+            // save and close
+            if (headKeyword.length > 0) {
+                getKeywordHandler('HEAD', headKeyword);
+                keywordModalHandler('CLOSE');
+            }
+        }
+    };
+
     // Initialized check keywords
     const [checkTraffic, setCheckTraffic] = useState<boolean[]>([]);
     const [checkSubway, setCheckSubway] = useState<boolean[]>([]);
     const [checkIssue, setCheckIssue] = useState<boolean[]>([]);
+    const [checkHead, setCheckHead] = useState<boolean[]>([]);
     const checkingInitialize = () => {
         let newCheckTraffic: boolean[] = [];
         for (const index in trafficKeywords) {
@@ -66,6 +87,12 @@ const WritePostAddKeyword = ({ keywordModalHandler, getKeywordHandler }: WritePo
                 freshIssue.splice(index, 1, !freshIssue[index]);
                 setCheckIssue(freshIssue);
                 break;
+            case 'HEAD':
+                const copyHead = [...checkHead];
+                const freshHead = copyHead.map(item => false);
+                freshHead.splice(index, 1, true);
+                setCheckHead(freshHead);
+                break;
             default:
                 // For Debug
                 console.log('(ERROR) check Keyword Handling. listname:', list);
@@ -75,7 +102,7 @@ const WritePostAddKeyword = ({ keywordModalHandler, getKeywordHandler }: WritePo
 
     // Checked state handling
     const [checkedKeywords, setCheckedKeywords] = useState<number[]>([]);
-    const checkedKeywordsHandler = (list: KeywordListTypes, isChecked: boolean[]) => {
+    const checkedKeywordsHandler = (list: KeywordListTypes[], isChecked: boolean[]) => {
         const getId = list.map((item, index) => {
             if (item.id !== 9999 && item.id !== 9998 && isChecked[index]) {
                 return item.id;
@@ -88,7 +115,33 @@ const WritePostAddKeyword = ({ keywordModalHandler, getKeywordHandler }: WritePo
         const allList = [...trafficKeywords, ...subwayKeywords, ...issueKeywords];
         const checkedList = [...checkTraffic, ...checkSubway, ...checkIssue];
         checkedKeywordsHandler(allList, checkedList);
+        refreshIssueKeyword();
     }, [checkTraffic, checkIssue, checkSubway]);
+
+    // Choose head keyword
+    const [chooseIssueList, setChooseIssueList] = useState<KeywordListTypes[]>([]);
+    const [headKeyword, setHeadKeyword] = useState<number[]>([]);
+    const refreshIssueKeyword = () => {
+        const refresh = issueKeywords.map((item, index) => {
+            if (checkIssue[index]) {
+                return item;
+            }
+        });
+        const cleanType = refresh.filter(item => item !== undefined) as KeywordListTypes[];
+        setChooseIssueList(cleanType);
+    };
+    const saveHeadKeyword = () => {
+        const getId = chooseIssueList.map((item, index) => {
+            if (checkHead[index]) {
+                return item.id;
+            }
+        });
+        const cleanType = getId.filter(item => item !== undefined) as number[];
+        setHeadKeyword(cleanType);
+    };
+    useEffect(() => {
+        saveHeadKeyword();
+    }, [checkHead]);
 
     return (
         <View style={writePostAddKeywordStyles.container}>
@@ -104,58 +157,77 @@ const WritePostAddKeyword = ({ keywordModalHandler, getKeywordHandler }: WritePo
                     <SemiBoldText text="완료" size={16} color={Colors.TXT_GRAY} />
                 </TouchButton>
             </View>
+            {step === 1 && (
+                <>
+                    <ScrollView showsVerticalScrollIndicator={false}>
+                        <View>
+                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                <SemiBoldText text="이슈" color={Colors.BLACK} size={16} />
+                                <Spacer width={6} />
+                                <NormalText text="1개이상 선택" size={13} color="#8F8F8F" />
+                            </View>
+                            <Spacer height={14} />
+                            <KeywordsList
+                                type="ISSUE"
+                                list={issueKeywords}
+                                isCheck={checkIssue}
+                                checkKeywordHandler={checkKeywordHandler}
+                                checkTextColor="#7949C6"
+                                checkBorderColor={Colors.VIOLET}
+                                checkBackColor="#F1E9FF"
+                            />
+                        </View>
+                        <Spacer height={29} />
 
-            <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingTop: 42 * screenHeight }}>
+                        <View>
+                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                <SemiBoldText text="교통수단" color={Colors.BLACK} size={16} />
+                                <Spacer width={6} />
+                                <NormalText text="1개이상 선택" size={13} color="#8F8F8F" />
+                            </View>
+                            <Spacer height={14} />
+                            <KeywordsList
+                                type="TRAFFIC"
+                                list={trafficKeywords}
+                                isCheck={checkTraffic}
+                                checkKeywordHandler={checkKeywordHandler}
+                                checkTextColor="#7949C6"
+                                checkBorderColor={Colors.VIOLET}
+                                checkBackColor={Colors.WHITE}
+                            />
+                            {checkTraffic[2] && (
+                                <KeywordsList
+                                    type="SUBWAY"
+                                    list={subwayKeywords}
+                                    isCheck={checkSubway}
+                                    checkKeywordHandler={checkKeywordHandler}
+                                    checkTextColor="#7949C6"
+                                    checkBorderColor={Colors.VIOLET}
+                                    checkBackColor="#F1E9FF"
+                                />
+                            )}
+                        </View>
+                        <Spacer height={100} />
+                    </ScrollView>
+                </>
+            )}
+
+            {step === 2 && (
                 <View>
-                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <SemiBoldText text="이슈" color={Colors.BLACK} size={16} />
-                        <Spacer width={6} />
-                        <NormalText text="1개이상 선택" size={13} color="#8F8F8F" />
-                    </View>
-                    <Spacer height={14} />
+                    <SemiBoldText text="선택하신 이슈 키워드 중" color={Colors.BLACK} size={16} />
+                    <SemiBoldText text="사건을 대표하는 키워드를 1개 선택해주세요" color={Colors.BLACK} size={16} />
+                    <Spacer height={21} />
                     <KeywordsList
-                        type="ISSUE"
-                        list={issueKeywords}
-                        isCheck={checkIssue}
+                        type="HEAD"
+                        list={chooseIssueList}
+                        isCheck={checkHead}
                         checkKeywordHandler={checkKeywordHandler}
-                        checkTextColor="#7949C6"
+                        checkTextColor={Colors.WHITE}
                         checkBorderColor={Colors.VIOLET}
-                        checkBackColor="#F1E9FF"
+                        checkBackColor={Colors.VIOLET}
                     />
                 </View>
-                <Spacer height={29} />
-
-                <View>
-                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <SemiBoldText text="교통수단" color={Colors.BLACK} size={16} />
-                        <Spacer width={6} />
-                        <NormalText text="1개이상 선택" size={13} color="#8F8F8F" />
-                    </View>
-                    <Spacer height={14} />
-                    <KeywordsList
-                        type="TRAFFIC"
-                        list={trafficKeywords}
-                        isCheck={checkTraffic}
-                        checkKeywordHandler={checkKeywordHandler}
-                        checkTextColor="#7949C6"
-                        checkBorderColor={Colors.VIOLET}
-                        checkBackColor={Colors.WHITE}
-                    />
-                    {checkTraffic[2] && (
-                        <KeywordsList
-                            type="SUBWAY"
-                            list={subwayKeywords}
-                            isCheck={checkSubway}
-                            checkKeywordHandler={checkKeywordHandler}
-                            checkTextColor="#7949C6"
-                            checkBorderColor={Colors.VIOLET}
-                            checkBackColor="#F1E9FF"
-                        />
-                    )}
-                </View>
-
-                <Spacer height={100} />
-            </ScrollView>
+            )}
 
             <View
                 style={{
@@ -165,10 +237,14 @@ const WritePostAddKeyword = ({ keywordModalHandler, getKeywordHandler }: WritePo
                     alignSelf: 'center',
                 }}>
                 <TextButton
-                    onPress={() => {}}
+                    onPress={stepHandler}
                     text={'다음'}
                     height={48}
-                    backgroundColor={checkedKeywords.length > 0 ? Colors.BLACK : Colors.BTN_GRAY}
+                    backgroundColor={
+                        (checkedKeywords.length > 0 && step === 1) || (headKeyword.length > 0 && step === 2)
+                            ? Colors.BLACK
+                            : Colors.BTN_GRAY
+                    }
                     textColor={Colors.WHITE}
                     fontSize={17}
                 />

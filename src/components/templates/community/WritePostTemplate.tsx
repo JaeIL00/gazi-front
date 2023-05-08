@@ -9,6 +9,7 @@ import TouchButton from '../../smallest/TouchButton';
 import SemiBoldText from '../../smallest/SemiBoldText';
 import SearchLocation from '../../organisms/SearchLocation';
 import WritePostAddKeyword from '../../organisms/cummunity/WritePostAddKeyword';
+import { issueKeywords } from '../../../utils/allKeywords';
 import { screenWidth } from '../../../utils/changeStyleSize';
 import { writePostTemplateStyles } from '../../../styles/styles';
 import { WritePostTemplateProps, writePostTypes } from '../../../types/types';
@@ -35,6 +36,7 @@ const WritePostTemplate = ({ moveToScreen }: WritePostTemplateProps) => {
                 setWritePostData({ dto: { ...writePostData.dto, keywordIdList: keyword } });
                 break;
             case 'HEAD':
+                setWritePostData({ dto: { ...writePostData.dto, headKeywordId: keyword[0] } });
                 break;
             default:
                 // For Debug
@@ -43,7 +45,7 @@ const WritePostTemplate = ({ moveToScreen }: WritePostTemplateProps) => {
     };
 
     // Search location modal
-    const [loactionModal, setLoactionModal] = useState(false);
+    const [loactionModal, setLoactionModal] = useState<boolean>(false);
     const locationModalHandler = (state: string) => {
         switch (state) {
             case 'OPEN':
@@ -59,7 +61,7 @@ const WritePostTemplate = ({ moveToScreen }: WritePostTemplateProps) => {
     };
 
     // Set post keyword modal
-    const [keywordModal, setKeywordModal] = useState(true);
+    const [keywordModal, setKeywordModal] = useState<boolean>(false);
     const keywordModalHandler = (state: string) => {
         switch (state) {
             case 'OPEN':
@@ -108,7 +110,15 @@ const WritePostTemplate = ({ moveToScreen }: WritePostTemplateProps) => {
                     <Spacer width={13} />
                     <TouchButton onPress={() => keywordModalHandler('OPEN')}>
                         <View style={writePostTemplateStyles.settingBox}>
-                            <MediumText text="키워드설정" size={13} color={Colors.BLACK} />
+                            {writePostData.dto.headKeywordId ? (
+                                <MediumText
+                                    text={issueKeywords[writePostData.dto.headKeywordId - 1].keywordName}
+                                    size={13}
+                                    color={Colors.BLACK}
+                                />
+                            ) : (
+                                <MediumText text="키워드설정" size={13} color={Colors.BLACK} />
+                            )}
                             <Spacer width={4} />
                             <Icons type="entypo" name="triangle-down" size={14} color={Colors.BLACK} />
                         </View>
