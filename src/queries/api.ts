@@ -1,5 +1,6 @@
 import axios from 'axios';
 import Config from 'react-native-config';
+import { writePostTypes } from '../types/types';
 
 const Axios = axios.create({
     baseURL: Config.API_BASE_URL,
@@ -36,11 +37,14 @@ export const emailAuthAPI = async (email: string) => {
 };
 export const checkNicknameAPI = async (nickname: string) => {
     const response = await Axios({
-        method: 'get',
-        url: `/api/v1/member/check-nickname?nickName=${nickname}`,
+        method: 'post',
+        url: '/api/v1/member/check-nickname',
         headers: {
             'Content-Type': 'application/json',
         },
+        data: JSON.stringify({
+            nickName: nickname,
+        }),
     });
     return response;
 };
@@ -113,6 +117,22 @@ export const nearByUserPostsAPI = async (param: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${param.accessToken}`,
         },
+    });
+    return response;
+};
+
+// COMMUNITY
+export const writePostAPI = async (param: { token: string; data: writePostTypes }) => {
+    const response = await Axios({
+        url: '/api/v1/post/topPost',
+        method: 'post',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${param.token}`,
+        },
+        data: JSON.stringify({
+            myKeywordList: param.data,
+        }),
     });
     return response;
 };

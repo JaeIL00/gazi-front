@@ -70,13 +70,26 @@ export type LocationResultTypes = {
 export type uploadImageTypes =
     | {
           fileName: string;
-          fileSize: null;
-          height: null;
+          fileSize: null | number;
+          height: null | number;
           type: string;
           uri: string;
-          width: null;
+          width: null | number;
       }[]
     | Asset[];
+export type writePostTypes = {
+    dto: {
+        title: string;
+        placeName: string;
+        content: string;
+        latitude: number | null;
+        longitude: number | null;
+        keywordIdList: number[] | null;
+        headKeywordId: number | null;
+    };
+    files: FormDataPart[];
+    thumbnail: FormDataPart | null;
+};
 
 // ATOM
 export type userTokenAtomTypes = {
@@ -91,17 +104,6 @@ export type joinMemberTypes = {
 export type emailAuthAtomTypes = {
     number: number;
     isOk: boolean;
-};
-export type writePostTypes = {
-    dto: {
-        title: string;
-        placeName: string;
-        content: string;
-        latitude: number | null;
-        longitude: number | null;
-        keywordIdList: number[] | null;
-        headKeywordId: number | null;
-    };
 };
 
 // NAVIGATION
@@ -282,6 +284,9 @@ export type SearchLocationProps = {
 export type WritePostAddKeywordProps = {
     keywordModalHandler: (state: string) => void;
     getKeywordHandler: (state: string, keyword: number[]) => void;
+};
+export type WritePhotoProps = {
+    getImageHandler: (files: FormDataPart[]) => void;
 };
 
 // TEMPLATES

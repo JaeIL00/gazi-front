@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import { Image, ScrollView, View } from 'react-native';
-import { launchImageLibrary } from 'react-native-image-picker';
+import { Asset, launchImageLibrary } from 'react-native-image-picker';
 import { PERMISSIONS, RESULTS, check } from 'react-native-permissions';
 
 import TouchButton from '../../smallest/TouchButton';
-import { uploadImageTypes } from '../../../types/types';
 import { writePhotoStyles } from '../../../styles/styles';
+import { WritePhotoProps, uploadImageTypes } from '../../../types/types';
 import { screenFont, screenHeight, screenWidth } from '../../../utils/changeStyleSize';
 
-const WritePhoto = () => {
+const WritePhoto = ({ getImageHandler }: WritePhotoProps) => {
     // Check image library permission
     const checkLocationPermission = async (): Promise<boolean> => {
         try {
@@ -43,11 +43,24 @@ const WritePhoto = () => {
                 },
                 response => {
                     if (response.assets) {
+                        formDataMachine(response.assets);
                         setImageResponse(response.assets);
                     }
                 },
             );
         }
+    };
+    const formDataMachine = (assets: Asset[]) => {
+        const formData = new FormData();
+        for (const index in assets) {
+            const dataAsset = {
+                uri: assets[index].uri,
+                type: 'multipart/form-data',
+                name: `${assets[index].fileName}.jpg`,
+            };
+            formData.append(`imageFile${index}`, dataAsset);
+        }
+        getImageHandler(formData.getParts());
     };
 
     return (

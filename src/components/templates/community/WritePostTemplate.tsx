@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Image, View } from 'react-native';
 
 import Icons from '../../smallest/Icons';
@@ -12,10 +12,15 @@ import WritePostAddKeyword from '../../organisms/cummunity/WritePostAddKeyword';
 import { issueKeywords } from '../../../utils/allKeywords';
 import { screenHeight, screenWidth } from '../../../utils/changeStyleSize';
 import { writePostTemplateStyles } from '../../../styles/styles';
-import { WritePostTemplateProps, writePostTypes } from '../../../types/types';
+import { WritePostTemplateProps, uploadImageTypes, writePostTypes } from '../../../types/types';
 import { SingleLineInput } from '../../smallest/SingleLineInput';
 import MultiLineInput from '../../smallest/MultiLineInput';
 import WritePhoto from '../../organisms/cummunity/WritePhoto';
+import { Asset } from 'react-native-image-picker';
+import { useMutation } from 'react-query';
+import { writePostAPI } from '../../../queries/api';
+import { useRecoilValue } from 'recoil';
+import { userTokenAtom } from '../../../store/atoms';
 
 const WritePostTemplate = ({ moveToScreen }: WritePostTemplateProps) => {
     // Write post data for API request
@@ -29,22 +34,49 @@ const WritePostTemplate = ({ moveToScreen }: WritePostTemplateProps) => {
             keywordIdList: null,
             headKeywordId: null,
         },
+        files: [],
+        thumbnail: null,
     });
     const getLocationHandler = (location: { lat: number; lng: number }, placeName: string) => {
-        setWritePostData({ dto: { ...writePostData.dto, latitude: location.lat, longitude: location.lng, placeName } });
+        setWritePostData({
+            ...writePostData,
+            dto: { ...writePostData.dto, latitude: location.lat, longitude: location.lng, placeName },
+        });
     };
     const getKeywordHandler = (state: string, keyword: number[]) => {
         switch (state) {
             case 'LIST':
-                setWritePostData({ dto: { ...writePostData.dto, keywordIdList: keyword } });
+                setWritePostData({ ...writePostData, dto: { ...writePostData.dto, keywordIdList: keyword } });
                 break;
             case 'HEAD':
-                setWritePostData({ dto: { ...writePostData.dto, headKeywordId: keyword[0] } });
+                setWritePostData({ ...writePostData, dto: { ...writePostData.dto, headKeywordId: keyword[0] } });
                 break;
             default:
                 // For Debug
                 console.log('(ERROR) Get keyword function of keyword modal.', state);
         }
+    };
+    const getImageHandler = (files: FormDataPart[]) => {
+        setWritePostData({ ...writePostData, files, thumbnail: files[0] });
+    };
+
+    // Write post API
+    const { accessToken } = useRecoilValue(userTokenAtom);
+    const { mutate, isLoading } = useMutation(writePostAPI, {
+        onSuccess: data => {
+            console.log(data);
+        },
+        onError: error => {
+            // For Debug
+            console.log('(ERROR) Write post API.', error);
+            console.log(accessToken);
+        },
+    });
+    const finishWritingHandler = () => {
+        mutate({
+            token: accessToken,
+            data: writePostData,
+        });
     };
 
     // Search location modal
@@ -96,7 +128,11 @@ const WritePostTemplate = ({ moveToScreen }: WritePostTemplateProps) => {
                     <TouchButton onPress={() => moveToScreen('BACK')}>
                         <Icons type="ionicons" name="close-sharp" size={20} color={Colors.BLACK} />
                     </TouchButton>
-                    <TouchButton onPress={() => moveToScreen('GO')}>
+                    <TouchButton
+                        onPress={() => {
+                            finishWritingHandler();
+                            // moveToScreen('GO')
+                        }}>
                         <SemiBoldText text="다음" size={16} color={Colors.TXT_GRAY} />
                     </TouchButton>
                 </View>
@@ -163,7 +199,7 @@ const WritePostTemplate = ({ moveToScreen }: WritePostTemplateProps) => {
                 />
             </View>
 
-            <WritePhoto />
+            <WritePhoto getImageHandler={getImageHandler} />
 
             {loactionModal && (
                 <View style={writePostTemplateStyles.searchContainer}>
