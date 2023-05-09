@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { Image, Linking, Modal, View } from 'react-native';
 import { useMutation } from 'react-query';
 import { useRecoilValue } from 'recoil';
@@ -22,6 +22,7 @@ import { screenFont, screenHeight, screenWidth } from '../../../utils/changeStyl
 import { WritePostTemplateProps, writePostTypes } from '../../../types/types';
 import TextButton from '../../molecules/TextButton';
 import FailLocationPermisionModal from '../../organisms/FailLocationPermisionModal';
+import { debounce } from 'lodash';
 
 const WritePostTemplate = ({ moveToScreen }: WritePostTemplateProps) => {
     // Write post data for API request
@@ -153,10 +154,26 @@ const WritePostTemplate = ({ moveToScreen }: WritePostTemplateProps) => {
     const [content, setcontent] = useState('');
     const onChangeTitleText = (text: string) => {
         setTitle(text);
+        inputTitleDate(text);
     };
+    const inputTitleDate = useCallback(
+        debounce((text: string) => {
+            console.log(text);
+            setWritePostData({ ...writePostData, dto: { ...writePostData.dto, title } });
+        }, 500),
+        [],
+    );
     const onChangeContentText = (text: string) => {
         setcontent(text);
+        inputContentDate(text);
     };
+    const inputContentDate = useCallback(
+        debounce((text: string) => {
+            console.log(text);
+            setWritePostData({ ...writePostData, dto: { ...writePostData.dto, content } });
+        }, 500),
+        [],
+    );
 
     return (
         <View style={writePostTemplateStyles.container}>
@@ -181,7 +198,7 @@ const WritePostTemplate = ({ moveToScreen }: WritePostTemplateProps) => {
                                 <>
                                     <Image
                                         source={require('../../../assets/icons/location-pin-outline.png')}
-                                        style={{ width: 16 * screenWidth, height: 16 * screenWidth }}
+                                        style={writePostTemplateStyles.locationIcon}
                                     />
                                     <Spacer width={5} />
                                     <MediumText text={writePostData.dto.placeName} size={13} color={Colors.BLACK} />
@@ -192,7 +209,7 @@ const WritePostTemplate = ({ moveToScreen }: WritePostTemplateProps) => {
                             <Spacer width={4} />
                             <Image
                                 source={require('../../../assets/icons/triangle-down.png')}
-                                style={{ width: 10 * screenWidth, height: 10 * screenWidth }}
+                                style={writePostTemplateStyles.searchToggleIcon}
                             />
                         </View>
                     </TouchButton>
@@ -211,14 +228,14 @@ const WritePostTemplate = ({ moveToScreen }: WritePostTemplateProps) => {
                             <Spacer width={4} />
                             <Image
                                 source={require('../../../assets/icons/triangle-down.png')}
-                                style={{ width: 10 * screenWidth, height: 10 * screenWidth }}
+                                style={writePostTemplateStyles.searchToggleIcon}
                             />
                         </View>
                     </TouchButton>
                 </View>
             </View>
 
-            <View style={{ paddingHorizontal: 16 * screenWidth }}>
+            <View style={writePostTemplateStyles.inputBox}>
                 <SingleLineInput
                     value={title}
                     onChangeText={text => onChangeTitleText(text)}
@@ -231,8 +248,8 @@ const WritePostTemplate = ({ moveToScreen }: WritePostTemplateProps) => {
                     value={content}
                     onChangeText={text => onChangeContentText(text)}
                     placeholder="무슨일이 일어나고 있나요?"
-                    height={196 * screenHeight}
                     maxLength={300}
+                    height={213}
                 />
             </View>
 

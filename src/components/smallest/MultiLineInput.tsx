@@ -3,7 +3,7 @@ import { Keyboard, TextInput } from 'react-native';
 
 import Colors from '../../styles/Colors';
 import { MultiLineInputProps } from '../../types/types';
-import { singleLineInputStyles } from '../../styles/styles';
+import { multiLineInputStyles } from '../../styles/styles';
 
 const MultiLineInput = ({
     value,
@@ -40,11 +40,12 @@ const MultiLineInput = ({
             placeholderTextColor={Colors.TXT_LIGHTGRAY}
             onSubmitEditing={onSubmitEditing}
             maxLength={maxLength}
-            style={
+            style={[
                 value
-                    ? singleLineInputStyles(fontSize, width, height, fontFamily).input
-                    : singleLineInputStyles(fontSize, width, height, placeFontFamily).placeholder
-            }
+                    ? multiLineInputStyles(fontSize, width, height, fontFamily, placeFontFamily).input
+                    : multiLineInputStyles(fontSize, width, height, placeFontFamily, fontFamily).placeholder,
+                multiLineInputStyles(fontSize, width, height, placeFontFamily, fontFamily).common,
+            ]}
             underlineColorAndroid={'transparent'}
         />
     );

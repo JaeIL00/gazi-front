@@ -58,10 +58,11 @@ export const singleLineInputStyles = (
     fontSize: number | undefined,
     width: number | undefined,
     height: number | undefined,
-    fontFamily?: string | null,
-    placeFontFamily?: string | null,
-) =>
-    StyleSheet.create({
+    fontFamily: string | null,
+    placeFontFamily: string | null,
+) => {
+    console.log(placeFontFamily);
+    return StyleSheet.create({
         input: {
             fontSize: fontSize ? fontSize * screenFont : 16 * screenFont,
             width: width && width * screenWidth,
@@ -71,6 +72,29 @@ export const singleLineInputStyles = (
         },
         placeholder: {
             fontSize: fontSize ? fontSize * screenFont : 14 * screenFont,
+            color: Colors.TXT_LIGHTGRAY,
+            fontFamily: placeFontFamily ? placeFontFamily : undefined,
+        },
+    });
+};
+export const multiLineInputStyles = (
+    fontSize: number | undefined,
+    width: number | undefined,
+    height: number | undefined,
+    fontFamily: string | null,
+    placeFontFamily: string | null,
+) =>
+    StyleSheet.create({
+        common: {
+            fontSize: fontSize ? fontSize * screenFont : 16 * screenFont,
+            height: height && height * screenHeight,
+            textAlignVertical: 'top',
+        },
+        input: {
+            color: Colors.TXT_BLACK,
+            fontFamily: fontFamily ? fontFamily : undefined,
+        },
+        placeholder: {
             color: Colors.TXT_LIGHTGRAY,
             fontFamily: placeFontFamily ? placeFontFamily : undefined,
         },
@@ -751,6 +775,19 @@ export const writePostTemplateStyles = StyleSheet.create({
     searchTitleBox: {
         flexDirection: 'row',
         alignItems: 'center',
+    },
+    searchToggleIcon: {
+        width: 10 * screenWidth,
+        height: 10 * screenWidth,
+    },
+    locationIcon: {
+        width: 16 * screenWidth,
+        height: 16 * screenWidth,
+    },
+    inputBox: {
+        paddingHorizontal: 16 * screenWidth,
+        height: 300 * screenHeight,
+        paddingTop: 10 * screenHeight,
     },
     errorModalBack: {
         position: 'absolute',

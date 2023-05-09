@@ -45,8 +45,8 @@ export const SingleLineInput = ({
             secureTextEntry={secureTextEntry}
             style={
                 value
-                    ? singleLineInputStyles(fontSize, width, height, fontFamily).input
-                    : singleLineInputStyles(fontSize, width, height, placeFontFamily).placeholder
+                    ? singleLineInputStyles(fontSize, width, height, fontFamily, placeFontFamily).input
+                    : singleLineInputStyles(fontSize, width, height, placeFontFamily, fontFamily).placeholder
             }
             underlineColorAndroid={'transparent'}
         />
