@@ -498,6 +498,8 @@ export const writePhotoStyles = StyleSheet.create({
     container: {
         flexDirection: 'row',
         paddingHorizontal: 16 * screenWidth,
+        position: 'absolute',
+        bottom: 26 * screenHeight,
     },
     cameraIcon: {
         width: 30 * screenWidth,

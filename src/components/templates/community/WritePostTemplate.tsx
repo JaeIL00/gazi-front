@@ -158,7 +158,7 @@ const WritePostTemplate = ({ moveToScreen }: WritePostTemplateProps) => {
                     value={content}
                     onChangeText={text => onChangeContentText(text)}
                     placeholder="무슨일이 일어나고 있나요?"
-                    height={220 * screenHeight}
+                    height={196 * screenHeight}
                     maxLength={300}
                 />
             </View>
