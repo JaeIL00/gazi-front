@@ -8,7 +8,7 @@ import { writePhotoStyles } from '../../../styles/styles';
 import { WritePhotoProps, uploadImageTypes } from '../../../types/types';
 import { screenFont, screenHeight, screenWidth } from '../../../utils/changeStyleSize';
 
-const WritePhoto = ({ getImageHandler }: WritePhotoProps) => {
+const WritePhoto = ({ getImageHandler, notAllowPermission }: WritePhotoProps) => {
     // Check image library permission
     const checkLocationPermission = async (): Promise<boolean> => {
         try {
@@ -48,6 +48,8 @@ const WritePhoto = ({ getImageHandler }: WritePhotoProps) => {
                     }
                 },
             );
+        } else {
+            notAllowPermission();
         }
     };
     const formDataMachine = (assets: Asset[]) => {
@@ -89,18 +91,6 @@ const WritePhoto = ({ getImageHandler }: WritePhotoProps) => {
                         )}
                     </View>
                 ))}
-
-                {/* <View style={writePhotoStyles.previewBox}>
-                    {imageResponse?.map((item, index) => (
-                        <Image
-                            key={index}
-                            source={{
-                                uri: item ? item.uri : undefined,
-                            }}
-                            style={writePhotoStyles.imageSize}
-                        />
-                    ))}
-                </View> */}
             </ScrollView>
         </View>
     );

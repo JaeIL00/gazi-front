@@ -240,6 +240,9 @@ export interface AuthEmailProps extends ServiceAgreementProps {
     resetTimeHandler: () => void;
 }
 export type FailLocationPermisionModalProps = {
+    permissionName: string;
+    contentOne: string;
+    contentTwo?: string;
     onPressModalButton: (state: string) => void;
 };
 export type KeywordsListProps = {
@@ -287,6 +290,7 @@ export type WritePostAddKeywordProps = {
 };
 export type WritePhotoProps = {
     getImageHandler: (files: FormDataPart[]) => void;
+    notAllowPermission: () => void;
 };
 
 // TEMPLATES

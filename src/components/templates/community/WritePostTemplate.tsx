@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Image, Modal, View } from 'react-native';
+import { Image, Linking, Modal, View } from 'react-native';
 import { useMutation } from 'react-query';
 import { useRecoilValue } from 'recoil';
 
@@ -21,6 +21,7 @@ import { SingleLineInput } from '../../smallest/SingleLineInput';
 import { screenFont, screenHeight, screenWidth } from '../../../utils/changeStyleSize';
 import { WritePostTemplateProps, writePostTypes } from '../../../types/types';
 import TextButton from '../../molecules/TextButton';
+import FailLocationPermisionModal from '../../organisms/FailLocationPermisionModal';
 
 const WritePostTemplate = ({ moveToScreen }: WritePostTemplateProps) => {
     // Write post data for API request
@@ -93,6 +94,26 @@ const WritePostTemplate = ({ moveToScreen }: WritePostTemplateProps) => {
     };
     const offErrorModalHandler = () => {
         setOnErrorModal(false);
+    };
+
+    // Guide image library permission
+    const [imagePermission, setImagePermission] = useState(false);
+    const notAllowPermission = () => {
+        setImagePermission(true);
+    };
+    const onPressModalButton = async (state: string) => {
+        switch (state) {
+            case 'MOVE':
+                setImagePermission(false);
+                await Linking.openSettings();
+                break;
+            case 'CLOSE':
+                setImagePermission(false);
+                break;
+            default:
+                // For Debug
+                console.log('(ERROR) Guide image library permission.', state);
+        }
     };
 
     // Search location modal
@@ -215,7 +236,7 @@ const WritePostTemplate = ({ moveToScreen }: WritePostTemplateProps) => {
                 />
             </View>
 
-            <WritePhoto getImageHandler={getImageHandler} />
+            <WritePhoto getImageHandler={getImageHandler} notAllowPermission={notAllowPermission} />
 
             {loactionModal && (
                 <View style={writePostTemplateStyles.searchContainer}>
@@ -263,6 +284,15 @@ const WritePostTemplate = ({ moveToScreen }: WritePostTemplateProps) => {
                         />
                     </View>
                 </View>
+            )}
+
+            {imagePermission && (
+                <FailLocationPermisionModal
+                    permissionName="사진 접근 권한 허용하기"
+                    contentOne="사진 업로드를 하시려면"
+                    contentTwo=" 사진/카메라 권한 설정이 필요합니다"
+                    onPressModalButton={onPressModalButton}
+                />
             )}
         </View>
     );

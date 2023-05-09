@@ -10,20 +10,22 @@ import ModalBackground from '../smallest/ModalBackground';
 import { FailLocationPermisionModalProps } from '../../types/types';
 import { failLocationPermisionModalStyles } from '../../styles/styles';
 
-const FailLocationPermisionModal = ({ onPressModalButton }: FailLocationPermisionModalProps) => {
+const FailLocationPermisionModal = ({
+    onPressModalButton,
+    permissionName,
+    contentOne,
+    contentTwo,
+}: FailLocationPermisionModalProps) => {
     return (
         <ModalBackground>
             <View style={failLocationPermisionModalStyles.container}>
                 <View style={failLocationPermisionModalStyles.textBox}>
-                    <SemiBoldText text="필수 권한 허용 안내" size={18} color={Colors.BLACK} />
+                    <SemiBoldText text={permissionName} size={18} color={Colors.BLACK} />
                     <Spacer height={8} />
-                    <NormalText
-                        text="위치 권한에 대한 사용을 거부하였습니다. 서비스 사용을 원하실 경우 해당 앱의 권한을 허용해주세요"
-                        size={14}
-                        color="#777777"
-                        textAlign="center"
-                        lineHeight={19}
-                    />
+                    <NormalText text={contentOne} size={14} color="#777777" textAlign="center" lineHeight={19} />
+                    {contentTwo && (
+                        <NormalText text={contentTwo} size={14} color="#777777" textAlign="center" lineHeight={19} />
+                    )}
                 </View>
 
                 <Spacer height={18} />
