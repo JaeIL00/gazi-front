@@ -494,6 +494,30 @@ export const writePostAddKeywordStyles = StyleSheet.create({
         alignItems: 'center',
     },
 });
+export const writePhotoStyles = StyleSheet.create({
+    container: {
+        flexDirection: 'row',
+        paddingHorizontal: 16 * screenWidth,
+    },
+    cameraIcon: {
+        width: 30 * screenWidth,
+        height: 30 * screenWidth,
+    },
+    previewBox: {
+        width: 71 * screenWidth,
+        height: 71 * screenWidth,
+        marginLeft: 6.5 * screenWidth,
+        borderWidth: 1 * screenFont,
+        borderRadius: 10.9 * screenFont,
+        borderColor: '#E3E3E3',
+        overflow: 'hidden',
+        backgroundColor: '#F6F5F5',
+    },
+    imageSize: {
+        width: '100%',
+        height: '100%',
+    },
+});
 
 // TEMPLATES
 export const nicknameTemplateStyles = StyleSheet.create({

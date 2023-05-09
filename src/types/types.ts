@@ -1,5 +1,6 @@
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import { ReactElement, RefObject } from 'react';
+import { Asset } from 'react-native-image-picker';
 import MapView, { Details, Region } from 'react-native-maps';
 import { FlexAlignType, KeyboardType, TextStyle } from 'react-native/types';
 
@@ -66,6 +67,16 @@ export type LocationResultTypes = {
     types: [];
     user_ratings_total: number;
 };
+export type uploadImageTypes =
+    | {
+          fileName: string;
+          fileSize: null;
+          height: null;
+          type: string;
+          uri: string;
+          width: null;
+      }[]
+    | Asset[];
 
 // ATOM
 export type userTokenAtomTypes = {

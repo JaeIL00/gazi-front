@@ -15,6 +15,7 @@ import { writePostTemplateStyles } from '../../../styles/styles';
 import { WritePostTemplateProps, writePostTypes } from '../../../types/types';
 import { SingleLineInput } from '../../smallest/SingleLineInput';
 import MultiLineInput from '../../smallest/MultiLineInput';
+import WritePhoto from '../../organisms/cummunity/WritePhoto';
 
 const WritePostTemplate = ({ moveToScreen }: WritePostTemplateProps) => {
     // Write post data for API request
@@ -158,8 +159,11 @@ const WritePostTemplate = ({ moveToScreen }: WritePostTemplateProps) => {
                     onChangeText={text => onChangeContentText(text)}
                     placeholder="무슨일이 일어나고 있나요?"
                     height={220 * screenHeight}
+                    maxLength={300}
                 />
             </View>
+
+            <WritePhoto />
 
             {loactionModal && (
                 <View style={writePostTemplateStyles.searchContainer}>
