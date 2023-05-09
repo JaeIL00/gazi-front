@@ -35,6 +35,13 @@ const WritePostAddKeyword = ({ keywordModalHandler, getKeywordHandler }: WritePo
             }
         }
     };
+    const stepMoveHandler = () => {
+        if (step === 1) {
+            keywordModalHandler('CLOSE');
+        } else {
+            setStep(1);
+        }
+    };
 
     // Initialized check keywords
     const [checkTraffic, setCheckTraffic] = useState<boolean[]>([]);
@@ -146,22 +153,24 @@ const WritePostAddKeyword = ({ keywordModalHandler, getKeywordHandler }: WritePo
     return (
         <View style={writePostAddKeywordStyles.container}>
             <View style={writePostAddKeywordStyles.headerBox}>
-                <TouchButton onPress={() => keywordModalHandler('CLOSE')}>
+                <TouchButton onPress={stepMoveHandler}>
                     <View style={writePostAddKeywordStyles.titleBox}>
-                        <Icons type="ionicons" name="close-sharp" size={24} color={Colors.BLACK} />
+                        <Icons
+                            type={step === 1 ? 'ionicons' : 'feather'}
+                            name={step === 1 ? 'close-sharp' : 'arrow-left'}
+                            size={24}
+                            color={Colors.BLACK}
+                        />
                         <Spacer width={16.8} />
                         <MediumText text="키워드 설정" size={18} color={Colors.BLACK} />
                     </View>
-                </TouchButton>
-                <TouchButton onPress={() => {}}>
-                    <SemiBoldText text="완료" size={16} color={Colors.TXT_GRAY} />
                 </TouchButton>
             </View>
             {step === 1 && (
                 <>
                     <ScrollView showsVerticalScrollIndicator={false}>
                         <View>
-                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                            <View style={writePostAddKeywordStyles.keywordListBox}>
                                 <SemiBoldText text="이슈" color={Colors.BLACK} size={16} />
                                 <Spacer width={6} />
                                 <NormalText text="1개이상 선택" size={13} color="#8F8F8F" />
@@ -180,7 +189,7 @@ const WritePostAddKeyword = ({ keywordModalHandler, getKeywordHandler }: WritePo
                         <Spacer height={29} />
 
                         <View>
-                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                            <View style={writePostAddKeywordStyles.keywordListBox}>
                                 <SemiBoldText text="교통수단" color={Colors.BLACK} size={16} />
                                 <Spacer width={6} />
                                 <NormalText text="1개이상 선택" size={13} color="#8F8F8F" />
@@ -229,16 +238,10 @@ const WritePostAddKeyword = ({ keywordModalHandler, getKeywordHandler }: WritePo
                 </View>
             )}
 
-            <View
-                style={{
-                    width: '100%',
-                    position: 'absolute',
-                    bottom: 42 * screenHeight,
-                    alignSelf: 'center',
-                }}>
+            <View style={writePostAddKeywordStyles.nextBottonBox}>
                 <TextButton
                     onPress={stepHandler}
-                    text={'다음'}
+                    text={step === 1 ? '다음' : '완료'}
                     height={48}
                     backgroundColor={
                         (checkedKeywords.length > 0 && step === 1) || (headKeyword.length > 0 && step === 2)

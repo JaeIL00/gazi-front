@@ -522,6 +522,16 @@ export const writePostAddKeywordStyles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
     },
+    keywordListBox: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    nextBottonBox: {
+        width: '100%',
+        position: 'absolute',
+        bottom: 42 * screenHeight,
+        alignSelf: 'center',
+    },
 });
 export const writePhotoStyles = StyleSheet.create({
     container: {
