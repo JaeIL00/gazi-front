@@ -79,10 +79,10 @@ const WritePhoto = ({ getImageHandler, notAllowPermission }: WritePhotoProps) =>
                 </TouchButton>
 
                 {Array.from({ length: 10 }).map((item, index) => (
-                    <View style={writePhotoStyles.previewBox}>
-                        {imageResponse.length > index && (
+                    <View key={index} style={writePhotoStyles.previewBox}>
+                        {imageResponse[0].uri && imageResponse.length > index && (
                             <Image
-                                key={index}
+                                key={index + 10}
                                 source={{
                                     uri: imageResponse[index].uri,
                                 }}

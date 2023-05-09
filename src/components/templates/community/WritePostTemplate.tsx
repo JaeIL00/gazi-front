@@ -1,28 +1,27 @@
 import React, { useCallback, useState } from 'react';
-import { Image, Linking, Modal, View } from 'react-native';
+import { Image, Linking, View } from 'react-native';
 import { useMutation } from 'react-query';
 import { useRecoilValue } from 'recoil';
+import { debounce } from 'lodash';
 
 import Icons from '../../smallest/Icons';
 import Spacer from '../../smallest/Spacer';
 import Colors from '../../../styles/Colors';
 import MediumText from '../../smallest/MediumText';
+import TextButton from '../../molecules/TextButton';
 import TouchButton from '../../smallest/TouchButton';
 import SemiBoldText from '../../smallest/SemiBoldText';
 import MultiLineInput from '../../smallest/MultiLineInput';
 import SearchLocation from '../../organisms/SearchLocation';
 import WritePhoto from '../../organisms/cummunity/WritePhoto';
 import WritePostAddKeyword from '../../organisms/cummunity/WritePostAddKeyword';
+import FailLocationPermisionModal from '../../organisms/FailLocationPermisionModal';
 import { writePostAPI } from '../../../queries/api';
 import { userTokenAtom } from '../../../store/atoms';
 import { issueKeywords } from '../../../utils/allKeywords';
 import { writePostTemplateStyles } from '../../../styles/styles';
 import { SingleLineInput } from '../../smallest/SingleLineInput';
-import { screenFont, screenHeight, screenWidth } from '../../../utils/changeStyleSize';
 import { WritePostTemplateProps, writePostTypes } from '../../../types/types';
-import TextButton from '../../molecules/TextButton';
-import FailLocationPermisionModal from '../../organisms/FailLocationPermisionModal';
-import { debounce } from 'lodash';
 
 const WritePostTemplate = ({ moveToScreen }: WritePostTemplateProps) => {
     // Write post data for API request
@@ -158,7 +157,6 @@ const WritePostTemplate = ({ moveToScreen }: WritePostTemplateProps) => {
     };
     const inputTitleDate = useCallback(
         debounce((text: string) => {
-            console.log(text);
             setWritePostData({ ...writePostData, dto: { ...writePostData.dto, title } });
         }, 500),
         [],
@@ -169,7 +167,6 @@ const WritePostTemplate = ({ moveToScreen }: WritePostTemplateProps) => {
     };
     const inputContentDate = useCallback(
         debounce((text: string) => {
-            console.log(text);
             setWritePostData({ ...writePostData, dto: { ...writePostData.dto, content } });
         }, 500),
         [],

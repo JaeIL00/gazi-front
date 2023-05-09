@@ -60,9 +60,8 @@ export const singleLineInputStyles = (
     height: number | undefined,
     fontFamily: string | null,
     placeFontFamily: string | null,
-) => {
-    console.log(placeFontFamily);
-    return StyleSheet.create({
+) =>
+    StyleSheet.create({
         input: {
             fontSize: fontSize ? fontSize * screenFont : 16 * screenFont,
             width: width && width * screenWidth,
@@ -76,7 +75,7 @@ export const singleLineInputStyles = (
             fontFamily: placeFontFamily ? placeFontFamily : undefined,
         },
     });
-};
+
 export const multiLineInputStyles = (
     fontSize: number | undefined,
     width: number | undefined,

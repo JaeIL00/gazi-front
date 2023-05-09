@@ -10,7 +10,6 @@ import MediumText from '../../smallest/MediumText';
 import TextButton from '../../molecules/TextButton';
 import TouchButton from '../../smallest/TouchButton';
 import SemiBoldText from '../../smallest/SemiBoldText';
-import { screenHeight } from '../../../utils/changeStyleSize';
 import { writePostAddKeywordStyles } from '../../../styles/styles';
 import { KeywordListTypes, WritePostAddKeywordProps } from '../../../types/types';
 import { issueKeywords, subwayKeywords, trafficKeywords } from '../../../utils/allKeywords';
