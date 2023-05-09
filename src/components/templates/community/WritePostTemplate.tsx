@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Image, View } from 'react-native';
+import { Image, Modal, View } from 'react-native';
 import { useMutation } from 'react-query';
 import { useRecoilValue } from 'recoil';
 
@@ -18,8 +18,9 @@ import { userTokenAtom } from '../../../store/atoms';
 import { issueKeywords } from '../../../utils/allKeywords';
 import { writePostTemplateStyles } from '../../../styles/styles';
 import { SingleLineInput } from '../../smallest/SingleLineInput';
-import { screenHeight, screenWidth } from '../../../utils/changeStyleSize';
+import { screenFont, screenHeight, screenWidth } from '../../../utils/changeStyleSize';
 import { WritePostTemplateProps, writePostTypes } from '../../../types/types';
+import TextButton from '../../molecules/TextButton';
 
 const WritePostTemplate = ({ moveToScreen }: WritePostTemplateProps) => {
     // Write post data for API request
@@ -59,8 +60,10 @@ const WritePostTemplate = ({ moveToScreen }: WritePostTemplateProps) => {
         setWritePostData({ ...writePostData, files, thumbnail: files[0] });
     };
 
-    // Write post API
+    // Write post API and check essential value
     const { accessToken } = useRecoilValue(userTokenAtom);
+    const [onErrorModal, setOnErrorModal] = useState(false);
+    const [onErrorText, setOnErrorText] = useState('');
     const { mutate, isLoading } = useMutation(writePostAPI, {
         onSuccess: data => {
             console.log(data);
@@ -71,10 +74,25 @@ const WritePostTemplate = ({ moveToScreen }: WritePostTemplateProps) => {
         },
     });
     const finishWritingHandler = () => {
-        mutate({
-            token: accessToken,
-            data: writePostData,
-        });
+        const isNotEnoughLocation = !writePostData.dto.latitude || !writePostData.dto.longitude;
+        const isNotEnoughKeyword = !writePostData.dto.keywordIdList || !writePostData.dto.headKeywordId;
+        if (isNotEnoughLocation && isNotEnoughKeyword) {
+            setOnErrorText('위치와 키워드를 설정해주세요');
+            setOnErrorModal(true);
+        } else if (isNotEnoughLocation) {
+            setOnErrorText('위치를 설정해주세요');
+            setOnErrorModal(true);
+        } else if (isNotEnoughKeyword) {
+            setOnErrorText('키워드를 설정해주세요');
+            setOnErrorModal(true);
+        }
+        // mutate({
+        //     token: accessToken,
+        //     data: writePostData,
+        // });
+    };
+    const offErrorModalHandler = () => {
+        setOnErrorModal(false);
     };
 
     // Search location modal
@@ -227,6 +245,24 @@ const WritePostTemplate = ({ moveToScreen }: WritePostTemplateProps) => {
 
             {keywordModal && (
                 <WritePostAddKeyword keywordModalHandler={keywordModalHandler} getKeywordHandler={getKeywordHandler} />
+            )}
+
+            {onErrorModal && (
+                <View style={writePostTemplateStyles.errorModalBack}>
+                    <View style={writePostTemplateStyles.errorModalBox}>
+                        <SemiBoldText text={onErrorText} size={18} color={Colors.BLACK} />
+                        <Spacer height={18} />
+                        <TextButton
+                            onPress={offErrorModalHandler}
+                            text="확인"
+                            textColor="#49454F"
+                            fontSize={14}
+                            backgroundColor={Colors.LIGHTGRAY}
+                            paddingHorizontal={111}
+                            paddingVertical={12}
+                        />
+                    </View>
+                </View>
             )}
         </View>
     );

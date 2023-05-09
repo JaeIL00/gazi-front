@@ -752,6 +752,20 @@ export const writePostTemplateStyles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
     },
+    errorModalBack: {
+        position: 'absolute',
+        width: '100%',
+        height: '100%',
+        backgroundColor: '#00000099',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    errorModalBox: {
+        backgroundColor: Colors.WHITE,
+        alignItems: 'center',
+        padding: 24 * screenWidth,
+        borderRadius: 12 * screenFont,
+    },
 });
 
 // SCREEN
