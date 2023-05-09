@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import { ActivityIndicator, FlatList, ToastAndroid, View } from 'react-native';
+import { ActivityIndicator, FlatList, Image, ToastAndroid, View } from 'react-native';
 import { debounce } from 'lodash';
 import { useQuery } from 'react-query';
 
@@ -81,8 +81,10 @@ const SearchLocation = ({ getLocationHandler }: SearchLocationProps) => {
                 borderColor="#BEBEBE"
                 borderBottomWidth={1 * screenFont}>
                 <View style={searchLocationStyles.listItemBox}>
-                    <Icons type="ionicons" name="location-sharp" size={25} color={Colors.BTN_GRAY} />
-                    <Spacer width={11} />
+                    <Image
+                        source={require('../../assets/icons/location-pin-fill.png')}
+                        style={searchLocationStyles.resultIcon}
+                    />
                     <View>
                         <MediumText text={item.name} size={16} color="#000000" />
                         <Spacer height={3} />

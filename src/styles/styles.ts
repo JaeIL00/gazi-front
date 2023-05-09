@@ -497,6 +497,11 @@ export const searchLocationStyles = StyleSheet.create({
         flexDirection: 'row',
         width: '100%',
     },
+    resultIcon: {
+        width: 25 * screenWidth,
+        height: 25 * screenWidth,
+        marginRight: 9.5 * screenWidth,
+    },
 });
 export const writePostAddKeywordStyles = StyleSheet.create({
     container: {
