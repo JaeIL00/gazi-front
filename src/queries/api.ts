@@ -127,12 +127,10 @@ export const writePostAPI = async (param: { token: string; data: writePostTypes 
         url: '/api/v1/post/topPost',
         method: 'post',
         headers: {
-            'Content-Type': 'application/json',
+            'Content-Type': 'multipart/form-data; boundary=someArbitraryUniqueString',
             Authorization: `Bearer ${param.token}`,
         },
-        data: JSON.stringify({
-            myKeywordList: param.data,
-        }),
+        data: JSON.stringify(param.data),
     });
     return response;
 };

@@ -1,5 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Image, View } from 'react-native';
+import { useMutation } from 'react-query';
+import { useRecoilValue } from 'recoil';
 
 import Icons from '../../smallest/Icons';
 import Spacer from '../../smallest/Spacer';
@@ -7,20 +9,17 @@ import Colors from '../../../styles/Colors';
 import MediumText from '../../smallest/MediumText';
 import TouchButton from '../../smallest/TouchButton';
 import SemiBoldText from '../../smallest/SemiBoldText';
-import SearchLocation from '../../organisms/SearchLocation';
-import WritePostAddKeyword from '../../organisms/cummunity/WritePostAddKeyword';
-import { issueKeywords } from '../../../utils/allKeywords';
-import { screenHeight, screenWidth } from '../../../utils/changeStyleSize';
-import { writePostTemplateStyles } from '../../../styles/styles';
-import { WritePostTemplateProps, uploadImageTypes, writePostTypes } from '../../../types/types';
-import { SingleLineInput } from '../../smallest/SingleLineInput';
 import MultiLineInput from '../../smallest/MultiLineInput';
+import SearchLocation from '../../organisms/SearchLocation';
 import WritePhoto from '../../organisms/cummunity/WritePhoto';
-import { Asset } from 'react-native-image-picker';
-import { useMutation } from 'react-query';
+import WritePostAddKeyword from '../../organisms/cummunity/WritePostAddKeyword';
 import { writePostAPI } from '../../../queries/api';
-import { useRecoilValue } from 'recoil';
 import { userTokenAtom } from '../../../store/atoms';
+import { issueKeywords } from '../../../utils/allKeywords';
+import { writePostTemplateStyles } from '../../../styles/styles';
+import { SingleLineInput } from '../../smallest/SingleLineInput';
+import { screenHeight, screenWidth } from '../../../utils/changeStyleSize';
+import { WritePostTemplateProps, writePostTypes } from '../../../types/types';
 
 const WritePostTemplate = ({ moveToScreen }: WritePostTemplateProps) => {
     // Write post data for API request
@@ -69,7 +68,6 @@ const WritePostTemplate = ({ moveToScreen }: WritePostTemplateProps) => {
         onError: error => {
             // For Debug
             console.log('(ERROR) Write post API.', error);
-            console.log(accessToken);
         },
     });
     const finishWritingHandler = () => {
