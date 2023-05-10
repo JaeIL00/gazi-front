@@ -90,6 +90,14 @@ export type writePostTypes = {
     files: FormDataPart[];
     thumbnail: FormDataPart | null;
 };
+export type MyProfileTabTypes = {
+    text: string;
+    screen: keyof RootStackParamList | null;
+    icon: boolean;
+    version: boolean;
+    tab: boolean;
+    borderLine: boolean;
+};
 
 // ATOM
 export type userTokenAtomTypes = {
@@ -116,6 +124,10 @@ export type RootStackParamList = {
     ServiceHome: undefined;
     BottomTab: undefined;
     WritePost: undefined;
+    EditNickname: undefined;
+    AccountManagement: undefined;
+    LikeKeywordSetting: undefined;
+    Policies: undefined;
 };
 export type BottomTabParamList = {
     ServiceHome: undefined;

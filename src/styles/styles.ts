@@ -820,7 +820,7 @@ export const writePostTemplateStyles = StyleSheet.create({
 });
 export const myProfileTemplateStyles = StyleSheet.create({
     container: {
-        backgroundColor: Colors.BACKGROUND_DEFAULT,
+        backgroundColor: Colors.WHITE,
         flex: 1,
     },
     profileBox: {
@@ -854,6 +854,26 @@ export const myProfileTemplateStyles = StyleSheet.create({
         width: 12 * screenWidth,
         height: 12 * screenWidth,
         marginLeft: 4 * screenWidth,
+    },
+    tabListBox: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        width: '100%',
+    },
+    tabTitleBox: {
+        backgroundColor: Colors.BACKGROUND_DEFAULT,
+        paddingVertical: 10 * screenHeight,
+        paddingHorizontal: 16 * screenWidth,
+    },
+    versionBox: {
+        borderBottomWidth: 1 * screenFont,
+        borderColor: '#EBEBEB',
+        paddingHorizontal: 16 * screenWidth,
+        paddingVertical: 16 * screenWidth,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
     },
 });
 
