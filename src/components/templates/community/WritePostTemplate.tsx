@@ -22,6 +22,7 @@ import { issueKeywords } from '../../../utils/allKeywords';
 import { writePostTemplateStyles } from '../../../styles/styles';
 import { SingleLineInput } from '../../smallest/SingleLineInput';
 import { WritePostTemplateProps, writePostTypes } from '../../../types/types';
+import HeaderMolecule from '../../molecules/Header';
 
 const WritePostTemplate = ({ moveToScreen }: WritePostTemplateProps) => {
     // Write post data for API request
@@ -254,23 +255,15 @@ const WritePostTemplate = ({ moveToScreen }: WritePostTemplateProps) => {
 
             {loactionModal && (
                 <View style={writePostTemplateStyles.searchContainer}>
-                    <View style={writePostTemplateStyles.searchHeaderBox}>
-                        <TouchButton onPress={() => locationModalHandler('CLOSE')}>
-                            <View style={writePostTemplateStyles.searchTitleBox}>
-                                <Icons type="ionicons" name="close-sharp" size={24} color={Colors.BLACK} />
-                                <Spacer width={16.8} />
-                                <MediumText text="위치 설정" size={18} color={Colors.BLACK} />
-                            </View>
-                        </TouchButton>
-                        <TouchButton
-                            onPress={() => (writePostData.dto.latitude ? locationModalHandler('CLOSE') : undefined)}>
-                            <SemiBoldText
-                                text="완료"
-                                size={16}
-                                color={writePostData.dto.latitude ? Colors.BLACK : Colors.TXT_GRAY}
-                            />
-                        </TouchButton>
-                    </View>
+                    <HeaderMolecule
+                        isPaddingHorizontal={true}
+                        isWorkDone={writePostData.dto.latitude !== 0}
+                        backHandler={locationModalHandler}
+                        headerFinish={true}
+                        isNextStep={false}
+                        title="위치 설정"
+                        finishText="완료"
+                    />
 
                     <Spacer height={28} />
 

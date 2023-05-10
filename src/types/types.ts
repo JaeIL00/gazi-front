@@ -238,6 +238,15 @@ export type IconPermissionListItemProps = {
     explain: string;
     image?: string;
 };
+export type HeaderMoleculeProps = {
+    isPaddingHorizontal: boolean;
+    isWorkDone?: boolean;
+    isNextStep: boolean;
+    headerFinish: boolean;
+    title: string;
+    finishText: string;
+    backHandler: (state: string) => void;
+};
 
 // ORGANISMS
 export interface MoveBackWithPageTitleProps extends PageTitleWithExplainProps {

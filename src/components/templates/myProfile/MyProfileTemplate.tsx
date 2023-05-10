@@ -17,7 +17,7 @@ const MyProfileTemplate = () => {
     const scrollViewRender = useCallback((item: MyProfileTabTypes) => {
         const rootNavigation = useRootNavigation();
         return (
-            <View>
+            <View key={item.text}>
                 {item.tab ? (
                     <TouchButton
                         onPress={() => rootNavigation.navigate(item.screen!)}

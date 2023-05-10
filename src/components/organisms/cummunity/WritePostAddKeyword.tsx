@@ -13,6 +13,7 @@ import SemiBoldText from '../../smallest/SemiBoldText';
 import { writePostAddKeywordStyles } from '../../../styles/styles';
 import { KeywordListTypes, WritePostAddKeywordProps } from '../../../types/types';
 import { issueKeywords, subwayKeywords, trafficKeywords } from '../../../utils/allKeywords';
+import HeaderMolecule from '../../molecules/Header';
 
 const WritePostAddKeyword = ({ keywordModalHandler, getKeywordHandler }: WritePostAddKeywordProps) => {
     // Choose keyword step. all keyword and head keyword
@@ -34,11 +35,17 @@ const WritePostAddKeyword = ({ keywordModalHandler, getKeywordHandler }: WritePo
             }
         }
     };
-    const stepMoveHandler = () => {
-        if (step === 1) {
-            keywordModalHandler('CLOSE');
-        } else {
-            setStep(1);
+    const stepMoveHandler = (state: string) => {
+        switch (state) {
+            case 'CLOSE':
+                keywordModalHandler('CLOSE');
+                break;
+            case 'NEXT':
+                setStep(1);
+                break;
+            default:
+                // For Debug
+                console.log('(ERROR) Choose keyword step move function.', state);
         }
     };
 
@@ -151,20 +158,15 @@ const WritePostAddKeyword = ({ keywordModalHandler, getKeywordHandler }: WritePo
 
     return (
         <View style={writePostAddKeywordStyles.container}>
-            <View style={writePostAddKeywordStyles.headerBox}>
-                <TouchButton onPress={stepMoveHandler}>
-                    <View style={writePostAddKeywordStyles.titleBox}>
-                        <Icons
-                            type={step === 1 ? 'ionicons' : 'feather'}
-                            name={step === 1 ? 'close-sharp' : 'arrow-left'}
-                            size={24}
-                            color={Colors.BLACK}
-                        />
-                        <Spacer width={16.8} />
-                        <MediumText text="키워드 설정" size={18} color={Colors.BLACK} />
-                    </View>
-                </TouchButton>
-            </View>
+            <HeaderMolecule
+                title="키워드 설정"
+                isPaddingHorizontal={false}
+                backHandler={stepMoveHandler}
+                isNextStep={step === 2}
+                headerFinish={false}
+                finishText=""
+            />
+            <Spacer height={42} />
             {step === 1 && (
                 <>
                     <ScrollView showsVerticalScrollIndicator={false}>

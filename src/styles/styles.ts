@@ -208,6 +208,18 @@ export const iconPermissionListItemStyles = StyleSheet.create({
         justifyContent: 'center',
     },
 });
+export const headerStyles = StyleSheet.create({
+    searchHeaderBox: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        paddingTop: 17 * screenHeight,
+    },
+    searchTitleBox: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+});
 
 // ORGANISMS
 export const moveBackWithPageTitleStyles = StyleSheet.create({
@@ -778,17 +790,6 @@ export const writePostTemplateStyles = StyleSheet.create({
         width: '100%',
         height: '100%',
         backgroundColor: Colors.BACKGROUND_DEFAULT,
-    },
-    searchHeaderBox: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        paddingHorizontal: 16 * screenWidth,
-        paddingTop: 17 * screenHeight,
-    },
-    searchTitleBox: {
-        flexDirection: 'row',
-        alignItems: 'center',
     },
     searchToggleIcon: {
         width: 10 * screenWidth,
