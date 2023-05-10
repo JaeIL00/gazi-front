@@ -7,19 +7,19 @@ import NormalText from '../smallest/NormalText';
 import TextButton from '../molecules/TextButton';
 import SemiBoldText from '../smallest/SemiBoldText';
 import ModalBackground from '../smallest/ModalBackground';
-import { FailLocationPermisionModalProps } from '../../types/types';
-import { failLocationPermisionModalStyles } from '../../styles/styles';
+import { FailPermissionModalProps } from '../../types/types';
+import { FailPermissionModalStyles } from '../../styles/styles';
 
-const FailLocationPermisionModal = ({
+const FailPermissionModal = ({
     onPressModalButton,
     permissionName,
     contentOne,
     contentTwo,
-}: FailLocationPermisionModalProps) => {
+}: FailPermissionModalProps) => {
     return (
         <ModalBackground>
-            <View style={failLocationPermisionModalStyles.container}>
-                <View style={failLocationPermisionModalStyles.textBox}>
+            <View style={FailPermissionModalStyles.container}>
+                <View style={FailPermissionModalStyles.textBox}>
                     <SemiBoldText text={permissionName} size={18} color={Colors.BLACK} />
                     <Spacer height={8} />
                     <NormalText text={contentOne} size={14} color="#777777" textAlign="center" lineHeight={19} />
@@ -30,7 +30,7 @@ const FailLocationPermisionModal = ({
 
                 <Spacer height={18} />
 
-                <View style={failLocationPermisionModalStyles.buttonBox}>
+                <View style={FailPermissionModalStyles.buttonBox}>
                     <TextButton
                         text="닫기"
                         textColor={Colors.TXT_GRAY}
@@ -57,4 +57,4 @@ const FailLocationPermisionModal = ({
     );
 };
 
-export default FailLocationPermisionModal;
+export default FailPermissionModal;

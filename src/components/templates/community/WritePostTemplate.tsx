@@ -15,7 +15,7 @@ import MultiLineInput from '../../smallest/MultiLineInput';
 import SearchLocation from '../../organisms/SearchLocation';
 import WritePhoto from '../../organisms/cummunity/WritePhoto';
 import WritePostAddKeyword from '../../organisms/cummunity/WritePostAddKeyword';
-import FailLocationPermisionModal from '../../organisms/FailLocationPermisionModal';
+import FailPermissionModal from '../../organisms/FailPermissionModal';
 import { writePostAPI } from '../../../queries/api';
 import { userTokenAtom } from '../../../store/atoms';
 import { issueKeywords } from '../../../utils/allKeywords';
@@ -294,7 +294,7 @@ const WritePostTemplate = ({ moveToScreen }: WritePostTemplateProps) => {
             )}
 
             {imagePermission && (
-                <FailLocationPermisionModal
+                <FailPermissionModal
                     permissionName="사진 접근 권한 허용하기"
                     contentOne="사진 업로드를 하시려면"
                     contentTwo=" 사진/카메라 권한 설정이 필요합니다"

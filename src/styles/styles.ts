@@ -326,7 +326,7 @@ export const authEmailStyles = StyleSheet.create({
         width: '100%',
     },
 });
-export const failLocationPermisionModalStyles = StyleSheet.create({
+export const FailPermissionModalStyles = StyleSheet.create({
     container: {
         backgroundColor: Colors.WHITE,
         borderRadius: 12 * screenFont,
