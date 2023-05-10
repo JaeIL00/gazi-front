@@ -1,7 +1,7 @@
 import React from 'react';
 import { View } from 'react-native';
 
-import HeaderMolecule from '../../molecules/Header';
+import HeaderMolecule from '../../molecules/HeaderMolecule';
 
 const EditNicknameTemplate = () => {
     return (

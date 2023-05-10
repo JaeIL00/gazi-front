@@ -22,7 +22,7 @@ import { issueKeywords } from '../../../utils/allKeywords';
 import { writePostTemplateStyles } from '../../../styles/styles';
 import { SingleLineInput } from '../../smallest/SingleLineInput';
 import { WritePostTemplateProps, writePostTypes } from '../../../types/types';
-import HeaderMolecule from '../../molecules/Header';
+import HeaderMolecule from '../../molecules/HeaderMolecule';
 
 const WritePostTemplate = ({ moveToScreen }: WritePostTemplateProps) => {
     // Write post data for API request

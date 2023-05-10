@@ -13,7 +13,7 @@ import SemiBoldText from '../../smallest/SemiBoldText';
 import { writePostAddKeywordStyles } from '../../../styles/styles';
 import { KeywordListTypes, WritePostAddKeywordProps } from '../../../types/types';
 import { issueKeywords, subwayKeywords, trafficKeywords } from '../../../utils/allKeywords';
-import HeaderMolecule from '../../molecules/Header';
+import HeaderMolecule from '../../molecules/HeaderMolecule';
 
 const WritePostAddKeyword = ({ keywordModalHandler, getKeywordHandler }: WritePostAddKeywordProps) => {
     // Choose keyword step. all keyword and head keyword
