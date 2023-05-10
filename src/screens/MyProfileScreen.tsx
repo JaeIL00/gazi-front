@@ -1,11 +1,13 @@
 import React from 'react';
 import { View } from 'react-native';
-import BoldText from '../components/smallest/BoldText';
+
+import MyProfileTemplate from '../components/templates/myProfile/MyProfileTemplate';
+import { myProfileScreenStyles } from '../styles/styles';
 
 const MyProfileScreen = () => {
     return (
-        <View>
-            <BoldText text="내 프로필" color="#333" size={20} />
+        <View style={myProfileScreenStyles.container}>
+            <MyProfileTemplate />
         </View>
     );
 };

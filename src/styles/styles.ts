@@ -818,9 +818,52 @@ export const writePostTemplateStyles = StyleSheet.create({
         borderRadius: 12 * screenFont,
     },
 });
+export const myProfileTemplateStyles = StyleSheet.create({
+    container: {
+        backgroundColor: Colors.BACKGROUND_DEFAULT,
+        flex: 1,
+    },
+    profileBox: {
+        backgroundColor: '#2B2B2B',
+        paddingHorizontal: 16 * screenWidth,
+        paddingTop: 43 * screenHeight,
+        paddingBottom: 27 * screenHeight,
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    profileCameraBox: {
+        backgroundColor: '#5A5A5ACC',
+        width: 20 * screenWidth,
+        height: 20 * screenWidth,
+        position: 'absolute',
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 20 * screenFont,
+        bottom: 0,
+        right: 0,
+    },
+    profileTextBox: {
+        paddingLeft: 16 * screenWidth,
+    },
+    profileNameBox: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingBottom: 1 * screenHeight,
+    },
+    penIcon: {
+        width: 12 * screenWidth,
+        height: 12 * screenWidth,
+        marginLeft: 4 * screenWidth,
+    },
+});
 
 // SCREEN
 export const seviceHomeScreenStyles = StyleSheet.create({
+    container: {
+        flex: 1,
+    },
+});
+export const myProfileScreenStyles = StyleSheet.create({
     container: {
         flex: 1,
     },

@@ -14,7 +14,7 @@ const BottomTabNavigation = () => {
         <BottomTab.Navigator
             tabBar={props => <TabBar {...props} />}
             screenOptions={{ headerShown: false }}
-            initialRouteName="ServiceHome">
+            initialRouteName="MyProfile">
             <BottomTab.Screen name="Community" component={CommunityScreen} />
             <BottomTab.Screen name="ServiceHome" component={SeviceHomeScreen} />
             <BottomTab.Screen name="MyProfile" component={MyProfileScreen} />
