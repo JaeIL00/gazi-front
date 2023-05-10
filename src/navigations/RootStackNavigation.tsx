@@ -5,6 +5,7 @@ import { useRecoilValue } from 'recoil';
 
 import LoginScreen from '../screens/EmailLoginScreen';
 import BottomTabNavigation from './BottomTabNavigation';
+import WritePostScreen from '../screens/WritePostScreen';
 import JoinMemberScreen from '../screens/JoinMemberScreen';
 import NotLoginHomeScreen from '../screens/NotLoginHomeScreen';
 import InitLikeKeywordScreen from '../screens/InitLikeKeywordScreen';
@@ -27,9 +28,10 @@ export const RootStackNavigation = () => {
             }}>
             {!isUser.accessToken ? (
                 <>
+                    <Stack.Screen name="WritePost" component={WritePostScreen} />
+                    <Stack.Screen name="BottomTab" component={BottomTabNavigation} />
                     <Stack.Screen name="RequestPermission" component={RequestPermissionScreen} />
                     <Stack.Screen name="InitKeyword" component={InitLikeKeywordScreen} />
-                    <Stack.Screen name="BottomTab" component={BottomTabNavigation} />
                 </>
             ) : (
                 <>

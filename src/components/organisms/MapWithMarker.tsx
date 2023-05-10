@@ -13,7 +13,7 @@ const MapWithMarker = ({
     isAllowLocation,
     mapRenderCompleteHandler,
     checkZoomLevelWarning,
-    checkGestureforBottomSheet,
+    checkMapGesture,
 }: MapWithMarkerProps) => {
     const MARKER_RANGE_IMAGE = require('../../assets/icons/map-marker-range.png');
     const MARKER_IMAGE = require('../../assets/icons/map-marker.png');
@@ -33,7 +33,7 @@ const MapWithMarker = ({
             showsBuildings={false}
             pitchEnabled={false}
             onRegionChangeComplete={checkZoomLevelWarning}
-            onRegionChange={checkGestureforBottomSheet}
+            onRegionChange={checkMapGesture}
             onMapReady={mapRenderCompleteHandler}>
             {isAllowLocation && (
                 <Marker

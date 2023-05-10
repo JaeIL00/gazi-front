@@ -1,5 +1,6 @@
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import { ReactElement, RefObject } from 'react';
+import { Asset } from 'react-native-image-picker';
 import MapView, { Details, Region } from 'react-native-maps';
 import { FlexAlignType, KeyboardType, TextStyle } from 'react-native/types';
 
@@ -9,7 +10,7 @@ export type KeywordListTypes = {
     keywordEnum: string;
     keywordName: string;
     vehicleType: string | null;
-}[];
+};
 export type MapLocationTypes = {
     latitude: number;
     longitude: number;
@@ -34,6 +35,60 @@ export type PostTypes = {
     };
     thumbNail: string;
     postId: number;
+};
+export type LocationResultTypes = {
+    business_status: string;
+    formatted_address: string;
+    geometry: {
+        location: {
+            lat: number;
+            lng: number;
+        };
+        viewport: {
+            northeast: {
+                lat: number;
+                lng: number;
+            };
+            southwest: {
+                lat: number;
+                lng: number;
+            };
+        };
+    };
+    icon: string;
+    icon_background_color: string;
+    icon_mask_base_uri: string;
+    name: string;
+    photos: [];
+    place_id: string;
+    plus_code: [];
+    rating: number;
+    reference: string;
+    types: [];
+    user_ratings_total: number;
+};
+export type uploadImageTypes =
+    | {
+          fileName: string;
+          fileSize: null | number;
+          height: null | number;
+          type: string;
+          uri: string;
+          width: null | number;
+      }[]
+    | Asset[];
+export type writePostTypes = {
+    dto: {
+        title: string;
+        placeName: string;
+        content: string;
+        latitude: number | null;
+        longitude: number | null;
+        keywordIdList: number[] | null;
+        headKeywordId: number | null;
+    };
+    files: FormDataPart[];
+    thumbnail: FormDataPart | null;
 };
 
 // ATOM
@@ -60,6 +115,7 @@ export type RootStackParamList = {
     InitKeyword: undefined;
     ServiceHome: undefined;
     BottomTab: undefined;
+    WritePost: undefined;
 };
 export type BottomTabParamList = {
     ServiceHome: undefined;
@@ -81,6 +137,7 @@ export type TouchButtonProps = {
     borderColor?: string;
     borderWidth?: number;
     borderRadius?: number;
+    borderBottomWidth?: number;
     flex?: number;
 };
 export type SingleLineInputProps = {
@@ -90,6 +147,18 @@ export type SingleLineInputProps = {
     fontSize?: number;
     maxLength?: number;
     secureTextEntry?: boolean;
+    width?: number;
+    height?: number;
+    fontFamily?: string | null;
+    placeFontFamily?: string | null;
+    onChangeText: (text: string) => void;
+    onSubmitEditing?: () => void;
+};
+export type MultiLineInputProps = {
+    value: string;
+    placeholder: string;
+    fontSize?: number;
+    maxLength?: number;
     width?: number;
     height?: number;
     fontFamily?: string | null;
@@ -171,13 +240,19 @@ export interface AuthEmailProps extends ServiceAgreementProps {
     resetTimeHandler: () => void;
 }
 export type FailLocationPermisionModalProps = {
+    permissionName: string;
+    contentOne: string;
+    contentTwo?: string;
     onPressModalButton: (state: string) => void;
 };
 export type KeywordsListProps = {
     type: string;
-    list: KeywordListTypes;
+    list: KeywordListTypes[];
     isCheck: boolean[];
     checkKeywordHandler: (list: string, index: number, id: number) => void;
+    checkTextColor: string;
+    checkBorderColor: string | undefined;
+    checkBackColor: string;
 };
 export type MapWithMarkerProps = {
     mapRef: RefObject<MapView>;
@@ -185,7 +260,7 @@ export type MapWithMarkerProps = {
     nearPostList: PostTypes[];
     isAllowLocation: boolean;
     mapRenderCompleteHandler: () => void;
-    checkGestureforBottomSheet: (region: Region, details: Details) => void;
+    checkMapGesture: (region: Region, details: Details) => void;
     checkZoomLevelWarning: (region: Region) => void;
 };
 export type PostListItemProps = {
@@ -204,6 +279,18 @@ export type NearbyPostListModalProps = {
     notBottomSheetMini: () => void;
     onPressGetUserPosition: () => void;
     callNextPageHandler: () => void;
+    moveToWritePost: () => void;
+};
+export type SearchLocationProps = {
+    getLocationHandler: (location: { lat: number; lng: number }, placeName: string) => void;
+};
+export type WritePostAddKeywordProps = {
+    keywordModalHandler: (state: string) => void;
+    getKeywordHandler: (state: string, keyword: number[]) => void;
+};
+export type WritePhotoProps = {
+    getImageHandler: (files: FormDataPart[]) => void;
+    notAllowPermission: () => void;
 };
 
 // TEMPLATES
@@ -227,4 +314,8 @@ export interface InitLikeKeywordTemplateProps extends RequestPemissionTemplatePr
 export type SeviceHomeTemplateProps = {
     isModalRef: React.MutableRefObject<boolean>;
     handleModalTrigger: boolean;
+    moveToWritePost: () => void;
+};
+export type WritePostTemplateProps = {
+    moveToScreen: (state: string) => void;
 };

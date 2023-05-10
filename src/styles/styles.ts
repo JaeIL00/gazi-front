@@ -34,6 +34,7 @@ export const touchButtonStyles = (
     borderColor: string | undefined,
     borderWidth: number | undefined,
     borderRadius: number | undefined,
+    borderBottomWidth: number | undefined,
     flex: number | undefined,
 ) =>
     StyleSheet.create({
@@ -49,6 +50,7 @@ export const touchButtonStyles = (
             justifyContent: 'center',
             borderColor: borderColor && borderColor,
             borderWidth: borderWidth && borderWidth * screenFont,
+            borderBottomWidth: borderBottomWidth && borderBottomWidth * screenFont,
             flex: flex && flex,
         },
     });
@@ -56,19 +58,42 @@ export const singleLineInputStyles = (
     fontSize: number | undefined,
     width: number | undefined,
     height: number | undefined,
-    fontFamily?: string | null,
-    placeFontFamily?: string | null,
+    fontFamily: string | null,
+    placeFontFamily: string | null,
 ) =>
     StyleSheet.create({
         input: {
-            fontSize: fontSize && fontSize * screenFont,
+            fontSize: fontSize ? fontSize * screenFont : 16 * screenFont,
             width: width && width * screenWidth,
             height: height && height * screenHeight,
             color: Colors.TXT_BLACK,
             fontFamily: fontFamily ? fontFamily : undefined,
         },
         placeholder: {
-            fontSize: 14 * screenFont,
+            fontSize: fontSize ? fontSize * screenFont : 14 * screenFont,
+            color: Colors.TXT_LIGHTGRAY,
+            fontFamily: placeFontFamily ? placeFontFamily : undefined,
+        },
+    });
+
+export const multiLineInputStyles = (
+    fontSize: number | undefined,
+    width: number | undefined,
+    height: number | undefined,
+    fontFamily: string | null,
+    placeFontFamily: string | null,
+) =>
+    StyleSheet.create({
+        common: {
+            fontSize: fontSize ? fontSize * screenFont : 16 * screenFont,
+            height: height && height * screenHeight,
+            textAlignVertical: 'top',
+        },
+        input: {
+            color: Colors.TXT_BLACK,
+            fontFamily: fontFamily ? fontFamily : undefined,
+        },
+        placeholder: {
             color: Colors.TXT_LIGHTGRAY,
             fontFamily: placeFontFamily ? placeFontFamily : undefined,
         },
@@ -312,7 +337,7 @@ export const keywordsListStyles = StyleSheet.create({
     container: {
         flexDirection: 'row',
         flexWrap: 'wrap',
-        width: '90%',
+        width: '100%',
     },
     itemBox: {
         marginRight: 6 * screenWidth,
@@ -451,6 +476,86 @@ export const postListItemStyles = StyleSheet.create({
         width: 77 * screenWidth,
         height: 77 * screenWidth,
         borderRadius: 5 * screenFont,
+    },
+});
+export const searchLocationStyles = StyleSheet.create({
+    inputContainer: {
+        paddingHorizontal: 16 * screenWidth,
+    },
+    inputBox: {
+        width: '100%',
+        borderWidth: 1 * screenFont,
+        borderColor: '#D4D4D4',
+        borderRadius: 28 * screenFont,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        paddingLeft: 20 * screenWidth,
+    },
+    listItemBox: {
+        flexDirection: 'row',
+        width: '100%',
+    },
+    resultIcon: {
+        width: 25 * screenWidth,
+        height: 25 * screenWidth,
+        marginRight: 9.5 * screenWidth,
+    },
+});
+export const writePostAddKeywordStyles = StyleSheet.create({
+    container: {
+        position: 'absolute',
+        width: '100%',
+        height: '100%',
+        backgroundColor: Colors.BACKGROUND_DEFAULT,
+        paddingHorizontal: 16 * screenWidth,
+    },
+    headerBox: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        paddingTop: 17 * screenHeight,
+        paddingBottom: 42 * screenHeight,
+    },
+    titleBox: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    keywordListBox: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    nextBottonBox: {
+        width: '100%',
+        position: 'absolute',
+        bottom: 42 * screenHeight,
+        alignSelf: 'center',
+    },
+});
+export const writePhotoStyles = StyleSheet.create({
+    container: {
+        flexDirection: 'row',
+        paddingHorizontal: 16 * screenWidth,
+        position: 'absolute',
+        bottom: 26 * screenHeight,
+    },
+    cameraIcon: {
+        width: 30 * screenWidth,
+        height: 30 * screenWidth,
+    },
+    previewBox: {
+        width: 71 * screenWidth,
+        height: 71 * screenWidth,
+        marginLeft: 6.5 * screenWidth,
+        borderWidth: 1 * screenFont,
+        borderRadius: 10.9 * screenFont,
+        borderColor: '#E3E3E3',
+        overflow: 'hidden',
+        backgroundColor: '#F6F5F5',
+    },
+    imageSize: {
+        width: '100%',
+        height: '100%',
     },
 });
 
@@ -641,6 +746,76 @@ export const seviceHomeTemplateStyles = StyleSheet.create({
         width: 30 * screenWidth,
         height: 30 * screenWidth,
         marginLeft: 8 * screenWidth,
+    },
+});
+export const writePostTemplateStyles = StyleSheet.create({
+    container: {
+        backgroundColor: Colors.BACKGROUND_DEFAULT,
+        flex: 1,
+    },
+    headerBox: {
+        paddingHorizontal: 16 * screenWidth,
+        paddingBottom: 12 * screenHeight,
+        borderWidth: 1 * screenFont,
+        borderColor: '#EBEBEB',
+    },
+    headerNavigateBox: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        paddingTop: 17 * screenHeight,
+        paddingBottom: 26 * screenHeight,
+    },
+    settingBox: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    settingButton: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    searchContainer: {
+        position: 'absolute',
+        width: '100%',
+        height: '100%',
+        backgroundColor: Colors.BACKGROUND_DEFAULT,
+    },
+    searchHeaderBox: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        paddingHorizontal: 16 * screenWidth,
+        paddingTop: 17 * screenHeight,
+    },
+    searchTitleBox: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    searchToggleIcon: {
+        width: 10 * screenWidth,
+        height: 10 * screenWidth,
+    },
+    locationIcon: {
+        width: 16 * screenWidth,
+        height: 16 * screenWidth,
+    },
+    inputBox: {
+        paddingHorizontal: 16 * screenWidth,
+        height: 300 * screenHeight,
+        paddingTop: 10 * screenHeight,
+    },
+    errorModalBack: {
+        position: 'absolute',
+        width: '100%',
+        height: '100%',
+        backgroundColor: '#00000099',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    errorModalBox: {
+        backgroundColor: Colors.WHITE,
+        alignItems: 'center',
+        padding: 24 * screenWidth,
+        borderRadius: 12 * screenFont,
     },
 });
 
