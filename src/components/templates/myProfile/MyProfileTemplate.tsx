@@ -7,13 +7,13 @@ import MediumText from '../../smallest/MediumText';
 import NormalText from '../../smallest/NormalText';
 import TouchButton from '../../smallest/TouchButton';
 import SemiBoldText from '../../smallest/SemiBoldText';
-import { MyProfileTabTypes } from '../../../types/types';
+import { MyProfileTabTypes, MyProfileTemplateProps } from '../../../types/types';
 import { myProfileTemplateStyles } from '../../../styles/styles';
 import { myProfileTabList } from '../../../utils/myProfileTabList';
 import { useRootNavigation } from '../../../navigations/RootStackNavigation';
 import { screenFont, screenHeight, screenWidth } from '../../../utils/changeStyleSize';
 
-const MyProfileTemplate = () => {
+const MyProfileTemplate = ({ moveToScreen }: MyProfileTemplateProps) => {
     const scrollViewRender = useCallback((item: MyProfileTabTypes) => {
         const rootNavigation = useRootNavigation();
         return (
@@ -56,7 +56,7 @@ const MyProfileTemplate = () => {
                 <View style={myProfileTemplateStyles.profileTextBox}>
                     <View style={myProfileTemplateStyles.profileNameBox}>
                         <SemiBoldText text="가나다라마바사아자차카타" size={16} color={Colors.WHITE} />
-                        <TouchButton onPress={() => {}}>
+                        <TouchButton onPress={() => moveToScreen('EDIT_NICK')}>
                             <Image
                                 source={require('../../../assets/icons/pencil.png')}
                                 style={myProfileTemplateStyles.penIcon}

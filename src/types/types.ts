@@ -121,8 +121,9 @@ export type RootStackParamList = {
     Login: undefined;
     RequestPermission: undefined;
     InitKeyword: undefined;
-    ServiceHome: undefined;
-    BottomTab: undefined;
+    BottomTab?: {
+        screen: string;
+    };
     WritePost: undefined;
     EditNickname: undefined;
     AccountManagement: undefined;
@@ -338,5 +339,11 @@ export type SeviceHomeTemplateProps = {
     moveToWritePost: () => void;
 };
 export type WritePostTemplateProps = {
+    moveToScreen: (state: string) => void;
+};
+export type EditNicknameTemplateProps = {
+    moveToMyProfileScreen: (state: string) => void;
+};
+export type MyProfileTemplateProps = {
     moveToScreen: (state: string) => void;
 };
