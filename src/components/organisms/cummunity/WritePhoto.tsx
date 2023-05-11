@@ -52,17 +52,6 @@ const WritePhoto = ({ getImageHandler, notAllowPermission }: WritePhotoProps) =>
             notAllowPermission();
         }
     };
-    const formDataMachine = (assets: Asset[]) => {
-        const formData = new FormData();
-        for (const index in assets) {
-            const dataAsset = {
-                uri: assets[index].uri,
-                type: 'multipart/form-data',
-                name: `${assets[index].fileName}.jpg`,
-            };
-            formData.append(`imageFile${index}`, dataAsset);
-        }
-    };
 
     return (
         <View style={writePhotoStyles.container}>
