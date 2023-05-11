@@ -162,6 +162,7 @@ const WritePostAddKeyword = ({ keywordModalHandler, getKeywordHandler }: WritePo
                 isNextStep={step === 2}
                 headerFinish={false}
                 finishText=""
+                background="undefined"
             />
             <Spacer height={42} />
             {step === 1 && (
