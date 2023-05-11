@@ -62,15 +62,17 @@ export const singleLineInputStyles = (
     placeFontFamily: string | null,
 ) =>
     StyleSheet.create({
-        input: {
+        common: {
             fontSize: fontSize ? fontSize * screenFont : 16 * screenFont,
             width: width && width * screenWidth,
             height: height && height * screenHeight,
+            paddingVertical: 0,
+        },
+        input: {
             color: Colors.TXT_BLACK,
             fontFamily: fontFamily ? fontFamily : undefined,
         },
         placeholder: {
-            fontSize: fontSize ? fontSize * screenFont : 14 * screenFont,
             color: Colors.TXT_LIGHTGRAY,
             fontFamily: placeFontFamily ? placeFontFamily : undefined,
         },
@@ -213,7 +215,7 @@ export const headerStyles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        paddingTop: 17 * screenHeight,
+        paddingVertical: 16 * screenHeight,
     },
     searchTitleBox: {
         flexDirection: 'row',
@@ -503,6 +505,7 @@ export const searchLocationStyles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         paddingLeft: 20 * screenWidth,
+        paddingVertical: 12 * screenHeight,
     },
     listItemBox: {
         flexDirection: 'row',
@@ -876,6 +879,27 @@ export const myProfileTemplateStyles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between',
     },
+    tabRightIcon: {
+        width: 8 * screenWidth,
+        height: 14 * screenHeight,
+    },
+});
+export const editNicknameTemplateStyles = StyleSheet.create({
+    templateContent: {
+        paddingHorizontal: 16 * screenWidth,
+        paddingTop: 34 * screenHeight,
+    },
+    inputBox: {
+        backgroundColor: Colors.WHITE,
+        borderColor: '#D4D4D4',
+        borderWidth: 1 * screenFont,
+        borderRadius: 5 * screenFont,
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        paddingHorizontal: 16 * screenWidth,
+        paddingVertical: 15 * screenHeight,
+        flexDirection: 'row',
+    },
 });
 
 // SCREEN
@@ -885,6 +909,11 @@ export const seviceHomeScreenStyles = StyleSheet.create({
     },
 });
 export const myProfileScreenStyles = StyleSheet.create({
+    container: {
+        flex: 1,
+    },
+});
+export const editNicknameScreenStyles = StyleSheet.create({
     container: {
         flex: 1,
     },

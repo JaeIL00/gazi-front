@@ -1,4 +1,4 @@
-import React, { RefObject, useEffect, useRef } from 'react';
+import React, { RefObject, useEffect, useRef, useState } from 'react';
 import { Keyboard, TextInput } from 'react-native';
 
 import Colors from '../../styles/Colors';
@@ -18,6 +18,7 @@ export const SingleLineInput = ({
     height,
     fontFamily = 'Pretendard-Medium',
     placeFontFamily = 'Pretendard-Regular',
+    isFocus,
 }: SingleLineInputProps) => {
     // When keyboard hide, input is blur
     const textInputRef = useRef() as RefObject<TextInput>;
@@ -30,6 +31,7 @@ export const SingleLineInput = ({
             keyboardDidHideListener.remove();
         };
     }, []);
+
     return (
         <TextInput
             ref={textInputRef}
@@ -43,12 +45,14 @@ export const SingleLineInput = ({
             keyboardType={keyboardType ?? 'default'}
             maxLength={maxLength}
             secureTextEntry={secureTextEntry}
-            style={
+            style={[
                 value
                     ? singleLineInputStyles(fontSize, width, height, fontFamily, placeFontFamily).input
-                    : singleLineInputStyles(fontSize, width, height, placeFontFamily, fontFamily).placeholder
-            }
+                    : singleLineInputStyles(fontSize, width, height, placeFontFamily, fontFamily).placeholder,
+                singleLineInputStyles(fontSize, width, height, placeFontFamily, fontFamily).common,
+            ]}
             underlineColorAndroid={'transparent'}
+            autoFocus={isFocus}
         />
     );
 };

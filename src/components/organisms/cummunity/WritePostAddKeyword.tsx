@@ -1,19 +1,16 @@
 import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { ScrollView, View } from 'react-native';
 
-import Icons from '../../smallest/Icons';
 import KeywordsList from '../KeywordsList';
 import Spacer from '../../smallest/Spacer';
 import Colors from '../../../styles/Colors';
 import NormalText from '../../smallest/NormalText';
-import MediumText from '../../smallest/MediumText';
 import TextButton from '../../molecules/TextButton';
-import TouchButton from '../../smallest/TouchButton';
 import SemiBoldText from '../../smallest/SemiBoldText';
+import HeaderMolecule from '../../molecules/HeaderMolecule';
 import { writePostAddKeywordStyles } from '../../../styles/styles';
 import { KeywordListTypes, WritePostAddKeywordProps } from '../../../types/types';
 import { issueKeywords, subwayKeywords, trafficKeywords } from '../../../utils/allKeywords';
-import HeaderMolecule from '../../molecules/HeaderMolecule';
 
 const WritePostAddKeyword = ({ keywordModalHandler, getKeywordHandler }: WritePostAddKeywordProps) => {
     // Choose keyword step. all keyword and head keyword
@@ -165,6 +162,7 @@ const WritePostAddKeyword = ({ keywordModalHandler, getKeywordHandler }: WritePo
                 isNextStep={step === 2}
                 headerFinish={false}
                 finishText=""
+                background="undefined"
             />
             <Spacer height={42} />
             {step === 1 && (

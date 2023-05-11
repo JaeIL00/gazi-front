@@ -1,5 +1,6 @@
 import React, { useCallback } from 'react';
 import { Image, ScrollView, View } from 'react-native';
+import { useRecoilValue } from 'recoil';
 
 import Icons from '../../smallest/Icons';
 import Colors from '../../../styles/Colors';
@@ -7,13 +8,17 @@ import MediumText from '../../smallest/MediumText';
 import NormalText from '../../smallest/NormalText';
 import TouchButton from '../../smallest/TouchButton';
 import SemiBoldText from '../../smallest/SemiBoldText';
-import { MyProfileTabTypes } from '../../../types/types';
+import { userInfoAtom } from '../../../store/atoms';
 import { myProfileTemplateStyles } from '../../../styles/styles';
 import { myProfileTabList } from '../../../utils/myProfileTabList';
 import { useRootNavigation } from '../../../navigations/RootStackNavigation';
+import { MyProfileTabTypes, MyProfileTemplateProps } from '../../../types/types';
 import { screenFont, screenHeight, screenWidth } from '../../../utils/changeStyleSize';
 
-const MyProfileTemplate = () => {
+const MyProfileTemplate = ({ moveToScreen }: MyProfileTemplateProps) => {
+    // Get user nickname
+    const { nickname } = useRecoilValue(userInfoAtom);
+
     const scrollViewRender = useCallback((item: MyProfileTabTypes) => {
         const rootNavigation = useRootNavigation();
         return (
@@ -27,7 +32,10 @@ const MyProfileTemplate = () => {
                         borderColor="#EBEBEB">
                         <View style={myProfileTemplateStyles.tabListBox}>
                             <NormalText text={item.text} size={16} color={Colors.BLACK} />
-                            <Icons type="fontAwesome" name="angle-right" size={20} color="#D7D7D7" />
+                            <Image
+                                source={require('../../../assets/icons/to-right.png')}
+                                style={myProfileTemplateStyles.tabRightIcon}
+                            />
                         </View>
                     </TouchButton>
                 ) : (
@@ -55,8 +63,8 @@ const MyProfileTemplate = () => {
                 </TouchButton>
                 <View style={myProfileTemplateStyles.profileTextBox}>
                     <View style={myProfileTemplateStyles.profileNameBox}>
-                        <SemiBoldText text="가나다라마바사아자차카타" size={16} color={Colors.WHITE} />
-                        <TouchButton onPress={() => {}}>
+                        <SemiBoldText text={nickname} size={16} color={Colors.WHITE} />
+                        <TouchButton onPress={() => moveToScreen('EDIT_NICK')}>
                             <Image
                                 source={require('../../../assets/icons/pencil.png')}
                                 style={myProfileTemplateStyles.penIcon}

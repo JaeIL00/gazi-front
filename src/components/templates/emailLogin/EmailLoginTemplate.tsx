@@ -3,6 +3,7 @@ import { ActivityIndicator, Animated, Keyboard, ToastAndroid, View } from 'react
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useMutation } from 'react-query';
 import { debounce } from 'lodash';
+import { useRecoilState } from 'recoil';
 
 import Icons from '../../smallest/Icons';
 import Spacer from '../../smallest/Spacer';
@@ -14,9 +15,8 @@ import TouchButton from '../../smallest/TouchButton';
 import LoginTextInput from '../../molecules/LoginTextInput';
 import useKeyboardMotion from '../../../utils/hooks/useKeyboardMotion';
 import MoveBackWithPageTitle from '../../organisms/MoveBackWithPageTitle';
-import { useRecoilState } from 'recoil';
 import { loginAPI } from '../../../queries/api';
-import { userTokenAtom } from '../../../store/atoms';
+import { userInfoAtom, userTokenAtom } from '../../../store/atoms';
 import { EmailLoginTemplateProps } from '../../../types/types';
 import { emailLoginTemplateStyles, nextStepButtonPosition } from '../../../styles/styles';
 
@@ -35,10 +35,11 @@ const EmailLoginTemplate = ({ moveServiceHomeHandler }: EmailLoginTemplateProps)
 
     // Login API Handling
     const [tokenAtom, setTokenAtom] = useRecoilState(userTokenAtom);
+    const [userInfo, setUserInfo] = useRecoilState(userInfoAtom);
     const [loginErrorText, setLoginErrorText] = useState<string>('');
     const { mutate, isLoading } = useMutation(loginAPI, {
-        onSuccess: data => {
-            successJoinMemberHandler(data.data.data);
+        onSuccess: ({ data }) => {
+            successJoinMemberHandler(data.data);
         },
         onError: ({ response }) => {
             if (response.data.state === 401) {
@@ -53,13 +54,22 @@ const EmailLoginTemplate = ({ moveServiceHomeHandler }: EmailLoginTemplateProps)
             mutate({ email, password });
         }
     }, 300);
-    const successJoinMemberHandler = async (data: { accessToken: string; refreshToken: string }) => {
+    const successJoinMemberHandler = async (data: {
+        accessToken: string;
+        refreshToken: string;
+        memberId: number;
+        nickName: string;
+    }) => {
         try {
             await AsyncStorage.setItem('GAZI_ac_tk', data.accessToken);
             await AsyncStorage.setItem('GAZI_re_tk', data.refreshToken);
             setTokenAtom({
                 accessToken: data.accessToken,
                 refreshToken: data.refreshToken,
+            });
+            setUserInfo({
+                memberId: data.memberId,
+                nickname: data.nickName,
             });
         } catch (err) {
             // For Debug

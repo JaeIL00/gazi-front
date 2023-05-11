@@ -67,7 +67,7 @@ export type LocationResultTypes = {
     types: [];
     user_ratings_total: number;
 };
-export type uploadImageTypes =
+export type UploadImageTypes =
     | {
           fileName: string;
           fileSize: null | number;
@@ -77,18 +77,19 @@ export type uploadImageTypes =
           width: null | number;
       }[]
     | Asset[];
-export type writePostTypes = {
-    dto: {
-        title: string;
-        placeName: string;
-        content: string;
-        latitude: number | null;
-        longitude: number | null;
-        keywordIdList: number[] | null;
-        headKeywordId: number | null;
-    };
-    files: FormDataPart[];
-    thumbnail: FormDataPart | null;
+export type PostDto = {
+    title: string;
+    placeName: string;
+    content: string;
+    latitude: number | null;
+    longitude: number | null;
+    keywordIdList: number[] | null;
+    headKeywordId: number | null;
+};
+export type WritePostTypes = {
+    dto: PostDto;
+    files: Asset[];
+    thumbnail: Asset | null;
 };
 export type MyProfileTabTypes = {
     text: string;
@@ -104,6 +105,11 @@ export type userTokenAtomTypes = {
     accessToken: string;
     refreshToken: string;
 };
+export type userInfoAtomTypes = {
+    memberId: number | null;
+    nickname: string;
+};
+
 export type joinMemberTypes = {
     email: string;
     password: string;
@@ -121,8 +127,9 @@ export type RootStackParamList = {
     Login: undefined;
     RequestPermission: undefined;
     InitKeyword: undefined;
-    ServiceHome: undefined;
-    BottomTab: undefined;
+    BottomTab?: {
+        screen: string;
+    };
     WritePost: undefined;
     EditNickname: undefined;
     AccountManagement: undefined;
@@ -154,7 +161,7 @@ export type TouchButtonProps = {
 };
 export type SingleLineInputProps = {
     value: string;
-    placeholder: string;
+    placeholder?: string;
     keyboardType?: KeyboardType;
     fontSize?: number;
     maxLength?: number;
@@ -163,6 +170,7 @@ export type SingleLineInputProps = {
     height?: number;
     fontFamily?: string | null;
     placeFontFamily?: string | null;
+    isFocus?: boolean;
     onChangeText: (text: string) => void;
     onSubmitEditing?: () => void;
 };
@@ -245,7 +253,9 @@ export type HeaderMoleculeProps = {
     headerFinish: boolean;
     title: string;
     finishText: string;
+    background: string;
     backHandler: (state: string) => void;
+    finishFunction?: () => void;
 };
 
 // ORGANISMS
@@ -310,7 +320,7 @@ export type WritePostAddKeywordProps = {
     getKeywordHandler: (state: string, keyword: number[]) => void;
 };
 export type WritePhotoProps = {
-    getImageHandler: (files: FormDataPart[]) => void;
+    getImageHandler: (files: Asset[]) => void;
     notAllowPermission: () => void;
 };
 
@@ -338,5 +348,11 @@ export type SeviceHomeTemplateProps = {
     moveToWritePost: () => void;
 };
 export type WritePostTemplateProps = {
+    moveToScreen: (state: string) => void;
+};
+export type EditNicknameTemplateProps = {
+    moveToMyProfileScreen: (state: string) => void;
+};
+export type MyProfileTemplateProps = {
     moveToScreen: (state: string) => void;
 };

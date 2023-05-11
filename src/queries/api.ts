@@ -1,6 +1,6 @@
 import axios from 'axios';
 import Config from 'react-native-config';
-import { writePostTypes } from '../types/types';
+import { PostDto } from '../types/types';
 
 const Axios = axios.create({
     baseURL: Config.API_BASE_URL,
@@ -17,6 +17,30 @@ export const searchGoogleAPI = async (searchInput: string, nextPageToken: string
         headers: {
             'Accept-Language': 'ko',
         },
+    });
+    return response;
+};
+
+// LOGIN
+export const loginAPI = async (data: { email: string; password: string }) => {
+    const response = await Axios({
+        url: '/api/v1/member/login',
+        method: 'post',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        data: JSON.stringify(data),
+    });
+    return response;
+};
+export const autoLoginAPI = async (data: { accessToken: string; refreshToken: string }) => {
+    const response = await Axios({
+        url: '/api/v1/member/reissue',
+        method: 'post',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        data: JSON.stringify(data),
     });
     return response;
 };
@@ -59,18 +83,8 @@ export const joinMemberAPI = async (data: { email: string; password: string; nic
     });
     return response;
 };
-export const loginAPI = async (data: { email: string; password: string }) => {
-    const response = await Axios({
-        url: '/api/v1/member/login',
-        method: 'post',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        data: JSON.stringify(data),
-    });
-    return response;
-};
 
+// DELETE MEMBER
 export const deleteMemberAPI = async (token: string) => {
     const response = await Axios({
         url: '/api/v1/member/delete-member',
@@ -79,6 +93,22 @@ export const deleteMemberAPI = async (token: string) => {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,
         },
+    });
+    return response;
+};
+
+// USER PROFILE
+export const editNicknameAPI = async (param: { accessToken: string; data: string }) => {
+    const response = await Axios({
+        url: '/api/v1/member/change-nickname',
+        method: 'post',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${param.accessToken}`,
+        },
+        data: JSON.stringify({
+            nickName: param.data,
+        }),
     });
     return response;
 };
@@ -122,15 +152,28 @@ export const nearByUserPostsAPI = async (param: {
 };
 
 // COMMUNITY
-export const writePostAPI = async (param: { token: string; data: writePostTypes }) => {
+
+// TEMPORARY COMMUNITY
+export const writePostAPI = async (param: { accessToken: string; data: PostDto }) => {
     const response = await Axios({
-        url: '/api/v1/post/topPost',
+        url: '/api/v1/post/top-post',
+        method: 'post',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${param.accessToken}`,
+        },
+        data: JSON.stringify(param.data),
+    });
+    return response;
+};
+export const writePostFilesAPI = async (param: { accessToken: string; data: FormData; postId: number }) => {
+    const response = await Axios({
+        url: `/api/v1/post/top-post-file?postId=${param.postId}`,
         method: 'post',
         headers: {
             'Content-Type': 'multipart/form-data; boundary=someArbitraryUniqueString',
-            Authorization: `Bearer ${param.token}`,
         },
-        data: JSON.stringify(param.data),
+        data: param.data,
     });
     return response;
 };
