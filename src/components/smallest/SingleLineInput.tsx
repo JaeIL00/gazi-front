@@ -1,4 +1,4 @@
-import React, { RefObject, useEffect, useRef } from 'react';
+import React, { RefObject, useEffect, useRef, useState } from 'react';
 import { Keyboard, TextInput } from 'react-native';
 
 import Colors from '../../styles/Colors';
@@ -32,17 +32,6 @@ export const SingleLineInput = ({
         };
     }, []);
 
-    // First render check isFocus
-    const focusTextInput = () => {
-        textInputRef.current?.focus();
-    };
-    useEffect(() => {
-        if (isFocus) {
-            setTimeout(() => {
-                focusTextInput();
-            }, 300);
-        }
-    }, [isFocus]);
     return (
         <TextInput
             ref={textInputRef}
@@ -62,6 +51,7 @@ export const SingleLineInput = ({
                     : singleLineInputStyles(fontSize, width, height, placeFontFamily, fontFamily).placeholder
             }
             underlineColorAndroid={'transparent'}
+            autoFocus={isFocus}
         />
     );
 };
