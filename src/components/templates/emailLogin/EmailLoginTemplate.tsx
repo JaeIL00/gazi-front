@@ -3,6 +3,7 @@ import { ActivityIndicator, Animated, Keyboard, ToastAndroid, View } from 'react
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useMutation } from 'react-query';
 import { debounce } from 'lodash';
+import { useRecoilState } from 'recoil';
 
 import Icons from '../../smallest/Icons';
 import Spacer from '../../smallest/Spacer';
@@ -14,7 +15,6 @@ import TouchButton from '../../smallest/TouchButton';
 import LoginTextInput from '../../molecules/LoginTextInput';
 import useKeyboardMotion from '../../../utils/hooks/useKeyboardMotion';
 import MoveBackWithPageTitle from '../../organisms/MoveBackWithPageTitle';
-import { useRecoilState } from 'recoil';
 import { loginAPI } from '../../../queries/api';
 import { userInfoAtom, userTokenAtom } from '../../../store/atoms';
 import { EmailLoginTemplateProps } from '../../../types/types';

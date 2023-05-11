@@ -3,6 +3,7 @@ import { ActivityIndicator, Image, Linking, View } from 'react-native';
 import { useMutation } from 'react-query';
 import { useRecoilValue } from 'recoil';
 import { debounce } from 'lodash';
+import { Asset } from 'react-native-image-picker';
 
 import Icons from '../../smallest/Icons';
 import Spacer from '../../smallest/Spacer';
@@ -12,18 +13,17 @@ import TextButton from '../../molecules/TextButton';
 import TouchButton from '../../smallest/TouchButton';
 import SemiBoldText from '../../smallest/SemiBoldText';
 import MultiLineInput from '../../smallest/MultiLineInput';
+import HeaderMolecule from '../../molecules/HeaderMolecule';
 import SearchLocation from '../../organisms/SearchLocation';
 import WritePhoto from '../../organisms/cummunity/WritePhoto';
-import WritePostAddKeyword from '../../organisms/cummunity/WritePostAddKeyword';
 import FailPermissionModal from '../../organisms/FailPermissionModal';
-import { writePostAPI, writePostFilesAPI } from '../../../queries/api';
+import WritePostAddKeyword from '../../organisms/cummunity/WritePostAddKeyword';
 import { userTokenAtom } from '../../../store/atoms';
 import { issueKeywords } from '../../../utils/allKeywords';
 import { writePostTemplateStyles } from '../../../styles/styles';
 import { SingleLineInput } from '../../smallest/SingleLineInput';
-import { UploadImageTypes, WritePostTemplateProps, WritePostTypes } from '../../../types/types';
-import HeaderMolecule from '../../molecules/HeaderMolecule';
-import { Asset } from 'react-native-image-picker';
+import { writePostAPI, writePostFilesAPI } from '../../../queries/api';
+import { WritePostTemplateProps, WritePostTypes } from '../../../types/types';
 
 const WritePostTemplate = ({ moveToScreen }: WritePostTemplateProps) => {
     // Write post data for API request

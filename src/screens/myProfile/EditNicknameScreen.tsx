@@ -1,8 +1,9 @@
 import React from 'react';
 import { View } from 'react-native';
+
 import EditNicknameTemplate from '../../components/templates/myProfile/EditNicknameTemplate';
-import { useRootNavigation } from '../../navigations/RootStackNavigation';
 import { editNicknameScreenStyles } from '../../styles/styles';
+import { useRootNavigation } from '../../navigations/RootStackNavigation';
 
 const EditNicknameScreen = () => {
     const rootNavigation = useRootNavigation();

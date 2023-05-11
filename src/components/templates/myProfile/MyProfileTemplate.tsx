@@ -1,5 +1,6 @@
 import React, { useCallback } from 'react';
 import { Image, ScrollView, View } from 'react-native';
+import { useRecoilValue } from 'recoil';
 
 import Icons from '../../smallest/Icons';
 import Colors from '../../../styles/Colors';
@@ -7,13 +8,12 @@ import MediumText from '../../smallest/MediumText';
 import NormalText from '../../smallest/NormalText';
 import TouchButton from '../../smallest/TouchButton';
 import SemiBoldText from '../../smallest/SemiBoldText';
-import { MyProfileTabTypes, MyProfileTemplateProps } from '../../../types/types';
+import { userInfoAtom } from '../../../store/atoms';
 import { myProfileTemplateStyles } from '../../../styles/styles';
 import { myProfileTabList } from '../../../utils/myProfileTabList';
 import { useRootNavigation } from '../../../navigations/RootStackNavigation';
+import { MyProfileTabTypes, MyProfileTemplateProps } from '../../../types/types';
 import { screenFont, screenHeight, screenWidth } from '../../../utils/changeStyleSize';
-import { useRecoilValue } from 'recoil';
-import { userInfoAtom } from '../../../store/atoms';
 
 const MyProfileTemplate = ({ moveToScreen }: MyProfileTemplateProps) => {
     // Get user nickname
