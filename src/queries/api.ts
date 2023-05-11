@@ -59,6 +59,8 @@ export const joinMemberAPI = async (data: { email: string; password: string; nic
     });
     return response;
 };
+
+// LOGIN
 export const loginAPI = async (data: { email: string; password: string }) => {
     const response = await Axios({
         url: '/api/v1/member/login',
@@ -71,6 +73,7 @@ export const loginAPI = async (data: { email: string; password: string }) => {
     return response;
 };
 
+// DELETE MEMBER
 export const deleteMemberAPI = async (token: string) => {
     const response = await Axios({
         url: '/api/v1/member/delete-member',
@@ -79,6 +82,22 @@ export const deleteMemberAPI = async (token: string) => {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,
         },
+    });
+    return response;
+};
+
+// USER PROFILE
+export const editNicknameAPI = async (param: { accessToken: string; data: string }) => {
+    const response = await Axios({
+        url: '/api/v1/member/change-nickname',
+        method: 'post',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${param.accessToken}`,
+        },
+        data: JSON.stringify({
+            nickname: param.data,
+        }),
     });
     return response;
 };

@@ -29,8 +29,8 @@ export const RootStackNavigation = () => {
             }}>
             {!isUser.accessToken ? (
                 <>
-                    <Stack.Screen name="BottomTab" component={BottomTabNavigation} />
                     <Stack.Screen name="EditNickname" component={EditNicknameScreen} />
+                    <Stack.Screen name="BottomTab" component={BottomTabNavigation} />
                     <Stack.Screen name="WritePost" component={WritePostScreen} />
                     <Stack.Screen name="RequestPermission" component={RequestPermissionScreen} />
                     <Stack.Screen name="InitKeyword" component={InitLikeKeywordScreen} />
