@@ -921,6 +921,22 @@ export const threadItemTemplateStyles = StyleSheet.create({
         height: 150 * screenHeight,
         backgroundColor: '#999',
     },
+    main: {
+        paddingHorizontal: 16 * screenWidth,
+        paddingTop: 19 * screenHeight,
+    },
+    headerBox: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        paddingBottom: 13 * screenHeight,
+        borderBottomWidth: 1 * screenFont,
+        borderColor: '#EBEBEB',
+    },
+    shareIcon: {
+        width: 24 * screenWidth,
+        height: 24 * screenWidth,
+    },
 });
 
 // SCREEN
@@ -937,5 +953,11 @@ export const myProfileScreenStyles = StyleSheet.create({
 export const editNicknameScreenStyles = StyleSheet.create({
     container: {
         flex: 1,
+    },
+});
+export const threadItemScreenStyles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: Colors.BACKGROUND_DEFAULT,
     },
 });

@@ -89,7 +89,9 @@ export const RootStackNavigation = () => {
                 headerShown: false,
                 presentation: 'containedModal',
             }}
-            initialRouteName="NotLoginHome">
+            // initialRouteName="NotLoginHome"
+        >
+            <Stack.Screen name="ThreadItem" component={ThreadItemScreen} />
             <Stack.Screen name="NotLoginHome" component={NotLoginHomeScreen} />
             <Stack.Screen name="EditNickname" component={EditNicknameScreen} />
             <Stack.Screen name="BottomTab" component={BottomTabNavigation} />
@@ -98,7 +100,6 @@ export const RootStackNavigation = () => {
             <Stack.Screen name="InitKeyword" component={InitLikeKeywordScreen} />
             <Stack.Screen name="JoinMember" component={JoinMemberScreen} />
             <Stack.Screen name="Login" component={LoginScreen} />
-            <Stack.Screen name="ThreadItem" component={ThreadItemScreen} />
         </Stack.Navigator>
     );
 };
