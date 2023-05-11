@@ -115,10 +115,18 @@ const WritePostTemplate = ({ moveToScreen }: WritePostTemplateProps) => {
     const uploadFilesHandler = (postId: number) => {
         const formdata = new FormData();
         for (const index in writePostData.files) {
-            formdata.append('files', writePostData.files[index]);
+            formdata.append('files', {
+                uri: writePostData.files[index].uri,
+                type: writePostData.files[index].type,
+                name: writePostData.files[index].fileName,
+            });
         }
-        formdata.append('thumbnail', writePostData.thumbnail);
-        console.log(formdata, `postId: ${postId}`);
+        formdata.append('thumbnail', {
+            uri: writePostData.thumbnail?.uri,
+            type: writePostData.thumbnail?.type,
+            name: writePostData.thumbnail?.fileName,
+        });
+        console.log(formdata.getParts());
         postFileMutate({
             accessToken,
             postId,
