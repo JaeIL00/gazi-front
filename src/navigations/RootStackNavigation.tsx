@@ -14,7 +14,7 @@ import InitLikeKeywordScreen from '../screens/InitLikeKeywordScreen';
 import RequestPermissionScreen from '../screens/RequestPermissionScreen';
 import EditNicknameScreen from '../screens/myProfile/EditNicknameScreen';
 import { autoLoginAPI } from '../queries/api';
-import { userTokenAtom } from '../store/atoms';
+import { userInfoAtom, userTokenAtom } from '../store/atoms';
 import { RootStackParamList } from '../types/types';
 
 export const RootStackNavigation = () => {
@@ -22,13 +22,11 @@ export const RootStackNavigation = () => {
     const rootNavigation = useRootNavigation();
 
     // Check storage and token valication for auto login
-    const [tokenAtom, setTokenAtom] = useRecoilState(userTokenAtom);
+    const [userToken, setUserToken] = useRecoilState(userTokenAtom);
+    const [userInfo, setUserInfo] = useRecoilState(userInfoAtom);
     const { mutate, isLoading } = useMutation(autoLoginAPI, {
         onSuccess: ({ data }) => {
-            successTokenHandler({
-                accessToken: data.data.accessToken,
-                refreshToken: data.data.refreshToken,
-            });
+            successTokenHandler(data.data);
         },
         onError: ({ response }) => {
             errorLoginHandler(response.status);
@@ -42,13 +40,22 @@ export const RootStackNavigation = () => {
             rootNavigation.navigate('NotLoginHome');
         }
     };
-    const successTokenHandler = async (data: { accessToken: string; refreshToken: string }) => {
+    const successTokenHandler = async (data: {
+        accessToken: string;
+        refreshToken: string;
+        memberId: number;
+        nickName: string;
+    }) => {
         try {
             await AsyncStorage.setItem('GAZI_ac_tk', data.accessToken);
             await AsyncStorage.setItem('GAZI_re_tk', data.refreshToken);
-            setTokenAtom({
+            setUserToken({
                 accessToken: data.accessToken,
                 refreshToken: data.refreshToken,
+            });
+            setUserInfo({
+                memberId: data.memberId,
+                nickname: data.nickName,
             });
             rootNavigation.navigate('BottomTab');
         } catch (error) {
