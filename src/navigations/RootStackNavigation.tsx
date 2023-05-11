@@ -1,5 +1,5 @@
 import React, { useLayoutEffect } from 'react';
-import { useNavigation } from '@react-navigation/native';
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { NativeStackNavigationProp, createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useRecoilState } from 'recoil';
 import { useMutation } from 'react-query';
@@ -11,6 +11,7 @@ import WritePostScreen from '../screens/WritePostScreen';
 import JoinMemberScreen from '../screens/JoinMemberScreen';
 import NotLoginHomeScreen from '../screens/NotLoginHomeScreen';
 import InitLikeKeywordScreen from '../screens/InitLikeKeywordScreen';
+import ThreadItemScreen from '../screens/cummunity/ThreadItemScreen';
 import RequestPermissionScreen from '../screens/RequestPermissionScreen';
 import EditNicknameScreen from '../screens/myProfile/EditNicknameScreen';
 import { autoLoginAPI } from '../queries/api';
@@ -97,10 +98,15 @@ export const RootStackNavigation = () => {
             <Stack.Screen name="InitKeyword" component={InitLikeKeywordScreen} />
             <Stack.Screen name="JoinMember" component={JoinMemberScreen} />
             <Stack.Screen name="Login" component={LoginScreen} />
+            <Stack.Screen name="ThreadItem" component={ThreadItemScreen} />
         </Stack.Navigator>
     );
 };
 
 export const useRootNavigation = <RouteName extends keyof RootStackParamList>() => {
     return useNavigation<NativeStackNavigationProp<RootStackParamList, RouteName>>();
+};
+
+export const useRootRoute = <RouteName extends keyof RootStackParamList>() => {
+    return useRoute<RouteProp<RootStackParamList, RouteName>>();
 };

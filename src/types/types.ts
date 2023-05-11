@@ -131,6 +131,9 @@ export type RootStackParamList = {
     AccountManagement: undefined;
     LikeKeywordSetting: undefined;
     Policies: undefined;
+    ThreadItem: {
+        post: PostTypes;
+    };
 };
 export type BottomTabParamList = {
     ServiceHome: undefined;
@@ -351,4 +354,7 @@ export type EditNicknameTemplateProps = {
 };
 export type MyProfileTemplateProps = {
     moveToScreen: (state: string) => void;
+};
+export type ThreadItemTemplateProps = {
+    post: PostTypes;
 };
