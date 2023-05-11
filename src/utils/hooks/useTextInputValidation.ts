@@ -9,7 +9,7 @@ const useTextInputValidation = () => {
 
     // Text validator
     const [validationResult, setValidationResult] = useState<string>('');
-    const changValidationResult = (result: string) => {
+    const changeValidationResult = (result: string) => {
         setValidationResult(result);
     };
 
@@ -17,7 +17,7 @@ const useTextInputValidation = () => {
         text,
         onChangeText,
         validationResult,
-        changValidationResult,
+        changeValidationResult,
     };
 };
 export default useTextInputValidation;

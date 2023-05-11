@@ -20,7 +20,7 @@ import { screenHeight, screenWidth } from '../../../utils/changeStyleSize';
 
 const EditNicknameTemplate = ({ moveToMyProfileScreen }: EditNicknameTemplateProps) => {
     // Validator custom hook input text
-    const { text: nickname, onChangeText, validationResult, changValidationResult } = useTextInputValidation();
+    const { text: nickname, onChangeText, validationResult, changeValidationResult } = useTextInputValidation();
     const { nickname: nicknameAtom } = useRecoilValue(userInfoAtom);
     useLayoutEffect(() => {
         onChangeText(nicknameAtom);
@@ -30,9 +30,9 @@ const EditNicknameTemplate = ({ moveToMyProfileScreen }: EditNicknameTemplatePro
         setIsGoodResponse(false);
         // setIsFocusText(false);
         if (text.length < 2) {
-            changValidationResult('2글자 이상 입력해주세요');
+            changeValidationResult('2글자 이상 입력해주세요');
         } else {
-            changValidationResult('');
+            changeValidationResult('');
             checkNicknameHandler(text);
         }
     };
@@ -47,7 +47,7 @@ const EditNicknameTemplate = ({ moveToMyProfileScreen }: EditNicknameTemplatePro
     const [isFocusText, setIsFocusText] = useState(true);
     const resetText = () => {
         onChangeText('');
-        changValidationResult('2글자 이상 입력해주세요');
+        changeValidationResult('2글자 이상 입력해주세요');
         // setIsFocusText(true);
     };
 
@@ -55,12 +55,12 @@ const EditNicknameTemplate = ({ moveToMyProfileScreen }: EditNicknameTemplatePro
     const { mutate: checkMutatie, isLoading: isCheckLoading } = useMutation(checkNicknameAPI, {
         onSuccess: ({ data }) => {
             setIsGoodResponse(true);
-            changValidationResult('사용 가능한 닉네임입니다');
+            changeValidationResult('사용 가능한 닉네임입니다');
         },
         onError: ({ response }) => {
             if (response.data.state === 409) {
                 setIsGoodResponse(false);
-                changValidationResult('중복된 닉네임입니다');
+                changeValidationResult('중복된 닉네임입니다');
             }
             // For Debug
             console.log('(ERROR) Check nickname API.', response);
