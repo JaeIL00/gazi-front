@@ -877,6 +877,21 @@ export const myProfileTemplateStyles = StyleSheet.create({
         justifyContent: 'space-between',
     },
 });
+export const editNicknameTemplateStyles = StyleSheet.create({
+    headerBox: {
+        paddingBottom: 34 * screenHeight,
+    },
+    inputBox: {
+        backgroundColor: Colors.WHITE,
+        borderColor: '#D4D4D4',
+        borderWidth: 1 * screenFont,
+        borderRadius: 5 * screenFont,
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        paddingHorizontal: 16 * screenWidth,
+        flexDirection: 'row',
+    },
+});
 
 // SCREEN
 export const seviceHomeScreenStyles = StyleSheet.create({

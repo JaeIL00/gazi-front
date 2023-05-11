@@ -18,6 +18,7 @@ export const SingleLineInput = ({
     height,
     fontFamily = 'Pretendard-Medium',
     placeFontFamily = 'Pretendard-Regular',
+    isFocus,
 }: SingleLineInputProps) => {
     // When keyboard hide, input is blur
     const textInputRef = useRef() as RefObject<TextInput>;
@@ -30,6 +31,17 @@ export const SingleLineInput = ({
             keyboardDidHideListener.remove();
         };
     }, []);
+
+    const focusTextInput = () => {
+        textInputRef.current?.focus();
+    };
+    useEffect(() => {
+        if (isFocus) {
+            setTimeout(() => {
+                focusTextInput();
+            }, 300);
+        }
+    }, [isFocus]);
     return (
         <TextInput
             ref={textInputRef}

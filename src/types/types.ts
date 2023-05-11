@@ -155,7 +155,7 @@ export type TouchButtonProps = {
 };
 export type SingleLineInputProps = {
     value: string;
-    placeholder: string;
+    placeholder?: string;
     keyboardType?: KeyboardType;
     fontSize?: number;
     maxLength?: number;
@@ -164,6 +164,7 @@ export type SingleLineInputProps = {
     height?: number;
     fontFamily?: string | null;
     placeFontFamily?: string | null;
+    isFocus?: boolean;
     onChangeText: (text: string) => void;
     onSubmitEditing?: () => void;
 };
