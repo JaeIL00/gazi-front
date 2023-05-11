@@ -21,6 +21,30 @@ export const searchGoogleAPI = async (searchInput: string, nextPageToken: string
     return response;
 };
 
+// LOGIN
+export const loginAPI = async (data: { email: string; password: string }) => {
+    const response = await Axios({
+        url: '/api/v1/member/login',
+        method: 'post',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        data: JSON.stringify(data),
+    });
+    return response;
+};
+export const autoLoginAPI = async (data: { accessToken: string; refreshToken: string }) => {
+    const response = await Axios({
+        url: '/api/v1/member/reissue',
+        method: 'post',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        data: JSON.stringify(data),
+    });
+    return response;
+};
+
 // JOIN
 export const emailAuthAPI = async (email: string) => {
     const response = await Axios({
@@ -60,19 +84,6 @@ export const joinMemberAPI = async (data: { email: string; password: string; nic
     return response;
 };
 
-// LOGIN
-export const loginAPI = async (data: { email: string; password: string }) => {
-    const response = await Axios({
-        url: '/api/v1/member/login',
-        method: 'post',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        data: JSON.stringify(data),
-    });
-    return response;
-};
-
 // DELETE MEMBER
 export const deleteMemberAPI = async (token: string) => {
     const response = await Axios({
@@ -88,6 +99,7 @@ export const deleteMemberAPI = async (token: string) => {
 
 // USER PROFILE
 export const editNicknameAPI = async (param: { accessToken: string; data: string }) => {
+    console.log(param);
     const response = await Axios({
         url: '/api/v1/member/change-nickname',
         method: 'post',
@@ -161,7 +173,6 @@ export const writePostFilesAPI = async (param: { accessToken: string; data: Form
         method: 'post',
         headers: {
             'Content-Type': 'multipart/form-data; boundary=someArbitraryUniqueString',
-            // Authorization: `Bearer ${param.accessToken}`,
         },
         data: param.data,
     });
