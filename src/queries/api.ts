@@ -1,11 +1,25 @@
 import axios from 'axios';
 import Config from 'react-native-config';
-import { useRecoilValue } from 'recoil';
-import { userTokenAtom } from '../store/atoms';
+import { writePostTypes } from '../types/types';
 
 const Axios = axios.create({
     baseURL: Config.API_BASE_URL,
 });
+
+// GOOGLE
+export const searchGoogleAPI = async (searchInput: string, nextPageToken: string) => {
+    const url = nextPageToken
+        ? `https://maps.googleapis.com/maps/api/place/textsearch/json?pagetoken=${nextPageToken}&key=${Config.GOOGLE_PLACE_API_KEY}`
+        : `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${searchInput}%20in%20Korea&key=${Config.GOOGLE_PLACE_API_KEY}`;
+    const response = await axios({
+        method: 'get',
+        url,
+        headers: {
+            'Accept-Language': 'ko',
+        },
+    });
+    return response;
+};
 
 // JOIN
 export const emailAuthAPI = async (email: string) => {
@@ -23,11 +37,14 @@ export const emailAuthAPI = async (email: string) => {
 };
 export const checkNicknameAPI = async (nickname: string) => {
     const response = await Axios({
-        method: 'get',
-        url: `/api/v1/member/check-nickname?nickName=${nickname}`,
+        method: 'post',
+        url: '/api/v1/member/check-nickname',
         headers: {
             'Content-Type': 'application/json',
         },
+        data: JSON.stringify({
+            nickName: nickname,
+        }),
     });
     return response;
 };
@@ -100,6 +117,20 @@ export const nearByUserPostsAPI = async (param: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${param.accessToken}`,
         },
+    });
+    return response;
+};
+
+// COMMUNITY
+export const writePostAPI = async (param: { token: string; data: writePostTypes }) => {
+    const response = await Axios({
+        url: '/api/v1/post/topPost',
+        method: 'post',
+        headers: {
+            'Content-Type': 'multipart/form-data; boundary=someArbitraryUniqueString',
+            Authorization: `Bearer ${param.token}`,
+        },
+        data: JSON.stringify(param.data),
     });
     return response;
 };

@@ -5,6 +5,7 @@ import { useRecoilValue } from 'recoil';
 
 import LoginScreen from '../screens/EmailLoginScreen';
 import BottomTabNavigation from './BottomTabNavigation';
+import WritePostScreen from '../screens/WritePostScreen';
 import JoinMemberScreen from '../screens/JoinMemberScreen';
 import NotLoginHomeScreen from '../screens/NotLoginHomeScreen';
 import InitLikeKeywordScreen from '../screens/InitLikeKeywordScreen';
@@ -12,6 +13,7 @@ import RequestPermissionScreen from '../screens/RequestPermissionScreen';
 import { RootStackParamList } from '../types/types';
 // temporary
 import { userTokenAtom } from '../store/atoms';
+import EditNicknameScreen from '../screens/myProfile/EditNicknameScreen';
 
 export const RootStackNavigation = () => {
     const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -27,9 +29,11 @@ export const RootStackNavigation = () => {
             }}>
             {!isUser.accessToken ? (
                 <>
+                    <Stack.Screen name="BottomTab" component={BottomTabNavigation} />
+                    <Stack.Screen name="EditNickname" component={EditNicknameScreen} />
+                    <Stack.Screen name="WritePost" component={WritePostScreen} />
                     <Stack.Screen name="RequestPermission" component={RequestPermissionScreen} />
                     <Stack.Screen name="InitKeyword" component={InitLikeKeywordScreen} />
-                    <Stack.Screen name="BottomTab" component={BottomTabNavigation} />
                 </>
             ) : (
                 <>

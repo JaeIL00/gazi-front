@@ -11,10 +11,10 @@ import { screenHeight } from '../../utils/changeStyleSize';
 import { nearbyPostListModalStyles } from '../../styles/styles';
 import { NearbyPostListModalProps, PostTypes } from '../../types/types';
 
-const FULL_ANIVALUE = -415 * screenHeight; // 290
-const MIDDLE_ANIVALUE = 0;
-const MINI_ANIVALUE = 152 * screenHeight;
-const INIT_MINI = 440 * screenHeight; // 440
+const FULL_ANIM_VALUE = -415 * screenHeight;
+const MIDDLE_ANIM_VALUE = 0;
+const MINI_ANIM_VALUE = 152 * screenHeight;
+const INIT_MINI = 440 * screenHeight;
 const INIT_OUTPUT = INIT_MINI + 100;
 
 const NearbyPostListModal = ({
@@ -30,6 +30,7 @@ const NearbyPostListModal = ({
     notBottomSheetMini,
     onPressGetUserPosition,
     callNextPageHandler,
+    moveToWritePost,
 }: NearbyPostListModalProps) => {
     // Modal animation handling
     const animRef = useRef<Animated.Value>(new Animated.Value(0)).current;
@@ -42,18 +43,18 @@ const NearbyPostListModal = ({
                 const { dy } = gestureState;
                 if (animType.current === 'mini') {
                     if (dy > 0) return;
-                    animRef.setValue(MINI_ANIVALUE + dy);
-                    opacityRef.setValue(-MINI_ANIVALUE - dy);
+                    animRef.setValue(MINI_ANIM_VALUE + dy);
+                    opacityRef.setValue(-MINI_ANIM_VALUE - dy);
                 }
                 if (animType.current === 'middle') {
-                    if (dy > MINI_ANIVALUE) return;
+                    if (dy > MINI_ANIM_VALUE) return;
                     animRef.setValue(dy);
                     opacityRef.setValue(-dy);
                 }
                 if (animType.current === 'full') {
-                    if (dy > MINI_ANIVALUE - FULL_ANIVALUE) return;
-                    animRef.setValue(FULL_ANIVALUE + dy);
-                    opacityRef.setValue(-FULL_ANIVALUE - dy);
+                    if (dy > MINI_ANIM_VALUE - FULL_ANIM_VALUE) return;
+                    animRef.setValue(FULL_ANIM_VALUE + dy);
+                    opacityRef.setValue(-FULL_ANIM_VALUE - dy);
                 }
             },
             onPanResponderEnd: (event, gestureState) => {
@@ -62,12 +63,12 @@ const NearbyPostListModal = ({
                 if (dy < -30 && animType.current === 'middle') {
                     // To full from middle
                     Animated.timing(animRef, {
-                        toValue: FULL_ANIVALUE,
+                        toValue: FULL_ANIM_VALUE,
                         duration: 200,
                         useNativeDriver: true,
                     }).start();
                     Animated.timing(opacityRef, {
-                        toValue: -FULL_ANIVALUE,
+                        toValue: -FULL_ANIM_VALUE,
                         useNativeDriver: true,
                     }).start(({ finished }: { finished: boolean }) => {
                         if (finished) {
@@ -80,7 +81,7 @@ const NearbyPostListModal = ({
                 if (dy > -30 && animType.current === 'middle') {
                     // To mini from middle
                     Animated.timing(animRef, {
-                        toValue: MINI_ANIVALUE,
+                        toValue: MINI_ANIM_VALUE,
                         duration: 200,
                         useNativeDriver: true,
                     }).start();
@@ -91,7 +92,7 @@ const NearbyPostListModal = ({
                 if (-330 < dy && dy < -30 && animType.current === 'mini') {
                     // To middle from mini
                     Animated.timing(animRef, {
-                        toValue: MIDDLE_ANIVALUE,
+                        toValue: MIDDLE_ANIM_VALUE,
                         duration: 200,
                         useNativeDriver: true,
                     }).start();
@@ -102,19 +103,19 @@ const NearbyPostListModal = ({
                 if (dy > -30 && animType.current === 'mini') {
                     // None
                     Animated.timing(animRef, {
-                        toValue: MINI_ANIVALUE,
+                        toValue: MINI_ANIM_VALUE,
                         useNativeDriver: true,
                     }).start();
                 }
                 if (dy < -330 && animType.current === 'mini') {
                     // To full from mini
                     Animated.timing(animRef, {
-                        toValue: FULL_ANIVALUE,
+                        toValue: FULL_ANIM_VALUE,
                         duration: 200,
                         useNativeDriver: true,
                     }).start();
                     Animated.timing(opacityRef, {
-                        toValue: -FULL_ANIVALUE,
+                        toValue: -FULL_ANIM_VALUE,
                         useNativeDriver: true,
                     }).start(({ finished }: { finished: boolean }) => {
                         if (finished) {
@@ -128,12 +129,12 @@ const NearbyPostListModal = ({
                 if (330 > dy && dy > 30 && animType.current === 'full') {
                     // To middile from full
                     Animated.timing(animRef, {
-                        toValue: MIDDLE_ANIVALUE,
+                        toValue: MIDDLE_ANIM_VALUE,
                         duration: 200,
                         useNativeDriver: true,
                     }).start();
                     Animated.timing(opacityRef, {
-                        toValue: -MIDDLE_ANIVALUE,
+                        toValue: -MIDDLE_ANIM_VALUE,
                         useNativeDriver: true,
                     }).start(({ finished }: { finished: boolean }) => {
                         if (finished) {
@@ -146,12 +147,12 @@ const NearbyPostListModal = ({
                 if (dy > 330 && animType.current === 'full') {
                     // To mini from full
                     Animated.timing(animRef, {
-                        toValue: MINI_ANIVALUE,
+                        toValue: MINI_ANIM_VALUE,
                         duration: 200,
                         useNativeDriver: true,
                     }).start();
                     Animated.timing(opacityRef, {
-                        toValue: -MINI_ANIVALUE,
+                        toValue: -MINI_ANIM_VALUE,
                         useNativeDriver: true,
                     }).start(({ finished }: { finished: boolean }) => {
                         if (finished) {
@@ -163,11 +164,11 @@ const NearbyPostListModal = ({
                 if (dy < 30 && animType.current === 'full') {
                     // None
                     Animated.timing(animRef, {
-                        toValue: FULL_ANIVALUE,
+                        toValue: FULL_ANIM_VALUE,
                         useNativeDriver: true,
                     }).start();
                     Animated.timing(opacityRef, {
-                        toValue: -FULL_ANIVALUE,
+                        toValue: -FULL_ANIM_VALUE,
                         useNativeDriver: true,
                     }).start();
                 }
@@ -179,12 +180,12 @@ const NearbyPostListModal = ({
     useEffect(() => {
         if (handleModalTrigger) {
             Animated.timing(animRef, {
-                toValue: MIDDLE_ANIVALUE,
+                toValue: MIDDLE_ANIM_VALUE,
                 duration: 200,
                 useNativeDriver: true,
             }).start();
             Animated.timing(opacityRef, {
-                toValue: MIDDLE_ANIVALUE,
+                toValue: MIDDLE_ANIM_VALUE,
                 duration: 200,
                 useNativeDriver: true,
             }).start(({ finished }: { finished: boolean }) => {
@@ -202,7 +203,7 @@ const NearbyPostListModal = ({
     useEffect(() => {
         if (isBottomSheetMini) {
             Animated.timing(animRef, {
-                toValue: MINI_ANIVALUE,
+                toValue: MINI_ANIM_VALUE,
                 duration: 200,
                 useNativeDriver: true,
             }).start();
@@ -211,11 +212,13 @@ const NearbyPostListModal = ({
         }
     }, [isBottomSheetMini]);
 
+    // Flatlist function
     const keyExtractor = useCallback((item: PostTypes) => item.postId + 'list', []);
     const postList = useCallback(({ item }: { item: PostTypes }) => <PostListItem post={item} />, []);
     const ItemSeparatorComponent = useCallback(() => <Spacer height={20} />, []);
     const ListFooterComponent = useCallback(() => <Spacer height={20} />, []);
 
+    // Going to current position by toggle button
     const onPressCurrentPositionToggle = useCallback(() => {
         onPressGetUserPosition();
         moveToBottomSheetMini();
@@ -228,11 +231,11 @@ const NearbyPostListModal = ({
                     nearbyPostListModalStyles.grayBackground,
                     {
                         opacity: opacityRef.interpolate({
-                            inputRange: [-MIDDLE_ANIVALUE, -FULL_ANIVALUE],
+                            inputRange: [-MIDDLE_ANIM_VALUE, -FULL_ANIM_VALUE],
                             outputRange: [0, 0.6],
                         }),
                         zIndex: opacityRef.interpolate({
-                            inputRange: [-MIDDLE_ANIVALUE, -MIDDLE_ANIVALUE + 10, -FULL_ANIVALUE],
+                            inputRange: [-MIDDLE_ANIM_VALUE, -MIDDLE_ANIM_VALUE + 10, -FULL_ANIM_VALUE],
                             outputRange: [-1, 0, 0],
                         }),
                     },
@@ -250,7 +253,7 @@ const NearbyPostListModal = ({
                         },
                     ],
                     opacity: opacityRef.interpolate({
-                        inputRange: [-MIDDLE_ANIVALUE, -FULL_ANIVALUE - 100],
+                        inputRange: [-MIDDLE_ANIM_VALUE, -FULL_ANIM_VALUE - 100],
                         outputRange: [1, 0],
                     }),
                 }}>
@@ -272,7 +275,7 @@ const NearbyPostListModal = ({
                     {Platform.OS === 'android' && (
                         <DropShadow style={nearbyPostListModalStyles.dropshadow}>
                             <TouchButton
-                                onPress={() => {}}
+                                onPress={moveToWritePost}
                                 width={52}
                                 height={52}
                                 borderRadius={52}

@@ -80,7 +80,7 @@ const InitLikeKeywordTemplate = ({ moveToScreen }: InitLikeKeywordTemplateProps)
 
     // Checked state handling
     const [checkedKeywords, setCheckedKeywords] = useState<number[]>([]);
-    const checkedKeywordsHandler = (list: KeywordListTypes, isChecked: boolean[]) => {
+    const checkedKeywordsHandler = (list: KeywordListTypes[], isChecked: boolean[]) => {
         const getId = list.map((item, index) => {
             if (item.id !== 9999 && item.id !== 9998 && isChecked[index]) {
                 return item.id;
@@ -90,9 +90,9 @@ const InitLikeKeywordTemplate = ({ moveToScreen }: InitLikeKeywordTemplateProps)
         setCheckedKeywords(cleanType);
     };
     useEffect(() => {
-        const asd = [...trafficKeywords, ...subwayKeywords, ...issueKeywords];
-        const df = [...checkTraffic, ...checkSubway, ...checkIssue];
-        checkedKeywordsHandler(asd, df);
+        const allList = [...trafficKeywords, ...subwayKeywords, ...issueKeywords];
+        const checkedList = [...checkTraffic, ...checkSubway, ...checkIssue];
+        checkedKeywordsHandler(allList, checkedList);
     }, [checkTraffic, checkIssue, checkSubway]);
 
     // Send like keywords API
@@ -144,6 +144,9 @@ const InitLikeKeywordTemplate = ({ moveToScreen }: InitLikeKeywordTemplateProps)
                         list={trafficKeywords}
                         isCheck={checkTraffic}
                         checkKeywordHandler={checkKeywordHandler}
+                        checkTextColor={Colors.BLACK}
+                        checkBorderColor={Colors.BLACK}
+                        checkBackColor={Colors.WHITE}
                     />
                     {checkTraffic[2] && (
                         <KeywordsList
@@ -151,6 +154,9 @@ const InitLikeKeywordTemplate = ({ moveToScreen }: InitLikeKeywordTemplateProps)
                             list={subwayKeywords}
                             isCheck={checkSubway}
                             checkKeywordHandler={checkKeywordHandler}
+                            checkTextColor={Colors.WHITE}
+                            checkBorderColor={undefined}
+                            checkBackColor={Colors.BLACK}
                         />
                     )}
                 </View>
@@ -165,6 +171,9 @@ const InitLikeKeywordTemplate = ({ moveToScreen }: InitLikeKeywordTemplateProps)
                         list={issueKeywords}
                         isCheck={checkIssue}
                         checkKeywordHandler={checkKeywordHandler}
+                        checkTextColor={Colors.WHITE}
+                        checkBorderColor={undefined}
+                        checkBackColor={Colors.BLACK}
                     />
                 </View>
             </ScrollView>
