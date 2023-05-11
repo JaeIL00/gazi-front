@@ -131,6 +131,7 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritePost }:
     const initNearPosts = () => {
         remove();
         refetch();
+        setNearPostList([]);
     };
 
     // Again request modal button Handling

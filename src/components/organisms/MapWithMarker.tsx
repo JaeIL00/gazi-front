@@ -54,7 +54,6 @@ const MapWithMarker = ({
                 </Marker>
             )}
             {nearPostList.map((item, index) => {
-                console.log(item);
                 const markertypeIcon = () => {
                     switch (item.headKeyword) {
                         case 1:
