@@ -505,6 +505,7 @@ export const searchLocationStyles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         paddingLeft: 20 * screenWidth,
+        paddingVertical: 12 * screenHeight,
     },
     listItemBox: {
         flexDirection: 'row',

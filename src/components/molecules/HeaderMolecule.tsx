@@ -42,8 +42,8 @@ const HeaderMolecule = ({
                     <MediumText text={title} size={18} color={Colors.BLACK} />
                 </View>
             </TouchButton>
-            {headerFinish && finishFunction && (
-                <TouchButton onPress={() => (isWorkDone ? finishFunction() : undefined)}>
+            {headerFinish && (
+                <TouchButton onPress={() => (isWorkDone && finishFunction ? finishFunction() : undefined)}>
                     <SemiBoldText text={finishText} size={16} color={isWorkDone ? Colors.BLACK : Colors.TXT_GRAY} />
                 </TouchButton>
             )}

@@ -292,6 +292,8 @@ const WritePostTemplate = ({ moveToScreen }: WritePostTemplateProps) => {
                         isNextStep={false}
                         title="위치 설정"
                         finishText="완료"
+                        background="undefined"
+                        finishFunction={() => locationModalHandler('CLOSE')}
                     />
 
                     <Spacer height={28} />
