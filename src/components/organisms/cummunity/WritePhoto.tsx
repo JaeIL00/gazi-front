@@ -10,10 +10,10 @@ import { screenFont, screenHeight, screenWidth } from '../../../utils/changeStyl
 
 const WritePhoto = ({ getImageHandler, notAllowPermission }: WritePhotoProps) => {
     // Check image library permission
-    const checkLocationPermission = async (): Promise<boolean> => {
+    const checkImagePermission = async (): Promise<boolean> => {
         try {
-            const imagePermmission = await check(PERMISSIONS.ANDROID.READ_MEDIA_IMAGES);
-            const isAllow = imagePermmission === RESULTS.GRANTED;
+            const imagePermission = await check(PERMISSIONS.ANDROID.READ_MEDIA_IMAGES);
+            const isAllow = imagePermission === RESULTS.GRANTED;
             return isAllow;
         } catch (error) {
             // For Debug
@@ -34,7 +34,7 @@ const WritePhoto = ({ getImageHandler, notAllowPermission }: WritePhotoProps) =>
         },
     ]);
     const getImageLibrary = async () => {
-        const isAllow = await checkLocationPermission();
+        const isAllow = await checkImagePermission();
         if (isAllow) {
             launchImageLibrary(
                 {
