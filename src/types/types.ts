@@ -357,4 +357,5 @@ export type MyProfileTemplateProps = {
 };
 export type ThreadItemTemplateProps = {
     post: PostTypes;
+    movetoCommunityScreen: () => void;
 };

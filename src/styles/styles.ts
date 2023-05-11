@@ -901,6 +901,27 @@ export const editNicknameTemplateStyles = StyleSheet.create({
         flexDirection: 'row',
     },
 });
+export const threadItemTemplateStyles = StyleSheet.create({
+    backButtonBox: {
+        position: 'absolute',
+        top: 20 * screenHeight,
+        left: 16 * screenWidth,
+        zIndex: 1,
+    },
+    backButtonShadow: {
+        shadowColor: '#000000',
+        shadowOffset: {
+            width: 0,
+            height: 4 * screenHeight,
+        },
+        shadowOpacity: 0.15,
+        shadowRadius: 4 * screenFont,
+    },
+    mapCrop: {
+        height: 150 * screenHeight,
+        backgroundColor: '#999',
+    },
+});
 
 // SCREEN
 export const seviceHomeScreenStyles = StyleSheet.create({
