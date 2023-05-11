@@ -27,7 +27,10 @@ const MyProfileTemplate = ({ moveToScreen }: MyProfileTemplateProps) => {
                         borderColor="#EBEBEB">
                         <View style={myProfileTemplateStyles.tabListBox}>
                             <NormalText text={item.text} size={16} color={Colors.BLACK} />
-                            <Icons type="fontAwesome" name="angle-right" size={20} color="#D7D7D7" />
+                            <Image
+                                source={require('../../../assets/icons/to-right.png')}
+                                style={myProfileTemplateStyles.tabRightIcon}
+                            />
                         </View>
                     </TouchButton>
                 ) : (

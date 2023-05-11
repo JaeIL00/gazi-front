@@ -876,6 +876,10 @@ export const myProfileTemplateStyles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between',
     },
+    tabRightIcon: {
+        width: 8 * screenWidth,
+        height: 14 * screenHeight,
+    },
 });
 export const editNicknameTemplateStyles = StyleSheet.create({
     headerBox: {
