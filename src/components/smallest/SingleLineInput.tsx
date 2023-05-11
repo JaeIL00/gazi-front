@@ -32,6 +32,7 @@ export const SingleLineInput = ({
         };
     }, []);
 
+    // First render check isFocus
     const focusTextInput = () => {
         textInputRef.current?.focus();
     };
