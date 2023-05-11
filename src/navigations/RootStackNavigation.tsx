@@ -14,8 +14,8 @@ import InitLikeKeywordScreen from '../screens/InitLikeKeywordScreen';
 import RequestPermissionScreen from '../screens/RequestPermissionScreen';
 import EditNicknameScreen from '../screens/myProfile/EditNicknameScreen';
 import { autoLoginAPI } from '../queries/api';
-import { userInfoAtom, userTokenAtom } from '../store/atoms';
 import { RootStackParamList } from '../types/types';
+import { userInfoAtom, userTokenAtom } from '../store/atoms';
 
 export const RootStackNavigation = () => {
     const Stack = createNativeStackNavigator<RootStackParamList>();

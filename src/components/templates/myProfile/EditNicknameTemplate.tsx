@@ -28,7 +28,7 @@ const EditNicknameTemplate = ({ moveToMyProfileScreen }: EditNicknameTemplatePro
     const onChangeNicknameText = (text: string) => {
         onChangeText(text);
         setIsGoodResponse(false);
-        setIsFocusText(false);
+        // setIsFocusText(false);
         if (text.length < 2) {
             changValidationResult('2글자 이상 입력해주세요');
         } else {
@@ -48,7 +48,7 @@ const EditNicknameTemplate = ({ moveToMyProfileScreen }: EditNicknameTemplatePro
     const resetText = () => {
         onChangeText('');
         changValidationResult('2글자 이상 입력해주세요');
-        setIsFocusText(true);
+        // setIsFocusText(true);
     };
 
     // Check nickname API
@@ -110,7 +110,7 @@ const EditNicknameTemplate = ({ moveToMyProfileScreen }: EditNicknameTemplatePro
                     <SingleLineInput
                         value={nickname}
                         onChangeText={text => onChangeNicknameText(text)}
-                        isFocus={isFocusText}
+                        isFocus={true}
                         width={260}
                         maxLength={7}
                     />

@@ -62,15 +62,17 @@ export const singleLineInputStyles = (
     placeFontFamily: string | null,
 ) =>
     StyleSheet.create({
-        input: {
+        common: {
             fontSize: fontSize ? fontSize * screenFont : 16 * screenFont,
             width: width && width * screenWidth,
             height: height && height * screenHeight,
+            paddingVertical: 0,
+        },
+        input: {
             color: Colors.TXT_BLACK,
             fontFamily: fontFamily ? fontFamily : undefined,
         },
         placeholder: {
-            fontSize: fontSize ? fontSize * screenFont : 14 * screenFont,
             color: Colors.TXT_LIGHTGRAY,
             fontFamily: placeFontFamily ? placeFontFamily : undefined,
         },
@@ -882,6 +884,10 @@ export const myProfileTemplateStyles = StyleSheet.create({
     },
 });
 export const editNicknameTemplateStyles = StyleSheet.create({
+    templateContent: {
+        paddingHorizontal: 16 * screenWidth,
+        paddingTop: 34 * screenHeight,
+    },
     inputBox: {
         backgroundColor: Colors.WHITE,
         borderColor: '#D4D4D4',
@@ -890,11 +896,8 @@ export const editNicknameTemplateStyles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between',
         paddingHorizontal: 16 * screenWidth,
+        paddingVertical: 15 * screenHeight,
         flexDirection: 'row',
-    },
-    templateContent: {
-        paddingHorizontal: 16 * screenWidth,
-        paddingTop: 34 * screenHeight,
     },
 });
 
