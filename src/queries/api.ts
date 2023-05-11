@@ -139,9 +139,10 @@ export const nearByUserPostsAPI = async (param: {
     curLon: number;
     accessToken: string;
     page: number;
+    isNearSearch: boolean;
 }) => {
     const response = await Axios({
-        url: `/api/v1/post/locationPost?minLat=${param.minLat}&minLon=${param.minLon}&maxLat=${param.maxLat}&maxLon=${param.maxLon}&curLat=${param.curLat}&curLon=${param.curLon}&page=${param.page}`,
+        url: `/api/v1/post/locationPost?minLat=${param.minLat}&minLon=${param.minLon}&maxLat=${param.maxLat}&maxLon=${param.maxLon}&curLat=${param.curLat}&curLon=${param.curLon}&page=${param.page}&isNearSearch=${param.isNearSearch}`,
         method: 'get',
         headers: {
             'Content-Type': 'application/json',

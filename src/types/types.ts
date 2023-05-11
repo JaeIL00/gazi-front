@@ -18,6 +18,7 @@ export type MapLocationTypes = {
 export type MapBoundaryTypes = {
     northEast: MapLocationTypes;
     southWest: MapLocationTypes;
+    isNearSearch: boolean;
 };
 export type PostTypes = {
     title: string;
@@ -27,12 +28,7 @@ export type PostTypes = {
     content: string;
     latitude: number;
     longitude: number;
-    headKeyword: {
-        id: number;
-        keywordEnum: string;
-        vehicleType: string;
-        keywordName: string;
-    };
+    headKeyword: number;
     thumbNail: string;
     postId: number;
 };
