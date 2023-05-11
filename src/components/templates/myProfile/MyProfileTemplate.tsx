@@ -12,8 +12,13 @@ import { myProfileTemplateStyles } from '../../../styles/styles';
 import { myProfileTabList } from '../../../utils/myProfileTabList';
 import { useRootNavigation } from '../../../navigations/RootStackNavigation';
 import { screenFont, screenHeight, screenWidth } from '../../../utils/changeStyleSize';
+import { useRecoilValue } from 'recoil';
+import { userInfoAtom } from '../../../store/atoms';
 
 const MyProfileTemplate = ({ moveToScreen }: MyProfileTemplateProps) => {
+    // Get user nickname
+    const { nickname } = useRecoilValue(userInfoAtom);
+
     const scrollViewRender = useCallback((item: MyProfileTabTypes) => {
         const rootNavigation = useRootNavigation();
         return (
@@ -58,7 +63,7 @@ const MyProfileTemplate = ({ moveToScreen }: MyProfileTemplateProps) => {
                 </TouchButton>
                 <View style={myProfileTemplateStyles.profileTextBox}>
                     <View style={myProfileTemplateStyles.profileNameBox}>
-                        <SemiBoldText text="가나다라마바사아자차카타" size={16} color={Colors.WHITE} />
+                        <SemiBoldText text={nickname} size={16} color={Colors.WHITE} />
                         <TouchButton onPress={() => moveToScreen('EDIT_NICK')}>
                             <Image
                                 source={require('../../../assets/icons/pencil.png')}

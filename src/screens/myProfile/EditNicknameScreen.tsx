@@ -1,8 +1,8 @@
 import React from 'react';
 import { View } from 'react-native';
 import EditNicknameTemplate from '../../components/templates/myProfile/EditNicknameTemplate';
-import { globalDefaultStyles } from '../../styles/styles';
 import { useRootNavigation } from '../../navigations/RootStackNavigation';
+import { editNicknameScreenStyles } from '../../styles/styles';
 
 const EditNicknameScreen = () => {
     const rootNavigation = useRootNavigation();
@@ -12,7 +12,7 @@ const EditNicknameScreen = () => {
         }
     };
     return (
-        <View style={globalDefaultStyles.container}>
+        <View style={editNicknameScreenStyles.container}>
             <EditNicknameTemplate moveToMyProfileScreen={moveToMyProfileScreen} />
         </View>
     );

@@ -19,6 +19,8 @@ const HeaderMolecule = ({
     headerFinish,
     title,
     finishText,
+    background,
+    finishFunction,
 }: HeaderMoleculeProps) => {
     return (
         <View
@@ -26,6 +28,7 @@ const HeaderMolecule = ({
                 headerStyles.searchHeaderBox,
                 {
                     paddingHorizontal: isPaddingHorizontal ? 16 * screenWidth : undefined,
+                    backgroundColor: background,
                 },
             ]}>
             <TouchButton onPress={() => (isNextStep ? backHandler('NEXT') : backHandler('CLOSE'))}>
@@ -39,8 +42,8 @@ const HeaderMolecule = ({
                     <MediumText text={title} size={18} color={Colors.BLACK} />
                 </View>
             </TouchButton>
-            {headerFinish && (
-                <TouchButton onPress={() => (isWorkDone ? backHandler('CLOSE') : undefined)}>
+            {headerFinish && finishFunction && (
+                <TouchButton onPress={() => (isWorkDone ? finishFunction() : undefined)}>
                     <SemiBoldText text={finishText} size={16} color={isWorkDone ? Colors.BLACK : Colors.TXT_GRAY} />
                 </TouchButton>
             )}

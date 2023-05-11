@@ -105,6 +105,11 @@ export type userTokenAtomTypes = {
     accessToken: string;
     refreshToken: string;
 };
+export type userInfoAtomTypes = {
+    memberId: number | null;
+    nickname: string;
+};
+
 export type joinMemberTypes = {
     email: string;
     password: string;
@@ -248,7 +253,9 @@ export type HeaderMoleculeProps = {
     headerFinish: boolean;
     title: string;
     finishText: string;
+    background: string;
     backHandler: (state: string) => void;
+    finishFunction?: () => void;
 };
 
 // ORGANISMS

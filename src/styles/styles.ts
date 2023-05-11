@@ -213,7 +213,7 @@ export const headerStyles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        paddingTop: 17 * screenHeight,
+        paddingVertical: 16 * screenHeight,
     },
     searchTitleBox: {
         flexDirection: 'row',
@@ -882,9 +882,6 @@ export const myProfileTemplateStyles = StyleSheet.create({
     },
 });
 export const editNicknameTemplateStyles = StyleSheet.create({
-    headerBox: {
-        paddingBottom: 34 * screenHeight,
-    },
     inputBox: {
         backgroundColor: Colors.WHITE,
         borderColor: '#D4D4D4',
@@ -895,6 +892,10 @@ export const editNicknameTemplateStyles = StyleSheet.create({
         paddingHorizontal: 16 * screenWidth,
         flexDirection: 'row',
     },
+    templateContent: {
+        paddingHorizontal: 16 * screenWidth,
+        paddingTop: 34 * screenHeight,
+    },
 });
 
 // SCREEN
@@ -904,6 +905,11 @@ export const seviceHomeScreenStyles = StyleSheet.create({
     },
 });
 export const myProfileScreenStyles = StyleSheet.create({
+    container: {
+        flex: 1,
+    },
+});
+export const editNicknameScreenStyles = StyleSheet.create({
     container: {
         flex: 1,
     },

@@ -99,7 +99,6 @@ export const deleteMemberAPI = async (token: string) => {
 
 // USER PROFILE
 export const editNicknameAPI = async (param: { accessToken: string; data: string }) => {
-    console.log(param);
     const response = await Axios({
         url: '/api/v1/member/change-nickname',
         method: 'post',
@@ -108,7 +107,7 @@ export const editNicknameAPI = async (param: { accessToken: string; data: string
             Authorization: `Bearer ${param.accessToken}`,
         },
         data: JSON.stringify({
-            nickname: param.data,
+            nickName: param.data,
         }),
     });
     return response;
