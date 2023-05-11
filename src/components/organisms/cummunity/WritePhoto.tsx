@@ -5,7 +5,7 @@ import { PERMISSIONS, RESULTS, check } from 'react-native-permissions';
 
 import TouchButton from '../../smallest/TouchButton';
 import { writePhotoStyles } from '../../../styles/styles';
-import { WritePhotoProps, uploadImageTypes } from '../../../types/types';
+import { WritePhotoProps, UploadImageTypes } from '../../../types/types';
 import { screenFont, screenHeight, screenWidth } from '../../../utils/changeStyleSize';
 
 const WritePhoto = ({ getImageHandler, notAllowPermission }: WritePhotoProps) => {
@@ -23,7 +23,7 @@ const WritePhoto = ({ getImageHandler, notAllowPermission }: WritePhotoProps) =>
     };
 
     // Get image in library
-    const [imageResponse, setImageResponse] = useState<uploadImageTypes>([
+    const [imageResponse, setImageResponse] = useState<UploadImageTypes>([
         {
             fileName: '',
             fileSize: null,
@@ -43,7 +43,7 @@ const WritePhoto = ({ getImageHandler, notAllowPermission }: WritePhotoProps) =>
                 },
                 response => {
                     if (response.assets) {
-                        formDataMachine(response.assets);
+                        getImageHandler(response.assets);
                         setImageResponse(response.assets);
                     }
                 },
@@ -62,7 +62,6 @@ const WritePhoto = ({ getImageHandler, notAllowPermission }: WritePhotoProps) =>
             };
             formData.append(`imageFile${index}`, dataAsset);
         }
-        getImageHandler(formData.getParts());
     };
 
     return (

@@ -27,7 +27,7 @@ export const RootStackNavigation = () => {
                 headerShown: false,
                 presentation: 'containedModal',
             }}>
-            {!isUser.accessToken ? (
+            {isUser.accessToken ? (
                 <>
                     <Stack.Screen name="EditNickname" component={EditNicknameScreen} />
                     <Stack.Screen name="BottomTab" component={BottomTabNavigation} />

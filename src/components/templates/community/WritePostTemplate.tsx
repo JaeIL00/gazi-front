@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import { Image, Linking, View } from 'react-native';
+import { ActivityIndicator, Image, Linking, View } from 'react-native';
 import { useMutation } from 'react-query';
 import { useRecoilValue } from 'recoil';
 import { debounce } from 'lodash';
@@ -16,17 +16,18 @@ import SearchLocation from '../../organisms/SearchLocation';
 import WritePhoto from '../../organisms/cummunity/WritePhoto';
 import WritePostAddKeyword from '../../organisms/cummunity/WritePostAddKeyword';
 import FailPermissionModal from '../../organisms/FailPermissionModal';
-import { writePostAPI } from '../../../queries/api';
+import { writePostAPI, writePostFilesAPI } from '../../../queries/api';
 import { userTokenAtom } from '../../../store/atoms';
 import { issueKeywords } from '../../../utils/allKeywords';
 import { writePostTemplateStyles } from '../../../styles/styles';
 import { SingleLineInput } from '../../smallest/SingleLineInput';
-import { WritePostTemplateProps, writePostTypes } from '../../../types/types';
+import { UploadImageTypes, WritePostTemplateProps, WritePostTypes } from '../../../types/types';
 import HeaderMolecule from '../../molecules/HeaderMolecule';
+import { Asset } from 'react-native-image-picker';
 
 const WritePostTemplate = ({ moveToScreen }: WritePostTemplateProps) => {
     // Write post data for API request
-    const [writePostData, setWritePostData] = useState<writePostTypes>({
+    const [writePostData, setWritePostData] = useState<WritePostTypes>({
         dto: {
             title: '',
             placeName: '',
@@ -58,7 +59,7 @@ const WritePostTemplate = ({ moveToScreen }: WritePostTemplateProps) => {
                 console.log('(ERROR) Get keyword function of keyword modal.', state);
         }
     };
-    const getImageHandler = (files: FormDataPart[]) => {
+    const getImageHandler = (files: Asset[]) => {
         setWritePostData({ ...writePostData, files, thumbnail: files[0] });
     };
 
@@ -66,9 +67,11 @@ const WritePostTemplate = ({ moveToScreen }: WritePostTemplateProps) => {
     const { accessToken } = useRecoilValue(userTokenAtom);
     const [onErrorModal, setOnErrorModal] = useState(false);
     const [onErrorText, setOnErrorText] = useState('');
-    const { mutate, isLoading } = useMutation(writePostAPI, {
-        onSuccess: data => {
-            console.log(data);
+    const { mutate: postMutate, isLoading: isPostLoading } = useMutation(writePostAPI, {
+        onSuccess: ({ data }) => {
+            console.log(data.data);
+            const postId: number = data.data;
+            uploadFilesHandler(postId);
         },
         onError: error => {
             // For Debug
@@ -87,14 +90,40 @@ const WritePostTemplate = ({ moveToScreen }: WritePostTemplateProps) => {
         } else if (isNotEnoughKeyword) {
             setOnErrorText('키워드를 설정해주세요');
             setOnErrorModal(true);
+        } else {
+            console.log(writePostData.dto);
+            postMutate({
+                accessToken,
+                data: writePostData.dto,
+            });
         }
-        // mutate({
-        //     token: accessToken,
-        //     data: writePostData,
-        // });
     };
     const offErrorModalHandler = () => {
         setOnErrorModal(false);
+    };
+
+    // Upload files
+    const { mutate: postFileMutate, isLoading: isPostFileLoading } = useMutation(writePostFilesAPI, {
+        onSuccess: ({ data }) => {
+            console.log(data);
+        },
+        onError: error => {
+            // For Debug
+            console.log('(ERROR) Upload files API.', error);
+        },
+    });
+    const uploadFilesHandler = (postId: number) => {
+        const formdata = new FormData();
+        for (const index in writePostData.files) {
+            formdata.append('files', writePostData.files[index]);
+        }
+        formdata.append('thumbnail', writePostData.thumbnail);
+        console.log(formdata, `postId: ${postId}`);
+        postFileMutate({
+            accessToken,
+            postId,
+            data: formdata,
+        });
     };
 
     // Guide image library permission
@@ -160,7 +189,7 @@ const WritePostTemplate = ({ moveToScreen }: WritePostTemplateProps) => {
         debounce((text: string) => {
             setWritePostData({ ...writePostData, dto: { ...writePostData.dto, title } });
         }, 500),
-        [],
+        [writePostData],
     );
     const onChangeContentText = (text: string) => {
         setcontent(text);
@@ -170,7 +199,7 @@ const WritePostTemplate = ({ moveToScreen }: WritePostTemplateProps) => {
         debounce((text: string) => {
             setWritePostData({ ...writePostData, dto: { ...writePostData.dto, content } });
         }, 500),
-        [],
+        [writePostData],
     );
 
     return (
@@ -301,6 +330,8 @@ const WritePostTemplate = ({ moveToScreen }: WritePostTemplateProps) => {
                     onPressModalButton={onPressModalButton}
                 />
             )}
+
+            {isPostLoading || (isPostFileLoading && <ActivityIndicator size="large" />)}
         </View>
     );
 };

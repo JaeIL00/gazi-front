@@ -1,6 +1,6 @@
 import axios from 'axios';
 import Config from 'react-native-config';
-import { writePostTypes } from '../types/types';
+import { PostDto } from '../types/types';
 
 const Axios = axios.create({
     baseURL: Config.API_BASE_URL,
@@ -122,15 +122,29 @@ export const nearByUserPostsAPI = async (param: {
 };
 
 // COMMUNITY
-export const writePostAPI = async (param: { token: string; data: writePostTypes }) => {
+
+// TEMPORARY COMMUNITY
+export const writePostAPI = async (param: { accessToken: string; data: PostDto }) => {
     const response = await Axios({
-        url: '/api/v1/post/topPost',
+        url: '/api/v1/post/top-post',
+        method: 'post',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${param.accessToken}`,
+        },
+        data: JSON.stringify(param.data),
+    });
+    return response;
+};
+export const writePostFilesAPI = async (param: { accessToken: string; data: FormData; postId: number }) => {
+    const response = await Axios({
+        url: `/api/v1/post/top-post-file?postId=${param.postId}`,
         method: 'post',
         headers: {
             'Content-Type': 'multipart/form-data; boundary=someArbitraryUniqueString',
-            Authorization: `Bearer ${param.token}`,
+            // Authorization: `Bearer ${param.accessToken}`,
         },
-        data: JSON.stringify(param.data),
+        data: param.data,
     });
     return response;
 };

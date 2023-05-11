@@ -67,7 +67,7 @@ export type LocationResultTypes = {
     types: [];
     user_ratings_total: number;
 };
-export type uploadImageTypes =
+export type UploadImageTypes =
     | {
           fileName: string;
           fileSize: null | number;
@@ -77,18 +77,19 @@ export type uploadImageTypes =
           width: null | number;
       }[]
     | Asset[];
-export type writePostTypes = {
-    dto: {
-        title: string;
-        placeName: string;
-        content: string;
-        latitude: number | null;
-        longitude: number | null;
-        keywordIdList: number[] | null;
-        headKeywordId: number | null;
-    };
-    files: FormDataPart[];
-    thumbnail: FormDataPart | null;
+export type PostDto = {
+    title: string;
+    placeName: string;
+    content: string;
+    latitude: number | null;
+    longitude: number | null;
+    keywordIdList: number[] | null;
+    headKeywordId: number | null;
+};
+export type WritePostTypes = {
+    dto: PostDto;
+    files: Asset[];
+    thumbnail: Asset | null;
 };
 export type MyProfileTabTypes = {
     text: string;
@@ -312,7 +313,7 @@ export type WritePostAddKeywordProps = {
     getKeywordHandler: (state: string, keyword: number[]) => void;
 };
 export type WritePhotoProps = {
-    getImageHandler: (files: FormDataPart[]) => void;
+    getImageHandler: (files: Asset[]) => void;
     notAllowPermission: () => void;
 };
 
