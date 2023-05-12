@@ -18,6 +18,7 @@ import { autoLoginAPI } from '../queries/api';
 import { RootStackParamList } from '../types/types';
 import { userInfoAtom, userTokenAtom } from '../store/atoms';
 import MyPostCommentScreen from '../screens/myProfile/MyPostCommentScreen';
+import AccountManagementScreen from '../screens/myProfile/AccountManagementScreen';
 
 export const RootStackNavigation = () => {
     const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -90,6 +91,7 @@ export const RootStackNavigation = () => {
                 headerShown: false,
                 presentation: 'containedModal',
             }}>
+            <Stack.Screen name="AccountManagement" component={AccountManagementScreen} />
             <Stack.Screen name="MyPostComment" component={MyPostCommentScreen} />
             <Stack.Screen name="BottomTab" component={BottomTabNavigation} />
             <Stack.Screen name="NotLoginHome" component={NotLoginHomeScreen} />

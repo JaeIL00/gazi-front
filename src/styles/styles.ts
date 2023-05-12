@@ -16,6 +16,12 @@ export const globalDefaultStyles = StyleSheet.create({
         backgroundColor: Colors.BACKGROUND_DEFAULT,
     },
 });
+export const globalBackWhiteStyles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: Colors.WHITE,
+    },
+});
 export const nextStepButtonPosition = StyleSheet.create({
     button: {
         width: '100%',
@@ -1066,6 +1072,33 @@ export const myPostCommentTemplateStyles = StyleSheet.create({
         borderColor: Colors.BLACK,
     },
 });
+export const AccountManagementTemplateStyles = StyleSheet.create({
+    headerBox: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingBottom: 16 * screenHeight,
+        paddingTop: 41 * screenHeight,
+        paddingHorizontal: 16 * screenWidth,
+        borderBottomWidth: 1 * screenFont,
+        borderColor: '#EBEBEB',
+    },
+    headerIcon: {
+        width: 9 * screenWidth,
+        height: 16 * screenHeight,
+    },
+    tabBox: {
+        width: '100%',
+        height: 52 * screenHeight,
+        borderColor: '#EBEBEB',
+        borderBottomWidth: 1 * screenFont,
+        paddingHorizontal: 16 * screenWidth,
+    },
+    buttonBox: {
+        width: '100%',
+        height: '100%',
+        justifyContent: 'center',
+    },
+});
 
 // SCREEN
 export const seviceHomeScreenStyles = StyleSheet.create({
@@ -1087,11 +1120,5 @@ export const threadItemScreenStyles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: Colors.BACKGROUND_DEFAULT,
-    },
-});
-export const myPostCommentScreenStyles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: Colors.WHITE,
     },
 });

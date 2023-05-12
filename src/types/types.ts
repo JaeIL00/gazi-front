@@ -419,3 +419,6 @@ export type ThreadItemTemplateProps = {
 export type MyPostCommentTemplateProps = {
     moveToBackScreenHandler: () => void;
 };
+export type AccountManagementTemplateProps = {
+    moveToScreenHandler: (state: string) => void;
+};

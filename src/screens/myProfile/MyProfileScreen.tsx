@@ -2,7 +2,7 @@ import React from 'react';
 import { View } from 'react-native';
 
 import MyProfileTemplate from '../../components/templates/myProfile/MyProfileTemplate';
-import { myProfileScreenStyles } from '../../styles/styles';
+import { globalBackWhiteStyles } from '../../styles/styles';
 import { useRootNavigation } from '../../navigations/RootStackNavigation';
 
 const MyProfileScreen = () => {
@@ -15,7 +15,7 @@ const MyProfileScreen = () => {
         }
     };
     return (
-        <View style={myProfileScreenStyles.container}>
+        <View style={globalBackWhiteStyles.container}>
             <MyProfileTemplate moveToScreen={moveToScreen} />
         </View>
     );

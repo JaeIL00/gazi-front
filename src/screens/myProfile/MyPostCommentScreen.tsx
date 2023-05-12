@@ -1,7 +1,7 @@
 import React from 'react';
 import { View } from 'react-native';
 import MyPostCommentTemplate from '../../components/templates/myProfile/MyPostCommentTemplate';
-import { myPostCommentScreenStyles } from '../../styles/styles';
+import { globalBackWhiteStyles } from '../../styles/styles';
 import { useRootNavigation } from '../../navigations/RootStackNavigation';
 
 const MyPostCommentScreen = () => {
@@ -10,7 +10,7 @@ const MyPostCommentScreen = () => {
         rootNavigation.goBack();
     };
     return (
-        <View style={myPostCommentScreenStyles.container}>
+        <View style={globalBackWhiteStyles.container}>
             <MyPostCommentTemplate moveToBackScreenHandler={moveToBackScreenHandler} />
         </View>
     );
