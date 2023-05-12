@@ -7,7 +7,7 @@ import { useRootNavigation, useRootRoute } from '../../navigations/RootStackNavi
 
 const ThreadItemScreen = () => {
     const route = useRootRoute<'ThreadItem'>();
-    const data = route.params.post;
+    const postId = route.params.postId;
 
     const rootNavigation = useRootNavigation();
     const movetoCommunityScreen = () => {
@@ -18,12 +18,13 @@ const ThreadItemScreen = () => {
             title,
             rePostCount,
             time,
+            postId: postId,
         });
     };
     return (
         <View style={threadItemScreenStyles.container}>
             <ThreadItemTemplate
-                post={data}
+                postId={postId}
                 movetoCommunityScreen={movetoCommunityScreen}
                 moveToWriteScreen={moveToWriteScreen}
             />

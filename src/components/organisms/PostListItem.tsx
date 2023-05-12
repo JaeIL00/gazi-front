@@ -14,7 +14,7 @@ import { useRootNavigation } from '../../navigations/RootStackNavigation';
 const PostListItem = ({ post }: PostListItemProps) => {
     const rootNavigation = useRootNavigation();
     return (
-        <TouchButton onPress={() => rootNavigation.navigate('ThreadItem', { post })}>
+        <TouchButton onPress={() => rootNavigation.navigate('ThreadItem', { postId: post.postId })}>
             <View style={postListItemStyles.container}>
                 <View style={postListItemStyles.textBox}>
                     <SemiBoldText text={post.title} size={16} color={Colors.BLACK} />

@@ -11,8 +11,9 @@ const WritePostOrCommentScreen = () => {
     const moveToScreen = (state: string) => {
         switch (state) {
             case 'GO':
-                console.log('Finish post writing');
-                // rootNavigation.navigate('');
+                rootNavigation.navigate('ThreadItem', {
+                    postId: data?.postId!,
+                });
                 break;
             case 'BACK':
                 rootNavigation.navigate('BottomTab');

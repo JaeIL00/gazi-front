@@ -1,6 +1,6 @@
 import axios from 'axios';
 import Config from 'react-native-config';
-import { PostDto } from '../types/types';
+import { CommentReqTypes, PostDto } from '../types/types';
 
 const Axios = axios.create({
     baseURL: Config.API_BASE_URL,
@@ -180,6 +180,29 @@ export const writePostAPI = async (param: { accessToken: string; data: PostDto }
 export const writePostFilesAPI = async (param: { accessToken: string; data: FormData; postId: number }) => {
     const response = await Axios({
         url: `/api/v1/post/top-post-file?postId=${param.postId}`,
+        method: 'post',
+        headers: {
+            'Content-Type': 'multipart/form-data; boundary=someArbitraryUniqueString',
+        },
+        data: param.data,
+    });
+    return response;
+};
+export const writeCommentAPI = async (param: { accessToken: string; data: CommentReqTypes }) => {
+    const response = await Axios({
+        url: '/api/v1/post/repost',
+        method: 'post',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${param.accessToken}`,
+        },
+        data: JSON.stringify(param.data),
+    });
+    return response;
+};
+export const writeCommentFilesAPI = async (param: { data: FormData; rePostId: number }) => {
+    const response = await Axios({
+        url: `/api/v1/post/repost-file?repostId=${param.rePostId}`,
         method: 'post',
         headers: {
             'Content-Type': 'multipart/form-data; boundary=someArbitraryUniqueString',

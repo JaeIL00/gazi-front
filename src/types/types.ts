@@ -105,6 +105,13 @@ export type PostDto = {
     keywordIdList: number[] | null;
     headKeywordId: number | null;
 };
+export type CommentReqTypes = {
+    postId: number;
+    content: string;
+    latitude: number;
+    longitude: number;
+    keywordIdList: number[];
+};
 export type WritePostTypes = {
     dto: PostDto;
     files: Asset[];
@@ -155,6 +162,7 @@ export type RootStackParamList = {
               title: string;
               rePostCount: number;
               time: string;
+              postId: number;
           }
         | undefined;
     EditNickname: undefined;
@@ -162,11 +170,7 @@ export type RootStackParamList = {
     LikeKeywordSetting: undefined;
     Policies: undefined;
     ThreadItem: {
-        post:
-            | PostTypes
-            | {
-                  postId: number;
-              };
+        postId: number;
     };
 };
 export type BottomTabParamList = {
@@ -386,6 +390,7 @@ export type WritePostOrCommentTemplateProps = {
               title: string;
               rePostCount: number;
               time: string;
+              postId: number;
           }
         | undefined;
     moveToScreen: (state: string) => void;
@@ -397,11 +402,7 @@ export type MyProfileTemplateProps = {
     moveToScreen: (state: string) => void;
 };
 export type ThreadItemTemplateProps = {
-    post:
-        | PostTypes
-        | {
-              postId: number;
-          };
+    postId: number;
     movetoCommunityScreen: () => void;
     moveToWriteScreen: (title: string, rePostCount: number, time: string) => void;
 };

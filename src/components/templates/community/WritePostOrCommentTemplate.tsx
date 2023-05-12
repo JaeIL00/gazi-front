@@ -10,6 +10,7 @@ import Icons from '../../smallest/Icons';
 import Spacer from '../../smallest/Spacer';
 import Colors from '../../../styles/Colors';
 import mapStyle from '../../../styles/mapStyle';
+import NormalText from '../../smallest/NormalText';
 import MediumText from '../../smallest/MediumText';
 import TextButton from '../../molecules/TextButton';
 import TouchButton from '../../smallest/TouchButton';
@@ -22,13 +23,12 @@ import FailPermissionModal from '../../organisms/FailPermissionModal';
 import WritePostAddKeyword from '../../organisms/cummunity/WritePostAddKeyword';
 import { userTokenAtom } from '../../../store/atoms';
 import { issueKeywords } from '../../../utils/allKeywords';
-import { screenHeight, screenWidth } from '../../../utils/changeStyleSize';
-import { writePostOrCommentTemplateStyles } from '../../../styles/styles';
+import { screenWidth } from '../../../utils/changeStyleSize';
 import { SingleLineInput } from '../../smallest/SingleLineInput';
-import { writePostAPI, writePostFilesAPI } from '../../../queries/api';
+import { writeCommentAPI, writeCommentFilesAPI, writePostAPI, writePostFilesAPI } from '../../../queries/api';
+import { writePostOrCommentTemplateStyles } from '../../../styles/styles';
 import { useRootNavigation } from '../../../navigations/RootStackNavigation';
 import { WritePostOrCommentTemplateProps, WritePostTypes } from '../../../types/types';
-import NormalText from '../../smallest/NormalText';
 
 const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostOrCommentTemplateProps) => {
     // Write post data for API request
@@ -76,8 +76,7 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
     const { mutate: postMutate, isLoading: isPostLoading } = useMutation(writePostAPI, {
         onSuccess: ({ data }) => {
             const responsePostId: number = data.data;
-            uploadFilesHandler(responsePostId);
-            setPostId(responsePostId);
+            postUploadFilesHandler(responsePostId);
         },
         onError: error => {
             // For Debug
@@ -98,34 +97,55 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
             setOnErrorText('키워드를 설정해주세요');
             setOnErrorModal(true);
         } else {
+            postOrCommentWriteHandler();
+        }
+    };
+    const postOrCommentWriteHandler = () => {
+        if (
+            postThreadInfo &&
+            writePostData.dto.latitude &&
+            writePostData.dto.longitude &&
+            writePostData.dto.keywordIdList
+        ) {
+            // comment
+            commentMutate({
+                accessToken,
+                data: {
+                    postId: postThreadInfo.postId,
+                    content: writePostData.dto.content,
+                    latitude: writePostData.dto.latitude,
+                    longitude: writePostData.dto.longitude,
+                    keywordIdList: writePostData.dto.keywordIdList,
+                },
+            });
+        } else if (!postThreadInfo) {
+            // post
             mapSnapshotHandler();
             postMutate({
                 accessToken,
                 data: writePostData.dto,
             });
+        } else {
+            // For Debug
+            console.log('(ERROR) Post or comment write handler. postThreadInfo:', postThreadInfo);
+            console.log('(ERROR) Post or comment write handler. writePostData.dto:', writePostData.dto);
         }
     };
     const offErrorModalHandler = () => {
         setOnErrorModal(false);
     };
 
-    // Upload files
-    const rootNavigation = useRootNavigation();
-    const [postId, setPostId] = useState<number>(0);
+    // Post upload files
     const { mutate: postFileMutate, isLoading: isPostFileLoading } = useMutation(writePostFilesAPI, {
         onSuccess: ({ data }) => {
-            rootNavigation.navigate('ThreadItem', {
-                post: {
-                    postId,
-                },
-            });
+            moveToScreen('GO');
         },
         onError: error => {
             // For Debug
             console.log('(ERROR) Upload files API.', error);
         },
     });
-    const uploadFilesHandler = (postId: number) => {
+    const postUploadFilesHandler = (postId: number) => {
         const formdata = new FormData();
         for (const index in writePostData.files) {
             formdata.append('files', {
@@ -148,6 +168,43 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
             accessToken,
             postId,
             data: formdata,
+        });
+    };
+
+    // Write comment API
+    const { mutate: commentMutate, isLoading: iscommentLoading } = useMutation(writeCommentAPI, {
+        onSuccess: ({ data }) => {
+            const responseRepostId = data.data;
+            commentUploadFilesHandler(responseRepostId);
+        },
+        onError: error => {
+            // For Debug
+            console.log('(ERROR) Write comment API.', error);
+        },
+    });
+
+    // Comment upload files
+    const { mutate: commentFileMutate, isLoading: iscommentFileLoading } = useMutation(writeCommentFilesAPI, {
+        onSuccess: ({ data }) => {
+            moveToScreen('GO');
+        },
+        onError: error => {
+            // For Debug
+            console.log('(ERROR) Comment upload files.', error);
+        },
+    });
+    const commentUploadFilesHandler = (rePostId: number) => {
+        const formdata = new FormData();
+        for (const index in writePostData.files) {
+            formdata.append('files', {
+                uri: writePostData.files[index].uri,
+                type: writePostData.files[index].type,
+                name: writePostData.files[index].fileName,
+            });
+        }
+        commentFileMutate({
+            data: formdata,
+            rePostId,
         });
     };
 
@@ -508,7 +565,9 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
                     />
                 )}
 
-                {isPostLoading || (isPostFileLoading && <ActivityIndicator size="large" />)}
+                {(isPostLoading || isPostFileLoading || iscommentLoading || iscommentFileLoading) && (
+                    <ActivityIndicator size="large" />
+                )}
             </View>
         </>
     );

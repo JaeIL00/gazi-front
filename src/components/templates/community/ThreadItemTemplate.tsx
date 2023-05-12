@@ -17,7 +17,7 @@ import { threadItemTemplateStyles } from '../../../styles/styles';
 import { screenHeight, screenWidth } from '../../../utils/changeStyleSize';
 import { CommentTopicTypes, CommentTypes, ThreadItemTemplateProps } from '../../../types/types';
 
-const ThreadItemTemplate = ({ post, movetoCommunityScreen, moveToWriteScreen }: ThreadItemTemplateProps) => {
+const ThreadItemTemplate = ({ postId, movetoCommunityScreen, moveToWriteScreen }: ThreadItemTemplateProps) => {
     const { accessToken } = useRecoilValue(userTokenAtom);
     const [postValue, setPostValue] = useState<CommentTopicTypes>({
         title: '',
@@ -31,7 +31,7 @@ const ThreadItemTemplate = ({ post, movetoCommunityScreen, moveToWriteScreen }: 
     const { hasNextPage, isFetching, isFetchingNextPage, fetchNextPage, refetch, remove } = useInfiniteQuery(
         ['getCommentList'],
         ({ pageParam = 0 }) =>
-            getCommentListAPI({ accessToken, postId: post.postId, curX: 37.49795103144074, curY: 127.02760985223079 }),
+            getCommentListAPI({ accessToken, postId, curX: 37.49795103144074, curY: 127.02760985223079 }),
         {
             getNextPageParam: (lastPage, allPages) => {
                 // const total = lastPage.data.data.totalPages;
