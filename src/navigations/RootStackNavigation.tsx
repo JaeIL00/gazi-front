@@ -17,6 +17,7 @@ import WritePostOrCommentScreen from '../screens/cummunity/WritePostOrCommentScr
 import { autoLoginAPI } from '../queries/api';
 import { RootStackParamList } from '../types/types';
 import { userInfoAtom, userTokenAtom } from '../store/atoms';
+import MyPostCommentScreen from '../screens/myProfile/MyPostCommentScreen';
 
 export const RootStackNavigation = () => {
     const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -88,9 +89,7 @@ export const RootStackNavigation = () => {
             screenOptions={{
                 headerShown: false,
                 presentation: 'containedModal',
-            }}
-            // initialRouteName="NotLoginHome"
-        >
+            }}>
             <Stack.Screen name="NotLoginHome" component={NotLoginHomeScreen} />
             <Stack.Screen name="BottomTab" component={BottomTabNavigation} />
             <Stack.Screen name="WritePostOrComment" component={WritePostOrCommentScreen} />
@@ -100,6 +99,7 @@ export const RootStackNavigation = () => {
             <Stack.Screen name="InitKeyword" component={InitLikeKeywordScreen} />
             <Stack.Screen name="JoinMember" component={JoinMemberScreen} />
             <Stack.Screen name="Login" component={LoginScreen} />
+            <Stack.Screen name="MyPostComment" component={MyPostCommentScreen} />
         </Stack.Navigator>
     );
 };

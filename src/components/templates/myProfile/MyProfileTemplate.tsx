@@ -20,12 +20,26 @@ const MyProfileTemplate = ({ moveToScreen }: MyProfileTemplateProps) => {
     const { nickname } = useRecoilValue(userInfoAtom);
 
     const scrollViewRender = useCallback((item: MyProfileTabTypes) => {
+        const screenValue = () => {
+            switch (item.screen) {
+                case 'MyPostComment':
+                    return 'MyPostComment';
+                case 'AccountManagement':
+                    return 'AccountManagement';
+                case 'LikeKeywordSetting':
+                    return 'LikeKeywordSetting';
+                case 'Policies':
+                    return 'Policies';
+                default:
+                    return 'None';
+            }
+        };
         const rootNavigation = useRootNavigation();
         return (
             <View key={item.text}>
                 {item.tab ? (
                     <TouchButton
-                        onPress={() => rootNavigation.navigate(item.screen!)}
+                        onPress={() => item.screen && rootNavigation.navigate(screenValue())}
                         paddingHorizontal={16}
                         paddingVertical={16}
                         borderBottomWidth={item.borderLine ? 1 * screenFont : undefined}

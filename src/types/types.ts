@@ -120,7 +120,7 @@ export type WritePostTypes = {
 };
 export type MyProfileTabTypes = {
     text: string;
-    screen: keyof RootStackParamList | null;
+    screen: string | null;
     icon: boolean;
     version: boolean;
     tab: boolean;
@@ -172,6 +172,8 @@ export type RootStackParamList = {
     ThreadItem: {
         postId: number;
     };
+    MyPostComment: undefined;
+    None: undefined;
 };
 export type BottomTabParamList = {
     ServiceHome: undefined;

@@ -3,7 +3,7 @@ import { MyProfileTabTypes } from '../types/types';
 export const myProfileTabList: MyProfileTabTypes[] = [
     {
         text: '내가 작성한 글',
-        screen: 'EditNickname',
+        screen: 'MyPostComment',
         icon: true,
         version: false,
         tab: true,
