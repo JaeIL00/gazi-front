@@ -393,7 +393,7 @@ export type WritePostOrCommentTemplateProps = {
               postId: number;
           }
         | undefined;
-    moveToScreen: (state: string) => void;
+    moveToScreen: (state: string, postId: number | null) => void;
 };
 export type EditNicknameTemplateProps = {
     moveToMyProfileScreen: (state: string) => void;

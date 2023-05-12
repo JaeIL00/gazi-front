@@ -71,12 +71,14 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
 
     // Write post API and check essential value
     const { accessToken } = useRecoilValue(userTokenAtom);
+    const [postId, setPostId] = useState<number>(0);
     const [onErrorModal, setOnErrorModal] = useState(false);
     const [onErrorText, setOnErrorText] = useState('');
     const { mutate: postMutate, isLoading: isPostLoading } = useMutation(writePostAPI, {
         onSuccess: ({ data }) => {
             const responsePostId: number = data.data;
             postUploadFilesHandler(responsePostId);
+            setPostId(responsePostId);
         },
         onError: error => {
             // For Debug
@@ -138,7 +140,7 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
     // Post upload files
     const { mutate: postFileMutate, isLoading: isPostFileLoading } = useMutation(writePostFilesAPI, {
         onSuccess: ({ data }) => {
-            moveToScreen('GO');
+            moveToScreen('GO', postId);
         },
         onError: error => {
             // For Debug
@@ -186,7 +188,7 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
     // Comment upload files
     const { mutate: commentFileMutate, isLoading: iscommentFileLoading } = useMutation(writeCommentFilesAPI, {
         onSuccess: ({ data }) => {
-            moveToScreen('GO');
+            moveToScreen('GO', postId);
         },
         onError: error => {
             // For Debug
@@ -202,6 +204,8 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
                 name: writePostData.files[index].fileName,
             });
         }
+        console.log(formdata.getParts());
+
         commentFileMutate({
             data: formdata,
             rePostId,
@@ -369,7 +373,7 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
             <View style={writePostOrCommentTemplateStyles.container}>
                 <View style={writePostOrCommentTemplateStyles.headerBox}>
                     <View style={writePostOrCommentTemplateStyles.headerNavigateBox}>
-                        <TouchButton onPress={() => moveToScreen('BACK')}>
+                        <TouchButton onPress={() => moveToScreen('BACK', null)}>
                             <Icons type="ionicons" name="close-sharp" size={20} color={Colors.BLACK} />
                         </TouchButton>
                         <TouchButton

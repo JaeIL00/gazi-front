@@ -8,11 +8,11 @@ const WritePostOrCommentScreen = () => {
     const data = route.params;
 
     const rootNavigation = useRootNavigation();
-    const moveToScreen = (state: string) => {
+    const moveToScreen = (state: string, postId: number | null) => {
         switch (state) {
             case 'GO':
                 rootNavigation.navigate('ThreadItem', {
-                    postId: data?.postId!,
+                    postId: postId!,
                 });
                 break;
             case 'BACK':
