@@ -121,12 +121,8 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
                 },
             });
         } else if (!postThreadInfo) {
-            // post
-            mapSnapshotHandler();
-            postMutate({
-                accessToken,
-                data: writePostData.dto,
-            });
+            // Try map snapshot then request write post
+            mapSnapshotWithWritePostHandler();
         } else {
             // For Debug
             console.log('(ERROR) Post or comment write handler. postThreadInfo:', postThreadInfo);
@@ -204,8 +200,6 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
                 name: writePostData.files[index].fileName,
             });
         }
-        console.log(formdata.getParts());
-
         commentFileMutate({
             data: formdata,
             rePostId,
@@ -290,7 +284,8 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
 
     // Map snapshot handler for post. map and marker
     const [markerType, setMarkerType] = useState<ImageSourcePropType>();
-    const mapSnapshotHandler = () => {
+    const mapSnapshotWithWritePostHandler = () => {
+        mapRef.current?.render();
         mapRef.current?.animateToRegion(
             {
                 latitude: writePostData.dto.latitude!,
@@ -313,6 +308,10 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
                     setWritePostData({
                         ...writePostData,
                         backgroundMap: uri,
+                    });
+                    postMutate({
+                        accessToken,
+                        data: writePostData.dto,
                     });
                 });
         }, 1500);
