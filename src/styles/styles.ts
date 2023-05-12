@@ -485,7 +485,6 @@ export const mapWithMarkerStyles = StyleSheet.create({
 export const postListItemStyles = StyleSheet.create({
     container: {
         flexDirection: 'row',
-        alignItems: 'center',
         justifyContent: 'space-between',
         width: '100%',
     },
@@ -496,6 +495,14 @@ export const postListItemStyles = StyleSheet.create({
         width: 77 * screenWidth,
         height: 77 * screenWidth,
         borderRadius: 5 * screenFont,
+    },
+    postBottomBar: {
+        borderBottomWidth: 1 * screenFont,
+        borderColor: '#EBEBEB',
+        width: '120%',
+        position: 'absolute',
+        left: -16 * screenWidth,
+        bottom: -15 * screenHeight,
     },
 });
 export const searchLocationStyles = StyleSheet.create({

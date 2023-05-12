@@ -6,8 +6,8 @@ import { useIsFocused } from '@react-navigation/native';
 
 const CommunityScreen = () => {
     const rootNavigation = useRootNavigation();
-
     const isFocused = useIsFocused();
+
     return <View>{isFocused && <CommunityTemplate />}</View>;
 };
 

@@ -343,6 +343,7 @@ export type MapWithMarkerProps = {
 };
 export type PostListItemProps = {
     post: PostTypes;
+    isBorder: boolean;
 };
 export type NearbyPostListModalProps = {
     isModalRef: React.MutableRefObject<boolean>;
