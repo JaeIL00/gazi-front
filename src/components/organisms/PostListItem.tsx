@@ -10,7 +10,6 @@ import SemiBoldText from '../smallest/SemiBoldText';
 import { PostListItemProps } from '../../types/types';
 import { postListItemStyles } from '../../styles/styles';
 import { useRootNavigation } from '../../navigations/RootStackNavigation';
-import { screenFont, screenHeight, screenWidth } from '../../utils/changeStyleSize';
 
 const PostListItem = ({ post, isBorder }: PostListItemProps) => {
     const rootNavigation = useRootNavigation();
@@ -31,7 +30,7 @@ const PostListItem = ({ post, isBorder }: PostListItemProps) => {
                     <Image source={{ uri: post.thumbNail }} style={postListItemStyles.postImage} />
                 </View>
             </TouchButton>
-            <View style={postListItemStyles.postBottomBar} />
+            {isBorder && <View style={postListItemStyles.postBottomBar} />}
         </View>
     );
 };

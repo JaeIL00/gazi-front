@@ -91,10 +91,10 @@ export const RootStackNavigation = () => {
                 headerShown: false,
                 presentation: 'containedModal',
             }}>
+            <Stack.Screen name="NotLoginHome" component={NotLoginHomeScreen} />
             <Stack.Screen name="BottomTab" component={BottomTabNavigation} />
             <Stack.Screen name="AccountManagement" component={AccountManagementScreen} />
             <Stack.Screen name="MyPostComment" component={MyPostCommentScreen} />
-            <Stack.Screen name="NotLoginHome" component={NotLoginHomeScreen} />
             <Stack.Screen name="WritePostOrComment" component={WritePostOrCommentScreen} />
             <Stack.Screen name="ThreadItem" component={ThreadItemScreen} />
             <Stack.Screen name="EditNickname" component={EditNicknameScreen} />
