@@ -1,4 +1,4 @@
-import React, { RefObject, useCallback, useRef, useState } from 'react';
+import React, { RefObject, useCallback, useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, Image, ImageSourcePropType, Linking, View } from 'react-native';
 import { useMutation } from 'react-query';
 import { useRecoilValue } from 'recoil';
@@ -211,7 +211,7 @@ const WritePostTemplate = ({ moveToScreen }: WritePostTemplateProps) => {
     };
     const inputTitleDate = useCallback(
         debounce((text: string) => {
-            setWritePostData({ ...writePostData, dto: { ...writePostData.dto, title } });
+            setWritePostData({ ...writePostData, dto: { ...writePostData.dto, title: text } });
         }, 500),
         [writePostData],
     );
@@ -221,7 +221,7 @@ const WritePostTemplate = ({ moveToScreen }: WritePostTemplateProps) => {
     };
     const inputContentDate = useCallback(
         debounce((text: string) => {
-            setWritePostData({ ...writePostData, dto: { ...writePostData.dto, content } });
+            setWritePostData({ ...writePostData, dto: { ...writePostData.dto, content: text } });
         }, 500),
         [writePostData],
     );
