@@ -25,10 +25,9 @@ import { userTokenAtom } from '../../../store/atoms';
 import { issueKeywords } from '../../../utils/allKeywords';
 import { screenWidth } from '../../../utils/changeStyleSize';
 import { SingleLineInput } from '../../smallest/SingleLineInput';
-import { writeCommentAPI, writeCommentFilesAPI, writePostAPI, writePostFilesAPI } from '../../../queries/api';
 import { writePostOrCommentTemplateStyles } from '../../../styles/styles';
-import { useRootNavigation } from '../../../navigations/RootStackNavigation';
 import { WritePostOrCommentTemplateProps, WritePostTypes } from '../../../types/types';
+import { writeCommentAPI, writeCommentFilesAPI, writePostAPI, writePostFilesAPI } from '../../../queries/api';
 
 const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostOrCommentTemplateProps) => {
     // Write post data for API request
@@ -359,6 +358,7 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
                 return;
         }
     };
+
     return (
         <>
             <MapView
@@ -530,7 +530,7 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
                     <View style={writePostOrCommentTemplateStyles.searchContainer}>
                         <HeaderMolecule
                             isPaddingHorizontal={true}
-                            isWorkDone={writePostData.dto.latitude !== 0}
+                            isWorkDone={writePostData.dto.latitude !== null}
                             backHandler={locationModalHandler}
                             headerFinish={true}
                             isNextStep={false}
