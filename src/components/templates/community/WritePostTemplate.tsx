@@ -97,11 +97,11 @@ const WritePostTemplate = ({ moveToScreen }: WritePostTemplateProps) => {
             setOnErrorText('키워드를 설정해주세요');
             setOnErrorModal(true);
         } else {
+            mapSnapshotHandler();
             postMutate({
                 accessToken,
                 data: writePostData.dto,
             });
-            mapSnapshotHandler();
         }
     };
     const offErrorModalHandler = () => {

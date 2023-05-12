@@ -25,6 +25,7 @@ const ThreadItemTemplate = ({ post, movetoCommunityScreen }: ThreadItemTemplateP
         placeName: '',
         time: '',
         distance: '',
+        backgroundMapUri: '',
     });
     const [commentList, setCommentList] = useState<CommentTypes[]>([]);
     const { hasNextPage, isFetching, isFetchingNextPage, fetchNextPage, refetch, remove } = useInfiniteQuery(
@@ -39,6 +40,7 @@ const ThreadItemTemplate = ({ post, movetoCommunityScreen }: ThreadItemTemplateP
                 // console.log('last', lastPage.data);
             },
             onSuccess: data => {
+                console.log(data.pages[0].data.data.postList);
                 const pageNumber = data.pages[0].data.data.postList.pageable.pageNumber;
                 if (pageNumber === 0) {
                     getCommentTopic(data.pages[0].data.data, data.pages[0].data.data.postList.content);
@@ -50,15 +52,16 @@ const ThreadItemTemplate = ({ post, movetoCommunityScreen }: ThreadItemTemplateP
             },
         },
     );
-    const getCommentTopic = (data: CommentTopicTypes, postList: CommentTypes[]) => {
+    const getCommentTopic = (data: CommentTopicTypes, content: CommentTypes[]) => {
         setPostValue({
             title: data.title,
             rePostCount: data.rePostCount,
             placeName: data.placeName,
             time: '1분전',
             distance: '3km',
+            backgroundMapUri: content[0].backgroundMapUrl,
         });
-        setCommentList([...commentList, ...postList]);
+        setCommentList([...commentList, ...content]);
     };
 
     return (
@@ -78,7 +81,11 @@ const ThreadItemTemplate = ({ post, movetoCommunityScreen }: ThreadItemTemplateP
                 )}
             </View>
 
-            <View style={threadItemTemplateStyles.mapCrop}></View>
+            <View style={threadItemTemplateStyles.mapCrop}>
+                {postValue.backgroundMapUri && (
+                    <Image source={{ uri: postValue.backgroundMapUri }} style={{ width: '100%', height: '100%' }} />
+                )}
+            </View>
 
             <View style={threadItemTemplateStyles.main}>
                 <View style={threadItemTemplateStyles.headerBox}>

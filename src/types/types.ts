@@ -38,6 +38,7 @@ export type CommentTopicTypes = {
     placeName: string;
     time: string;
     distance: string;
+    backgroundMapUri: string;
 };
 export type CommentTypes = {
     backgroundMapUrl: string;
