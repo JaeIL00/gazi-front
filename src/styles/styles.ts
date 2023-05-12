@@ -816,9 +816,9 @@ export const seviceHomeTemplateStyles = StyleSheet.create({
         top: 16 * screenHeight,
         width: '100%',
         height: 44 * screenHeight,
-        paddingHorizontal: 16 * screenWidth,
         flexDirection: 'row',
         alignItems: 'center',
+        paddingHorizontal: 16 * screenWidth,
     },
     dropshadow: {
         flex: 1,
@@ -836,6 +836,7 @@ export const seviceHomeTemplateStyles = StyleSheet.create({
         backgroundColor: Colors.BACKGROUND_DEFAULT,
         borderRadius: 28 * screenFont,
         paddingHorizontal: 19 * screenWidth,
+        paddingVertical: 12 * screenHeight,
     },
     searchIcon: {
         width: 24 * screenWidth,
