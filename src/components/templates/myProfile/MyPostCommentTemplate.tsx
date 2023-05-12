@@ -46,7 +46,7 @@ const MyPostCommentTemplate = ({ moveToBackScreenHandler }: MyPostCommentTemplat
                             borderBottomWidth: isComment ? undefined : 1.5 * screenFont,
                         },
                     ]}>
-                    <TouchButton onPress={() => tabHandler('POST')} backgroundColor="tomato">
+                    <TouchButton onPress={() => tabHandler('POST')}>
                         <SemiBoldText text="작성한 글" size={16} color={Colors.BLACK} />
                     </TouchButton>
                 </View>

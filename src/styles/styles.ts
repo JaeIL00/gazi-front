@@ -1099,6 +1099,24 @@ export const AccountManagementTemplateStyles = StyleSheet.create({
         justifyContent: 'center',
     },
 });
+export const communityTemplateStyles = StyleSheet.create({
+    headerBox: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingBottom: 16 * screenHeight,
+        paddingTop: 25 * screenHeight,
+        paddingHorizontal: 16 * screenWidth,
+    },
+    tabBox: {
+        flexDirection: 'row',
+    },
+    tabButton: {
+        width: '50%',
+        paddingBottom: 7 * screenHeight,
+        paddingTop: 13 * screenHeight,
+        borderColor: Colors.BLACK,
+    },
+});
 
 // SCREEN
 export const seviceHomeScreenStyles = StyleSheet.create({

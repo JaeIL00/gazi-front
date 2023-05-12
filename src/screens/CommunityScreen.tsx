@@ -1,11 +1,14 @@
 import React from 'react';
 import { View } from 'react-native';
-import BoldText from '../components/smallest/BoldText';
+import CommunityTemplate from '../components/templates/community/CommunityTemplate';
+import { useRootNavigation } from '../navigations/RootStackNavigation';
 
 const CommunityScreen = () => {
+    const rootNavigation = useRootNavigation();
+
     return (
         <View>
-            <BoldText text="커뮤니티" color="#333" size={20} />
+            <CommunityTemplate />
         </View>
     );
 };
