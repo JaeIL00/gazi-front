@@ -173,6 +173,8 @@ export type RootStackParamList = {
         postId: number;
     };
     MyPostComment: undefined;
+    ChangePassword: undefined;
+    DeleteMember: undefined;
     None: undefined;
 };
 export type BottomTabParamList = {

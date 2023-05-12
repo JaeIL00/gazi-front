@@ -14,11 +14,13 @@ import InitLikeKeywordScreen from '../screens/InitLikeKeywordScreen';
 import RequestPermissionScreen from '../screens/RequestPermissionScreen';
 import EditNicknameScreen from '../screens/myProfile/EditNicknameScreen';
 import MyPostCommentScreen from '../screens/myProfile/MyPostCommentScreen';
+import ChangePasswordScreen from '../screens/myProfile/ChangePasswordScreen';
 import AccountManagementScreen from '../screens/myProfile/AccountManagementScreen';
 import WritePostOrCommentScreen from '../screens/cummunity/WritePostOrCommentScreen';
 import { autoLoginAPI } from '../queries/api';
 import { RootStackParamList } from '../types/types';
 import { userInfoAtom, userTokenAtom } from '../store/atoms';
+import DeleteMemberScreen from '../screens/myProfile/DeleteMemberScreen';
 
 export const RootStackNavigation = () => {
     const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -91,9 +93,11 @@ export const RootStackNavigation = () => {
                 headerShown: false,
                 presentation: 'containedModal',
             }}>
+            <Stack.Screen name="ChangePassword" component={ChangePasswordScreen} />
+            <Stack.Screen name="DeleteMember" component={DeleteMemberScreen} />
+            <Stack.Screen name="AccountManagement" component={AccountManagementScreen} />
             <Stack.Screen name="NotLoginHome" component={NotLoginHomeScreen} />
             <Stack.Screen name="BottomTab" component={BottomTabNavigation} />
-            <Stack.Screen name="AccountManagement" component={AccountManagementScreen} />
             <Stack.Screen name="MyPostComment" component={MyPostCommentScreen} />
             <Stack.Screen name="WritePostOrComment" component={WritePostOrCommentScreen} />
             <Stack.Screen name="ThreadItem" component={ThreadItemScreen} />
