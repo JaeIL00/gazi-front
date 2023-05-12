@@ -144,29 +144,34 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
     });
     const postUploadFilesHandler = (postId: number) => {
         setPostId(postId);
-        const formdata = new FormData();
-        for (const index in writePostData.files) {
-            formdata.append('files', {
-                uri: writePostData.files[index].uri,
-                type: writePostData.files[index].type,
-                name: writePostData.files[index].fileName,
+
+        if (writePostData.files[0]) {
+            const formdata = new FormData();
+            for (const index in writePostData.files) {
+                formdata.append('files', {
+                    uri: writePostData.files[index].uri,
+                    type: writePostData.files[index].type,
+                    name: writePostData.files[index].fileName,
+                });
+            }
+            formdata.append('thumbnail', {
+                uri: writePostData.thumbnail?.uri,
+                type: writePostData.thumbnail?.type,
+                name: writePostData.thumbnail?.fileName,
             });
+            formdata.append('backgroundMap', {
+                uri: writePostData.backgroundMap,
+                type: 'image/jpeg',
+                name: `Map-Snapshot-${writePostData.dto.placeName}.jpg`,
+            });
+            postFileMutate({
+                accessToken,
+                data: formdata,
+                postId,
+            });
+        } else {
+            moveToScreen('GO', postId);
         }
-        formdata.append('thumbnail', {
-            uri: writePostData.thumbnail?.uri,
-            type: writePostData.thumbnail?.type,
-            name: writePostData.thumbnail?.fileName,
-        });
-        formdata.append('backgroundMap', {
-            uri: writePostData.backgroundMap,
-            type: 'image/jpeg',
-            name: `Map-Snapshot-${writePostData.dto.placeName}.jpg`,
-        });
-        postFileMutate({
-            accessToken,
-            postId,
-            data: formdata,
-        });
     };
 
     // Write comment API
@@ -184,7 +189,9 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
     // Comment upload files
     const { mutate: commentFileMutate, isLoading: iscommentFileLoading } = useMutation(writeCommentFilesAPI, {
         onSuccess: ({ data }) => {
-            moveToScreen('GO', postId);
+            if (postThreadInfo) {
+                moveToScreen('GO', postThreadInfo?.postId);
+            }
         },
         onError: error => {
             // For Debug
@@ -192,18 +199,22 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
         },
     });
     const commentUploadFilesHandler = (rePostId: number) => {
-        const formdata = new FormData();
-        for (const index in writePostData.files) {
-            formdata.append('files', {
-                uri: writePostData.files[index].uri,
-                type: writePostData.files[index].type,
-                name: writePostData.files[index].fileName,
+        if (writePostData.files[0]) {
+            const formdata = new FormData();
+            for (const index in writePostData.files) {
+                formdata.append('files', {
+                    uri: writePostData.files[index].uri,
+                    type: writePostData.files[index].type,
+                    name: writePostData.files[index].fileName,
+                });
+            }
+            commentFileMutate({
+                data: formdata,
+                rePostId,
             });
+        } else {
+            moveToScreen('GO', postId);
         }
-        commentFileMutate({
-            data: formdata,
-            rePostId,
-        });
     };
 
     // Guide image library permission
