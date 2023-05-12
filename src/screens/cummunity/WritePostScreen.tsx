@@ -1,6 +1,6 @@
 import React from 'react';
 
-import WritePostTemplate from '../../components/templates/community/WritePostTemplate';
+import WritePostTemplate from '../../components/templates/community/WritePostOrCommentTemplate';
 import { useRootNavigation } from '../../navigations/RootStackNavigation';
 
 const WritePostScreen = () => {

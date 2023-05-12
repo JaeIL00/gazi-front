@@ -1,13 +1,15 @@
-import React, { RefObject, useCallback, useEffect, useRef, useState } from 'react';
+import React, { RefObject, useCallback, useRef, useState } from 'react';
 import { ActivityIndicator, Image, ImageSourcePropType, Linking, View } from 'react-native';
 import { useMutation } from 'react-query';
 import { useRecoilValue } from 'recoil';
 import { debounce } from 'lodash';
 import { Asset } from 'react-native-image-picker';
+import MapView, { Marker } from 'react-native-maps';
 
 import Icons from '../../smallest/Icons';
 import Spacer from '../../smallest/Spacer';
 import Colors from '../../../styles/Colors';
+import mapStyle from '../../../styles/mapStyle';
 import MediumText from '../../smallest/MediumText';
 import TextButton from '../../molecules/TextButton';
 import TouchButton from '../../smallest/TouchButton';
@@ -20,16 +22,14 @@ import FailPermissionModal from '../../organisms/FailPermissionModal';
 import WritePostAddKeyword from '../../organisms/cummunity/WritePostAddKeyword';
 import { userTokenAtom } from '../../../store/atoms';
 import { issueKeywords } from '../../../utils/allKeywords';
+import { screenWidth } from '../../../utils/changeStyleSize';
 import { writePostTemplateStyles } from '../../../styles/styles';
 import { SingleLineInput } from '../../smallest/SingleLineInput';
 import { writePostAPI, writePostFilesAPI } from '../../../queries/api';
-import { WritePostTemplateProps, WritePostTypes } from '../../../types/types';
-import MapView, { Marker } from 'react-native-maps';
-import { screenHeight, screenWidth } from '../../../utils/changeStyleSize';
-import mapStyle from '../../../styles/mapStyle';
 import { useRootNavigation } from '../../../navigations/RootStackNavigation';
+import { WritePostTemplateProps, WritePostTypes } from '../../../types/types';
 
-const WritePostTemplate = ({ moveToScreen }: WritePostTemplateProps) => {
+const WritePostOrCommentTemplate = ({ moveToScreen }: WritePostTemplateProps) => {
     // Write post data for API request
     const [writePostData, setWritePostData] = useState<WritePostTypes>({
         dto: {
@@ -447,4 +447,4 @@ const WritePostTemplate = ({ moveToScreen }: WritePostTemplateProps) => {
     );
 };
 
-export default WritePostTemplate;
+export default WritePostOrCommentTemplate;

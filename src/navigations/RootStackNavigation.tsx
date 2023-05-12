@@ -7,11 +7,11 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import LoginScreen from '../screens/EmailLoginScreen';
 import BottomTabNavigation from './BottomTabNavigation';
-import WritePostScreen from '../screens/WritePostScreen';
 import JoinMemberScreen from '../screens/JoinMemberScreen';
 import NotLoginHomeScreen from '../screens/NotLoginHomeScreen';
-import InitLikeKeywordScreen from '../screens/InitLikeKeywordScreen';
+import WritePostScreen from '../screens/WritePostOrCommentScreen';
 import ThreadItemScreen from '../screens/cummunity/ThreadItemScreen';
+import InitLikeKeywordScreen from '../screens/InitLikeKeywordScreen';
 import RequestPermissionScreen from '../screens/RequestPermissionScreen';
 import EditNicknameScreen from '../screens/myProfile/EditNicknameScreen';
 import { autoLoginAPI } from '../queries/api';
