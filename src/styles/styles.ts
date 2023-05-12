@@ -1019,6 +1019,7 @@ export const threadItemTemplateStyles = StyleSheet.create({
     },
     commentBox: {
         position: 'relative',
+        height: '100%',
     },
     commentBoxBar: {
         borderLeftWidth: 1 * screenFont,
@@ -1031,7 +1032,7 @@ export const threadItemTemplateStyles = StyleSheet.create({
     },
     commentListBox: {
         marginTop: 24 * screenHeight,
-        paddingBottom: 20 * screenHeight,
+        paddingBottom: 370 * screenHeight,
     },
     writeCommentBox: {
         position: 'absolute',

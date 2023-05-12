@@ -40,6 +40,7 @@ const ThreadItemTemplate = ({ postId, movetoCommunityScreen, moveToWriteScreen }
                 // console.log('last', lastPage.data);
             },
             onSuccess: data => {
+                console.log(data.pages[0].data.data.postList.content);
                 const pageNumber = data.pages[0].data.data.postList.pageable.pageNumber;
                 if (pageNumber === 0) {
                     getCommentTopic(data.pages[0].data.data, data.pages[0].data.data.postList.content);
