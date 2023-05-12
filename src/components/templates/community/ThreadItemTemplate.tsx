@@ -70,20 +70,6 @@ const ThreadItemTemplate = ({ post, movetoCommunityScreen }: ThreadItemTemplateP
 
     return (
         <>
-            <View style={threadItemTemplateStyles.backButtonBox}>
-                {Platform.OS === 'android' && (
-                    <DropShadow style={threadItemTemplateStyles.backButtonShadow}>
-                        <TouchButton
-                            onPress={movetoCommunityScreen}
-                            backgroundColor="#FFFFFF80"
-                            width={36}
-                            height={(36 / screenHeight) * screenWidth}
-                            borderRadius={36}>
-                            <Icons type="octicons" name="arrow-left" color={Colors.TXT_BLACK} size={22} />
-                        </TouchButton>
-                    </DropShadow>
-                )}
-            </View>
             <View style={threadItemTemplateStyles.mapImgBox}>
                 {postValue.backgroundMapUri && (
                     <Image source={{ uri: postValue.backgroundMapUri }} style={threadItemTemplateStyles.mapImg} />
@@ -123,6 +109,40 @@ const ThreadItemTemplate = ({ post, movetoCommunityScreen }: ThreadItemTemplateP
                         showsVerticalScrollIndicator={false}
                     />
                 </View>
+            </View>
+
+            <View style={threadItemTemplateStyles.backButtonBox}>
+                {Platform.OS === 'android' && (
+                    <DropShadow style={threadItemTemplateStyles.ButtonShadow}>
+                        <TouchButton
+                            onPress={movetoCommunityScreen}
+                            backgroundColor="#FFFFFF80"
+                            width={36}
+                            height={(36 / screenHeight) * screenWidth}
+                            borderRadius={36}>
+                            <Icons type="octicons" name="arrow-left" color={Colors.TXT_BLACK} size={22} />
+                        </TouchButton>
+                    </DropShadow>
+                )}
+            </View>
+
+            <View style={threadItemTemplateStyles.writeCommentBox}>
+                {Platform.OS === 'android' && (
+                    <DropShadow style={threadItemTemplateStyles.ButtonShadow}>
+                        <TouchButton
+                            onPress={() => {}}
+                            backgroundColor={Colors.VIOLET}
+                            width={100}
+                            height={44}
+                            borderRadius={32}>
+                            <View style={threadItemTemplateStyles.writeCommentButton}>
+                                <Icons type="octicons" name="plus" color={Colors.WHITE} size={14} />
+                                <Spacer width={6} />
+                                <SemiBoldText text="답글달기" size={14} color={Colors.WHITE} />
+                            </View>
+                        </TouchButton>
+                    </DropShadow>
+                )}
             </View>
         </>
     );

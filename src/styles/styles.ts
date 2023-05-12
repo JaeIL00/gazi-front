@@ -983,7 +983,7 @@ export const threadItemTemplateStyles = StyleSheet.create({
         left: 16 * screenWidth,
         zIndex: 1,
     },
-    backButtonShadow: {
+    ButtonShadow: {
         shadowColor: '#000000',
         shadowOffset: {
             width: 0,
@@ -1028,6 +1028,15 @@ export const threadItemTemplateStyles = StyleSheet.create({
     commentListBox: {
         marginTop: 24 * screenHeight,
         paddingBottom: 20 * screenHeight,
+    },
+    writeCommentBox: {
+        position: 'absolute',
+        right: 16 * screenWidth,
+        bottom: 43 * screenHeight,
+    },
+    writeCommentButton: {
+        flexDirection: 'row',
+        alignItems: 'center',
     },
 });
 
