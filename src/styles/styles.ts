@@ -573,6 +573,78 @@ export const writePhotoStyles = StyleSheet.create({
         height: '100%',
     },
 });
+export const commentListItemStyles = StyleSheet.create({
+    container: {
+        flexDirection: 'row',
+        width: '94%',
+    },
+    lineSphere: {
+        width: 6 * screenWidth,
+        height: 6 * screenWidth,
+        backgroundColor: '#D9D9D9',
+        borderRadius: 6 * screenFont,
+        marginRight: 14 * screenWidth,
+        marginTop: 18 * screenHeight,
+    },
+    headerBox: {
+        flexDirection: 'row',
+    },
+    headerInner: {
+        flexDirection: 'row',
+        alignItems: 'flex-start',
+        justifyContent: 'space-between',
+        width: '100%',
+    },
+    headerProfileBox: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    headerProfileImg: {
+        width: 36 * screenWidth,
+        height: 36 * screenWidth,
+        backgroundColor: '#999',
+        borderRadius: 36 * screenFont,
+    },
+    headerTitleBox: {
+        paddingLeft: 7 * screenWidth,
+    },
+    contentBox: {
+        paddingTop: 8 * screenHeight,
+    },
+    contentImg: {
+        width: '100%',
+        height: '100%',
+        borderRadius: 5 * screenFont,
+    },
+    contentTwoImgBox: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+    },
+    contentTwoOverImgBox: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        height: 208 * screenHeight,
+    },
+    contentThrHalfImg: {
+        width: '49%',
+    },
+    contentThrQtImg: {
+        width: '49%',
+        justifyContent: 'space-between',
+    },
+    overFourImg: {
+        backgroundColor: '#171717CC',
+        width: '100%',
+        height: '100%',
+        position: 'absolute',
+        borderRadius: 5 * screenFont,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    likeBox: {
+        flexDirection: 'row',
+    },
+});
 
 // TEMPLATES
 export const nicknameTemplateStyles = StyleSheet.create({
@@ -920,10 +992,11 @@ export const threadItemTemplateStyles = StyleSheet.create({
         shadowOpacity: 0.15,
         shadowRadius: 4 * screenFont,
     },
-    mapCrop: {
+    mapImgBox: {
         height: 150 * screenHeight,
         backgroundColor: '#999',
     },
+    mapImg: { width: '100%', height: '100%' },
     main: {
         paddingHorizontal: 16 * screenWidth,
         paddingTop: 19 * screenHeight,
@@ -939,6 +1012,22 @@ export const threadItemTemplateStyles = StyleSheet.create({
     shareIcon: {
         width: 24 * screenWidth,
         height: 24 * screenWidth,
+    },
+    commentBox: {
+        position: 'relative',
+    },
+    commentBoxBar: {
+        borderLeftWidth: 1 * screenFont,
+        borderColor: '#EBEBEB',
+        position: 'absolute',
+        top: 42 * screenHeight,
+        left: 2.8 * screenWidth,
+        width: 1 * screenWidth,
+        height: '100%',
+    },
+    commentListBox: {
+        marginTop: 24 * screenHeight,
+        paddingBottom: 20 * screenHeight,
     },
 });
 

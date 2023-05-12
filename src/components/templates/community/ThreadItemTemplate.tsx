@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useState } from 'react';
+import React, { useCallback, useLayoutEffect, useState } from 'react';
 import { FlatList, Image, Platform, View } from 'react-native';
 import DropShadow from 'react-native-drop-shadow';
 import { useRecoilValue } from 'recoil';
@@ -16,6 +16,7 @@ import { getCommentListAPI } from '../../../queries/api';
 import { threadItemTemplateStyles } from '../../../styles/styles';
 import { screenFont, screenHeight, screenWidth } from '../../../utils/changeStyleSize';
 import { CommentTopicTypes, CommentTypes, ThreadItemTemplateProps } from '../../../types/types';
+import CommentListItem from '../../organisms/cummunity/CommentListItem';
 
 const ThreadItemTemplate = ({ post, movetoCommunityScreen }: ThreadItemTemplateProps) => {
     const { accessToken } = useRecoilValue(userTokenAtom);
@@ -63,6 +64,10 @@ const ThreadItemTemplate = ({ post, movetoCommunityScreen }: ThreadItemTemplateP
         setCommentList([...commentList, ...content]);
     };
 
+    // Comment thread list render
+    const renderItem = useCallback(({ item }: { item: CommentTypes }) => <CommentListItem comment={item} />, []);
+    const ItemSeparatorComponent = useCallback(() => <Spacer height={29} />, []);
+
     return (
         <>
             <View style={threadItemTemplateStyles.backButtonBox}>
@@ -79,10 +84,9 @@ const ThreadItemTemplate = ({ post, movetoCommunityScreen }: ThreadItemTemplateP
                     </DropShadow>
                 )}
             </View>
-
-            <View style={threadItemTemplateStyles.mapCrop}>
+            <View style={threadItemTemplateStyles.mapImgBox}>
                 {postValue.backgroundMapUri && (
-                    <Image source={{ uri: postValue.backgroundMapUri }} style={{ width: '100%', height: '100%' }} />
+                    <Image source={{ uri: postValue.backgroundMapUri }} style={threadItemTemplateStyles.mapImg} />
                 )}
             </View>
 
@@ -109,256 +113,13 @@ const ThreadItemTemplate = ({ post, movetoCommunityScreen }: ThreadItemTemplateP
                     />
                 </View>
 
-                <View
-                    style={{
-                        position: 'relative',
-                    }}>
-                    <View
-                        style={{
-                            borderLeftWidth: 1 * screenFont,
-                            borderColor: '#EBEBEB',
-                            position: 'absolute',
-                            top: 42 * screenHeight,
-                            left: 2.8 * screenWidth,
-                            width: 1 * screenWidth,
-                            height: '100%',
-                        }}
-                    />
+                <View style={threadItemTemplateStyles.commentBox}>
+                    <View style={threadItemTemplateStyles.commentBoxBar} />
                     <FlatList
                         data={commentList}
-                        renderItem={({ item }) => (
-                            <View style={{ flexDirection: 'row', width: '94%' }}>
-                                <View
-                                    style={{
-                                        width: 6 * screenWidth,
-                                        height: 6 * screenWidth,
-                                        backgroundColor: '#D9D9D9',
-                                        borderRadius: 6 * screenFont,
-                                        marginRight: 14 * screenWidth,
-                                        marginTop: 18 * screenHeight,
-                                    }}
-                                />
-                                {/* 헤더 */}
-                                <View>
-                                    <View style={{ flexDirection: 'row' }}>
-                                        <View
-                                            style={{
-                                                flexDirection: 'row',
-                                                alignItems: 'flex-start',
-                                                justifyContent: 'space-between',
-                                                width: '100%',
-                                            }}>
-                                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                                <View
-                                                    style={{
-                                                        width: 36 * screenWidth,
-                                                        height: 36 * screenWidth,
-                                                        backgroundColor: '#999',
-                                                        borderRadius: 36 * screenFont,
-                                                    }}></View>
-                                                <View style={{ paddingLeft: 7 * screenWidth }}>
-                                                    <SemiBoldText text={item.nickName} size={16} color={Colors.BLACK} />
-                                                    <Spacer height={1} />
-                                                    <MediumText
-                                                        text={`${item.distance} | ${item.time}`}
-                                                        size={11}
-                                                        color="#999999"
-                                                    />
-                                                </View>
-                                            </View>
-                                            <TouchButton onPress={() => {}}>
-                                                <MediumText text="신고하기" size={11} color={Colors.BLACK} />
-                                            </TouchButton>
-                                        </View>
-                                    </View>
-
-                                    {/* 내용 및 라이크 */}
-                                    <View style={{ paddingTop: 8 * screenHeight }}>
-                                        <NormalText text={item.content} size={13} color="#000000" />
-                                        <Spacer height={8} />
-                                        {item.fileList.length === 1 && (
-                                            <TouchButton onPress={() => {}} width={308} height={208}>
-                                                <Image
-                                                    source={{ uri: item.fileList[0].fileUrl }}
-                                                    style={{
-                                                        width: '100%',
-                                                        height: '100%',
-                                                        borderRadius: 5 * screenFont,
-                                                    }}
-                                                />
-                                            </TouchButton>
-                                        )}
-                                        {item.fileList.length === 2 && (
-                                            <View
-                                                style={{
-                                                    flexDirection: 'row',
-                                                    justifyContent: 'space-between',
-                                                    // backgroundColor: 'tomato',
-                                                }}>
-                                                {item.fileList.map(file => (
-                                                    <TouchButton onPress={() => {}} width={151} height={208}>
-                                                        <Image
-                                                            source={{ uri: file.fileUrl }}
-                                                            style={{
-                                                                width: '100%',
-                                                                height: '100%',
-                                                                borderRadius: 5 * screenFont,
-                                                            }}
-                                                        />
-                                                    </TouchButton>
-                                                ))}
-                                            </View>
-                                        )}
-                                        {item.fileList.length === 3 && (
-                                            <View
-                                                style={{
-                                                    flexDirection: 'row',
-                                                    justifyContent: 'space-between',
-                                                    height: 208 * screenHeight,
-                                                }}>
-                                                <View style={{ width: '49%' }}>
-                                                    <TouchButton onPress={() => {}} width={151} height={208}>
-                                                        <Image
-                                                            source={{ uri: item.fileList[0].fileUrl }}
-                                                            style={{
-                                                                width: '100%',
-                                                                height: '100%',
-                                                                borderRadius: 5 * screenFont,
-                                                            }}
-                                                        />
-                                                    </TouchButton>
-                                                </View>
-                                                <View style={{ width: '49%', justifyContent: 'space-between' }}>
-                                                    <TouchButton onPress={() => {}} width={151} height={101}>
-                                                        <Image
-                                                            source={{ uri: item.fileList[1].fileUrl }}
-                                                            style={{
-                                                                width: '100%',
-                                                                height: '100%',
-                                                                borderRadius: 5 * screenFont,
-                                                            }}
-                                                        />
-                                                    </TouchButton>
-                                                    <TouchButton onPress={() => {}} width={151} height={101}>
-                                                        <Image
-                                                            source={{ uri: item.fileList[2].fileUrl }}
-                                                            style={{
-                                                                width: '100%',
-                                                                height: '100%',
-                                                                borderRadius: 5 * screenFont,
-                                                            }}
-                                                        />
-                                                    </TouchButton>
-                                                </View>
-                                            </View>
-                                        )}
-                                        {(item.fileList.length === 4 || item.fileList.length > 4) && (
-                                            <View
-                                                style={{
-                                                    flexDirection: 'row',
-                                                    justifyContent: 'space-between',
-                                                    height: 208 * screenHeight,
-                                                }}>
-                                                <View style={{ width: '49%', justifyContent: 'space-between' }}>
-                                                    <TouchButton onPress={() => {}} width={151} height={101}>
-                                                        <Image
-                                                            source={{ uri: item.fileList[0].fileUrl }}
-                                                            style={{
-                                                                width: '100%',
-                                                                height: '100%',
-                                                                borderRadius: 5 * screenFont,
-                                                            }}
-                                                        />
-                                                    </TouchButton>
-                                                    <TouchButton onPress={() => {}} width={151} height={101}>
-                                                        <Image
-                                                            source={{ uri: item.fileList[1].fileUrl }}
-                                                            style={{
-                                                                width: '100%',
-                                                                height: '100%',
-                                                                borderRadius: 5 * screenFont,
-                                                            }}
-                                                        />
-                                                    </TouchButton>
-                                                </View>
-                                                <View style={{ width: '49%', justifyContent: 'space-between' }}>
-                                                    <TouchButton onPress={() => {}} width={151} height={101}>
-                                                        <Image
-                                                            source={{ uri: item.fileList[2].fileUrl }}
-                                                            style={{
-                                                                width: '100%',
-                                                                height: '100%',
-                                                                borderRadius: 5 * screenFont,
-                                                            }}
-                                                        />
-                                                    </TouchButton>
-                                                    {item.fileList.length > 4 ? (
-                                                        <TouchButton onPress={() => {}} width={151} height={101}>
-                                                            <>
-                                                                <Image
-                                                                    source={{ uri: item.fileList[3].fileUrl }}
-                                                                    style={{
-                                                                        width: '100%',
-                                                                        height: '100%',
-                                                                        borderRadius: 5 * screenFont,
-                                                                    }}
-                                                                />
-                                                                <View
-                                                                    style={{
-                                                                        backgroundColor: '#171717CC',
-                                                                        width: '100%',
-                                                                        height: '100%',
-                                                                        position: 'absolute',
-                                                                        borderRadius: 5 * screenFont,
-                                                                        alignItems: 'center',
-                                                                        justifyContent: 'center',
-                                                                    }}>
-                                                                    <MediumText
-                                                                        text={`+${item.fileList.length - 3}`}
-                                                                        size={18}
-                                                                        color={Colors.WHITE}
-                                                                    />
-                                                                </View>
-                                                            </>
-                                                        </TouchButton>
-                                                    ) : (
-                                                        <TouchButton onPress={() => {}} width={151} height={101}>
-                                                            <Image
-                                                                source={{ uri: item.fileList[3].fileUrl }}
-                                                                style={{
-                                                                    width: '100%',
-                                                                    height: '100%',
-                                                                    borderRadius: 5 * screenFont,
-                                                                }}
-                                                            />
-                                                        </TouchButton>
-                                                    )}
-                                                </View>
-                                            </View>
-                                        )}
-                                    </View>
-
-                                    <Spacer height={9} />
-
-                                    <TouchButton onPress={() => {}} alignSelf="flex-start">
-                                        <View style={{ flexDirection: 'row' }}>
-                                            <Icons type="feather" name="thumbs-up" size={15} color={Colors.TXT_GRAY} />
-                                            <Spacer width={2} />
-                                            <NormalText
-                                                text={`도움돼요 ${item.likeCount}`}
-                                                size={13}
-                                                color={Colors.TXT_GRAY}
-                                            />
-                                        </View>
-                                    </TouchButton>
-                                </View>
-                            </View>
-                        )}
-                        contentContainerStyle={{
-                            marginTop: 24 * screenHeight,
-                            paddingBottom: 20 * screenHeight,
-                        }}
-                        ItemSeparatorComponent={() => <Spacer height={29} />}
+                        renderItem={renderItem}
+                        contentContainerStyle={threadItemTemplateStyles.commentListBox}
+                        ItemSeparatorComponent={ItemSeparatorComponent}
                         showsVerticalScrollIndicator={false}
                     />
                 </View>
