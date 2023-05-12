@@ -27,6 +27,7 @@ import { WritePostTemplateProps, WritePostTypes } from '../../../types/types';
 import MapView, { Marker } from 'react-native-maps';
 import { screenHeight, screenWidth } from '../../../utils/changeStyleSize';
 import mapStyle from '../../../styles/mapStyle';
+import { useRootNavigation } from '../../../navigations/RootStackNavigation';
 
 const WritePostTemplate = ({ moveToScreen }: WritePostTemplateProps) => {
     // Write post data for API request
@@ -107,9 +108,12 @@ const WritePostTemplate = ({ moveToScreen }: WritePostTemplateProps) => {
     };
 
     // Upload files
+    const rootNavigation = useRootNavigation();
     const { mutate: postFileMutate, isLoading: isPostFileLoading } = useMutation(writePostFilesAPI, {
         onSuccess: ({ data }) => {
-            console.log(data);
+            rootNavigation.navigate('ThreadItem', {
+                post: null,
+            });
         },
         onError: error => {
             // For Debug

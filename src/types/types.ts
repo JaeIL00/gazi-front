@@ -133,7 +133,7 @@ export type RootStackParamList = {
     LikeKeywordSetting: undefined;
     Policies: undefined;
     ThreadItem: {
-        post: PostTypes;
+        post: PostTypes | null;
     };
 };
 export type BottomTabParamList = {
