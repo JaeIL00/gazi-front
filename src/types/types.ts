@@ -86,6 +86,7 @@ export type WritePostTypes = {
     dto: PostDto;
     files: Asset[];
     thumbnail: Asset | null;
+    backgroundMap: string;
 };
 export type MyProfileTabTypes = {
     text: string;

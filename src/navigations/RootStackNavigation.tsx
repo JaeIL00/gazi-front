@@ -91,11 +91,11 @@ export const RootStackNavigation = () => {
             }}
             // initialRouteName="NotLoginHome"
         >
-            <Stack.Screen name="ThreadItem" component={ThreadItemScreen} />
             <Stack.Screen name="NotLoginHome" component={NotLoginHomeScreen} />
-            <Stack.Screen name="EditNickname" component={EditNicknameScreen} />
             <Stack.Screen name="BottomTab" component={BottomTabNavigation} />
             <Stack.Screen name="WritePost" component={WritePostScreen} />
+            <Stack.Screen name="ThreadItem" component={ThreadItemScreen} />
+            <Stack.Screen name="EditNickname" component={EditNicknameScreen} />
             <Stack.Screen name="RequestPermission" component={RequestPermissionScreen} />
             <Stack.Screen name="InitKeyword" component={InitLikeKeywordScreen} />
             <Stack.Screen name="JoinMember" component={JoinMemberScreen} />

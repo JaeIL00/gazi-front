@@ -767,6 +767,9 @@ export const writePostTemplateStyles = StyleSheet.create({
     container: {
         backgroundColor: Colors.BACKGROUND_DEFAULT,
         flex: 1,
+        position: 'absolute',
+        width: '100%',
+        height: '100%',
     },
     headerBox: {
         paddingHorizontal: 16 * screenWidth,
