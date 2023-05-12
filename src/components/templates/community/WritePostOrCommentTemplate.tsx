@@ -78,7 +78,6 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
         onSuccess: ({ data }) => {
             const responsePostId: number = data.data;
             postUploadFilesHandler(responsePostId);
-            setPostId(responsePostId);
         },
         onError: error => {
             // For Debug
@@ -144,6 +143,7 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
         },
     });
     const postUploadFilesHandler = (postId: number) => {
+        setPostId(postId);
         const formdata = new FormData();
         for (const index in writePostData.files) {
             formdata.append('files', {

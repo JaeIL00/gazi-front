@@ -2,6 +2,7 @@ import React from 'react';
 
 import WritePostOrCommentTemplate from '../../components/templates/community/WritePostOrCommentTemplate';
 import { useRootNavigation, useRootRoute } from '../../navigations/RootStackNavigation';
+import { useIsFocused } from '@react-navigation/native';
 
 const WritePostOrCommentScreen = () => {
     const route = useRootRoute<'WritePostOrComment'>();
@@ -24,11 +25,9 @@ const WritePostOrCommentScreen = () => {
         }
     };
 
-    return (
-        <>
-            <WritePostOrCommentTemplate moveToScreen={moveToScreen} postThreadInfo={data} />
-        </>
-    );
+    const isFocused = useIsFocused();
+
+    return <>{isFocused && <WritePostOrCommentTemplate moveToScreen={moveToScreen} postThreadInfo={data} />}</>;
 };
 
 export default WritePostOrCommentScreen;
