@@ -1,7 +1,7 @@
 import React from 'react';
 
-import WritePostOrCommentTemplate from '../components/templates/community/WritePostOrCommentTemplate';
-import { useRootNavigation, useRootRoute } from '../navigations/RootStackNavigation';
+import WritePostOrCommentTemplate from '../../components/templates/community/WritePostOrCommentTemplate';
+import { useRootNavigation, useRootRoute } from '../../navigations/RootStackNavigation';
 
 const WritePostOrCommentScreen = () => {
     const route = useRootRoute<'WritePostOrComment'>();
