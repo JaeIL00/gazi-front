@@ -835,7 +835,7 @@ export const seviceHomeTemplateStyles = StyleSheet.create({
         marginLeft: 8 * screenWidth,
     },
 });
-export const writePostTemplateStyles = StyleSheet.create({
+export const writePostOrCommentTemplateStyles = StyleSheet.create({
     container: {
         backgroundColor: Colors.BACKGROUND_DEFAULT,
         flex: 1,
@@ -895,6 +895,10 @@ export const writePostTemplateStyles = StyleSheet.create({
         alignItems: 'center',
         padding: 24 * screenWidth,
         borderRadius: 12 * screenFont,
+    },
+    conditionSettingBox: {
+        paddingLeft: 16 * screenWidth,
+        paddingTop: 14 * screenHeight,
     },
 });
 export const myProfileTemplateStyles = StyleSheet.create({

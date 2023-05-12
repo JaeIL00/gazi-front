@@ -1,4 +1,4 @@
-import React, { useCallback, useLayoutEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { FlatList, Image, Platform, View } from 'react-native';
 import DropShadow from 'react-native-drop-shadow';
 import { useRecoilValue } from 'recoil';
@@ -8,17 +8,16 @@ import Icons from '../../smallest/Icons';
 import Spacer from '../../smallest/Spacer';
 import Colors from '../../../styles/Colors';
 import NormalText from '../../smallest/NormalText';
-import MediumText from '../../smallest/MediumText';
 import TouchButton from '../../smallest/TouchButton';
 import SemiBoldText from '../../smallest/SemiBoldText';
+import CommentListItem from '../../organisms/cummunity/CommentListItem';
 import { userTokenAtom } from '../../../store/atoms';
 import { getCommentListAPI } from '../../../queries/api';
 import { threadItemTemplateStyles } from '../../../styles/styles';
-import { screenFont, screenHeight, screenWidth } from '../../../utils/changeStyleSize';
+import { screenHeight, screenWidth } from '../../../utils/changeStyleSize';
 import { CommentTopicTypes, CommentTypes, ThreadItemTemplateProps } from '../../../types/types';
-import CommentListItem from '../../organisms/cummunity/CommentListItem';
 
-const ThreadItemTemplate = ({ post, movetoCommunityScreen }: ThreadItemTemplateProps) => {
+const ThreadItemTemplate = ({ post, movetoCommunityScreen, moveToWriteScreen }: ThreadItemTemplateProps) => {
     const { accessToken } = useRecoilValue(userTokenAtom);
     const [postValue, setPostValue] = useState<CommentTopicTypes>({
         title: '',
@@ -130,7 +129,7 @@ const ThreadItemTemplate = ({ post, movetoCommunityScreen }: ThreadItemTemplateP
                 {Platform.OS === 'android' && (
                     <DropShadow style={threadItemTemplateStyles.ButtonShadow}>
                         <TouchButton
-                            onPress={() => {}}
+                            onPress={() => moveToWriteScreen(postValue.title, postValue.rePostCount, postValue.time)}
                             backgroundColor={Colors.VIOLET}
                             width={100}
                             height={44}

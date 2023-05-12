@@ -1,9 +1,12 @@
 import React from 'react';
 
-import WritePostTemplate from '../components/templates/community/WritePostOrCommentTemplate';
-import { useRootNavigation } from '../navigations/RootStackNavigation';
+import WritePostOrCommentTemplate from '../components/templates/community/WritePostOrCommentTemplate';
+import { useRootNavigation, useRootRoute } from '../navigations/RootStackNavigation';
 
 const WritePostOrCommentScreen = () => {
+    const route = useRootRoute<'WritePostOrComment'>();
+    const data = route.params;
+
     const rootNavigation = useRootNavigation();
     const moveToScreen = (state: string) => {
         switch (state) {
@@ -22,7 +25,7 @@ const WritePostOrCommentScreen = () => {
 
     return (
         <>
-            <WritePostTemplate moveToScreen={moveToScreen} />
+            <WritePostOrCommentTemplate moveToScreen={moveToScreen} postThreadInfo={data} />
         </>
     );
 };

@@ -150,7 +150,13 @@ export type RootStackParamList = {
     BottomTab?: {
         screen: string;
     };
-    WritePost: undefined;
+    WritePostOrComment:
+        | {
+              title: string;
+              rePostCount: number;
+              time: string;
+          }
+        | undefined;
     EditNickname: undefined;
     AccountManagement: undefined;
     LikeKeywordSetting: undefined;
@@ -374,7 +380,14 @@ export type SeviceHomeTemplateProps = {
     handleModalTrigger: boolean;
     moveToWritePost: () => void;
 };
-export type WritePostTemplateProps = {
+export type WritePostOrCommentTemplateProps = {
+    postThreadInfo:
+        | {
+              title: string;
+              rePostCount: number;
+              time: string;
+          }
+        | undefined;
     moveToScreen: (state: string) => void;
 };
 export type EditNicknameTemplateProps = {
@@ -390,4 +403,5 @@ export type ThreadItemTemplateProps = {
               postId: number;
           };
     movetoCommunityScreen: () => void;
+    moveToWriteScreen: (title: string, rePostCount: number, time: string) => void;
 };

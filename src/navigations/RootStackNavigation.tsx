@@ -9,7 +9,7 @@ import LoginScreen from '../screens/EmailLoginScreen';
 import BottomTabNavigation from './BottomTabNavigation';
 import JoinMemberScreen from '../screens/JoinMemberScreen';
 import NotLoginHomeScreen from '../screens/NotLoginHomeScreen';
-import WritePostScreen from '../screens/WritePostOrCommentScreen';
+import WritePostOrCommentScreen from '../screens/WritePostOrCommentScreen';
 import ThreadItemScreen from '../screens/cummunity/ThreadItemScreen';
 import InitLikeKeywordScreen from '../screens/InitLikeKeywordScreen';
 import RequestPermissionScreen from '../screens/RequestPermissionScreen';
@@ -93,7 +93,7 @@ export const RootStackNavigation = () => {
         >
             <Stack.Screen name="NotLoginHome" component={NotLoginHomeScreen} />
             <Stack.Screen name="BottomTab" component={BottomTabNavigation} />
-            <Stack.Screen name="WritePost" component={WritePostScreen} />
+            <Stack.Screen name="WritePostOrComment" component={WritePostOrCommentScreen} />
             <Stack.Screen name="ThreadItem" component={ThreadItemScreen} />
             <Stack.Screen name="EditNickname" component={EditNicknameScreen} />
             <Stack.Screen name="RequestPermission" component={RequestPermissionScreen} />
