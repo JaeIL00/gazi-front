@@ -40,7 +40,6 @@ const ThreadItemTemplate = ({ post, movetoCommunityScreen }: ThreadItemTemplateP
                 // console.log('last', lastPage.data);
             },
             onSuccess: data => {
-                console.log(data.pages[0].data.data.postList);
                 const pageNumber = data.pages[0].data.data.postList.pageable.pageNumber;
                 if (pageNumber === 0) {
                     getCommentTopic(data.pages[0].data.data, data.pages[0].data.data.postList.content);
@@ -177,7 +176,7 @@ const ThreadItemTemplate = ({ post, movetoCommunityScreen }: ThreadItemTemplateP
                                     <View style={{ paddingTop: 8 * screenHeight }}>
                                         <NormalText text={item.content} size={13} color="#000000" />
                                         <Spacer height={8} />
-                                        {/* {item.fileList.length === 1 && (
+                                        {item.fileList.length === 1 && (
                                             <TouchButton onPress={() => {}} width={308} height={208}>
                                                 <Image
                                                     source={{ uri: item.fileList[0].fileUrl }}
@@ -188,8 +187,8 @@ const ThreadItemTemplate = ({ post, movetoCommunityScreen }: ThreadItemTemplateP
                                                     }}
                                                 />
                                             </TouchButton>
-                                        )} */}
-                                        {/* {item.fileList.length === 2 && (
+                                        )}
+                                        {item.fileList.length === 2 && (
                                             <View
                                                 style={{
                                                     flexDirection: 'row',
@@ -336,7 +335,7 @@ const ThreadItemTemplate = ({ post, movetoCommunityScreen }: ThreadItemTemplateP
                                                     )}
                                                 </View>
                                             </View>
-                                        )} */}
+                                        )}
                                     </View>
 
                                     <Spacer height={9} />

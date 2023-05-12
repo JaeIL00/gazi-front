@@ -44,12 +44,10 @@ export type CommentTypes = {
     backgroundMapUrl: string;
     content: string;
     distance: string;
-    fileList: [
-        {
-            fileName: string;
-            fileUrl: string;
-        },
-    ];
+    fileList: {
+        fileName: string;
+        fileUrl: string;
+    }[];
     keywordIdList: number[];
     like: boolean;
     likeCount: number;
