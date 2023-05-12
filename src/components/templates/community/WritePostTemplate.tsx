@@ -74,8 +74,9 @@ const WritePostTemplate = ({ moveToScreen }: WritePostTemplateProps) => {
     const [onErrorText, setOnErrorText] = useState('');
     const { mutate: postMutate, isLoading: isPostLoading } = useMutation(writePostAPI, {
         onSuccess: ({ data }) => {
-            const postId: number = data.data;
-            uploadFilesHandler(postId);
+            const responsePostId: number = data.data;
+            uploadFilesHandler(responsePostId);
+            setPostId(responsePostId);
         },
         onError: error => {
             // For Debug
@@ -109,10 +110,13 @@ const WritePostTemplate = ({ moveToScreen }: WritePostTemplateProps) => {
 
     // Upload files
     const rootNavigation = useRootNavigation();
+    const [postId, setPostId] = useState<number>(0);
     const { mutate: postFileMutate, isLoading: isPostFileLoading } = useMutation(writePostFilesAPI, {
         onSuccess: ({ data }) => {
             rootNavigation.navigate('ThreadItem', {
-                post: null,
+                post: {
+                    postId,
+                },
             });
         },
         onError: error => {

@@ -153,6 +153,16 @@ export const nearByUserPostsAPI = async (param: {
 };
 
 // COMMUNITY
+export const getCommentListAPI = async (param: { accessToken: string; postId: number; curX: number; curY: number }) => {
+    const response = await Axios({
+        url: `/api/v1/post/top-post?postId=${param.postId}&curX=${param.curX}&curY=${param.curY}`,
+        method: 'get',
+        headers: {
+            Authorization: `Bearer ${param.accessToken}`,
+        },
+    });
+    return response;
+};
 
 // TEMPORARY COMMUNITY
 export const writePostAPI = async (param: { accessToken: string; data: PostDto }) => {

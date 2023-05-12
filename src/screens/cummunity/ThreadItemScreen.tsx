@@ -6,8 +6,8 @@ import { useRootNavigation, useRootRoute } from '../../navigations/RootStackNavi
 import { threadItemScreenStyles } from '../../styles/styles';
 
 const ThreadItemScreen = () => {
-    // const route = useRootRoute<'ThreadItem'>();
-    // const data = route.params.post;
+    const route = useRootRoute<'ThreadItem'>();
+    const data = route.params.post;
 
     const rootNavigation = useRootNavigation();
     const movetoCommunityScreen = () => {
@@ -15,7 +15,7 @@ const ThreadItemScreen = () => {
     };
     return (
         <View style={threadItemScreenStyles.container}>
-            <ThreadItemTemplate movetoCommunityScreen={movetoCommunityScreen} />
+            <ThreadItemTemplate post={data} movetoCommunityScreen={movetoCommunityScreen} />
         </View>
     );
 };

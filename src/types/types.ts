@@ -32,6 +32,30 @@ export type PostTypes = {
     thumbNail: string;
     postId: number;
 };
+export type CommentTopicTypes = {
+    title: string;
+    rePostCount: number;
+    placeName: string;
+    time: string;
+    distance: string;
+};
+export type CommentTypes = {
+    backgroundMapUrl: string;
+    content: string;
+    distance: string;
+    fileList: [
+        {
+            fileName: string;
+            fileUrl: string;
+        },
+    ];
+    keywordIdList: number[];
+    like: boolean;
+    likeCount: number;
+    nickName: string;
+    report: boolean;
+    time: string;
+};
 export type LocationResultTypes = {
     business_status: string;
     formatted_address: string;
@@ -133,7 +157,11 @@ export type RootStackParamList = {
     LikeKeywordSetting: undefined;
     Policies: undefined;
     ThreadItem: {
-        post: PostTypes | null;
+        post:
+            | PostTypes
+            | {
+                  postId: number;
+              };
     };
 };
 export type BottomTabParamList = {
@@ -357,6 +385,10 @@ export type MyProfileTemplateProps = {
     moveToScreen: (state: string) => void;
 };
 export type ThreadItemTemplateProps = {
-    // post: PostTypes;
+    post:
+        | PostTypes
+        | {
+              postId: number;
+          };
     movetoCommunityScreen: () => void;
 };

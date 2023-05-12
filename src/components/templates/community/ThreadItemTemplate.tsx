@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useLayoutEffect, useState } from 'react';
 import { FlatList, Image, Platform, View } from 'react-native';
 import DropShadow from 'react-native-drop-shadow';
+import { useRecoilValue } from 'recoil';
+import { useInfiniteQuery } from 'react-query';
 
 import Icons from '../../smallest/Icons';
 import Spacer from '../../smallest/Spacer';
@@ -9,102 +11,56 @@ import NormalText from '../../smallest/NormalText';
 import MediumText from '../../smallest/MediumText';
 import TouchButton from '../../smallest/TouchButton';
 import SemiBoldText from '../../smallest/SemiBoldText';
-import { ThreadItemTemplateProps } from '../../../types/types';
+import { userTokenAtom } from '../../../store/atoms';
+import { getCommentListAPI } from '../../../queries/api';
 import { threadItemTemplateStyles } from '../../../styles/styles';
 import { screenFont, screenHeight, screenWidth } from '../../../utils/changeStyleSize';
-const dummy = {
-    content: '',
-    distance: '160m',
-    headKeyword: 2,
-    latitude: 37.4988341,
-    longitude: 127.0261778,
-    postId: 59,
-    rePostCount: 0,
-    thumbNail:
-        'https://gazimapbucket.s3.ap-northeast-2.amazonaws.com/thumbnail/929ccc1c07-759b-4695-9264-b5a33df0b7a52023-05-11',
-    time: '1시간 전',
-    title: '강남역 ',
-};
-const listDummy = [
-    {
-        distance: '8064Km',
-        content:
-            '국가유공자·상이군경 및 전몰군경의 유가족은 법률이 정하는 바에 의하여 우선적으로 근로의 기회를 부여받는다. 모든 국민은 자기의 행위가 아닌 친족의 행위로 인하여 불이익한 처우를 받지 아니한다. 국무총리는 대통령을 보좌하며, 행정에 관하여 대통령의 명을 받아 행정각부를 통할한다. 제1항의 지시를 받은 당해 행정기관은 이에 응하여야 한다.',
-        fileList: [
-            {
-                fileName: 'postFile/36cf863b4c-3b85-4d39-892b-1747e4203b062023-05-11',
-                fileUrl:
-                    'https://pds.joongang.co.kr/news/component/joongang_sunday/202209/03/c9f999b5-d32d-4a06-bdfc-02aff4755ffb.jpg',
+import { CommentTopicTypes, CommentTypes, ThreadItemTemplateProps } from '../../../types/types';
+
+const ThreadItemTemplate = ({ post, movetoCommunityScreen }: ThreadItemTemplateProps) => {
+    const { accessToken } = useRecoilValue(userTokenAtom);
+    const [postValue, setPostValue] = useState<CommentTopicTypes>({
+        title: '',
+        rePostCount: 0,
+        placeName: '',
+        time: '',
+        distance: '',
+    });
+    const [commentList, setCommentList] = useState<CommentTypes[]>([]);
+    const { hasNextPage, isFetching, isFetchingNextPage, fetchNextPage, refetch, remove } = useInfiniteQuery(
+        ['getCommentList'],
+        ({ pageParam = 0 }) =>
+            getCommentListAPI({ accessToken, postId: post.postId, curX: 37.49795103144074, curY: 127.02760985223079 }),
+        {
+            getNextPageParam: (lastPage, allPages) => {
+                // const total = lastPage.data.data.totalPages;
+                // const nextPage = lastPage.data.data.pageable.pageNumber + 1;
+                // return nextPage > total ? undefined : nextPage;
+                // console.log('last', lastPage.data);
             },
-            {
-                fileName: 'postFile/36cf863b4c-3b85-4d39-892b-1747e4203b062023-05-11',
-                fileUrl:
-                    'https://pds.joongang.co.kr/news/component/joongang_sunday/202209/03/c9f999b5-d32d-4a06-bdfc-02aff4755ffb.jpg',
+            onSuccess: data => {
+                const pageNumber = data.pages[0].data.data.postList.pageable.pageNumber;
+                if (pageNumber === 0) {
+                    getCommentTopic(data.pages[0].data.data, data.pages[0].data.data.postList.content);
+                }
             },
-            {
-                fileName: 'postFile/36cf863b4c-3b85-4d39-892b-1747e4203b062023-05-11',
-                fileUrl:
-                    'https://pds.joongang.co.kr/news/component/joongang_sunday/202209/03/c9f999b5-d32d-4a06-bdfc-02aff4755ffb.jpg',
+            onError: ({ response }) => {
+                // For Debug
+                console.log('(ERROR) Get comment list API. respense: ', response);
             },
-            {
-                fileName: 'postFile/36cf863b4c-3b85-4d39-892b-1747e4203b062023-05-11',
-                fileUrl:
-                    'https://pds.joongang.co.kr/news/component/joongang_sunday/202209/03/c9f999b5-d32d-4a06-bdfc-02aff4755ffb.jpg',
-            },
-            {
-                fileName: 'postFile/36cf863b4c-3b85-4d39-892b-1747e4203b062023-05-11',
-                fileUrl:
-                    'https://pds.joongang.co.kr/news/component/joongang_sunday/202209/03/c9f999b5-d32d-4a06-bdfc-02aff4755ffb.jpg',
-            },
-            {
-                fileName: 'postFile/36cf863b4c-3b85-4d39-892b-1747e4203b062023-05-11',
-                fileUrl:
-                    'https://pds.joongang.co.kr/news/component/joongang_sunday/202209/03/c9f999b5-d32d-4a06-bdfc-02aff4755ffb.jpg',
-            },
-        ],
-        nickName: 'kakadoi',
-        time: '2분 전',
-        likeCount: 0,
-        keywordIdList: [2, 3],
-        like: false,
-        report: false,
-    },
-    {
-        distance: '8064Km',
-        content: '이쪽으로 안오시는게 좋아요.',
-        fileList: [
-            {
-                fileName: 'postFile/36cf863b4c-3b85-4d39-892b-1747e4203b062023-05-11',
-                fileUrl:
-                    'https://pds.joongang.co.kr/news/component/joongang_sunday/202209/03/c9f999b5-d32d-4a06-bdfc-02aff4755ffb.jpg',
-            },
-        ],
-        nickName: 'kakadoi',
-        time: '2분 전',
-        likeCount: 0,
-        keywordIdList: [2, 3],
-        like: false,
-        report: false,
-    },
-    {
-        distance: '8064Km',
-        content: '이쪽으로 안오시는게 좋아요.',
-        fileList: [
-            {
-                fileName: 'postFile/36cf863b4c-3b85-4d39-892b-1747e4203b062023-05-11',
-                fileUrl:
-                    'https://pds.joongang.co.kr/news/component/joongang_sunday/202209/03/c9f999b5-d32d-4a06-bdfc-02aff4755ffb.jpg',
-            },
-        ],
-        nickName: 'kakadoi',
-        time: '2분 전',
-        likeCount: 0,
-        keywordIdList: [2, 3],
-        like: false,
-        report: false,
-    },
-];
-const ThreadItemTemplate = ({ movetoCommunityScreen }: ThreadItemTemplateProps) => {
+        },
+    );
+    const getCommentTopic = (data: CommentTopicTypes, postList: CommentTypes[]) => {
+        setPostValue({
+            title: data.title,
+            rePostCount: data.rePostCount,
+            placeName: data.placeName,
+            time: '1분전',
+            distance: '3km',
+        });
+        setCommentList([...commentList, ...postList]);
+    };
+
     return (
         <>
             <View style={threadItemTemplateStyles.backButtonBox}>
@@ -127,12 +83,16 @@ const ThreadItemTemplate = ({ movetoCommunityScreen }: ThreadItemTemplateProps) 
             <View style={threadItemTemplateStyles.main}>
                 <View style={threadItemTemplateStyles.headerBox}>
                     <View>
-                        <NormalText text={dummy.distance} size={12} color={Colors.TXT_GRAY} />
+                        <NormalText
+                            text={`${postValue.distance} | ${postValue.placeName}`}
+                            size={12}
+                            color={Colors.TXT_GRAY}
+                        />
                         <Spacer height={4} />
-                        <SemiBoldText text={dummy.title} size={20} color={Colors.BLACK} />
+                        <SemiBoldText text={postValue.title} size={20} color={Colors.BLACK} />
                         <Spacer height={4} />
                         <NormalText
-                            text={`${dummy.rePostCount} posts • updated ${dummy.time}`}
+                            text={`${postValue.rePostCount} posts • updated ${postValue.time}`}
                             size={12}
                             color={Colors.BLACK}
                         />
@@ -159,7 +119,7 @@ const ThreadItemTemplate = ({ movetoCommunityScreen }: ThreadItemTemplateProps) 
                         }}
                     />
                     <FlatList
-                        data={listDummy}
+                        data={commentList}
                         renderItem={({ item }) => (
                             <View style={{ flexDirection: 'row', width: '94%' }}>
                                 <View
@@ -210,7 +170,7 @@ const ThreadItemTemplate = ({ movetoCommunityScreen }: ThreadItemTemplateProps) 
                                     <View style={{ paddingTop: 8 * screenHeight }}>
                                         <NormalText text={item.content} size={13} color="#000000" />
                                         <Spacer height={8} />
-                                        {item.fileList.length === 1 && (
+                                        {/* {item.fileList.length === 1 && (
                                             <TouchButton onPress={() => {}} width={308} height={208}>
                                                 <Image
                                                     source={{ uri: item.fileList[0].fileUrl }}
@@ -221,8 +181,8 @@ const ThreadItemTemplate = ({ movetoCommunityScreen }: ThreadItemTemplateProps) 
                                                     }}
                                                 />
                                             </TouchButton>
-                                        )}
-                                        {item.fileList.length === 2 && (
+                                        )} */}
+                                        {/* {item.fileList.length === 2 && (
                                             <View
                                                 style={{
                                                     flexDirection: 'row',
@@ -369,7 +329,7 @@ const ThreadItemTemplate = ({ movetoCommunityScreen }: ThreadItemTemplateProps) 
                                                     )}
                                                 </View>
                                             </View>
-                                        )}
+                                        )} */}
                                     </View>
 
                                     <Spacer height={9} />
