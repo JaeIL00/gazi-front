@@ -80,9 +80,9 @@ export const RootStackNavigation = () => {
             console.log('(ERROR) Check async storage for auto login ', error);
         }
     };
-    useLayoutEffect(() => {
-        checkAsyncStorage();
-    }, []);
+    // useLayoutEffect(() => {
+    //     checkAsyncStorage();
+    // }, []);
 
     return (
         <Stack.Navigator
@@ -90,8 +90,9 @@ export const RootStackNavigation = () => {
                 headerShown: false,
                 presentation: 'containedModal',
             }}>
-            <Stack.Screen name="NotLoginHome" component={NotLoginHomeScreen} />
+            <Stack.Screen name="MyPostComment" component={MyPostCommentScreen} />
             <Stack.Screen name="BottomTab" component={BottomTabNavigation} />
+            <Stack.Screen name="NotLoginHome" component={NotLoginHomeScreen} />
             <Stack.Screen name="WritePostOrComment" component={WritePostOrCommentScreen} />
             <Stack.Screen name="ThreadItem" component={ThreadItemScreen} />
             <Stack.Screen name="EditNickname" component={EditNicknameScreen} />
@@ -99,7 +100,6 @@ export const RootStackNavigation = () => {
             <Stack.Screen name="InitKeyword" component={InitLikeKeywordScreen} />
             <Stack.Screen name="JoinMember" component={JoinMemberScreen} />
             <Stack.Screen name="Login" component={LoginScreen} />
-            <Stack.Screen name="MyPostComment" component={MyPostCommentScreen} />
         </Stack.Navigator>
     );
 };

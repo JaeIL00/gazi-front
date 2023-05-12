@@ -197,6 +197,14 @@ export type TouchButtonProps = {
     borderRadius?: number;
     borderBottomWidth?: number;
     flex?: number;
+    hitSlop?:
+        | {
+              top?: number;
+              bottom?: number;
+              left?: number;
+              right?: number;
+          }
+        | number;
 };
 export type SingleLineInputProps = {
     value: string;
@@ -407,4 +415,7 @@ export type ThreadItemTemplateProps = {
     postId: number;
     movetoCommunityScreen: () => void;
     moveToWriteScreen: (title: string, rePostCount: number, time: string) => void;
+};
+export type MyPostCommentTemplateProps = {
+    moveToBackScreenHandler: () => void;
 };

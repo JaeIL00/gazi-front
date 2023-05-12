@@ -1044,6 +1044,28 @@ export const threadItemTemplateStyles = StyleSheet.create({
         alignItems: 'center',
     },
 });
+export const myPostCommentTemplateStyles = StyleSheet.create({
+    headerBox: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingBottom: 16 * screenHeight,
+        paddingTop: 41 * screenHeight,
+        paddingHorizontal: 16 * screenWidth,
+    },
+    headerIcon: {
+        width: 9 * screenWidth,
+        height: 16 * screenHeight,
+    },
+    tabBox: {
+        flexDirection: 'row',
+    },
+    tabButton: {
+        width: '50%',
+        paddingBottom: 7 * screenHeight,
+        paddingTop: 12 * screenHeight,
+        borderColor: Colors.BLACK,
+    },
+});
 
 // SCREEN
 export const seviceHomeScreenStyles = StyleSheet.create({
@@ -1065,5 +1087,11 @@ export const threadItemScreenStyles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: Colors.BACKGROUND_DEFAULT,
+    },
+});
+export const myPostCommentScreenStyles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: Colors.WHITE,
     },
 });

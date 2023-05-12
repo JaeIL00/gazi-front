@@ -47,7 +47,7 @@ const MyProfileTemplate = ({ moveToScreen }: MyProfileTemplateProps) => {
                         <View style={myProfileTemplateStyles.tabListBox}>
                             <NormalText text={item.text} size={16} color={Colors.BLACK} />
                             <Image
-                                source={require('../../../assets/icons/to-right.png')}
+                                source={require('../../../assets/icons/to-right-white.png')}
                                 style={myProfileTemplateStyles.tabRightIcon}
                             />
                         </View>
