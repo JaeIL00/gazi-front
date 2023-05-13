@@ -12,7 +12,7 @@ const AccountManagementScreen = () => {
                 rootNavigation.goBack();
                 break;
             case 'PASSWORD':
-                // rootNavigation.navigate();
+                rootNavigation.navigate('ChangePassword');
                 break;
             case 'LOGOUT':
                 // rootNavigation.navigate();

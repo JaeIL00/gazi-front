@@ -1169,7 +1169,22 @@ export const DeleteMemberTemplateStyles = StyleSheet.create({
         borderColor: Colors.TXT_GRAY,
     },
 });
-
+export const changePasswordTemplateStyles = StyleSheet.create({
+    emailErrorTextBox: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingLeft: 10 * screenWidth,
+        paddingBottom: 7 * screenHeight,
+    },
+    inputBox: {
+        borderRadius: 5 * screenFont,
+        height: 48 * screenHeight,
+        backgroundColor: Colors.LIGHTGRAY,
+        justifyContent: 'center',
+        paddingHorizontal: 16 * screenWidth,
+        marginTop: 8 * screenHeight,
+    },
+});
 // SCREEN
 export const seviceHomeScreenStyles = StyleSheet.create({
     container: {
