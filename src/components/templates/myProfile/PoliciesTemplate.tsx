@@ -63,7 +63,7 @@ const PoliciesTemplate = ({ moveToBackScreenHandler }: PoliciesTemplateProps) =>
             </View>
             {uri && (
                 <View style={PoliciesTemplateStyles.webviewBox}>
-                    <WebViewComponent uri={uri} />
+                    <WebViewComponent uri={uri} closeHandler={seturi} />
                 </View>
             )}
         </View>
