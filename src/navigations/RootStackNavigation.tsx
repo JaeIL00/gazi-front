@@ -22,6 +22,7 @@ import { RootStackParamList } from '../types/types';
 import { userInfoAtom, userTokenAtom } from '../store/atoms';
 import DeleteMemberScreen from '../screens/myProfile/DeleteMemberScreen';
 import LikeKeywordSettingScreen from '../screens/myProfile/LikeKeywordSettingScreen';
+import PoliciesScreen from '../screens/myProfile/PoliciesScreen';
 
 export const RootStackNavigation = () => {
     const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -96,12 +97,13 @@ export const RootStackNavigation = () => {
                 headerShown: false,
                 presentation: 'containedModal',
             }}>
+            <Stack.Screen name="BottomTab" component={BottomTabNavigation} />
+            <Stack.Screen name="Policies" component={PoliciesScreen} />
             <Stack.Screen name="NotLoginHome" component={NotLoginHomeScreen} />
             <Stack.Screen name="LikeKeywordSetting" component={LikeKeywordSettingScreen} />
             <Stack.Screen name="ChangePassword" component={ChangePasswordScreen} />
             <Stack.Screen name="AccountManagement" component={AccountManagementScreen} />
             <Stack.Screen name="DeleteMember" component={DeleteMemberScreen} />
-            <Stack.Screen name="BottomTab" component={BottomTabNavigation} />
             <Stack.Screen name="MyPostComment" component={MyPostCommentScreen} />
             <Stack.Screen name="WritePostOrComment" component={WritePostOrCommentScreen} />
             <Stack.Screen name="ThreadItem" component={ThreadItemScreen} />

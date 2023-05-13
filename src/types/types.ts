@@ -322,6 +322,9 @@ export interface MoveBackWithPageTitleProps extends PageTitleWithExplainProps {
 export type ServiceAgreementProps = {
     finishSlideComponentHandler: (state: string) => void;
 };
+export type WebViewComponentProps = {
+    uri: string;
+};
 export interface AuthEmailProps extends ServiceAgreementProps {
     min: number;
     sec: number;
@@ -450,5 +453,8 @@ export type ChangePasswordTemplateProps = {
     moveToBackScreenHandler: () => void;
 };
 export type LikeKeywordSettingTemplateProps = {
+    moveToBackScreenHandler: () => void;
+};
+export type PoliciesTemplateProps = {
     moveToBackScreenHandler: () => void;
 };

@@ -692,6 +692,12 @@ export const editMyKeywordStyles = StyleSheet.create({
         borderColor: Colors.TXT_GRAY,
     },
 });
+export const webViewComponentStyles = StyleSheet.create({
+    webview: {
+        width: '100%',
+        height: '100%',
+    },
+});
 
 // TEMPLATES
 export const nicknameTemplateStyles = StyleSheet.create({
@@ -1097,7 +1103,7 @@ export const myPostCommentTemplateStyles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         paddingBottom: 16 * screenHeight,
-        paddingTop: 41 * screenHeight,
+        paddingTop: 17 * screenHeight,
         paddingHorizontal: 16 * screenWidth,
     },
     headerIcon: {
@@ -1119,7 +1125,7 @@ export const AccountManagementTemplateStyles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         paddingBottom: 16 * screenHeight,
-        paddingTop: 41 * screenHeight,
+        paddingTop: 17 * screenHeight,
         paddingLeft: 22 * screenWidth,
         paddingRight: 16 * screenWidth,
         borderBottomWidth: 1 * screenFont,
@@ -1140,6 +1146,39 @@ export const AccountManagementTemplateStyles = StyleSheet.create({
         width: '100%',
         height: '100%',
         justifyContent: 'center',
+    },
+});
+export const PoliciesTemplateStyles = StyleSheet.create({
+    headerBox: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingBottom: 16 * screenHeight,
+        paddingTop: 17 * screenHeight,
+        paddingLeft: 22 * screenWidth,
+        paddingRight: 16 * screenWidth,
+        borderBottomWidth: 1 * screenFont,
+        borderColor: '#EBEBEB',
+    },
+    headerIcon: {
+        width: 9 * screenWidth,
+        height: 16 * screenHeight,
+    },
+    tabBox: {
+        width: '100%',
+        height: 52 * screenHeight,
+        borderColor: '#EBEBEB',
+        borderBottomWidth: 1 * screenFont,
+        paddingHorizontal: 16 * screenWidth,
+    },
+    buttonBox: {
+        width: '100%',
+        height: '100%',
+        justifyContent: 'center',
+    },
+    webviewBox: {
+        position: 'absolute',
+        width: '100%',
+        height: '100%',
     },
 });
 export const communityTemplateStyles = StyleSheet.create({
