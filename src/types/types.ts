@@ -1,8 +1,10 @@
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
+import { AxiosResponse } from 'axios';
 import { ReactElement, RefObject } from 'react';
 import { Asset } from 'react-native-image-picker';
 import MapView, { Details, Region } from 'react-native-maps';
 import { FlexAlignType, KeyboardType, TextStyle } from 'react-native/types';
+import { QueryObserverResult, RefetchOptions, RefetchQueryFilters } from 'react-query';
 
 //COMMON
 export type KeywordListTypes = {
@@ -384,6 +386,10 @@ export type EditMyKeywordProps = {
     checkInitTraffic: boolean[];
     checkInitSubway: boolean[];
     checkInitIssue: boolean[];
+    controlEditWindowHandler: (state: string) => void;
+    getMyKeywordRefetch: <TPageData>(
+        options?: (RefetchOptions & RefetchQueryFilters<TPageData>) | undefined,
+    ) => Promise<QueryObserverResult<AxiosResponse<any, any>, unknown>>;
 };
 
 // TEMPLATES

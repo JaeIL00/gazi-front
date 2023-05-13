@@ -15,7 +15,7 @@ import SemiBoldText from '../../smallest/SemiBoldText';
 import KeywordsList from '../../organisms/KeywordsList';
 import MoveBackWithPageTitle from '../../organisms/MoveBackWithPageTitle';
 import { userTokenAtom } from '../../../store/atoms';
-import { likeKeywordsAPI } from '../../../queries/api';
+import { addLikeKeywordsAPI } from '../../../queries/api';
 import { initLikeKeywordTemplateStyles } from '../../../styles/styles';
 import { InitLikeKeywordTemplateProps, KeywordListTypes } from '../../../types/types';
 import { issueKeywordsNotEtc, subwayKeywords, trafficKeywords } from '../../../utils/allKeywords';
@@ -97,7 +97,7 @@ const InitLikeKeywordTemplate = ({ moveToScreen }: InitLikeKeywordTemplateProps)
 
     // Send like keywords API
     const userTk = useRecoilValue(userTokenAtom);
-    const { mutate } = useMutation(likeKeywordsAPI, {
+    const { mutate } = useMutation(addLikeKeywordsAPI, {
         onSuccess: () => {
             moveToScreen('OK');
         },
@@ -109,7 +109,7 @@ const InitLikeKeywordTemplate = ({ moveToScreen }: InitLikeKeywordTemplateProps)
     const onPressLikedKeyword = debounce(() => {
         if (checkedKeywords.length > 0) {
             mutate({
-                token: userTk.accessToken,
+                accessToken: userTk.accessToken,
                 data: checkedKeywords,
             });
         }

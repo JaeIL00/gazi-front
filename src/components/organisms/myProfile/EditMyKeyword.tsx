@@ -1,5 +1,5 @@
 import React, { useEffect, useLayoutEffect, useState } from 'react';
-import { ScrollView, View } from 'react-native';
+import { ActivityIndicator, ScrollView, View } from 'react-native';
 
 import Icons from '../../smallest/Icons';
 import Spacer from '../../smallest/Spacer';
@@ -13,8 +13,19 @@ import { editMyKeywordStyles } from '../../../styles/styles';
 import { screenHeight } from '../../../utils/changeStyleSize';
 import { EditMyKeywordProps, KeywordListTypes } from '../../../types/types';
 import { issueKeywordsNotEtc, subwayKeywords, trafficKeywords } from '../../../utils/allKeywords';
+import { useMutation } from 'react-query';
+import { editMyLikeKeywordsAPI } from '../../../queries/api';
+import { useRecoilValue } from 'recoil';
+import { userTokenAtom } from '../../../store/atoms';
 
-const EditMyKeyword = ({ myKeywordList, checkInitTraffic, checkInitSubway, checkInitIssue }: EditMyKeywordProps) => {
+const EditMyKeyword = ({
+    myKeywordList,
+    checkInitTraffic,
+    checkInitSubway,
+    checkInitIssue,
+    controlEditWindowHandler,
+    getMyKeywordRefetch,
+}: EditMyKeywordProps) => {
     // Initialized check keywords
     const [checkTraffic, setCheckTraffic] = useState<boolean[]>(checkInitTraffic);
     const [checkSubway, setCheckSubway] = useState<boolean[]>(checkInitSubway);
@@ -124,6 +135,45 @@ const EditMyKeyword = ({ myKeywordList, checkInitTraffic, checkInitSubway, check
         setCheckIssue(Array.from(Array(28), () => false));
     };
 
+    // Edit keyword API
+    const { accessToken } = useRecoilValue(userTokenAtom);
+
+    const { mutate, isLoading } = useMutation(editMyLikeKeywordsAPI, {
+        onSuccess: data => {
+            successEdit();
+        },
+        onError: ({ response }) => {
+            // For Debug
+            console.log('(ERROR) Edit keyword API.', response);
+        },
+    });
+    const successEdit = async () => {
+        await getMyKeywordRefetch();
+        controlEditWindowHandler('BACK');
+    };
+    const putNewKeywordList = () => {
+        let addKeywords: number[] = [];
+        let deleteKeywords: number[] = [];
+        const freshmyKeywordList = myKeywordList.map(item => item.id);
+        for (const index in checkedKeywords) {
+            const isSame = freshmyKeywordList.includes(checkedKeywords[index]);
+            if (!isSame) {
+                addKeywords = [...addKeywords, checkedKeywords[index]];
+            }
+        }
+        for (const index in freshmyKeywordList) {
+            const isSame = checkedKeywords.includes(freshmyKeywordList[index]);
+            if (!isSame) {
+                deleteKeywords = [...deleteKeywords, freshmyKeywordList[index]];
+            }
+        }
+        mutate({
+            accessToken,
+            addKeywordIdList: addKeywords,
+            deleteKeywordIdList: deleteKeywords,
+        });
+    };
+
     return (
         <>
             <View style={{ paddingBottom: 90 * screenHeight }}>
@@ -187,7 +237,7 @@ const EditMyKeyword = ({ myKeywordList, checkInitTraffic, checkInitSubway, check
                     </View>
                 </TouchButton>
                 <TextButton
-                    onPress={() => {}}
+                    onPress={putNewKeywordList}
                     text="선택완료"
                     fontSize={17}
                     textColor={Colors.WHITE}
@@ -197,6 +247,7 @@ const EditMyKeyword = ({ myKeywordList, checkInitTraffic, checkInitSubway, check
                     alignSelf="stretch"
                 />
             </View>
+            {isLoading && <ActivityIndicator size="large" />}
         </>
     );
 };

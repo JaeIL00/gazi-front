@@ -35,7 +35,7 @@ const LikeKeywordSettingTemplate = ({ moveToBackScreenHandler }: LikeKeywordSett
 
     const { accessToken } = useRecoilValue(userTokenAtom);
     const [myKeywordList, setMyKeywordList] = useState<MyLikeKeywordTypes[]>([]);
-    useQuery('getMyLikeKeyword', () => geyMyLikeKeywordsAPI(accessToken), {
+    const { refetch: getMyKeywordRefetch } = useQuery('getMyLikeKeyword', () => geyMyLikeKeywordsAPI(accessToken), {
         onSuccess: ({ data }) => {
             setMyKeywordList(data.data);
         },
@@ -102,6 +102,8 @@ const LikeKeywordSettingTemplate = ({ moveToBackScreenHandler }: LikeKeywordSett
                         checkInitTraffic={checkTraffic}
                         checkInitSubway={checkSubway}
                         checkInitIssue={checkIssue}
+                        controlEditWindowHandler={controlEditWindowHandler}
+                        getMyKeywordRefetch={getMyKeywordRefetch}
                     />
                 ) : (
                     <>

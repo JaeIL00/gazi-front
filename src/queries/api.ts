@@ -122,13 +122,13 @@ export const editNicknameAPI = async (param: { accessToken: string; data: string
 };
 
 // KEYWORD
-export const likeKeywordsAPI = async (param: { token: string; data: number[] }) => {
+export const addLikeKeywordsAPI = async (param: { accessToken: string; data: number[] }) => {
     const response = await Axios({
         url: '/api/v1/keyword/interest-keyword',
         method: 'post',
         headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${param.token}`,
+            Authorization: `Bearer ${param.accessToken}`,
         },
         data: JSON.stringify({
             myKeywordList: param.data,
@@ -144,6 +144,25 @@ export const geyMyLikeKeywordsAPI = async (accessToken: string) => {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${accessToken}`,
         },
+    });
+    return response;
+};
+export const editMyLikeKeywordsAPI = async (param: {
+    accessToken: string;
+    addKeywordIdList: number[];
+    deleteKeywordIdList: number[];
+}) => {
+    const response = await Axios({
+        url: '/api/v1/keyword/update-interest-keyword',
+        method: 'put',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${param.accessToken}`,
+        },
+        data: JSON.stringify({
+            addKeywordIdList: param.addKeywordIdList,
+            deleteKeywordIdList: param.deleteKeywordIdList,
+        }),
     });
     return response;
 };
