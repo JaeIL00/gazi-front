@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import { FlatList, Image, View } from 'react-native';
+import { ActivityIndicator, FlatList, Image, View } from 'react-native';
 import { communityTemplateStyles } from '../../../styles/styles';
 import SemiBoldText from '../../smallest/SemiBoldText';
 import TouchButton from '../../smallest/TouchButton';
@@ -9,6 +9,10 @@ import Colors from '../../../styles/Colors';
 import { screenFont, screenHeight, screenWidth } from '../../../utils/changeStyleSize';
 import PostListItem from '../../organisms/PostListItem';
 import { PostTypes } from '../../../types/types';
+import { useRecoilValue } from 'recoil';
+import { userTokenAtom } from '../../../store/atoms';
+import { getAllPostAPI } from '../../../queries/api';
+import { useInfiniteQuery } from 'react-query';
 
 const dummy: PostTypes[] = [
     {
@@ -132,6 +136,38 @@ const CommunityTemplate = () => {
                 console.log('(ERROR) Tab control handler.', state);
         }
     };
+
+    // Get all post API
+    const userTk = useRecoilValue(userTokenAtom);
+    const [allPostList, setAllPostList] = useState<PostTypes[]>([]);
+    const { hasNextPage, isFetching, isFetchingNextPage, fetchNextPage, refetch, remove } = useInfiniteQuery(
+        ['getNearPosts'],
+        ({ pageParam = 0 }) =>
+            getAllPostAPI({
+                curLat: 37.49795103144074,
+                curLon: 127.02760985223079,
+                accessToken: userTk.accessToken,
+                page: pageParam,
+            }),
+        {
+            getNextPageParam: (lastPage, allPages) => {
+                const total = lastPage.data.data.totalPages;
+                const nextPage = lastPage.data.data.pageable.pageNumber + 1;
+                console.log('total', total);
+                console.log('nextPage', nextPage);
+                return nextPage > total ? undefined : nextPage;
+            },
+            onSuccess: data => {
+                setAllPostList([...allPostList, ...data.pages[0].data.data.content]);
+            },
+            onError: ({ response }) => {
+                // For Debug
+                console.log('(ERROR) Get all post API. respense: ', response);
+            },
+        },
+    );
+
+    // Flst list props value
     const keyExtractor = useCallback((item: PostTypes) => item.postId + '', []);
     const renderItem = useCallback(({ item }: { item: PostTypes }) => <PostListItem post={item} isBorder={true} />, []);
     const ItemSeparatorComponent = useCallback(() => <Spacer height={33} />, []);
@@ -170,12 +206,13 @@ const CommunityTemplate = () => {
 
             <FlatList
                 keyExtractor={keyExtractor}
-                data={dummy}
+                data={allPostList}
                 renderItem={renderItem}
                 ItemSeparatorComponent={ItemSeparatorComponent}
                 ListFooterComponent={ListFooterComponent}
                 contentContainerStyle={{ paddingHorizontal: 16 * screenWidth, paddingTop: 17 * screenHeight }}
             />
+            {isFetching && <ActivityIndicator size="large" />}
         </View>
     );
 };

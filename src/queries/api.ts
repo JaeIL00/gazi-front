@@ -161,11 +161,23 @@ export const nearByUserPostsAPI = async (param: {
 };
 
 // COMMUNITY
+export const getAllPostAPI = async (param: { accessToken: string; curLat: number; curLon: number; page: number }) => {
+    const response = await Axios({
+        url: `/api/v1/post/top-post-list?curLat=${param.curLat}&curLon=${param.curLon}&page=${param.page}`,
+        method: 'get',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${param.accessToken}`,
+        },
+    });
+    return response;
+};
 export const getCommentListAPI = async (param: { accessToken: string; postId: number; curX: number; curY: number }) => {
     const response = await Axios({
         url: `/api/v1/post/top-post?postId=${param.postId}&curX=${param.curX}&curY=${param.curY}`,
         method: 'get',
         headers: {
+            'Content-Type': 'application/json',
             Authorization: `Bearer ${param.accessToken}`,
         },
     });

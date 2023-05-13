@@ -66,7 +66,6 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
     };
     const getImageHandler = (files: Asset[]) => {
         setWritePostData({ ...writePostData, files, thumbnail: files[0] });
-        console.log(files);
     };
 
     // Write post API and check essential value
