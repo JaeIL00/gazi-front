@@ -10,33 +10,33 @@ import useTextInputValidation from '../../../utils/hooks/useTextInputValidation'
 import { SingleLineInput } from '../../smallest/SingleLineInput';
 import { changePasswordTemplateStyles } from '../../../styles/styles';
 import { screenHeight, screenWidth } from '../../../utils/changeStyleSize';
+import { ChangePasswordTemplateProps } from '../../../types/types';
 
-const ChangePasswordTemplate = () => {
+const ChangePasswordTemplate = ({ moveToBackScreenHandler }: ChangePasswordTemplateProps) => {
     const [curPassword, setCurPassword] = useState<string>('');
-    const onChangeCurPassword = (text: string) => {
-        setCurPassword(text);
-    };
     const [oneNewPassword, setOneNewPassword] = useState<string>('');
-    const onChangeOneNewPassword = (text: string) => {
-        setOneNewPassword(text);
-        passwordErrorTextStyle(text);
-        onChangeTwoNewPassword('');
-    };
-    const [isPasswordLeng, setIsPasswordLeng] = useState<boolean>(false);
-    const [isPasswordReg, setIsPasswordReg] = useState<boolean>(false);
-    const passwordErrorTextStyle = (text: string) => {
-        const reg = /^(?=.*[a-zA-Z])(?=.*[!~.,?@#$%^&()_/|;:'"<>*+=-])(?=.*[0-9])/;
-        reg.test(text) ? setIsPasswordReg(true) : setIsPasswordReg(false);
-        text.length >= 8 && text.length <= 20 ? setIsPasswordLeng(true) : setIsPasswordLeng(false);
-    };
-
     const {
         text: twoNewPassword,
         onChangeText: onChangeTwoNewPassword,
         validationResult,
         changeValidationResult,
     } = useTextInputValidation();
+    const [isPasswordLeng, setIsPasswordLeng] = useState<boolean>(false);
+    const [isPasswordReg, setIsPasswordReg] = useState<boolean>(false);
     const [isSamePassword, setIsSamePassword] = useState<boolean>(false);
+    const passwordErrorTextStyle = (text: string) => {
+        const reg = /^(?=.*[a-zA-Z])(?=.*[!~.,?@#$%^&()_/|;:'"<>*+=-])(?=.*[0-9])/;
+        reg.test(text) ? setIsPasswordReg(true) : setIsPasswordReg(false);
+        text.length >= 8 && text.length <= 20 ? setIsPasswordLeng(true) : setIsPasswordLeng(false);
+    };
+    const onChangeCurPassword = (text: string) => {
+        setCurPassword(text);
+    };
+    const onChangeOneNewPassword = (text: string) => {
+        setOneNewPassword(text);
+        passwordErrorTextStyle(text);
+        onChangeTwoNewPassword('');
+    };
     const checkSamePassword = (text: string) => {
         onChangeTwoNewPassword(text);
         if (oneNewPassword === text) {
@@ -47,16 +47,17 @@ const ChangePasswordTemplate = () => {
             changeValidationResult('비밀번호가 일치하지 않습니다');
         }
     };
+
     return (
         <View>
             <HeaderMolecule
                 isPaddingHorizontal={true}
-                backHandler={() => {}}
+                backHandler={moveToBackScreenHandler}
                 headerFinish={true}
                 title="비밀번호 변경"
                 finishText="완료"
                 isNextStep={false}
-                isWorkDone={false}
+                isWorkDone={isSamePassword}
                 background={Colors.WHITE}
                 finishFunction={() => {}}
             />

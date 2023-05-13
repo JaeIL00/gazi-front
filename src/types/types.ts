@@ -428,3 +428,6 @@ export type AccountManagementTemplateProps = {
 export type DeleteMemberTemplateProps = {
     moveToScreenHandler: (state: string) => void;
 };
+export type ChangePasswordTemplateProps = {
+    moveToBackScreenHandler: () => void;
+};
