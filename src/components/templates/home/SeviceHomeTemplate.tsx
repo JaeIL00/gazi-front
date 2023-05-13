@@ -159,6 +159,7 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritePost }:
 
     // Get post of near by user API
     const userTk = useRecoilValue(userTokenAtom);
+    const [indexNumber, setIndexNumber] = useState<number>(0);
     const [nearPostList, setNearPostList] = useState<PostTypes[]>([]);
     const { hasNextPage, isFetching, isFetchingNextPage, fetchNextPage, refetch, remove } = useInfiniteQuery(
         ['getNearPosts'],
@@ -182,7 +183,8 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritePost }:
                 return nextPage > total ? undefined : nextPage;
             },
             onSuccess: data => {
-                setNearPostList([...nearPostList, ...data.pages[0].data.data.content]);
+                setNearPostList([...nearPostList, ...data.pages[indexNumber].data.data.content]);
+                setIndexNumber(indexNumber + 1);
             },
             onError: ({ response }) => {
                 // For Debug
@@ -193,7 +195,7 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritePost }:
 
     // Call next page API
     const callNextPageHandler = () => {
-        if (!hasNextPage) {
+        if (hasNextPage) {
             fetchNextPage();
         }
     };
