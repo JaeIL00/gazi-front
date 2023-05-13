@@ -81,7 +81,6 @@ const EditMyKeyword = ({ myKeywordList, checkInitTraffic, checkInitSubway, check
                 }
                 break;
             case 'ISSUE':
-                console.log('hi');
                 const freshIssue = [...checkIssue];
                 freshIssue.splice(index, 1, !freshIssue[index]);
                 setCheckIssue(freshIssue);
@@ -105,6 +104,7 @@ const EditMyKeyword = ({ myKeywordList, checkInitTraffic, checkInitSubway, check
         setCheckedKeywords(cleanType);
     };
     useEffect(() => {
+        // Traffic subway keword check
         const subwaytrue = checkSubway.filter(item => item !== false);
         if (subwaytrue.length > 0) {
             setCheckTraffic(prev => {
@@ -116,6 +116,13 @@ const EditMyKeyword = ({ myKeywordList, checkInitTraffic, checkInitSubway, check
         const checkedList = [...checkTraffic, ...checkSubway, ...checkIssue];
         checkedKeywordsHandler(allList, checkedList);
     }, [checkTraffic, checkIssue, checkSubway]);
+
+    // Reset check of keyword
+    const resetCheckedHandler = () => {
+        setCheckTraffic(Array.from(Array(3), () => false));
+        setCheckSubway(Array.from(Array(24), () => false));
+        setCheckIssue(Array.from(Array(28), () => false));
+    };
 
     return (
         <>
@@ -170,7 +177,7 @@ const EditMyKeyword = ({ myKeywordList, checkInitTraffic, checkInitSubway, check
             </View>
 
             <View style={editMyKeywordStyles.bottomBox}>
-                <TouchButton onPress={() => {}} paddingHorizontal={7}>
+                <TouchButton onPress={resetCheckedHandler} paddingHorizontal={7}>
                     <View style={editMyKeywordStyles.resetText}>
                         <Icons type="feather" name="refresh-cw" size={17} color={Colors.TXT_GRAY} />
                         <Spacer width={3} />
