@@ -8,7 +8,13 @@ import SemiBoldText from '../smallest/SemiBoldText';
 import { AgreementCheckListItemProps } from '../../types/types';
 import { agreementCheckListItemStyles, checkBoxBackground } from '../../styles/styles';
 
-const AgreementCheckListItem = ({ text, check, index, onPressCheckList }: AgreementCheckListItemProps) => {
+const AgreementCheckListItem = ({
+    text,
+    check,
+    index,
+    onPressCheckList,
+    webViewHandler,
+}: AgreementCheckListItemProps) => {
     return (
         <View style={agreementCheckListItemStyles.agreeBox}>
             <TouchButton onPress={() => onPressCheckList(index)} width={250}>
@@ -20,7 +26,7 @@ const AgreementCheckListItem = ({ text, check, index, onPressCheckList }: Agreem
                 </View>
             </TouchButton>
 
-            <TouchButton onPress={() => {}} width={20}>
+            <TouchButton onPress={() => webViewHandler(index)} width={20}>
                 <Icons type="simpleLineIcons" name="arrow-right" size={12} color="#CACACA" />
             </TouchButton>
         </View>

@@ -15,7 +15,6 @@ const PoliciesTemplate = ({ moveToBackScreenHandler }: PoliciesTemplateProps) =>
     const webViewHandler = (state: string) => {
         switch (state) {
             case 'SERVICE':
-                console.log('hi');
                 seturi('https://gilded-turn-6c9.notion.site/ver-1-10f4eab4c1c842cab3539cdd013dc0c7');
                 break;
             case 'PRIVATE':

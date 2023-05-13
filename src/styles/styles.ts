@@ -276,6 +276,11 @@ export const serviceAgreementStyles = StyleSheet.create({
         paddingTop: 3 * screenHeight,
         paddingBottom: 158 * screenHeight,
     },
+    webviewBox: {
+        position: 'absolute',
+        width: '100%',
+        height: '100%',
+    },
 });
 export const authEmailStyles = StyleSheet.create({
     container: {
@@ -695,7 +700,7 @@ export const editMyKeywordStyles = StyleSheet.create({
 export const webViewComponentStyles = StyleSheet.create({
     webview: {
         width: '100%',
-        height: '100%',
+        height: '95%',
     },
 });
 
@@ -1322,5 +1327,15 @@ export const threadItemScreenStyles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: Colors.BACKGROUND_DEFAULT,
+    },
+});
+export const JoinMemberScreenStyles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: Colors.BACKGROUND_DEFAULT,
+    },
+    inner: {
+        flex: 1,
+        paddingHorizontal: 16 * screenWidth,
     },
 });

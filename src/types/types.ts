@@ -288,6 +288,7 @@ export type AgreementCheckListItemProps = {
     check: boolean;
     index: number;
     onPressCheckList: (index: number) => void;
+    webViewHandler: (index: number) => void;
 };
 export type IconWithMediumTextProps = {
     iconColor: string;
@@ -324,6 +325,7 @@ export type ServiceAgreementProps = {
 };
 export type WebViewComponentProps = {
     uri: string;
+    closeHandler: React.Dispatch<React.SetStateAction<string>>;
 };
 export interface AuthEmailProps extends ServiceAgreementProps {
     min: number;
