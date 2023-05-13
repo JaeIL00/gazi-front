@@ -3,6 +3,8 @@ import { View } from 'react-native';
 import AccountManagementTemplate from '../../components/templates/myProfile/AccountManagementTemplate';
 import { globalBackWhiteStyles } from '../../styles/styles';
 import { useRootNavigation } from '../../navigations/RootStackNavigation';
+import { useMutation } from 'react-query';
+import { logoutAPI } from '../../queries/api';
 
 const AccountManagementScreen = () => {
     const rootNavigation = useRootNavigation();
@@ -14,8 +16,8 @@ const AccountManagementScreen = () => {
             case 'PASSWORD':
                 rootNavigation.navigate('ChangePassword');
                 break;
-            case 'LOGOUT':
-                // rootNavigation.navigate();
+            case 'INIT_HOME':
+                rootNavigation.navigate('NotLoginHome');
                 break;
             case 'DELETE':
                 rootNavigation.navigate('DeleteMember');
@@ -25,6 +27,7 @@ const AccountManagementScreen = () => {
                 console.log('(ERROR) Move screen account manage.', state);
         }
     };
+
     return (
         <View style={globalBackWhiteStyles.container}>
             <AccountManagementTemplate moveToScreenHandler={moveToScreenHandler} />

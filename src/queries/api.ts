@@ -1,6 +1,6 @@
 import axios from 'axios';
 import Config from 'react-native-config';
-import { CommentReqTypes, PostDto } from '../types/types';
+import { CommentReqTypes, PostDto, userTokenAtomTypes } from '../types/types';
 
 const Axios = axios.create({
     baseURL: Config.API_BASE_URL,
@@ -21,7 +21,7 @@ export const searchGoogleAPI = async (searchInput: string, nextPageToken: string
     return response;
 };
 
-// LOGIN
+// ACCOUT LOGIN LOGOUT
 export const loginAPI = async (data: { email: string; password: string }) => {
     const response = await Axios({
         url: '/api/v1/member/login',
@@ -36,6 +36,27 @@ export const loginAPI = async (data: { email: string; password: string }) => {
 export const autoLoginAPI = async (data: { accessToken: string; refreshToken: string }) => {
     const response = await Axios({
         url: '/api/v1/member/reissue',
+        method: 'post',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        data: JSON.stringify(data),
+    });
+    return response;
+};
+export const deleteMemberAPI = async (accessToken: string) => {
+    const response = await Axios({
+        url: '/api/v1/member/delete-member',
+        method: 'post',
+        headers: {
+            Authorization: `Bearer ${accessToken}`,
+        },
+    });
+    return response;
+};
+export const logoutAPI = async (data: userTokenAtomTypes) => {
+    const response = await Axios({
+        url: '/api/v1/member/logout',
         method: 'post',
         headers: {
             'Content-Type': 'application/json',
@@ -80,18 +101,6 @@ export const joinMemberAPI = async (data: { email: string; password: string; nic
             'Content-Type': 'application/json',
         },
         data: JSON.stringify(data),
-    });
-    return response;
-};
-
-// DELETE MEMBER
-export const deleteMemberAPI = async (accessToken: string) => {
-    const response = await Axios({
-        url: '/api/v1/member/delete-member',
-        method: 'post',
-        headers: {
-            Authorization: `Bearer ${accessToken}`,
-        },
     });
     return response;
 };

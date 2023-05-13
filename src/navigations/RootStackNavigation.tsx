@@ -77,15 +77,17 @@ export const RootStackNavigation = () => {
                     accessToken,
                     refreshToken,
                 });
+            } else {
+                rootNavigation.navigate('NotLoginHome');
             }
         } catch (error) {
             // For Debug
             console.log('(ERROR) Check async storage for auto login ', error);
         }
     };
-    // useLayoutEffect(() => {
-    //     checkAsyncStorage();
-    // }, []);
+    useLayoutEffect(() => {
+        checkAsyncStorage();
+    }, []);
 
     return (
         <Stack.Navigator

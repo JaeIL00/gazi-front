@@ -1,15 +1,41 @@
 import React from 'react';
-import { Image, View } from 'react-native';
+import { ActivityIndicator, Image, View } from 'react-native';
+import { useRecoilValue } from 'recoil';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useMutation } from 'react-query';
 
 import Spacer from '../../smallest/Spacer';
 import Colors from '../../../styles/Colors';
 import MediumText from '../../smallest/MediumText';
 import NormalText from '../../smallest/NormalText';
 import TouchButton from '../../smallest/TouchButton';
+import { logoutAPI } from '../../../queries/api';
+import { userTokenAtom } from '../../../store/atoms';
 import { AccountManagementTemplateProps } from '../../../types/types';
 import { AccountManagementTemplateStyles } from '../../../styles/styles';
 
 const AccountManagementTemplate = ({ moveToScreenHandler }: AccountManagementTemplateProps) => {
+    // logout API
+    const userToken = useRecoilValue(userTokenAtom);
+    const { mutate, isLoading } = useMutation(logoutAPI, {
+        onSuccess: () => {
+            logoutHandler();
+        },
+        onError: error => {
+            // For Debug
+            console.log('(ERROR) logout API.', error);
+        },
+    });
+    const logoutHandler = async () => {
+        try {
+            await AsyncStorage.multiRemove(['GAZI_ac_tk', 'GAZI_re_tk']);
+            moveToScreenHandler('INIT_HOME');
+        } catch (error) {
+            // For Debug
+            console.log('(ERROR), Logout delete token in storage.', error);
+        }
+    };
+
     return (
         <View>
             <View style={AccountManagementTemplateStyles.headerBox}>
@@ -31,7 +57,7 @@ const AccountManagementTemplate = ({ moveToScreenHandler }: AccountManagementTem
                 </TouchButton>
             </View>
             <View style={AccountManagementTemplateStyles.tabBox}>
-                <TouchButton onPress={() => moveToScreenHandler('LOGOUT')}>
+                <TouchButton onPress={() => mutate(userToken)}>
                     <View style={AccountManagementTemplateStyles.buttonBox}>
                         <NormalText text="로그아웃" size={16} color={Colors.BLACK} />
                     </View>
@@ -44,6 +70,7 @@ const AccountManagementTemplate = ({ moveToScreenHandler }: AccountManagementTem
                     </View>
                 </TouchButton>
             </View>
+            {isLoading && <ActivityIndicator size="large" />}
         </View>
     );
 };
