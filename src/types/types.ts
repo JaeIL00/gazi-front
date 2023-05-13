@@ -126,6 +126,12 @@ export type MyProfileTabTypes = {
     tab: boolean;
     borderLine: boolean;
 };
+export type MyLikeKeywordTypes = {
+    id: number;
+    keywordEnum: string;
+    vehicle: string | null;
+    keywordName: string;
+};
 
 // ATOM
 export type userTokenAtomTypes = {
@@ -372,6 +378,12 @@ export type WritePostAddKeywordProps = {
 export type WritePhotoProps = {
     getImageHandler: (files: Asset[]) => void;
     notAllowPermission: () => void;
+};
+export type EditMyKeywordProps = {
+    myKeywordList: MyLikeKeywordTypes[];
+    checkInitTraffic: boolean[];
+    checkInitSubway: boolean[];
+    checkInitIssue: boolean[];
 };
 
 // TEMPLATES

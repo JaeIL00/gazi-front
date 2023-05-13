@@ -18,7 +18,7 @@ import { userTokenAtom } from '../../../store/atoms';
 import { likeKeywordsAPI } from '../../../queries/api';
 import { initLikeKeywordTemplateStyles } from '../../../styles/styles';
 import { InitLikeKeywordTemplateProps, KeywordListTypes } from '../../../types/types';
-import { issueKeywords, subwayKeywords, trafficKeywords } from '../../../utils/allKeywords';
+import { issueKeywordsNotEtc, subwayKeywords, trafficKeywords } from '../../../utils/allKeywords';
 
 const InitLikeKeywordTemplate = ({ moveToScreen }: InitLikeKeywordTemplateProps) => {
     // Initialized check keywords
@@ -35,7 +35,7 @@ const InitLikeKeywordTemplate = ({ moveToScreen }: InitLikeKeywordTemplateProps)
             newCheckSubway = [...newCheckSubway, false];
         }
         let newCheckIssue: boolean[] = [];
-        for (const index in issueKeywords) {
+        for (const index in issueKeywordsNotEtc) {
             newCheckIssue = [...newCheckIssue, false];
         }
         setCheckTraffic(newCheckTraffic);
@@ -90,7 +90,7 @@ const InitLikeKeywordTemplate = ({ moveToScreen }: InitLikeKeywordTemplateProps)
         setCheckedKeywords(cleanType);
     };
     useEffect(() => {
-        const allList = [...trafficKeywords, ...subwayKeywords, ...issueKeywords];
+        const allList = [...trafficKeywords, ...subwayKeywords, ...issueKeywordsNotEtc];
         const checkedList = [...checkTraffic, ...checkSubway, ...checkIssue];
         checkedKeywordsHandler(allList, checkedList);
     }, [checkTraffic, checkIssue, checkSubway]);
@@ -168,7 +168,7 @@ const InitLikeKeywordTemplate = ({ moveToScreen }: InitLikeKeywordTemplateProps)
                     <Spacer height={14} />
                     <KeywordsList
                         type="ISSUE"
-                        list={issueKeywords}
+                        list={issueKeywordsNotEtc}
                         isCheck={checkIssue}
                         checkKeywordHandler={checkKeywordHandler}
                         checkTextColor={Colors.WHITE}

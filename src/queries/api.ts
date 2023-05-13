@@ -136,6 +136,17 @@ export const likeKeywordsAPI = async (param: { token: string; data: number[] }) 
     });
     return response;
 };
+export const geyMyLikeKeywordsAPI = async (accessToken: string) => {
+    const response = await Axios({
+        url: '/api/v1/member/my-keyword',
+        method: 'get',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${accessToken}`,
+        },
+    });
+    return response;
+};
 
 // MAP
 export const nearByUserPostsAPI = async (param: {

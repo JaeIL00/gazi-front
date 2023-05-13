@@ -1,17 +1,24 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Image, View } from 'react-native';
+import { useQuery } from 'react-query';
+import { useRecoilValue } from 'recoil';
 
 import Spacer from '../../smallest/Spacer';
 import Colors from '../../../styles/Colors';
 import MediumText from '../../smallest/MediumText';
+import NormalText from '../../smallest/NormalText';
 import TouchButton from '../../smallest/TouchButton';
 import SemiBoldText from '../../smallest/SemiBoldText';
 import EditMyKeyword from '../../organisms/myProfile/EditMyKeyword';
-import { LikeKeywordSettingTemplateProps } from '../../../types/types';
+import { userTokenAtom } from '../../../store/atoms';
+import { geyMyLikeKeywordsAPI } from '../../../queries/api';
 import { likeKeywordSettingTemplateStyles } from '../../../styles/styles';
+import { screenFont, screenHeight, screenWidth } from '../../../utils/changeStyleSize';
+import { LikeKeywordSettingTemplateProps, MyLikeKeywordTypes } from '../../../types/types';
+import { issueKeywordsNotEtc, subwayKeywords, trafficKeywords } from '../../../utils/allKeywords';
 
 const LikeKeywordSettingTemplate = ({ moveToBackScreenHandler }: LikeKeywordSettingTemplateProps) => {
-    const [isEditWindow, setIsEditWindow] = useState<boolean>(true);
+    const [isEditWindow, setIsEditWindow] = useState<boolean>(false);
     const controlEditWindowHandler = (state: string) => {
         switch (state) {
             case 'GO':
@@ -25,6 +32,43 @@ const LikeKeywordSettingTemplate = ({ moveToBackScreenHandler }: LikeKeywordSett
                 console.log('(ERROR) Edit keyword window handler.', state);
         }
     };
+
+    const { accessToken } = useRecoilValue(userTokenAtom);
+    const [myKeywordList, setMyKeywordList] = useState<MyLikeKeywordTypes[]>([]);
+    useQuery('getMyLikeKeyword', () => geyMyLikeKeywordsAPI(accessToken), {
+        onSuccess: ({ data }) => {
+            setMyKeywordList(data.data);
+        },
+        onError: error => {
+            // For Debug
+            console.log('(ERROR), Get my like keyword list API.', error);
+        },
+    });
+
+    // Initialized check keywords
+    const [checkTraffic, setCheckTraffic] = useState<boolean[]>([]);
+    const [checkSubway, setCheckSubway] = useState<boolean[]>([]);
+    const [checkIssue, setCheckIssue] = useState<boolean[]>([]);
+    const checkingInitialize = () => {
+        let newCheckTraffic: boolean[] = [];
+        for (const index in trafficKeywords) {
+            newCheckTraffic = [...newCheckTraffic, false];
+        }
+        let newCheckSubway: boolean[] = [];
+        for (const index in subwayKeywords) {
+            newCheckSubway = [...newCheckSubway, false];
+        }
+        let newCheckIssue: boolean[] = [];
+        for (const index in issueKeywordsNotEtc) {
+            newCheckIssue = [...newCheckIssue, false];
+        }
+        setCheckTraffic(newCheckTraffic);
+        setCheckSubway(newCheckSubway);
+        setCheckIssue(newCheckIssue);
+    };
+    useEffect(() => {
+        checkingInitialize();
+    }, []);
 
     return (
         <View style={likeKeywordSettingTemplateStyles.container}>
@@ -53,20 +97,46 @@ const LikeKeywordSettingTemplate = ({ moveToBackScreenHandler }: LikeKeywordSett
 
             <View style={likeKeywordSettingTemplateStyles.contentBox}>
                 {isEditWindow ? (
-                    <EditMyKeyword />
+                    <EditMyKeyword
+                        myKeywordList={myKeywordList}
+                        checkInitTraffic={checkTraffic}
+                        checkInitSubway={checkSubway}
+                        checkInitIssue={checkIssue}
+                    />
                 ) : (
                     <>
                         <View style={likeKeywordSettingTemplateStyles.contentTitleBox}>
                             <SemiBoldText text="내가 고른 키워드" size={16} color={Colors.BLACK} />
                         </View>
-                        <View style={likeKeywordSettingTemplateStyles.nothingBox}>
-                            <Image
-                                source={require('../../../assets/icons/warning.png')}
-                                style={likeKeywordSettingTemplateStyles.nothingIcon}
-                            />
-                            <Spacer height={20} />
-                            <SemiBoldText text="관심 키워드를 골라주세요" size={18} color={Colors.BTN_GRAY} />
-                        </View>
+                        {myKeywordList ? (
+                            <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
+                                {myKeywordList.map(item => (
+                                    <View
+                                        key={item.id}
+                                        style={{
+                                            paddingHorizontal: 14 * screenWidth,
+                                            paddingVertical: 8 * screenHeight,
+                                            backgroundColor: '#F1E9FF',
+                                            borderColor: '#6826F5',
+                                            borderRadius: 30 * screenFont,
+                                            borderWidth: 1 * screenFont,
+                                            marginRight: 5 * screenWidth,
+                                            marginBottom: 10 * screenHeight,
+                                        }}>
+                                        <NormalText text={item.keywordName} size={16} color="#7949C6" />
+                                    </View>
+                                ))}
+                            </View>
+                        ) : (
+                            <View style={likeKeywordSettingTemplateStyles.nothingBox}>
+                                <Image
+                                    source={require('../../../assets/icons/warning.png')}
+                                    style={likeKeywordSettingTemplateStyles.nothingIcon}
+                                />
+                                <Spacer height={20} />
+                                <SemiBoldText text="관심 키워드를 골라주세요" size={18} color={Colors.BTN_GRAY} />
+                            </View>
+                        )}
                     </>
                 )}
             </View>
@@ -75,3 +145,4 @@ const LikeKeywordSettingTemplate = ({ moveToBackScreenHandler }: LikeKeywordSett
 };
 
 export default LikeKeywordSettingTemplate;
+<></>;

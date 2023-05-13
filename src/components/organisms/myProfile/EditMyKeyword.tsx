@@ -9,36 +9,56 @@ import BoldText from '../../smallest/BoldText';
 import TouchButton from '../../smallest/TouchButton';
 import TextButton from '../../molecules/TextButton';
 import SemiBoldText from '../../smallest/SemiBoldText';
-import { KeywordListTypes } from '../../../types/types';
 import { editMyKeywordStyles } from '../../../styles/styles';
-import { issueKeywordsNotEtc, subwayKeywords, trafficKeywords } from '../../../utils/allKeywords';
 import { screenHeight } from '../../../utils/changeStyleSize';
+import { EditMyKeywordProps, KeywordListTypes } from '../../../types/types';
+import { issueKeywordsNotEtc, subwayKeywords, trafficKeywords } from '../../../utils/allKeywords';
 
-const EditMyKeyword = () => {
+const EditMyKeyword = ({ myKeywordList, checkInitTraffic, checkInitSubway, checkInitIssue }: EditMyKeywordProps) => {
     // Initialized check keywords
-    const [checkTraffic, setCheckTraffic] = useState<boolean[]>([]);
-    const [checkSubway, setCheckSubway] = useState<boolean[]>([]);
-    const [checkIssue, setCheckIssue] = useState<boolean[]>([]);
-    const checkingInitialize = () => {
-        let newCheckTraffic: boolean[] = [];
-        for (const index in trafficKeywords) {
-            newCheckTraffic = [...newCheckTraffic, false];
-        }
-        let newCheckSubway: boolean[] = [];
-        for (const index in subwayKeywords) {
-            newCheckSubway = [...newCheckSubway, false];
-        }
-        let newCheckIssue: boolean[] = [];
-        for (const index in issueKeywordsNotEtc) {
-            newCheckIssue = [...newCheckIssue, false];
-        }
-        setCheckTraffic(newCheckTraffic);
-        setCheckSubway(newCheckSubway);
-        setCheckIssue(newCheckIssue);
-    };
+    const [checkTraffic, setCheckTraffic] = useState<boolean[]>(checkInitTraffic);
+    const [checkSubway, setCheckSubway] = useState<boolean[]>(checkInitSubway);
+    const [checkIssue, setCheckIssue] = useState<boolean[]>(checkInitIssue);
+
     useLayoutEffect(() => {
-        checkingInitialize();
+        checkMyKeyword();
     }, []);
+    const checkMyKeyword = () => {
+        let checkedIndexTraffic: number[] = [];
+        let checkedIndexIssue: number[] = [];
+        let checkedIndexSubway: number[] = [];
+        const freshTraffic = [...checkTraffic];
+        const freshIssue = [...checkIssue];
+        const freshSubway = [...checkSubway];
+        for (const index in myKeywordList) {
+            if (10 === myKeywordList[index].id || myKeywordList[index].id === 11) {
+                const checkIndex = trafficKeywords.findIndex(item => item.id === myKeywordList[index].id);
+                checkedIndexTraffic = [...checkedIndexTraffic, checkIndex];
+            } else if (1 <= myKeywordList[index].id && myKeywordList[index].id <= 8) {
+                const checkIndex = issueKeywordsNotEtc.findIndex(item => item.id === myKeywordList[index].id);
+                checkedIndexIssue = [...checkedIndexIssue, checkIndex];
+            } else if (13 <= myKeywordList[index].id && myKeywordList[index].id <= 35) {
+                const checkIndex = subwayKeywords.findIndex(item => item.id === myKeywordList[index].id);
+                checkedIndexSubway = [...checkedIndexSubway, checkIndex];
+            }
+        }
+        for (const index in checkedIndexTraffic) {
+            freshTraffic.splice(checkedIndexTraffic[index], 1, true);
+        }
+        for (const index in checkedIndexIssue) {
+            freshIssue.splice(checkedIndexIssue[index], 1, true);
+        }
+        for (const index in checkedIndexSubway) {
+            freshSubway.splice(checkedIndexSubway[index], 1, true);
+        }
+        setCheckTraffic(freshTraffic);
+        setCheckIssue(freshIssue);
+        if (checkedIndexSubway.length === 23) {
+            setCheckSubway(Array.from(Array(24), () => true));
+        } else {
+            setCheckSubway(freshSubway);
+        }
+    };
 
     // check Keyword Handling
     const checkKeywordHandler = (list: string, index: number, id: number) => {
@@ -61,6 +81,7 @@ const EditMyKeyword = () => {
                 }
                 break;
             case 'ISSUE':
+                console.log('hi');
                 const freshIssue = [...checkIssue];
                 freshIssue.splice(index, 1, !freshIssue[index]);
                 setCheckIssue(freshIssue);
@@ -84,6 +105,13 @@ const EditMyKeyword = () => {
         setCheckedKeywords(cleanType);
     };
     useEffect(() => {
+        const subwaytrue = checkSubway.filter(item => item !== false);
+        if (subwaytrue.length > 0) {
+            setCheckTraffic(prev => {
+                prev.splice(2, 1, true);
+                return prev;
+            });
+        }
         const allList = [...trafficKeywords, ...subwayKeywords, ...issueKeywordsNotEtc];
         const checkedList = [...checkTraffic, ...checkSubway, ...checkIssue];
         checkedKeywordsHandler(allList, checkedList);

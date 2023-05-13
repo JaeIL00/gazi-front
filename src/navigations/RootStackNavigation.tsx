@@ -96,9 +96,9 @@ export const RootStackNavigation = () => {
                 headerShown: false,
                 presentation: 'containedModal',
             }}>
+            <Stack.Screen name="NotLoginHome" component={NotLoginHomeScreen} />
             <Stack.Screen name="LikeKeywordSetting" component={LikeKeywordSettingScreen} />
             <Stack.Screen name="ChangePassword" component={ChangePasswordScreen} />
-            <Stack.Screen name="NotLoginHome" component={NotLoginHomeScreen} />
             <Stack.Screen name="AccountManagement" component={AccountManagementScreen} />
             <Stack.Screen name="DeleteMember" component={DeleteMemberScreen} />
             <Stack.Screen name="BottomTab" component={BottomTabNavigation} />
