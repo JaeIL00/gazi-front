@@ -425,3 +425,6 @@ export type MyPostCommentTemplateProps = {
 export type AccountManagementTemplateProps = {
     moveToScreenHandler: (state: string) => void;
 };
+export type DeleteMemberTemplateProps = {
+    moveToScreenHandler: (state: string) => void;
+};

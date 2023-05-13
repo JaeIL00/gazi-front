@@ -38,7 +38,7 @@ const AccountManagementTemplate = ({ moveToScreenHandler }: AccountManagementTem
                 </TouchButton>
             </View>
             <View style={AccountManagementTemplateStyles.tabBox}>
-                <TouchButton onPress={() => moveToScreenHandler('DELET')}>
+                <TouchButton onPress={() => moveToScreenHandler('DELETE')}>
                     <View style={AccountManagementTemplateStyles.buttonBox}>
                         <NormalText text="회원 탈퇴" size={16} color={Colors.BLACK} />
                     </View>

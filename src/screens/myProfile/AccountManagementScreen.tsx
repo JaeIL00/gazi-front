@@ -17,8 +17,8 @@ const AccountManagementScreen = () => {
             case 'LOGOUT':
                 // rootNavigation.navigate();
                 break;
-            case 'DELET':
-                // rootNavigation.navigate();
+            case 'DELETE':
+                rootNavigation.navigate('DeleteMember');
                 break;
             default:
                 // For Debug

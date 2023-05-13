@@ -85,13 +85,12 @@ export const joinMemberAPI = async (data: { email: string; password: string; nic
 };
 
 // DELETE MEMBER
-export const deleteMemberAPI = async (token: string) => {
+export const deleteMemberAPI = async (accessToken: string) => {
     const response = await Axios({
         url: '/api/v1/member/delete-member',
         method: 'post',
         headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${accessToken}`,
         },
     });
     return response;

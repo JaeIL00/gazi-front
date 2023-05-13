@@ -1125,7 +1125,7 @@ export const communityTemplateStyles = StyleSheet.create({
         borderColor: Colors.BLACK,
     },
 });
-export const ChangePasswordTemplateStyles = StyleSheet.create({
+export const DeleteMemberTemplateStyles = StyleSheet.create({
     container: {
         flex: 1,
         paddingHorizontal: 16 * screenWidth,
