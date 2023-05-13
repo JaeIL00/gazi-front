@@ -431,3 +431,6 @@ export type DeleteMemberTemplateProps = {
 export type ChangePasswordTemplateProps = {
     moveToBackScreenHandler: () => void;
 };
+export type LikeKeywordSettingTemplateProps = {
+    moveToBackScreenHandler: () => void;
+};

@@ -21,6 +21,7 @@ import { autoLoginAPI } from '../queries/api';
 import { RootStackParamList } from '../types/types';
 import { userInfoAtom, userTokenAtom } from '../store/atoms';
 import DeleteMemberScreen from '../screens/myProfile/DeleteMemberScreen';
+import LikeKeywordSettingScreen from '../screens/myProfile/LikeKeywordSettingScreen';
 
 export const RootStackNavigation = () => {
     const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -85,9 +86,9 @@ export const RootStackNavigation = () => {
             console.log('(ERROR) Check async storage for auto login ', error);
         }
     };
-    useLayoutEffect(() => {
-        checkAsyncStorage();
-    }, []);
+    // useLayoutEffect(() => {
+    //     checkAsyncStorage();
+    // }, []);
 
     return (
         <Stack.Navigator
@@ -95,6 +96,7 @@ export const RootStackNavigation = () => {
                 headerShown: false,
                 presentation: 'containedModal',
             }}>
+            <Stack.Screen name="LikeKeywordSetting" component={LikeKeywordSettingScreen} />
             <Stack.Screen name="ChangePassword" component={ChangePasswordScreen} />
             <Stack.Screen name="NotLoginHome" component={NotLoginHomeScreen} />
             <Stack.Screen name="AccountManagement" component={AccountManagementScreen} />

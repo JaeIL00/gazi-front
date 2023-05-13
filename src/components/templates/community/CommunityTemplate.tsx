@@ -153,8 +153,6 @@ const CommunityTemplate = () => {
             getNextPageParam: (lastPage, allPages) => {
                 const total = lastPage.data.data.totalPages;
                 const nextPage = lastPage.data.data.pageable.pageNumber + 1;
-                console.log('total', total);
-                console.log('nextPage', nextPage);
                 return nextPage > total ? undefined : nextPage;
             },
             onSuccess: data => {

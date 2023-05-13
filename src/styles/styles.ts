@@ -559,6 +559,18 @@ export const writePostAddKeywordStyles = StyleSheet.create({
         bottom: 42 * screenHeight,
         alignSelf: 'center',
     },
+    bottomBox: {
+        position: 'absolute',
+        bottom: 34 * screenHeight,
+        marginHorizontal: 16 * screenWidth,
+        flexDirection: 'row',
+        width: '100%',
+        justifyContent: 'space-between',
+    },
+    borderLine: {
+        borderBottomWidth: 1.5 * screenFont,
+        borderColor: Colors.TXT_GRAY,
+    },
 });
 export const writePhotoStyles = StyleSheet.create({
     container: {
@@ -656,6 +668,28 @@ export const commentListItemStyles = StyleSheet.create({
     },
     likeBox: {
         flexDirection: 'row',
+    },
+});
+export const editMyKeywordStyles = StyleSheet.create({
+    keywordListBox: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    resetText: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    bottomBox: {
+        position: 'absolute',
+        bottom: 34 * screenHeight,
+        marginHorizontal: 16 * screenWidth,
+        flexDirection: 'row',
+        width: '100%',
+        justifyContent: 'space-between',
+    },
+    borderLine: {
+        borderBottomWidth: 1.5 * screenFont,
+        borderColor: Colors.TXT_GRAY,
     },
 });
 
@@ -1086,7 +1120,8 @@ export const AccountManagementTemplateStyles = StyleSheet.create({
         alignItems: 'center',
         paddingBottom: 16 * screenHeight,
         paddingTop: 41 * screenHeight,
-        paddingHorizontal: 16 * screenWidth,
+        paddingLeft: 22 * screenWidth,
+        paddingRight: 16 * screenWidth,
         borderBottomWidth: 1 * screenFont,
         borderColor: '#EBEBEB',
     },
@@ -1185,6 +1220,49 @@ export const changePasswordTemplateStyles = StyleSheet.create({
         marginTop: 8 * screenHeight,
     },
 });
+export const likeKeywordSettingTemplateStyles = StyleSheet.create({
+    container: {
+        flex: 1,
+    },
+    headerBox: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        paddingBottom: 16 * screenHeight,
+        paddingTop: 17 * screenHeight,
+        paddingLeft: 22 * screenWidth,
+        paddingRight: 16 * screenWidth,
+        borderBottomWidth: 1 * screenFont,
+        borderColor: '#EBEBEB',
+        width: '100%',
+    },
+    headerIcon: {
+        width: 9 * screenWidth,
+        height: 16 * screenHeight,
+    },
+    headerTextBox: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    contentBox: {
+        paddingHorizontal: 16 * screenWidth,
+        paddingTop: 27 * screenHeight,
+        flex: 1,
+    },
+    contentTitleBox: {
+        paddingBottom: 12 * screenHeight,
+    },
+    nothingBox: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        flex: 0.8,
+    },
+    nothingIcon: {
+        width: 88 * screenWidth,
+        height: 88 * screenWidth,
+    },
+});
+
 // SCREEN
 export const seviceHomeScreenStyles = StyleSheet.create({
     container: {

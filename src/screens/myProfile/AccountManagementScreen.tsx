@@ -1,10 +1,9 @@
 import React from 'react';
 import { View } from 'react-native';
+
 import AccountManagementTemplate from '../../components/templates/myProfile/AccountManagementTemplate';
 import { globalBackWhiteStyles } from '../../styles/styles';
 import { useRootNavigation } from '../../navigations/RootStackNavigation';
-import { useMutation } from 'react-query';
-import { logoutAPI } from '../../queries/api';
 
 const AccountManagementScreen = () => {
     const rootNavigation = useRootNavigation();
