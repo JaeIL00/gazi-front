@@ -1,6 +1,7 @@
 import React from 'react';
 import { Image, View } from 'react-native';
 import { useRecoilValue } from 'recoil';
+import { useMutation } from 'react-query';
 
 import Spacer from '../../smallest/Spacer';
 import Colors from '../../../styles/Colors';
@@ -8,12 +9,25 @@ import BoldText from '../../smallest/BoldText';
 import NormalText from '../../smallest/NormalText';
 import TextButton from '../../molecules/TextButton';
 import TouchButton from '../../smallest/TouchButton';
-import { userInfoAtom } from '../../../store/atoms';
+import { deleteMemberAPI } from '../../../queries/api';
+import { userInfoAtom, userTokenAtom } from '../../../store/atoms';
 import { ChangePasswordTemplateStyles } from '../../../styles/styles';
-import { screenFont } from '../../../utils/changeStyleSize';
 
 const ChangePasswordTemplate = () => {
     const { nickname } = useRecoilValue(userInfoAtom);
+    const { accessToken } = useRecoilValue(userTokenAtom);
+
+    // Delete member API Handling
+    const { mutate } = useMutation(deleteMemberAPI, {
+        onSuccess: () => {},
+        onError: error => {
+            // For Debug
+            console.log('(ERROR) Delete member API Handling.', error);
+        },
+    });
+    const onPressDeleteMember = () => {
+        mutate(accessToken);
+    };
 
     return (
         <View style={ChangePasswordTemplateStyles.container}>
@@ -66,7 +80,7 @@ const ChangePasswordTemplate = () => {
             </View>
 
             <View style={ChangePasswordTemplateStyles.bottomBox}>
-                <TouchButton onPress={() => {}} paddingHorizontal={17}>
+                <TouchButton onPress={onPressDeleteMember} paddingHorizontal={17}>
                     <View style={ChangePasswordTemplateStyles.borderLine}>
                         <BoldText text="탈퇴할래요" size={13} color={Colors.TXT_GRAY} />
                     </View>
