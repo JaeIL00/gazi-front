@@ -1125,6 +1125,50 @@ export const communityTemplateStyles = StyleSheet.create({
         borderColor: Colors.BLACK,
     },
 });
+export const ChangePasswordTemplateStyles = StyleSheet.create({
+    container: {
+        flex: 1,
+        paddingHorizontal: 16 * screenWidth,
+        position: 'relative',
+    },
+    headerBox: {
+        paddingBottom: 49 * screenHeight,
+        paddingTop: 20 * screenHeight,
+    },
+    headerIcon: {
+        width: 9 * screenWidth,
+        height: 16 * screenHeight,
+    },
+    explainBox: {
+        paddingTop: 27 * screenHeight,
+    },
+    explainList: {
+        flexDirection: 'row',
+        position: 'relative',
+    },
+    explainDot: {
+        position: 'absolute',
+        left: 5 * screenWidth,
+        top: -1 * screenHeight,
+    },
+    explainMiddle: {
+        flexDirection: 'row',
+        position: 'relative',
+        marginVertical: 13 * screenHeight,
+    },
+    bottomBox: {
+        position: 'absolute',
+        bottom: 34 * screenHeight,
+        marginHorizontal: 16 * screenWidth,
+        flexDirection: 'row',
+        width: '100%',
+        justifyContent: 'space-between',
+    },
+    borderLine: {
+        borderBottomWidth: 1.5 * screenFont,
+        borderColor: Colors.TXT_GRAY,
+    },
+});
 
 // SCREEN
 export const seviceHomeScreenStyles = StyleSheet.create({
