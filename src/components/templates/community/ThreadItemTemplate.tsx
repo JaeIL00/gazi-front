@@ -57,8 +57,8 @@ const ThreadItemTemplate = ({ postId, movetoCommunityScreen, moveToWriteScreen }
             title: data.title,
             rePostCount: data.rePostCount,
             placeName: data.placeName,
-            time: '1분전',
-            distance: '3km',
+            time: data.time,
+            distance: data.distance,
             backgroundMapUri: content[0].backgroundMapUrl,
         });
         setCommentList([...commentList, ...content]);
