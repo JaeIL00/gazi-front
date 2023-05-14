@@ -27,7 +27,11 @@ const PostListItem = ({ post, isBorder }: PostListItemProps) => {
                         <Spacer height={5} />
                         <NormalText text={post.content} size={12} color="#6A6A6A" numberOfLines={2} />
                     </View>
-                    <Image source={{ uri: post.thumbNail }} style={postListItemStyles.postImage} />
+                    {post.thumbNail ? (
+                        <Image source={{ uri: post.thumbNail }} style={postListItemStyles.postImage} />
+                    ) : (
+                        <View style={postListItemStyles.postImage} />
+                    )}
                 </View>
             </TouchButton>
             {isBorder && <View style={postListItemStyles.postBottomBar} />}

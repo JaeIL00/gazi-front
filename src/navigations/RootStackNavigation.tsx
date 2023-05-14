@@ -87,9 +87,9 @@ export const RootStackNavigation = () => {
             console.log('(ERROR) Check async storage for auto login ', error);
         }
     };
-    // useLayoutEffect(() => {
-    //     checkAsyncStorage();
-    // }, []);
+    useLayoutEffect(() => {
+        checkAsyncStorage();
+    }, []);
 
     return (
         <Stack.Navigator

@@ -183,8 +183,8 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritePost }:
                 return nextPage > total ? undefined : nextPage;
             },
             onSuccess: data => {
-                setNearPostList([...nearPostList, ...data.pages[indexNumber].data.data.content]);
-                setIndexNumber(indexNumber + 1);
+                // setNearPostList([...nearPostList, ...data.pages[indexNumber].data.data.content]);
+                // setIndexNumber(indexNumber + 1);
             },
             onError: ({ response }) => {
                 // For Debug
