@@ -93,7 +93,7 @@ const MyProfileTemplate = ({ moveToScreen }: MyProfileTemplateProps) => {
                 {myProfileTabList.map(scrollViewRender)}
                 <View style={myProfileTemplateStyles.versionBox}>
                     <NormalText text="버전" size={16} color={Colors.BLACK} />
-                    <NormalText text="v.0.0.0 최신버전 입니다" size={12} color="#00000099" />
+                    <NormalText text="v.1.0.0 최신버전 입니다" size={12} color="#00000099" />
                 </View>
             </ScrollView>
         </View>
