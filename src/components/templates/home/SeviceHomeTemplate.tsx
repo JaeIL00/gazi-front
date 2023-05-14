@@ -129,9 +129,9 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritePost }:
         }
     }, []);
     const initNearPosts = () => {
+        indexNumber.current = 0;
         remove();
         refetch();
-        setNearPostList([]);
     };
 
     // Again request modal button Handling
@@ -159,7 +159,7 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritePost }:
 
     // Get post of near by user API
     const userTk = useRecoilValue(userTokenAtom);
-    const [indexNumber, setIndexNumber] = useState<number>(0);
+    const indexNumber = useRef<number>(0);
     const [nearPostList, setNearPostList] = useState<PostTypes[]>([]);
     const { hasNextPage, isFetching, isFetchingNextPage, fetchNextPage, refetch, remove } = useInfiniteQuery(
         ['getNearPosts'],
@@ -180,11 +180,18 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritePost }:
             getNextPageParam: (lastPage, allPages) => {
                 const total = lastPage.data.data.totalPages;
                 const nextPage = lastPage.data.data.pageable.pageNumber + 1;
-                return nextPage > total ? undefined : nextPage;
+                return nextPage === total ? undefined : nextPage;
             },
             onSuccess: data => {
-                // setNearPostList([...nearPostList, ...data.pages[indexNumber].data.data.content]);
-                // setIndexNumber(indexNumber + 1);
+                const pageNumber = data.pages[indexNumber.current].data.data.pageable.pageNumber;
+                if (pageNumber === 0) {
+                    setNearPostList(data.pages[indexNumber.current].data.data.content);
+                } else {
+                    setNearPostList([...nearPostList, ...data.pages[indexNumber.current].data.data.content]);
+                }
+                if (!data.pages[indexNumber.current].data.data.last) {
+                    indexNumber.current = indexNumber.current + 1;
+                }
             },
             onError: ({ response }) => {
                 // For Debug
