@@ -101,6 +101,7 @@ android {
         versionCode 1
         versionName "1.0"
 		resValue "string", "build_config_package", "com.gazi"
+		resValue 'string', "CODE_PUSH_APK_BUILD_TIME", String.format("\"%d\"", System.currentTimeMillis())
     }
 
     splits {
@@ -122,6 +123,7 @@ android {
     buildTypes {
         debug {
             signingConfig signingConfigs.debug
+            resValue "string", "CodePushDeploymentKey", CODEPUSH_DEPLOYMENT_KEY_STAGING // 추가
         }
         release {
             // Caution! In production, you need to generate your own keystore file.
@@ -129,6 +131,14 @@ android {
             signingConfig signingConfigs.debug
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            resValue "string", "CodePushDeploymentKey", CODEPUSH_DEPLOYMENT_KEY_PRODUCTION // 추가
+        }
+
+        // 여기서 부터 추가
+        releaseStaging {
+            initWith release
+            resValue "string", "CodePushDeploymentKey", CODEPUSH_DEPLOYMENT_KEY_STAGING
+            matchingFallbacks = ['release']
         }
     }
 
@@ -179,3 +189,4 @@ dependencies {
 apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)
 apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
 apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
+apply from: "../../node_modules/react-native-code-push/android/codepush.gradle"
