@@ -214,6 +214,24 @@ export const getCommentListAPI = async (param: { accessToken: string; postId: nu
     });
     return response;
 };
+export const reportAPI = async (param: {
+    accessToken: string;
+    data: {
+        postId: number | null;
+        repostId: number | null;
+    };
+}) => {
+    const response = await Axios({
+        url: '/api/v1/report',
+        method: 'post',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${param.accessToken}`,
+        },
+        data: JSON.stringify(param.data),
+    });
+    return response;
+};
 
 // TEMPORARY COMMUNITY
 export const writePostAPI = async (param: { accessToken: string; data: PostDto }) => {

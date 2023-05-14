@@ -9,20 +9,20 @@ import LoginScreen from '../screens/EmailLoginScreen';
 import BottomTabNavigation from './BottomTabNavigation';
 import JoinMemberScreen from '../screens/JoinMemberScreen';
 import NotLoginHomeScreen from '../screens/NotLoginHomeScreen';
+import PoliciesScreen from '../screens/myProfile/PoliciesScreen';
 import ThreadItemScreen from '../screens/cummunity/ThreadItemScreen';
 import InitLikeKeywordScreen from '../screens/InitLikeKeywordScreen';
+import DeleteMemberScreen from '../screens/myProfile/DeleteMemberScreen';
 import RequestPermissionScreen from '../screens/RequestPermissionScreen';
 import EditNicknameScreen from '../screens/myProfile/EditNicknameScreen';
 import MyPostCommentScreen from '../screens/myProfile/MyPostCommentScreen';
 import ChangePasswordScreen from '../screens/myProfile/ChangePasswordScreen';
 import AccountManagementScreen from '../screens/myProfile/AccountManagementScreen';
 import WritePostOrCommentScreen from '../screens/cummunity/WritePostOrCommentScreen';
+import LikeKeywordSettingScreen from '../screens/myProfile/LikeKeywordSettingScreen';
 import { autoLoginAPI } from '../queries/api';
 import { RootStackParamList } from '../types/types';
 import { userInfoAtom, userTokenAtom } from '../store/atoms';
-import DeleteMemberScreen from '../screens/myProfile/DeleteMemberScreen';
-import LikeKeywordSettingScreen from '../screens/myProfile/LikeKeywordSettingScreen';
-import PoliciesScreen from '../screens/myProfile/PoliciesScreen';
 
 export const RootStackNavigation = () => {
     const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -97,10 +97,10 @@ export const RootStackNavigation = () => {
                 headerShown: false,
                 presentation: 'containedModal',
             }}>
-            <Stack.Screen name="JoinMember" component={JoinMemberScreen} />
+            <Stack.Screen name="NotLoginHome" component={NotLoginHomeScreen} />
             <Stack.Screen name="BottomTab" component={BottomTabNavigation} />
             <Stack.Screen name="Policies" component={PoliciesScreen} />
-            <Stack.Screen name="NotLoginHome" component={NotLoginHomeScreen} />
+            <Stack.Screen name="JoinMember" component={JoinMemberScreen} />
             <Stack.Screen name="LikeKeywordSetting" component={LikeKeywordSettingScreen} />
             <Stack.Screen name="ChangePassword" component={ChangePasswordScreen} />
             <Stack.Screen name="AccountManagement" component={AccountManagementScreen} />

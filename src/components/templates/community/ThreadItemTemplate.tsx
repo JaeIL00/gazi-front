@@ -1,8 +1,8 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import { FlatList, Image, Platform, View } from 'react-native';
 import DropShadow from 'react-native-drop-shadow';
 import { useRecoilValue } from 'recoil';
-import { useInfiniteQuery } from 'react-query';
+import { useInfiniteQuery, useMutation } from 'react-query';
 
 import Icons from '../../smallest/Icons';
 import Spacer from '../../smallest/Spacer';
@@ -12,8 +12,8 @@ import TouchButton from '../../smallest/TouchButton';
 import SemiBoldText from '../../smallest/SemiBoldText';
 import CommentListItem from '../../organisms/cummunity/CommentListItem';
 import { userTokenAtom } from '../../../store/atoms';
-import { getCommentListAPI } from '../../../queries/api';
 import { threadItemTemplateStyles } from '../../../styles/styles';
+import { getCommentListAPI, reportAPI } from '../../../queries/api';
 import { screenHeight, screenWidth } from '../../../utils/changeStyleSize';
 import { CommentTopicTypes, CommentTypes, ThreadItemTemplateProps } from '../../../types/types';
 
@@ -25,10 +25,18 @@ const ThreadItemTemplate = ({ postId, movetoCommunityScreen, moveToWriteScreen }
         placeName: '',
         time: '',
         distance: '',
-        backgroundMapUri: '',
+        backgroundMapUrl: '',
     });
     const [commentList, setCommentList] = useState<CommentTypes[]>([]);
-    const { hasNextPage, isFetching, isFetchingNextPage, fetchNextPage, refetch, remove } = useInfiniteQuery(
+    const firstCommentId = useRef<number>();
+    const {
+        hasNextPage,
+        isFetching,
+        isFetchingNextPage,
+        fetchNextPage,
+        refetch: commentRefetch,
+        remove: commentRemove,
+    } = useInfiniteQuery(
         ['getCommentList'],
         ({ pageParam = 0 }) =>
             getCommentListAPI({ accessToken, postId, curX: 37.49795103144074, curY: 127.02760985223079 }),
@@ -40,10 +48,16 @@ const ThreadItemTemplate = ({ postId, movetoCommunityScreen, moveToWriteScreen }
                 // console.log('last', lastPage.data);
             },
             onSuccess: data => {
-                console.log(data.pages[0].data.data.postList.content);
                 const pageNumber = data.pages[0].data.data.postList.pageable.pageNumber;
+                const commentList: CommentTypes[] = data.pages[0].data.data.postList.content;
                 if (pageNumber === 0) {
-                    getCommentTopic(data.pages[0].data.data, data.pages[0].data.data.postList.content);
+                    getCommentTopic(data.pages[0].data.data, commentList);
+                } else {
+                    const getNotReport = commentList.filter((item: CommentTypes) => !item.report);
+                    setCommentList([...commentList, ...getNotReport]);
+                }
+                if (data.pages[0].data.data.postList.last) {
+                    firstCommentId.current = commentList.pop()?.id;
                 }
             },
             onError: ({ response }) => {
@@ -59,20 +73,55 @@ const ThreadItemTemplate = ({ postId, movetoCommunityScreen, moveToWriteScreen }
             placeName: data.placeName,
             time: data.time,
             distance: data.distance,
-            backgroundMapUri: content[0].backgroundMapUrl,
+            backgroundMapUrl: data.backgroundMapUrl,
         });
-        setCommentList([...commentList, ...content]);
+        const getNotReport = content.filter(item => !item.report);
+        setCommentList([...getNotReport]);
     };
 
     // Comment thread list render
-    const renderItem = useCallback(({ item }: { item: CommentTypes }) => <CommentListItem comment={item} />, []);
+    const renderItem = useCallback(
+        ({ item }: { item: CommentTypes }) => <CommentListItem comment={item} reportHandler={reportHandler} />,
+        [],
+    );
     const ItemSeparatorComponent = useCallback(() => <Spacer height={29} />, []);
+
+    // report API
+    const { mutate, isLoading } = useMutation(reportAPI, {
+        onSuccess: data => {
+            commentRemove();
+            commentRefetch();
+        },
+        onError: ({ response }) => {
+            // For Debug
+            console.log('(ERROR) report API. respense: ', response);
+        },
+    });
+    const reportHandler = (repostId: number) => {
+        if (firstCommentId.current === repostId) {
+            mutate({
+                accessToken,
+                data: {
+                    postId: repostId,
+                    repostId: null,
+                },
+            });
+        } else {
+            mutate({
+                accessToken,
+                data: {
+                    postId: null,
+                    repostId,
+                },
+            });
+        }
+    };
 
     return (
         <>
             <View style={threadItemTemplateStyles.mapImgBox}>
-                {postValue.backgroundMapUri && (
-                    <Image source={{ uri: postValue.backgroundMapUri }} style={threadItemTemplateStyles.mapImg} />
+                {postValue.backgroundMapUrl && (
+                    <Image source={{ uri: postValue.backgroundMapUrl }} style={threadItemTemplateStyles.mapImg} />
                 )}
             </View>
 

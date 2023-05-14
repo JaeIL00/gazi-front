@@ -21,7 +21,7 @@ const JoinMemberScreen = () => {
     const [authData, setAuthData] = useRecoilState(emailAuthAtom);
 
     // Move to screen handling
-    const [step, setStep] = useState<number>(2);
+    const [step, setStep] = useState<number>(1);
     const [isSlideComponent, setIsSlideComponent] = useState<boolean>(false);
     const onPressNextStep = () => {
         Keyboard.dismiss();

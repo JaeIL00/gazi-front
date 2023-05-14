@@ -40,7 +40,7 @@ export type CommentTopicTypes = {
     placeName: string;
     time: string;
     distance: string;
-    backgroundMapUri: string;
+    backgroundMapUrl: string;
 };
 export type CommentTypes = {
     backgroundMapUrl: string;
@@ -56,6 +56,7 @@ export type CommentTypes = {
     nickName: string;
     report: boolean;
     time: string;
+    id: number;
 };
 export type LocationResultTypes = {
     business_status: string;
