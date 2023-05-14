@@ -35,7 +35,7 @@ const CommunityTemplate = () => {
     const indexNumber = useRef<number>(0);
     const [allPostList, setAllPostList] = useState<PostTypes[]>([]);
     const { hasNextPage, isFetching, isFetchingNextPage, fetchNextPage, refetch, remove } = useInfiniteQuery(
-        ['getNearPosts'],
+        ['getAllPosts'],
         ({ pageParam = 0 }) =>
             getAllPostAPI({
                 curLat: 37.49795103144074,
@@ -47,7 +47,6 @@ const CommunityTemplate = () => {
             getNextPageParam: (lastPage, allPages) => {
                 const total = lastPage.data.data.totalPages;
                 const nextPage = lastPage.data.data.pageable.pageNumber + 1;
-                console.log('end?', nextPage, total);
                 return nextPage === total ? undefined : nextPage;
             },
             onSuccess: data => {

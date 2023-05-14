@@ -1,13 +1,14 @@
 import React from 'react';
 import { View } from 'react-native';
-import BoldText from '../../components/smallest/BoldText';
+import CommunityTemplate from '../../components/templates/community/CommunityTemplate';
+import { useRootNavigation } from '../../navigations/RootStackNavigation';
+import { useIsFocused } from '@react-navigation/native';
 
 const CommunityScreen = () => {
-    return (
-        <View>
-            <BoldText text="커뮤니티" color="#333" size={20} />
-        </View>
-    );
+    const rootNavigation = useRootNavigation();
+    const isFocused = useIsFocused();
+
+    return <View>{isFocused && <CommunityTemplate />}</View>;
 };
 
 export default CommunityScreen;
