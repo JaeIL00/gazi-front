@@ -55,7 +55,7 @@ const MapWithMarker = ({
             )}
             {nearPostList.map((item, index) => {
                 const markertypeIcon = () => {
-                    switch (item.headKeyword.id) {
+                    switch (item.headKeyword) {
                         case 1:
                             return require('../../assets/icons/protest-marker.png');
                         case 2:

@@ -9,24 +9,29 @@ import TouchButton from '../smallest/TouchButton';
 import SemiBoldText from '../smallest/SemiBoldText';
 import { PostListItemProps } from '../../types/types';
 import { postListItemStyles } from '../../styles/styles';
+import { useRootNavigation } from '../../navigations/RootStackNavigation';
 
-const PostListItem = ({ post }: PostListItemProps) => {
+const PostListItem = ({ post, isBorder }: PostListItemProps) => {
+    const rootNavigation = useRootNavigation();
     return (
-        <TouchButton onPress={() => {}}>
-            <View style={postListItemStyles.container}>
-                <View style={postListItemStyles.textBox}>
-                    <SemiBoldText text={post.title} size={16} color={Colors.BLACK} />
-                    <MediumText
-                        text={`${post.distance} | ${post.time} | +${post.rePostCount}posts`}
-                        size={11}
-                        color={Colors.TXT_GRAY}
-                    />
-                    <Spacer height={5} />
-                    <NormalText text={post.content} size={12} color="#6A6A6A" numberOfLines={2} />
+        <View>
+            <TouchButton onPress={() => rootNavigation.navigate('ThreadItem', { postId: post.postId })}>
+                <View style={postListItemStyles.container}>
+                    <View style={postListItemStyles.textBox}>
+                        <SemiBoldText text={post.title} size={16} color={Colors.BLACK} />
+                        <MediumText
+                            text={`${post.distance} | ${post.time} | +${post.rePostCount}posts`}
+                            size={11}
+                            color={Colors.TXT_GRAY}
+                        />
+                        <Spacer height={5} />
+                        <NormalText text={post.content} size={12} color="#6A6A6A" numberOfLines={2} />
+                    </View>
+                    <Image source={{ uri: post.thumbNail }} style={postListItemStyles.postImage} />
                 </View>
-                <Image source={{ uri: post.thumbNail }} style={postListItemStyles.postImage} />
-            </View>
-        </TouchButton>
+            </TouchButton>
+            {isBorder && <View style={postListItemStyles.postBottomBar} />}
+        </View>
     );
 };
 export default PostListItem;

@@ -214,7 +214,7 @@ const NearbyPostListModal = ({
 
     // Flatlist function
     const keyExtractor = useCallback((item: PostTypes) => item.postId + 'list', []);
-    const postList = useCallback(({ item }: { item: PostTypes }) => <PostListItem post={item} />, []);
+    const postList = useCallback(({ item }: { item: PostTypes }) => <PostListItem post={item} isBorder={false} />, []);
     const ItemSeparatorComponent = useCallback(() => <Spacer height={20} />, []);
     const ListFooterComponent = useCallback(() => <Spacer height={20} />, []);
 

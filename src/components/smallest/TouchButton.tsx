@@ -18,6 +18,7 @@ const TouchButton = ({
     borderRadius,
     borderBottomWidth,
     flex,
+    hitSlop,
 }: TouchButtonProps) => {
     return (
         <TouchableOpacity
@@ -37,7 +38,8 @@ const TouchButton = ({
                     flex,
                 ).container
             }
-            activeOpacity={1}>
+            activeOpacity={1}
+            hitSlop={hitSlop}>
             {children}
         </TouchableOpacity>
     );

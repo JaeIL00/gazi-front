@@ -73,6 +73,7 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritePost }:
             latitude: 37.45878314300355,
             longitude: 126.8773839622736,
         },
+        isNearSearch: false,
     });
     const onPressGetUserPosition = debounce(async () => {
         const isOkPermission = await checkLocationPermission();
@@ -113,6 +114,7 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritePost }:
         try {
             boundaryValue = (await mapRef.current?.getMapBoundaries()) as BoundingBox;
             setMapBoundaryState({
+                ...mapBoundaryState,
                 northEast: boundaryValue.northEast,
                 southWest: boundaryValue.southWest,
             });
@@ -129,6 +131,7 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritePost }:
     const initNearPosts = () => {
         remove();
         refetch();
+        setNearPostList([]);
     };
 
     // Again request modal button Handling
@@ -169,6 +172,7 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritePost }:
                 curLon: currentPosition.longitude,
                 accessToken: userTk.accessToken,
                 page: pageParam,
+                isNearSearch: mapBoundaryState.isNearSearch,
             }),
         {
             enabled: false,
@@ -238,7 +242,17 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritePost }:
         (region: Region) => {
             if (region.latitudeDelta > 0.15) {
                 setIsFarMapLevel(true);
+            } else if (0.15 > region.latitudeDelta && region.latitudeDelta > 0.065) {
+                setMapBoundaryState({
+                    ...mapBoundaryState,
+                    isNearSearch: true,
+                });
+                setIsFarMapLevel(false);
             } else {
+                setMapBoundaryState({
+                    ...mapBoundaryState,
+                    isNearSearch: false,
+                });
                 setIsFarMapLevel(false);
             }
         },

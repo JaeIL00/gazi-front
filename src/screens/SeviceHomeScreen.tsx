@@ -9,7 +9,7 @@ import { useRootNavigation } from '../navigations/RootStackNavigation';
 const SeviceHomeScreen = () => {
     const rootNavigation = useRootNavigation();
     const moveToWritePost = () => {
-        rootNavigation.navigate('WritePost');
+        rootNavigation.navigate('WritePostOrComment');
     };
 
     // Android back button & Header Back Button Handling

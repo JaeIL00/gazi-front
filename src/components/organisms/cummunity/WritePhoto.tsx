@@ -40,6 +40,7 @@ const WritePhoto = ({ getImageHandler, notAllowPermission }: WritePhotoProps) =>
                 {
                     mediaType: 'photo',
                     selectionLimit: 10,
+                    quality: 0.6,
                 },
                 response => {
                     if (response.assets) {

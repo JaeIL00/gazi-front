@@ -18,6 +18,7 @@ export type MapLocationTypes = {
 export type MapBoundaryTypes = {
     northEast: MapLocationTypes;
     southWest: MapLocationTypes;
+    isNearSearch: boolean;
 };
 export type PostTypes = {
     title: string;
@@ -27,14 +28,32 @@ export type PostTypes = {
     content: string;
     latitude: number;
     longitude: number;
-    headKeyword: {
-        id: number;
-        keywordEnum: string;
-        vehicleType: string;
-        keywordName: string;
-    };
+    headKeyword: number;
     thumbNail: string;
     postId: number;
+};
+export type CommentTopicTypes = {
+    title: string;
+    rePostCount: number;
+    placeName: string;
+    time: string;
+    distance: string;
+    backgroundMapUri: string;
+};
+export type CommentTypes = {
+    backgroundMapUrl: string;
+    content: string;
+    distance: string;
+    fileList: {
+        fileName: string;
+        fileUrl: string;
+    }[];
+    keywordIdList: number[];
+    like: boolean;
+    likeCount: number;
+    nickName: string;
+    report: boolean;
+    time: string;
 };
 export type LocationResultTypes = {
     business_status: string;
@@ -86,14 +105,22 @@ export type PostDto = {
     keywordIdList: number[] | null;
     headKeywordId: number | null;
 };
+export type CommentReqTypes = {
+    postId: number;
+    content: string;
+    latitude: number;
+    longitude: number;
+    keywordIdList: number[];
+};
 export type WritePostTypes = {
     dto: PostDto;
     files: Asset[];
     thumbnail: Asset | null;
+    backgroundMap: string;
 };
 export type MyProfileTabTypes = {
     text: string;
-    screen: keyof RootStackParamList | null;
+    screen: string | null;
     icon: boolean;
     version: boolean;
     tab: boolean;
@@ -130,11 +157,23 @@ export type RootStackParamList = {
     BottomTab?: {
         screen: string;
     };
-    WritePost: undefined;
+    WritePostOrComment:
+        | {
+              title: string;
+              rePostCount: number;
+              time: string;
+              postId: number;
+          }
+        | undefined;
     EditNickname: undefined;
     AccountManagement: undefined;
     LikeKeywordSetting: undefined;
     Policies: undefined;
+    ThreadItem: {
+        postId: number;
+    };
+    MyPostComment: undefined;
+    None: undefined;
 };
 export type BottomTabParamList = {
     ServiceHome: undefined;
@@ -158,6 +197,14 @@ export type TouchButtonProps = {
     borderRadius?: number;
     borderBottomWidth?: number;
     flex?: number;
+    hitSlop?:
+        | {
+              top?: number;
+              bottom?: number;
+              left?: number;
+              right?: number;
+          }
+        | number;
 };
 export type SingleLineInputProps = {
     value: string;
@@ -296,6 +343,7 @@ export type MapWithMarkerProps = {
 };
 export type PostListItemProps = {
     post: PostTypes;
+    isBorder: boolean;
 };
 export type NearbyPostListModalProps = {
     isModalRef: React.MutableRefObject<boolean>;
@@ -347,12 +395,31 @@ export type SeviceHomeTemplateProps = {
     handleModalTrigger: boolean;
     moveToWritePost: () => void;
 };
-export type WritePostTemplateProps = {
-    moveToScreen: (state: string) => void;
+export type WritePostOrCommentTemplateProps = {
+    postThreadInfo:
+        | {
+              title: string;
+              rePostCount: number;
+              time: string;
+              postId: number;
+          }
+        | undefined;
+    moveToScreen: (state: string, postId: number | null) => void;
 };
 export type EditNicknameTemplateProps = {
     moveToMyProfileScreen: (state: string) => void;
 };
 export type MyProfileTemplateProps = {
     moveToScreen: (state: string) => void;
+};
+export type ThreadItemTemplateProps = {
+    postId: number;
+    movetoCommunityScreen: () => void;
+    moveToWriteScreen: (title: string, rePostCount: number, time: string) => void;
+};
+export type MyPostCommentTemplateProps = {
+    moveToBackScreenHandler: () => void;
+};
+export type AccountManagementTemplateProps = {
+    moveToScreenHandler: (state: string) => void;
 };

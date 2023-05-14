@@ -1,6 +1,6 @@
 import axios from 'axios';
 import Config from 'react-native-config';
-import { PostDto } from '../types/types';
+import { CommentReqTypes, PostDto } from '../types/types';
 
 const Axios = axios.create({
     baseURL: Config.API_BASE_URL,
@@ -139,9 +139,10 @@ export const nearByUserPostsAPI = async (param: {
     curLon: number;
     accessToken: string;
     page: number;
+    isNearSearch: boolean;
 }) => {
     const response = await Axios({
-        url: `/api/v1/post/locationPost?minLat=${param.minLat}&minLon=${param.minLon}&maxLat=${param.maxLat}&maxLon=${param.maxLon}&curLat=${param.curLat}&curLon=${param.curLon}&page=${param.page}`,
+        url: `/api/v1/post/locationPost?minLat=${param.minLat}&minLon=${param.minLon}&maxLat=${param.maxLat}&maxLon=${param.maxLon}&curLat=${param.curLat}&curLon=${param.curLon}&page=${param.page}&isNearSearch=${param.isNearSearch}`,
         method: 'get',
         headers: {
             'Content-Type': 'application/json',
@@ -152,6 +153,16 @@ export const nearByUserPostsAPI = async (param: {
 };
 
 // COMMUNITY
+export const getCommentListAPI = async (param: { accessToken: string; postId: number; curX: number; curY: number }) => {
+    const response = await Axios({
+        url: `/api/v1/post/top-post?postId=${param.postId}&curX=${param.curX}&curY=${param.curY}`,
+        method: 'get',
+        headers: {
+            Authorization: `Bearer ${param.accessToken}`,
+        },
+    });
+    return response;
+};
 
 // TEMPORARY COMMUNITY
 export const writePostAPI = async (param: { accessToken: string; data: PostDto }) => {
@@ -169,6 +180,29 @@ export const writePostAPI = async (param: { accessToken: string; data: PostDto }
 export const writePostFilesAPI = async (param: { accessToken: string; data: FormData; postId: number }) => {
     const response = await Axios({
         url: `/api/v1/post/top-post-file?postId=${param.postId}`,
+        method: 'post',
+        headers: {
+            'Content-Type': 'multipart/form-data; boundary=someArbitraryUniqueString',
+        },
+        data: param.data,
+    });
+    return response;
+};
+export const writeCommentAPI = async (param: { accessToken: string; data: CommentReqTypes }) => {
+    const response = await Axios({
+        url: '/api/v1/post/repost',
+        method: 'post',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${param.accessToken}`,
+        },
+        data: JSON.stringify(param.data),
+    });
+    return response;
+};
+export const writeCommentFilesAPI = async (param: { data: FormData; rePostId: number }) => {
+    const response = await Axios({
+        url: `/api/v1/post/repost-file?repostId=${param.rePostId}`,
         method: 'post',
         headers: {
             'Content-Type': 'multipart/form-data; boundary=someArbitraryUniqueString',
