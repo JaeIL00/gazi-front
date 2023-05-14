@@ -1,6 +1,6 @@
 import axios from 'axios';
 import Config from 'react-native-config';
-import { CommentReqTypes, PostDto } from '../types/types';
+import { CommentReqTypes, PostDto, userTokenAtomTypes } from '../types/types';
 
 const Axios = axios.create({
     baseURL: Config.API_BASE_URL,
@@ -21,7 +21,7 @@ export const searchGoogleAPI = async (searchInput: string, nextPageToken: string
     return response;
 };
 
-// LOGIN
+// ACCOUT LOGIN LOGOUT
 export const loginAPI = async (data: { email: string; password: string }) => {
     const response = await Axios({
         url: '/api/v1/member/login',
@@ -36,6 +36,27 @@ export const loginAPI = async (data: { email: string; password: string }) => {
 export const autoLoginAPI = async (data: { accessToken: string; refreshToken: string }) => {
     const response = await Axios({
         url: '/api/v1/member/reissue',
+        method: 'post',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        data: JSON.stringify(data),
+    });
+    return response;
+};
+export const deleteMemberAPI = async (accessToken: string) => {
+    const response = await Axios({
+        url: '/api/v1/member/delete-member',
+        method: 'post',
+        headers: {
+            Authorization: `Bearer ${accessToken}`,
+        },
+    });
+    return response;
+};
+export const logoutAPI = async (data: userTokenAtomTypes) => {
+    const response = await Axios({
+        url: '/api/v1/member/logout',
         method: 'post',
         headers: {
             'Content-Type': 'application/json',
@@ -84,19 +105,6 @@ export const joinMemberAPI = async (data: { email: string; password: string; nic
     return response;
 };
 
-// DELETE MEMBER
-export const deleteMemberAPI = async (token: string) => {
-    const response = await Axios({
-        url: '/api/v1/member/delete-member',
-        method: 'post',
-        headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-        },
-    });
-    return response;
-};
-
 // USER PROFILE
 export const editNicknameAPI = async (param: { accessToken: string; data: string }) => {
     const response = await Axios({
@@ -114,16 +122,46 @@ export const editNicknameAPI = async (param: { accessToken: string; data: string
 };
 
 // KEYWORD
-export const likeKeywordsAPI = async (param: { token: string; data: number[] }) => {
+export const addLikeKeywordsAPI = async (param: { accessToken: string; data: number[] }) => {
     const response = await Axios({
         url: '/api/v1/keyword/interest-keyword',
         method: 'post',
         headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${param.token}`,
+            Authorization: `Bearer ${param.accessToken}`,
         },
         data: JSON.stringify({
             myKeywordList: param.data,
+        }),
+    });
+    return response;
+};
+export const geyMyLikeKeywordsAPI = async (accessToken: string) => {
+    const response = await Axios({
+        url: '/api/v1/member/my-keyword',
+        method: 'get',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${accessToken}`,
+        },
+    });
+    return response;
+};
+export const editMyLikeKeywordsAPI = async (param: {
+    accessToken: string;
+    addKeywordIdList: number[];
+    deleteKeywordIdList: number[];
+}) => {
+    const response = await Axios({
+        url: '/api/v1/keyword/update-interest-keyword',
+        method: 'put',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${param.accessToken}`,
+        },
+        data: JSON.stringify({
+            addKeywordIdList: param.addKeywordIdList,
+            deleteKeywordIdList: param.deleteKeywordIdList,
         }),
     });
     return response;
@@ -153,13 +191,43 @@ export const nearByUserPostsAPI = async (param: {
 };
 
 // COMMUNITY
+export const getAllPostAPI = async (param: { accessToken: string; curLat: number; curLon: number; page: number }) => {
+    const response = await Axios({
+        url: `/api/v1/post/top-post-list?curLat=${param.curLat}&curLon=${param.curLon}&page=${param.page}`,
+        method: 'get',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${param.accessToken}`,
+        },
+    });
+    return response;
+};
 export const getCommentListAPI = async (param: { accessToken: string; postId: number; curX: number; curY: number }) => {
     const response = await Axios({
         url: `/api/v1/post/top-post?postId=${param.postId}&curX=${param.curX}&curY=${param.curY}`,
         method: 'get',
         headers: {
+            'Content-Type': 'application/json',
             Authorization: `Bearer ${param.accessToken}`,
         },
+    });
+    return response;
+};
+export const reportAPI = async (param: {
+    accessToken: string;
+    data: {
+        postId: number | null;
+        repostId: number | null;
+    };
+}) => {
+    const response = await Axios({
+        url: '/api/v1/report',
+        method: 'post',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${param.accessToken}`,
+        },
+        data: JSON.stringify(param.data),
     });
     return response;
 };

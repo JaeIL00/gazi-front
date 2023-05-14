@@ -9,13 +9,17 @@ import LoginScreen from '../screens/EmailLoginScreen';
 import BottomTabNavigation from './BottomTabNavigation';
 import JoinMemberScreen from '../screens/JoinMemberScreen';
 import NotLoginHomeScreen from '../screens/NotLoginHomeScreen';
+import PoliciesScreen from '../screens/myProfile/PoliciesScreen';
 import ThreadItemScreen from '../screens/cummunity/ThreadItemScreen';
 import InitLikeKeywordScreen from '../screens/InitLikeKeywordScreen';
+import DeleteMemberScreen from '../screens/myProfile/DeleteMemberScreen';
 import RequestPermissionScreen from '../screens/RequestPermissionScreen';
 import EditNicknameScreen from '../screens/myProfile/EditNicknameScreen';
 import MyPostCommentScreen from '../screens/myProfile/MyPostCommentScreen';
+import ChangePasswordScreen from '../screens/myProfile/ChangePasswordScreen';
 import AccountManagementScreen from '../screens/myProfile/AccountManagementScreen';
 import WritePostOrCommentScreen from '../screens/cummunity/WritePostOrCommentScreen';
+import LikeKeywordSettingScreen from '../screens/myProfile/LikeKeywordSettingScreen';
 import { autoLoginAPI } from '../queries/api';
 import { RootStackParamList } from '../types/types';
 import { userInfoAtom, userTokenAtom } from '../store/atoms';
@@ -75,15 +79,17 @@ export const RootStackNavigation = () => {
                     accessToken,
                     refreshToken,
                 });
+            } else {
+                rootNavigation.navigate('NotLoginHome');
             }
         } catch (error) {
             // For Debug
             console.log('(ERROR) Check async storage for auto login ', error);
         }
     };
-    // useLayoutEffect(() => {
-    //     checkAsyncStorage();
-    // }, []);
+    useLayoutEffect(() => {
+        checkAsyncStorage();
+    }, []);
 
     return (
         <Stack.Navigator
@@ -93,14 +99,18 @@ export const RootStackNavigation = () => {
             }}>
             <Stack.Screen name="NotLoginHome" component={NotLoginHomeScreen} />
             <Stack.Screen name="BottomTab" component={BottomTabNavigation} />
+            <Stack.Screen name="Policies" component={PoliciesScreen} />
+            <Stack.Screen name="JoinMember" component={JoinMemberScreen} />
+            <Stack.Screen name="LikeKeywordSetting" component={LikeKeywordSettingScreen} />
+            <Stack.Screen name="ChangePassword" component={ChangePasswordScreen} />
             <Stack.Screen name="AccountManagement" component={AccountManagementScreen} />
+            <Stack.Screen name="DeleteMember" component={DeleteMemberScreen} />
             <Stack.Screen name="MyPostComment" component={MyPostCommentScreen} />
             <Stack.Screen name="WritePostOrComment" component={WritePostOrCommentScreen} />
             <Stack.Screen name="ThreadItem" component={ThreadItemScreen} />
             <Stack.Screen name="EditNickname" component={EditNicknameScreen} />
             <Stack.Screen name="RequestPermission" component={RequestPermissionScreen} />
             <Stack.Screen name="InitKeyword" component={InitLikeKeywordScreen} />
-            <Stack.Screen name="JoinMember" component={JoinMemberScreen} />
             <Stack.Screen name="Login" component={LoginScreen} />
         </Stack.Navigator>
     );

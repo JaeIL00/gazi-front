@@ -15,10 +15,10 @@ import SemiBoldText from '../../smallest/SemiBoldText';
 import KeywordsList from '../../organisms/KeywordsList';
 import MoveBackWithPageTitle from '../../organisms/MoveBackWithPageTitle';
 import { userTokenAtom } from '../../../store/atoms';
-import { likeKeywordsAPI } from '../../../queries/api';
+import { addLikeKeywordsAPI } from '../../../queries/api';
 import { initLikeKeywordTemplateStyles } from '../../../styles/styles';
 import { InitLikeKeywordTemplateProps, KeywordListTypes } from '../../../types/types';
-import { issueKeywords, subwayKeywords, trafficKeywords } from '../../../utils/allKeywords';
+import { issueKeywordsNotEtc, subwayKeywords, trafficKeywords } from '../../../utils/allKeywords';
 
 const InitLikeKeywordTemplate = ({ moveToScreen }: InitLikeKeywordTemplateProps) => {
     // Initialized check keywords
@@ -35,7 +35,7 @@ const InitLikeKeywordTemplate = ({ moveToScreen }: InitLikeKeywordTemplateProps)
             newCheckSubway = [...newCheckSubway, false];
         }
         let newCheckIssue: boolean[] = [];
-        for (const index in issueKeywords) {
+        for (const index in issueKeywordsNotEtc) {
             newCheckIssue = [...newCheckIssue, false];
         }
         setCheckTraffic(newCheckTraffic);
@@ -90,14 +90,14 @@ const InitLikeKeywordTemplate = ({ moveToScreen }: InitLikeKeywordTemplateProps)
         setCheckedKeywords(cleanType);
     };
     useEffect(() => {
-        const allList = [...trafficKeywords, ...subwayKeywords, ...issueKeywords];
+        const allList = [...trafficKeywords, ...subwayKeywords, ...issueKeywordsNotEtc];
         const checkedList = [...checkTraffic, ...checkSubway, ...checkIssue];
         checkedKeywordsHandler(allList, checkedList);
     }, [checkTraffic, checkIssue, checkSubway]);
 
     // Send like keywords API
     const userTk = useRecoilValue(userTokenAtom);
-    const { mutate } = useMutation(likeKeywordsAPI, {
+    const { mutate } = useMutation(addLikeKeywordsAPI, {
         onSuccess: () => {
             moveToScreen('OK');
         },
@@ -109,7 +109,7 @@ const InitLikeKeywordTemplate = ({ moveToScreen }: InitLikeKeywordTemplateProps)
     const onPressLikedKeyword = debounce(() => {
         if (checkedKeywords.length > 0) {
             mutate({
-                token: userTk.accessToken,
+                accessToken: userTk.accessToken,
                 data: checkedKeywords,
             });
         }
@@ -168,7 +168,7 @@ const InitLikeKeywordTemplate = ({ moveToScreen }: InitLikeKeywordTemplateProps)
                     <Spacer height={14} />
                     <KeywordsList
                         type="ISSUE"
-                        list={issueKeywords}
+                        list={issueKeywordsNotEtc}
                         isCheck={checkIssue}
                         checkKeywordHandler={checkKeywordHandler}
                         checkTextColor={Colors.WHITE}

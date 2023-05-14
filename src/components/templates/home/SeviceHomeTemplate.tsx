@@ -129,9 +129,9 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritePost }:
         }
     }, []);
     const initNearPosts = () => {
+        indexNumber.current = 0;
         remove();
         refetch();
-        setNearPostList([]);
     };
 
     // Again request modal button Handling
@@ -159,6 +159,7 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritePost }:
 
     // Get post of near by user API
     const userTk = useRecoilValue(userTokenAtom);
+    const indexNumber = useRef<number>(0);
     const [nearPostList, setNearPostList] = useState<PostTypes[]>([]);
     const { hasNextPage, isFetching, isFetchingNextPage, fetchNextPage, refetch, remove } = useInfiniteQuery(
         ['getNearPosts'],
@@ -179,10 +180,18 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritePost }:
             getNextPageParam: (lastPage, allPages) => {
                 const total = lastPage.data.data.totalPages;
                 const nextPage = lastPage.data.data.pageable.pageNumber + 1;
-                return nextPage > total ? undefined : nextPage;
+                return nextPage === total ? undefined : nextPage;
             },
             onSuccess: data => {
-                setNearPostList([...nearPostList, ...data.pages[0].data.data.content]);
+                const pageNumber = data.pages[indexNumber.current].data.data.pageable.pageNumber;
+                if (pageNumber === 0) {
+                    setNearPostList(data.pages[indexNumber.current].data.data.content);
+                } else {
+                    setNearPostList([...nearPostList, ...data.pages[indexNumber.current].data.data.content]);
+                }
+                if (!data.pages[indexNumber.current].data.data.last) {
+                    indexNumber.current = indexNumber.current + 1;
+                }
             },
             onError: ({ response }) => {
                 // For Debug
@@ -193,7 +202,7 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritePost }:
 
     // Call next page API
     const callNextPageHandler = () => {
-        if (!hasNextPage) {
+        if (hasNextPage) {
             fetchNextPage();
         }
     };
@@ -242,7 +251,7 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritePost }:
         (region: Region) => {
             if (region.latitudeDelta > 0.15) {
                 setIsFarMapLevel(true);
-            } else if (0.15 > region.latitudeDelta && region.latitudeDelta > 0.065) {
+            } else if (region.latitudeDelta < 0.15 && region.latitudeDelta > 0.065) {
                 setMapBoundaryState({
                     ...mapBoundaryState,
                     isNearSearch: true,
@@ -331,34 +340,13 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritePost }:
             )}
 
             {isFarMapLevel && (
-                <View
-                    style={{
-                        paddingHorizontal: 38 * screenWidth,
-                        paddingVertical: 9 * screenHeight,
-                        backgroundColor: '#00000099',
-                        borderRadius: 25 * screenFont,
-                        position: 'absolute',
-                        top: 300 * screenHeight,
-                        alignSelf: 'center',
-                    }}>
+                <View style={seviceHomeTemplateStyles.zoomWarning}>
                     <MediumText text="사건 확인을 위해 지도를 확인해 주세요" size={14} color={Colors.WHITE} />
                 </View>
             )}
 
             {isNearPostSearch && !isFarMapLevel && Platform.OS === 'android' && (
-                <DropShadow
-                    style={{
-                        position: 'absolute',
-                        top: 86 * screenHeight,
-                        alignSelf: 'center',
-                        shadowColor: '#000000',
-                        shadowOffset: {
-                            width: 0,
-                            height: -4 * screenHeight,
-                        },
-                        shadowOpacity: 0.05,
-                        shadowRadius: 34 * screenFont,
-                    }}>
+                <DropShadow style={seviceHomeTemplateStyles.mapMoveSearch}>
                     <TouchButton
                         onPress={getBoundaryMap}
                         backgroundColor="#F8F7FA"

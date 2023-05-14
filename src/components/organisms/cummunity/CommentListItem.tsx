@@ -1,18 +1,23 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import { Image, View } from 'react-native';
 
 import Icons from '../../smallest/Icons';
 import Spacer from '../../smallest/Spacer';
+import Colors from '../../../styles/Colors';
 import NormalText from '../../smallest/NormalText';
 import MediumText from '../../smallest/MediumText';
 import TouchButton from '../../smallest/TouchButton';
 import SemiBoldText from '../../smallest/SemiBoldText';
 import { CommentTypes } from '../../../types/types';
 import { commentListItemStyles } from '../../../styles/styles';
-import { screenFont, screenHeight, screenWidth } from '../../../utils/changeStyleSize';
-import Colors from '../../../styles/Colors';
 
-const CommentListcomment = ({ comment }: { comment: CommentTypes }) => (
+const CommentListcomment = ({
+    comment,
+    reportHandler,
+}: {
+    comment: CommentTypes;
+    reportHandler: (repostId: number) => void;
+}) => (
     <View style={commentListItemStyles.container}>
         <View style={commentListItemStyles.lineSphere} />
         {/* 헤더 */}
@@ -27,7 +32,7 @@ const CommentListcomment = ({ comment }: { comment: CommentTypes }) => (
                             <MediumText text={`${comment.distance} | ${comment.time}`} size={11} color="#999999" />
                         </View>
                     </View>
-                    <TouchButton onPress={() => {}}>
+                    <TouchButton onPress={() => reportHandler(comment.id)} hitSlop={10}>
                         <MediumText text="신고하기" size={11} color={Colors.BLACK} />
                     </TouchButton>
                 </View>

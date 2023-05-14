@@ -11,7 +11,7 @@ import NicknameTemplate from '../components/templates/joinMember/NicknameTemplat
 import InputEmailTemplate from '../components/templates/joinMember/InputEmailTemplate';
 import CompletedJoinTemplate from '../components/templates/joinMember/CompletedJoinTemplate';
 import EmailWithPasswordTemplate from '../components/templates/joinMember/EmailWithPasswordTemplate';
-import { globalDefaultStyles } from '../styles/styles';
+import { JoinMemberScreenStyles } from '../styles/styles';
 import { emailAuthAtom, joinMemberAtom } from '../store/atoms';
 import { useRootNavigation } from '../navigations/RootStackNavigation';
 
@@ -135,37 +135,38 @@ const JoinMemberScreen = () => {
     }, [step, isSlideComponent]);
 
     return (
-        <View style={globalDefaultStyles.container}>
-            <MoveBackWithPageTitle
-                oneTitle={oneTitle}
-                twoTitle={twoTitle}
-                explainText={explain && explain}
-                explainSize={explain ? 13 : undefined}
-                onPress={handleBackButton}
-            />
-
-            <Spacer height={51} />
-
-            {step === 1 && (
-                <InputEmailTemplate
-                    resetTimeHandler={resetTimeHandler}
-                    onPressNextStep={onPressNextStep}
-                    didAuthEmail={didAuthEmail}
+        <View style={JoinMemberScreenStyles.container}>
+            <View style={JoinMemberScreenStyles.inner}>
+                <MoveBackWithPageTitle
+                    oneTitle={oneTitle}
+                    twoTitle={twoTitle}
+                    explainText={explain && explain}
+                    explainSize={explain ? 13 : undefined}
+                    onPress={handleBackButton}
                 />
-            )}
-            {step === 2 && <EmailWithPasswordTemplate onPressNextStep={onPressNextStep} />}
-            {step === 3 && <NicknameTemplate onPressNextStep={onPressNextStep} />}
-            {step === 4 && <CompletedJoinTemplate onPressNextStep={onPressNextStep} />}
 
-            {isSlideComponent && step === 1 && (
-                <AuthEmail
-                    min={min}
-                    sec={sec}
-                    resetTimeHandler={resetTimeHandler}
-                    finishSlideComponentHandler={finishSlideComponentHandler}
-                />
-            )}
+                <Spacer height={51} />
 
+                {step === 1 && (
+                    <InputEmailTemplate
+                        resetTimeHandler={resetTimeHandler}
+                        onPressNextStep={onPressNextStep}
+                        didAuthEmail={didAuthEmail}
+                    />
+                )}
+                {step === 2 && <EmailWithPasswordTemplate onPressNextStep={onPressNextStep} />}
+                {step === 3 && <NicknameTemplate onPressNextStep={onPressNextStep} />}
+                {step === 4 && <CompletedJoinTemplate onPressNextStep={onPressNextStep} />}
+
+                {isSlideComponent && step === 1 && (
+                    <AuthEmail
+                        min={min}
+                        sec={sec}
+                        resetTimeHandler={resetTimeHandler}
+                        finishSlideComponentHandler={finishSlideComponentHandler}
+                    />
+                )}
+            </View>
             {isSlideComponent && step === 2 && (
                 <ServiceAgreement finishSlideComponentHandler={finishSlideComponentHandler} />
             )}

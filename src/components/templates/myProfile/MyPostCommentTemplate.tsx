@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import { Image, View } from 'react-native';
-import Icons from '../../smallest/Icons';
-import { screenFont, screenHeight, screenWidth } from '../../../utils/changeStyleSize';
+
 import Spacer from '../../smallest/Spacer';
-import MediumText from '../../smallest/MediumText';
 import Colors from '../../../styles/Colors';
-import SemiBoldText from '../../smallest/SemiBoldText';
+import MediumText from '../../smallest/MediumText';
 import TouchButton from '../../smallest/TouchButton';
-import { myPostCommentTemplateStyles } from '../../../styles/styles';
+import SemiBoldText from '../../smallest/SemiBoldText';
+import { screenFont } from '../../../utils/changeStyleSize';
 import { MyPostCommentTemplateProps } from '../../../types/types';
+import { myPostCommentTemplateStyles } from '../../../styles/styles';
 
 const MyPostCommentTemplate = ({ moveToBackScreenHandler }: MyPostCommentTemplateProps) => {
     const [isComment, setIsComment] = useState<boolean>(false);

@@ -1,36 +1,30 @@
 import React from 'react';
 import { View } from 'react-native';
 
-import AccountManagementTemplate from '../../components/templates/myProfile/AccountManagementTemplate';
+import DeleteMemberTemplate from '../../components/templates/myProfile/DeleteMemberTemplate';
 import { globalBackWhiteStyles } from '../../styles/styles';
 import { useRootNavigation } from '../../navigations/RootStackNavigation';
 
-const AccountManagementScreen = () => {
+const DeleteMemberScreen = () => {
     const rootNavigation = useRootNavigation();
     const moveToScreenHandler = (state: string) => {
         switch (state) {
             case 'BACK':
                 rootNavigation.goBack();
                 break;
-            case 'PASSWORD':
-                rootNavigation.navigate('ChangePassword');
-                break;
-            case 'INIT_HOME':
+            case 'HOME':
                 rootNavigation.navigate('NotLoginHome');
-                break;
-            case 'DELETE':
-                rootNavigation.navigate('DeleteMember');
                 break;
             default:
                 // For Debug
-                console.log('(ERROR) Move screen account manage.', state);
+                console.log('(ERROR) Delete member screen move handler.', state);
         }
     };
-
     return (
         <View style={globalBackWhiteStyles.container}>
-            <AccountManagementTemplate moveToScreenHandler={moveToScreenHandler} />
+            <DeleteMemberTemplate moveToScreenHandler={moveToScreenHandler} />
         </View>
     );
 };
-export default AccountManagementScreen;
+
+export default DeleteMemberScreen;

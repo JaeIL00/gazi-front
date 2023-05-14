@@ -89,7 +89,7 @@ const NearbyPostListModal = ({
                     return (animType.current = 'mini');
                 }
                 // // Animating start mini modal
-                if (-330 < dy && dy < -30 && animType.current === 'mini') {
+                if (dy > -330 && dy < -30 && animType.current === 'mini') {
                     // To middle from mini
                     Animated.timing(animRef, {
                         toValue: MIDDLE_ANIM_VALUE,
@@ -126,7 +126,7 @@ const NearbyPostListModal = ({
                     return (animType.current = 'full');
                 }
                 // // Animating start full modal
-                if (330 > dy && dy > 30 && animType.current === 'full') {
+                if (dy < 330 && dy > 30 && animType.current === 'full') {
                     // To middile from full
                     Animated.timing(animRef, {
                         toValue: MIDDLE_ANIM_VALUE,

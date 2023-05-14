@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Image, ScrollView, View } from 'react-native';
-import { Asset, launchImageLibrary } from 'react-native-image-picker';
+import { launchImageLibrary } from 'react-native-image-picker';
 import { PERMISSIONS, RESULTS, check } from 'react-native-permissions';
 
 import TouchButton from '../../smallest/TouchButton';

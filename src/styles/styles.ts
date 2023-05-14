@@ -276,6 +276,11 @@ export const serviceAgreementStyles = StyleSheet.create({
         paddingTop: 3 * screenHeight,
         paddingBottom: 158 * screenHeight,
     },
+    webviewBox: {
+        position: 'absolute',
+        width: '100%',
+        height: '100%',
+    },
 });
 export const authEmailStyles = StyleSheet.create({
     container: {
@@ -559,6 +564,18 @@ export const writePostAddKeywordStyles = StyleSheet.create({
         bottom: 42 * screenHeight,
         alignSelf: 'center',
     },
+    bottomBox: {
+        position: 'absolute',
+        bottom: 34 * screenHeight,
+        marginHorizontal: 16 * screenWidth,
+        flexDirection: 'row',
+        width: '100%',
+        justifyContent: 'space-between',
+    },
+    borderLine: {
+        borderBottomWidth: 1.5 * screenFont,
+        borderColor: Colors.TXT_GRAY,
+    },
 });
 export const writePhotoStyles = StyleSheet.create({
     container: {
@@ -656,6 +673,34 @@ export const commentListItemStyles = StyleSheet.create({
     },
     likeBox: {
         flexDirection: 'row',
+    },
+});
+export const editMyKeywordStyles = StyleSheet.create({
+    keywordListBox: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    resetText: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    bottomBox: {
+        position: 'absolute',
+        bottom: 34 * screenHeight,
+        marginHorizontal: 16 * screenWidth,
+        flexDirection: 'row',
+        width: '100%',
+        justifyContent: 'space-between',
+    },
+    borderLine: {
+        borderBottomWidth: 1.5 * screenFont,
+        borderColor: Colors.TXT_GRAY,
+    },
+});
+export const webViewComponentStyles = StyleSheet.create({
+    webview: {
+        width: '100%',
+        height: '95%',
     },
 });
 
@@ -848,6 +893,27 @@ export const seviceHomeTemplateStyles = StyleSheet.create({
         height: 30 * screenWidth,
         marginLeft: 8 * screenWidth,
     },
+    zoomWarning: {
+        paddingHorizontal: 38 * screenWidth,
+        paddingVertical: 9 * screenHeight,
+        backgroundColor: '#00000099',
+        borderRadius: 25 * screenFont,
+        position: 'absolute',
+        top: 300 * screenHeight,
+        alignSelf: 'center',
+    },
+    mapMoveSearch: {
+        position: 'absolute',
+        top: 86 * screenHeight,
+        alignSelf: 'center',
+        shadowColor: '#000000',
+        shadowOffset: {
+            width: 0,
+            height: -4 * screenHeight,
+        },
+        shadowOpacity: 0.05,
+        shadowRadius: 34 * screenFont,
+    },
 });
 export const writePostOrCommentTemplateStyles = StyleSheet.create({
     container: {
@@ -913,6 +979,14 @@ export const writePostOrCommentTemplateStyles = StyleSheet.create({
     conditionSettingBox: {
         paddingLeft: 16 * screenWidth,
         paddingTop: 14 * screenHeight,
+    },
+    mapSize: {
+        width: '100%',
+        height: '50%',
+    },
+    mapMarkerPosition: {
+        justifyContent: 'center',
+        alignItems: 'center',
     },
 });
 export const myProfileTemplateStyles = StyleSheet.create({
@@ -993,6 +1067,12 @@ export const editNicknameTemplateStyles = StyleSheet.create({
         paddingVertical: 15 * screenHeight,
         flexDirection: 'row',
     },
+    validationText: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingLeft: 9 * screenWidth,
+        paddingTop: 8 * screenHeight,
+    },
 });
 export const threadItemTemplateStyles = StyleSheet.create({
     backButtonBox: {
@@ -1063,7 +1143,7 @@ export const myPostCommentTemplateStyles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         paddingBottom: 16 * screenHeight,
-        paddingTop: 41 * screenHeight,
+        paddingTop: 17 * screenHeight,
         paddingHorizontal: 16 * screenWidth,
     },
     headerIcon: {
@@ -1085,8 +1165,9 @@ export const AccountManagementTemplateStyles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         paddingBottom: 16 * screenHeight,
-        paddingTop: 41 * screenHeight,
-        paddingHorizontal: 16 * screenWidth,
+        paddingTop: 17 * screenHeight,
+        paddingLeft: 22 * screenWidth,
+        paddingRight: 16 * screenWidth,
         borderBottomWidth: 1 * screenFont,
         borderColor: '#EBEBEB',
     },
@@ -1107,6 +1188,42 @@ export const AccountManagementTemplateStyles = StyleSheet.create({
         justifyContent: 'center',
     },
 });
+export const PoliciesTemplateStyles = StyleSheet.create({
+    container: {
+        flex: 1,
+    },
+    headerBox: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingBottom: 16 * screenHeight,
+        paddingTop: 17 * screenHeight,
+        paddingLeft: 22 * screenWidth,
+        paddingRight: 16 * screenWidth,
+        borderBottomWidth: 1 * screenFont,
+        borderColor: '#EBEBEB',
+    },
+    headerIcon: {
+        width: 9 * screenWidth,
+        height: 16 * screenHeight,
+    },
+    tabBox: {
+        width: '100%',
+        height: 52 * screenHeight,
+        borderColor: '#EBEBEB',
+        borderBottomWidth: 1 * screenFont,
+        paddingHorizontal: 16 * screenWidth,
+    },
+    buttonBox: {
+        width: '100%',
+        height: '100%',
+        justifyContent: 'center',
+    },
+    webviewBox: {
+        position: 'absolute',
+        width: '100%',
+        height: '100%',
+    },
+});
 export const communityTemplateStyles = StyleSheet.create({
     headerBox: {
         flexDirection: 'row',
@@ -1123,6 +1240,127 @@ export const communityTemplateStyles = StyleSheet.create({
         paddingBottom: 7 * screenHeight,
         paddingTop: 13 * screenHeight,
         borderColor: Colors.BLACK,
+    },
+});
+export const DeleteMemberTemplateStyles = StyleSheet.create({
+    container: {
+        flex: 1,
+        paddingHorizontal: 16 * screenWidth,
+        position: 'relative',
+    },
+    headerBox: {
+        paddingBottom: 49 * screenHeight,
+        paddingTop: 20 * screenHeight,
+    },
+    headerIcon: {
+        width: 9 * screenWidth,
+        height: 16 * screenHeight,
+    },
+    explainBox: {
+        paddingTop: 27 * screenHeight,
+    },
+    explainList: {
+        flexDirection: 'row',
+        position: 'relative',
+    },
+    explainDot: {
+        position: 'absolute',
+        left: 5 * screenWidth,
+        top: -1 * screenHeight,
+    },
+    explainMiddle: {
+        flexDirection: 'row',
+        position: 'relative',
+        marginVertical: 13 * screenHeight,
+    },
+    bottomBox: {
+        position: 'absolute',
+        bottom: 34 * screenHeight,
+        marginHorizontal: 16 * screenWidth,
+        flexDirection: 'row',
+        width: '100%',
+        justifyContent: 'space-between',
+    },
+    borderLine: {
+        borderBottomWidth: 1.5 * screenFont,
+        borderColor: Colors.TXT_GRAY,
+    },
+});
+export const changePasswordTemplateStyles = StyleSheet.create({
+    emailErrorTextBox: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingLeft: 10 * screenWidth,
+        paddingBottom: 7 * screenHeight,
+    },
+    inputBox: {
+        borderRadius: 5 * screenFont,
+        height: 48 * screenHeight,
+        backgroundColor: Colors.LIGHTGRAY,
+        justifyContent: 'center',
+        paddingHorizontal: 16 * screenWidth,
+        marginTop: 8 * screenHeight,
+    },
+    twoPasswordError: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingTop: 8 * screenHeight,
+    },
+});
+export const likeKeywordSettingTemplateStyles = StyleSheet.create({
+    container: {
+        flex: 1,
+    },
+    headerBox: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        paddingBottom: 16 * screenHeight,
+        paddingTop: 17 * screenHeight,
+        paddingLeft: 22 * screenWidth,
+        paddingRight: 16 * screenWidth,
+        borderBottomWidth: 1 * screenFont,
+        borderColor: '#EBEBEB',
+        width: '100%',
+    },
+    headerIcon: {
+        width: 9 * screenWidth,
+        height: 16 * screenHeight,
+    },
+    headerTextBox: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    contentBox: {
+        paddingHorizontal: 16 * screenWidth,
+        paddingTop: 27 * screenHeight,
+        flex: 1,
+    },
+    contentTitleBox: {
+        paddingBottom: 12 * screenHeight,
+    },
+    nothingBox: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        flex: 0.8,
+    },
+    nothingIcon: {
+        width: 88 * screenWidth,
+        height: 88 * screenWidth,
+    },
+    myKeywordBox: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+    },
+    myKeywordList: {
+        paddingHorizontal: 14 * screenWidth,
+        paddingVertical: 8 * screenHeight,
+        backgroundColor: '#F1E9FF',
+        borderColor: '#6826F5',
+        borderRadius: 30 * screenFont,
+        borderWidth: 1 * screenFont,
+        marginRight: 5 * screenWidth,
+        marginBottom: 10 * screenHeight,
     },
 });
 
@@ -1146,5 +1384,15 @@ export const threadItemScreenStyles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: Colors.BACKGROUND_DEFAULT,
+    },
+});
+export const JoinMemberScreenStyles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: Colors.BACKGROUND_DEFAULT,
+    },
+    inner: {
+        flex: 1,
+        paddingHorizontal: 16 * screenWidth,
     },
 });

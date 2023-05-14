@@ -65,8 +65,7 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
         }
     };
     const getImageHandler = (files: Asset[]) => {
-        setWritePostData({ ...writePostData, files, thumbnail: files[0] });
-        console.log(files);
+        setWritePostData({ ...writePostData, files });
     };
 
     // Write post API and check essential value
@@ -134,7 +133,7 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
 
     // Post upload files
     const { mutate: postFileMutate, isLoading: isPostFileLoading } = useMutation(writePostFilesAPI, {
-        onSuccess: ({ data }) => {
+        onSuccess: () => {
             moveToScreen('GO', postId);
         },
         onError: error => {
@@ -142,11 +141,11 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
             console.log('(ERROR) Upload files API.', error);
         },
     });
-    const postUploadFilesHandler = (postId: number) => {
-        setPostId(postId);
+    const postUploadFilesHandler = (id: number) => {
+        setPostId(id);
+        const formdata = new FormData();
 
         if (writePostData.files[0]) {
-            const formdata = new FormData();
             for (const index in writePostData.files) {
                 formdata.append('files', {
                     uri: writePostData.files[index].uri,
@@ -155,23 +154,28 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
                 });
             }
             formdata.append('thumbnail', {
-                uri: writePostData.thumbnail?.uri,
-                type: writePostData.thumbnail?.type,
-                name: writePostData.thumbnail?.fileName,
-            });
-            formdata.append('backgroundMap', {
-                uri: writePostData.backgroundMap,
-                type: 'image/jpeg',
-                name: `Map-Snapshot-${writePostData.dto.placeName}.jpg`,
-            });
-            postFileMutate({
-                accessToken,
-                data: formdata,
-                postId,
+                uri: writePostData.files[0].uri,
+                type: writePostData.files[0].type,
+                name: writePostData.files[0].fileName,
             });
         } else {
-            moveToScreen('GO', postId);
+            formdata.append('thumbnail', {
+                uri: writePostData.backgroundMap,
+                type: 'image/jpeg',
+                name: `Thumbnail-${writePostData.dto.placeName}.jpg`,
+            });
         }
+
+        formdata.append('backgroundMap', {
+            uri: writePostData.backgroundMap,
+            type: 'image/jpeg',
+            name: `Map-Snapshot-${writePostData.dto.placeName}.jpg`,
+        });
+        postFileMutate({
+            accessToken,
+            data: formdata,
+            postId: id,
+        });
     };
 
     // Write comment API
@@ -363,7 +367,7 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
         <>
             <MapView
                 ref={mapRef}
-                style={{ width: '100%', height: '50%' }}
+                style={writePostOrCommentTemplateStyles.mapSize}
                 customMapStyle={mapStyle}
                 showsBuildings={false}>
                 {writePostData.dto.latitude && writePostData.dto.longitude && (
@@ -373,7 +377,7 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
                             longitude: writePostData.dto.longitude,
                         }}
                         anchor={{ x: 0.5, y: 0.5 }}
-                        style={{ justifyContent: 'center', alignItems: 'center' }}>
+                        style={writePostOrCommentTemplateStyles.mapMarkerPosition}>
                         <Image
                             source={markerType ? markerType : require('../../../assets/icons/protest-marker.png')}
                             style={{ width: 25 * screenWidth, height: 25 * screenWidth }}

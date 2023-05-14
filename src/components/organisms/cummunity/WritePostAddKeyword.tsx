@@ -99,7 +99,7 @@ const WritePostAddKeyword = ({ keywordModalHandler, getKeywordHandler }: WritePo
                 break;
             case 'HEAD':
                 const copyHead = [...checkHead];
-                const freshHead = copyHead.map(item => false);
+                const freshHead = copyHead.map(() => false);
                 freshHead.splice(index, 1, true);
                 setCheckHead(freshHead);
                 break;

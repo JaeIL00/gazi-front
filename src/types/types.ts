@@ -1,8 +1,10 @@
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
+import { AxiosResponse } from 'axios';
 import { ReactElement, RefObject } from 'react';
 import { Asset } from 'react-native-image-picker';
 import MapView, { Details, Region } from 'react-native-maps';
 import { FlexAlignType, KeyboardType, TextStyle } from 'react-native/types';
+import { QueryObserverResult, RefetchOptions, RefetchQueryFilters } from 'react-query';
 
 //COMMON
 export type KeywordListTypes = {
@@ -38,7 +40,7 @@ export type CommentTopicTypes = {
     placeName: string;
     time: string;
     distance: string;
-    backgroundMapUri: string;
+    backgroundMapUrl: string;
 };
 export type CommentTypes = {
     backgroundMapUrl: string;
@@ -54,6 +56,7 @@ export type CommentTypes = {
     nickName: string;
     report: boolean;
     time: string;
+    id: number;
 };
 export type LocationResultTypes = {
     business_status: string;
@@ -126,6 +129,12 @@ export type MyProfileTabTypes = {
     tab: boolean;
     borderLine: boolean;
 };
+export type MyLikeKeywordTypes = {
+    id: number;
+    keywordEnum: string;
+    vehicle: string | null;
+    keywordName: string;
+};
 
 // ATOM
 export type userTokenAtomTypes = {
@@ -173,6 +182,8 @@ export type RootStackParamList = {
         postId: number;
     };
     MyPostComment: undefined;
+    ChangePassword: undefined;
+    DeleteMember: undefined;
     None: undefined;
 };
 export type BottomTabParamList = {
@@ -278,6 +289,7 @@ export type AgreementCheckListItemProps = {
     check: boolean;
     index: number;
     onPressCheckList: (index: number) => void;
+    webViewHandler: (index: number) => void;
 };
 export type IconWithMediumTextProps = {
     iconColor: string;
@@ -311,6 +323,10 @@ export interface MoveBackWithPageTitleProps extends PageTitleWithExplainProps {
 }
 export type ServiceAgreementProps = {
     finishSlideComponentHandler: (state: string) => void;
+};
+export type WebViewComponentProps = {
+    uri: string;
+    closeHandler: React.Dispatch<React.SetStateAction<string>>;
 };
 export interface AuthEmailProps extends ServiceAgreementProps {
     min: number;
@@ -371,6 +387,16 @@ export type WritePhotoProps = {
     getImageHandler: (files: Asset[]) => void;
     notAllowPermission: () => void;
 };
+export type EditMyKeywordProps = {
+    myKeywordList: MyLikeKeywordTypes[];
+    checkInitTraffic: boolean[];
+    checkInitSubway: boolean[];
+    checkInitIssue: boolean[];
+    controlEditWindowHandler: (state: string) => void;
+    getMyKeywordRefetch: <TPageData>(
+        options?: (RefetchOptions & RefetchQueryFilters<TPageData>) | undefined,
+    ) => Promise<QueryObserverResult<AxiosResponse<any, any>, unknown>>;
+};
 
 // TEMPLATES
 export type InputEmailTemplateProps = {
@@ -422,4 +448,16 @@ export type MyPostCommentTemplateProps = {
 };
 export type AccountManagementTemplateProps = {
     moveToScreenHandler: (state: string) => void;
+};
+export type DeleteMemberTemplateProps = {
+    moveToScreenHandler: (state: string) => void;
+};
+export type ChangePasswordTemplateProps = {
+    moveToBackScreenHandler: () => void;
+};
+export type LikeKeywordSettingTemplateProps = {
+    moveToBackScreenHandler: () => void;
+};
+export type PoliciesTemplateProps = {
+    moveToBackScreenHandler: () => void;
 };

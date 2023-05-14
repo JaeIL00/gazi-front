@@ -3,8 +3,8 @@ import { useState } from 'react';
 const useTextInputValidation = () => {
     // Input text
     const [text, setText] = useState<string>('');
-    const onChangeText = (text: string) => {
-        setText(text);
+    const onChangeText = (value: string) => {
+        setText(value);
     };
 
     // Text validator

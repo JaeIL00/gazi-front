@@ -10,6 +10,7 @@ import SemiBoldText from '../smallest/SemiBoldText';
 import AgreementCheckListItem from '../molecules/AgreementCheckListItem';
 import { ServiceAgreementProps } from '../../types/types';
 import { checkBoxBackground, serviceAgreementStyles } from '../../styles/styles';
+import WebViewComponent from './WebViewComponent';
 
 const ServiceAgreement = ({ finishSlideComponentHandler }: ServiceAgreementProps) => {
     // Render list data
@@ -81,42 +82,71 @@ const ServiceAgreement = ({ finishSlideComponentHandler }: ServiceAgreementProps
         startAnimationHandler();
     }, []);
 
+    // WebView component handling
+    const [uri, seturi] = useState<string>('');
+    const webViewHandler = (index: number) => {
+        switch (index) {
+            case 0:
+                seturi('https://gilded-turn-6c9.notion.site/ver-1-10f4eab4c1c842cab3539cdd013dc0c7');
+                break;
+            case 1:
+                seturi('https://gilded-turn-6c9.notion.site/ver-1-6992d062c19a466aaf4e37db4df2498b');
+                break;
+            case 2:
+                seturi('https://gilded-turn-6c9.notion.site/ver-1-9eabbc4300464d07adc940a1c7c33840');
+                break;
+            default:
+                // For Debug
+                console.log('(ERROR) WebView Handler.', index);
+        }
+    };
+
     return (
-        <ModalBackground>
-            <Animated.View style={[serviceAgreementStyles.animateInner, { transform: [{ translateY: topValue }] }]}>
-                <View>
-                    <TouchButton backgroundColor="#f9f9f9" onPress={onPressAllCheck}>
-                        <View style={serviceAgreementStyles.allAgreeBox}>
-                            <View style={[serviceAgreementStyles.checkBox, checkBoxBackground(isAllCheck).color]}>
-                                {isAllCheck && <Icons type="feather" name="check" size={20} color={Colors.WHITE} />}
+        <>
+            <ModalBackground>
+                <Animated.View style={[serviceAgreementStyles.animateInner, { transform: [{ translateY: topValue }] }]}>
+                    <View>
+                        <TouchButton backgroundColor="#f9f9f9" onPress={onPressAllCheck}>
+                            <View style={serviceAgreementStyles.allAgreeBox}>
+                                <View style={[serviceAgreementStyles.checkBox, checkBoxBackground(isAllCheck).color]}>
+                                    {isAllCheck && <Icons type="feather" name="check" size={20} color={Colors.WHITE} />}
+                                </View>
+                                <SemiBoldText size={14} color={Colors.BLACK} text="약관 전체 동의" />
                             </View>
-                            <SemiBoldText size={14} color={Colors.BLACK} text="약관 전체 동의" />
-                        </View>
-                    </TouchButton>
+                        </TouchButton>
 
-                    <ScrollView contentContainerStyle={serviceAgreementStyles.listBox}>
-                        {listData.map((text, index) => (
-                            <AgreementCheckListItem
-                                text={text}
-                                key={index}
-                                check={index === 0 ? isServiceCheck : index === 1 ? isPersonalCheck : isLocationCheck}
-                                onPressCheckList={onPressCheckList}
-                                index={index}
-                            />
-                        ))}
-                    </ScrollView>
+                        <ScrollView contentContainerStyle={serviceAgreementStyles.listBox}>
+                            {listData.map((text, index) => (
+                                <AgreementCheckListItem
+                                    text={text}
+                                    key={index}
+                                    check={
+                                        index === 0 ? isServiceCheck : index === 1 ? isPersonalCheck : isLocationCheck
+                                    }
+                                    onPressCheckList={onPressCheckList}
+                                    index={index}
+                                    webViewHandler={webViewHandler}
+                                />
+                            ))}
+                        </ScrollView>
 
-                    <TextButton
-                        height={48}
-                        backgroundColor={isAllCheck ? Colors.BLACK : Colors.BTN_GRAY}
-                        onPress={onPressFinishAnimation}
-                        fontSize={17}
-                        textColor={Colors.WHITE}
-                        text="완료"
-                    />
+                        <TextButton
+                            height={48}
+                            backgroundColor={isAllCheck ? Colors.BLACK : Colors.BTN_GRAY}
+                            onPress={onPressFinishAnimation}
+                            fontSize={17}
+                            textColor={Colors.WHITE}
+                            text="완료"
+                        />
+                    </View>
+                </Animated.View>
+            </ModalBackground>
+            {uri && (
+                <View style={serviceAgreementStyles.webviewBox}>
+                    <WebViewComponent uri={uri} closeHandler={seturi} />
                 </View>
-            </Animated.View>
-        </ModalBackground>
+            )}
+        </>
     );
 };
 export default ServiceAgreement;
