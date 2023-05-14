@@ -42,13 +42,13 @@ const EditMyKeyword = ({
         const freshIssue = [...checkIssue];
         const freshSubway = [...checkSubway];
         for (const index in myKeywordList) {
-            if (10 === myKeywordList[index].id || myKeywordList[index].id === 11) {
+            if (myKeywordList[index].id === 10 || myKeywordList[index].id === 11) {
                 const checkIndex = trafficKeywords.findIndex(item => item.id === myKeywordList[index].id);
                 checkedIndexTraffic = [...checkedIndexTraffic, checkIndex];
-            } else if (1 <= myKeywordList[index].id && myKeywordList[index].id <= 8) {
+            } else if (myKeywordList[index].id >= 1 && myKeywordList[index].id <= 8) {
                 const checkIndex = issueKeywordsNotEtc.findIndex(item => item.id === myKeywordList[index].id);
                 checkedIndexIssue = [...checkedIndexIssue, checkIndex];
-            } else if (13 <= myKeywordList[index].id && myKeywordList[index].id <= 35) {
+            } else if (myKeywordList[index].id >= 13 && myKeywordList[index].id <= 35) {
                 const checkIndex = subwayKeywords.findIndex(item => item.id === myKeywordList[index].id);
                 checkedIndexSubway = [...checkedIndexSubway, checkIndex];
             }
@@ -139,7 +139,7 @@ const EditMyKeyword = ({
     const { accessToken } = useRecoilValue(userTokenAtom);
 
     const { mutate, isLoading } = useMutation(editMyLikeKeywordsAPI, {
-        onSuccess: data => {
+        onSuccess: () => {
             successEdit();
         },
         onError: ({ response }) => {

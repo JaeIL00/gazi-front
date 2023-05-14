@@ -29,7 +29,7 @@ const PoliciesTemplate = ({ moveToBackScreenHandler }: PoliciesTemplateProps) =>
         }
     };
     return (
-        <View style={{ flex: 1 }}>
+        <View style={PoliciesTemplateStyles.container}>
             <View style={PoliciesTemplateStyles.headerBox}>
                 <TouchButton onPress={moveToBackScreenHandler} hitSlop={20}>
                     <Image

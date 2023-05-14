@@ -16,7 +16,6 @@ import { EditNicknameTemplateProps } from '../../../types/types';
 import { userInfoAtom, userTokenAtom } from '../../../store/atoms';
 import { editNicknameTemplateStyles } from '../../../styles/styles';
 import { checkNicknameAPI, editNicknameAPI } from '../../../queries/api';
-import { screenHeight, screenWidth } from '../../../utils/changeStyleSize';
 
 const EditNicknameTemplate = ({ moveToMyProfileScreen }: EditNicknameTemplateProps) => {
     // Validator custom hook input text
@@ -44,7 +43,6 @@ const EditNicknameTemplate = ({ moveToMyProfileScreen }: EditNicknameTemplatePro
     );
 
     // Input focus
-    const [isFocusText, setIsFocusText] = useState(true);
     const resetText = () => {
         onChangeText('');
         changeValidationResult('2글자 이상 입력해주세요');
@@ -53,7 +51,7 @@ const EditNicknameTemplate = ({ moveToMyProfileScreen }: EditNicknameTemplatePro
 
     // Check nickname API
     const { mutate: checkMutatie, isLoading: isCheckLoading } = useMutation(checkNicknameAPI, {
-        onSuccess: ({ data }) => {
+        onSuccess: () => {
             setIsGoodResponse(true);
             changeValidationResult('사용 가능한 닉네임입니다');
         },
@@ -72,7 +70,7 @@ const EditNicknameTemplate = ({ moveToMyProfileScreen }: EditNicknameTemplatePro
     const [userInfo, setUserInfo] = useRecoilState(userInfoAtom);
     const [isGoodResponse, setIsGoodResponse] = useState(false);
     const { mutate: editMutate, isLoading: isEditLoading } = useMutation(editNicknameAPI, {
-        onSuccess: ({ data }) => {
+        onSuccess: () => {
             moveToMyProfileScreen('CLOSE');
             setUserInfo({
                 ...userInfo,
@@ -119,13 +117,7 @@ const EditNicknameTemplate = ({ moveToMyProfileScreen }: EditNicknameTemplatePro
                     </TouchButton>
                 </View>
                 {validationResult && (
-                    <View
-                        style={{
-                            flexDirection: 'row',
-                            alignItems: 'center',
-                            paddingLeft: 9 * screenWidth,
-                            paddingTop: 8 * screenHeight,
-                        }}>
+                    <View style={editNicknameTemplateStyles.validationText}>
                         <Icons
                             type={isGoodResponse ? 'octicons' : 'fontisto'}
                             name={isGoodResponse ? 'check' : 'close'}

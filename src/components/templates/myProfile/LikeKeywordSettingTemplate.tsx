@@ -13,7 +13,6 @@ import EditMyKeyword from '../../organisms/myProfile/EditMyKeyword';
 import { userTokenAtom } from '../../../store/atoms';
 import { geyMyLikeKeywordsAPI } from '../../../queries/api';
 import { likeKeywordSettingTemplateStyles } from '../../../styles/styles';
-import { screenFont, screenHeight, screenWidth } from '../../../utils/changeStyleSize';
 import { LikeKeywordSettingTemplateProps, MyLikeKeywordTypes } from '../../../types/types';
 import { issueKeywordsNotEtc, subwayKeywords, trafficKeywords } from '../../../utils/allKeywords';
 
@@ -111,20 +110,9 @@ const LikeKeywordSettingTemplate = ({ moveToBackScreenHandler }: LikeKeywordSett
                             <SemiBoldText text="내가 고른 키워드" size={16} color={Colors.BLACK} />
                         </View>
                         {myKeywordList ? (
-                            <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
+                            <View style={likeKeywordSettingTemplateStyles.myKeywordBox}>
                                 {myKeywordList.map(item => (
-                                    <View
-                                        key={item.id}
-                                        style={{
-                                            paddingHorizontal: 14 * screenWidth,
-                                            paddingVertical: 8 * screenHeight,
-                                            backgroundColor: '#F1E9FF',
-                                            borderColor: '#6826F5',
-                                            borderRadius: 30 * screenFont,
-                                            borderWidth: 1 * screenFont,
-                                            marginRight: 5 * screenWidth,
-                                            marginBottom: 10 * screenHeight,
-                                        }}>
+                                    <View key={item.id} style={likeKeywordSettingTemplateStyles.myKeywordList}>
                                         <NormalText text={item.keywordName} size={16} color="#7949C6" />
                                     </View>
                                 ))}

@@ -893,6 +893,27 @@ export const seviceHomeTemplateStyles = StyleSheet.create({
         height: 30 * screenWidth,
         marginLeft: 8 * screenWidth,
     },
+    zoomWarning: {
+        paddingHorizontal: 38 * screenWidth,
+        paddingVertical: 9 * screenHeight,
+        backgroundColor: '#00000099',
+        borderRadius: 25 * screenFont,
+        position: 'absolute',
+        top: 300 * screenHeight,
+        alignSelf: 'center',
+    },
+    mapMoveSearch: {
+        position: 'absolute',
+        top: 86 * screenHeight,
+        alignSelf: 'center',
+        shadowColor: '#000000',
+        shadowOffset: {
+            width: 0,
+            height: -4 * screenHeight,
+        },
+        shadowOpacity: 0.05,
+        shadowRadius: 34 * screenFont,
+    },
 });
 export const writePostOrCommentTemplateStyles = StyleSheet.create({
     container: {
@@ -958,6 +979,14 @@ export const writePostOrCommentTemplateStyles = StyleSheet.create({
     conditionSettingBox: {
         paddingLeft: 16 * screenWidth,
         paddingTop: 14 * screenHeight,
+    },
+    mapSize: {
+        width: '100%',
+        height: '50%',
+    },
+    mapMarkerPosition: {
+        justifyContent: 'center',
+        alignItems: 'center',
     },
 });
 export const myProfileTemplateStyles = StyleSheet.create({
@@ -1037,6 +1066,12 @@ export const editNicknameTemplateStyles = StyleSheet.create({
         paddingHorizontal: 16 * screenWidth,
         paddingVertical: 15 * screenHeight,
         flexDirection: 'row',
+    },
+    validationText: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingLeft: 9 * screenWidth,
+        paddingTop: 8 * screenHeight,
     },
 });
 export const threadItemTemplateStyles = StyleSheet.create({
@@ -1154,6 +1189,9 @@ export const AccountManagementTemplateStyles = StyleSheet.create({
     },
 });
 export const PoliciesTemplateStyles = StyleSheet.create({
+    container: {
+        flex: 1,
+    },
     headerBox: {
         flexDirection: 'row',
         alignItems: 'center',
@@ -1263,6 +1301,11 @@ export const changePasswordTemplateStyles = StyleSheet.create({
         paddingHorizontal: 16 * screenWidth,
         marginTop: 8 * screenHeight,
     },
+    twoPasswordError: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingTop: 8 * screenHeight,
+    },
 });
 export const likeKeywordSettingTemplateStyles = StyleSheet.create({
     container: {
@@ -1304,6 +1347,20 @@ export const likeKeywordSettingTemplateStyles = StyleSheet.create({
     nothingIcon: {
         width: 88 * screenWidth,
         height: 88 * screenWidth,
+    },
+    myKeywordBox: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+    },
+    myKeywordList: {
+        paddingHorizontal: 14 * screenWidth,
+        paddingVertical: 8 * screenHeight,
+        backgroundColor: '#F1E9FF',
+        borderColor: '#6826F5',
+        borderRadius: 30 * screenFont,
+        borderWidth: 1 * screenFont,
+        marginRight: 5 * screenWidth,
+        marginBottom: 10 * screenHeight,
     },
 });
 

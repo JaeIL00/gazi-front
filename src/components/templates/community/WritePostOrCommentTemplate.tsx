@@ -133,7 +133,7 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
 
     // Post upload files
     const { mutate: postFileMutate, isLoading: isPostFileLoading } = useMutation(writePostFilesAPI, {
-        onSuccess: ({ data }) => {
+        onSuccess: () => {
             moveToScreen('GO', postId);
         },
         onError: error => {
@@ -141,8 +141,8 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
             console.log('(ERROR) Upload files API.', error);
         },
     });
-    const postUploadFilesHandler = (postId: number) => {
-        setPostId(postId);
+    const postUploadFilesHandler = (id: number) => {
+        setPostId(id);
         const formdata = new FormData();
 
         if (writePostData.files[0]) {
@@ -174,7 +174,7 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
         postFileMutate({
             accessToken,
             data: formdata,
-            postId,
+            postId: id,
         });
     };
 
@@ -367,7 +367,7 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
         <>
             <MapView
                 ref={mapRef}
-                style={{ width: '100%', height: '50%' }}
+                style={writePostOrCommentTemplateStyles.mapSize}
                 customMapStyle={mapStyle}
                 showsBuildings={false}>
                 {writePostData.dto.latitude && writePostData.dto.longitude && (
@@ -377,7 +377,7 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
                             longitude: writePostData.dto.longitude,
                         }}
                         anchor={{ x: 0.5, y: 0.5 }}
-                        style={{ justifyContent: 'center', alignItems: 'center' }}>
+                        style={writePostOrCommentTemplateStyles.mapMarkerPosition}>
                         <Image
                             source={markerType ? markerType : require('../../../assets/icons/protest-marker.png')}
                             style={{ width: 25 * screenWidth, height: 25 * screenWidth }}

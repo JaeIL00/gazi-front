@@ -112,7 +112,7 @@ const ChangePasswordTemplate = ({ moveToBackScreenHandler }: ChangePasswordTempl
                     />
                 </View>
                 {twoNewPassword && (
-                    <View style={{ flexDirection: 'row', alignItems: 'center', paddingTop: 8 * screenHeight }}>
+                    <View style={changePasswordTemplateStyles.twoPasswordError}>
                         <IconWithMediumText
                             iconColor={isSamePassword ? Colors.STATUS_GREEN : Colors.STATUS_RED}
                             text={validationResult}

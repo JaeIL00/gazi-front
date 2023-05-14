@@ -49,15 +49,15 @@ const ThreadItemTemplate = ({ postId, movetoCommunityScreen, moveToWriteScreen }
             },
             onSuccess: data => {
                 const pageNumber = data.pages[0].data.data.postList.pageable.pageNumber;
-                const commentList: CommentTypes[] = data.pages[0].data.data.postList.content;
+                const responseCommentList: CommentTypes[] = data.pages[0].data.data.postList.content;
                 if (pageNumber === 0) {
-                    getCommentTopic(data.pages[0].data.data, commentList);
+                    getCommentTopic(data.pages[0].data.data, responseCommentList);
                 } else {
-                    const getNotReport = commentList.filter((item: CommentTypes) => !item.report);
-                    setCommentList([...commentList, ...getNotReport]);
+                    const getNotReport = responseCommentList.filter((item: CommentTypes) => !item.report);
+                    setCommentList([...responseCommentList, ...getNotReport]);
                 }
                 if (data.pages[0].data.data.postList.last) {
-                    firstCommentId.current = commentList.pop()?.id;
+                    firstCommentId.current = responseCommentList.pop()?.id;
                 }
             },
             onError: ({ response }) => {
@@ -88,7 +88,7 @@ const ThreadItemTemplate = ({ postId, movetoCommunityScreen, moveToWriteScreen }
 
     // report API
     const { mutate, isLoading } = useMutation(reportAPI, {
-        onSuccess: data => {
+        onSuccess: () => {
             commentRemove();
             commentRefetch();
         },

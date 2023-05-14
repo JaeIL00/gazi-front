@@ -8,7 +8,7 @@ import { useRootNavigation } from '../../navigations/RootStackNavigation';
 const EditNicknameScreen = () => {
     const rootNavigation = useRootNavigation();
     const moveToMyProfileScreen = (state: string) => {
-        if (state == 'CLOSE') {
+        if (state === 'CLOSE') {
             rootNavigation.navigate('BottomTab', { screen: 'MyProfile' });
         }
     };
