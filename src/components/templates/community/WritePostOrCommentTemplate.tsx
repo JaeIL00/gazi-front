@@ -65,7 +65,7 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
         }
     };
     const getImageHandler = (files: Asset[]) => {
-        setWritePostData({ ...writePostData, files, thumbnail: files[0] });
+        setWritePostData({ ...writePostData, files });
     };
 
     // Write post API and check essential value
@@ -143,9 +143,9 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
     });
     const postUploadFilesHandler = (postId: number) => {
         setPostId(postId);
+        const formdata = new FormData();
 
         if (writePostData.files[0]) {
-            const formdata = new FormData();
             for (const index in writePostData.files) {
                 formdata.append('files', {
                     uri: writePostData.files[index].uri,
@@ -154,23 +154,28 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
                 });
             }
             formdata.append('thumbnail', {
-                uri: writePostData.thumbnail?.uri,
-                type: writePostData.thumbnail?.type,
-                name: writePostData.thumbnail?.fileName,
-            });
-            formdata.append('backgroundMap', {
-                uri: writePostData.backgroundMap,
-                type: 'image/jpeg',
-                name: `Map-Snapshot-${writePostData.dto.placeName}.jpg`,
-            });
-            postFileMutate({
-                accessToken,
-                data: formdata,
-                postId,
+                uri: writePostData.files[0].uri,
+                type: writePostData.files[0].type,
+                name: writePostData.files[0].fileName,
             });
         } else {
-            moveToScreen('GO', postId);
+            formdata.append('thumbnail', {
+                uri: writePostData.backgroundMap,
+                type: 'image/jpeg',
+                name: `Thumbnail-${writePostData.dto.placeName}.jpg`,
+            });
         }
+
+        formdata.append('backgroundMap', {
+            uri: writePostData.backgroundMap,
+            type: 'image/jpeg',
+            name: `Map-Snapshot-${writePostData.dto.placeName}.jpg`,
+        });
+        postFileMutate({
+            accessToken,
+            data: formdata,
+            postId,
+        });
     };
 
     // Write comment API
