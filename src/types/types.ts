@@ -461,3 +461,6 @@ export type LikeKeywordSettingTemplateProps = {
 export type PoliciesTemplateProps = {
     moveToBackScreenHandler: () => void;
 };
+export type CommunityTemplateProps = {
+    moveToKeywordSettingScreen: () => void;
+};

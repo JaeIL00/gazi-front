@@ -1225,6 +1225,9 @@ export const PoliciesTemplateStyles = StyleSheet.create({
     },
 });
 export const communityTemplateStyles = StyleSheet.create({
+    container: {
+        flex: 1,
+    },
     headerBox: {
         flexDirection: 'row',
         alignItems: 'center',
@@ -1240,6 +1243,50 @@ export const communityTemplateStyles = StyleSheet.create({
         paddingBottom: 7 * screenHeight,
         paddingTop: 13 * screenHeight,
         borderColor: Colors.BLACK,
+    },
+    contentBox: {
+        flex: 1,
+        paddingHorizontal: 16 * screenWidth,
+        paddingTop: 17 * screenHeight,
+    },
+    nothingBox: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        flex: 0.8,
+    },
+    nothingIcon: {
+        width: 88 * screenWidth,
+        height: 88 * screenWidth,
+    },
+    emptyKeywordBox: {
+        flex: 1,
+        position: 'relative',
+    },
+    addKeywordButton: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingHorizontal: 16 * screenWidth,
+        paddingVertical: 4 * screenHeight,
+        borderColor: Colors.VIOLET,
+        borderRadius: 16 * screenFont,
+        borderWidth: 1 * screenFont,
+        alignSelf: 'flex-start',
+    },
+    tooltipBox: {
+        position: 'absolute',
+        top: 35 * screenHeight,
+    },
+    tooltipImg: {
+        width: 246 * screenWidth,
+        height: 42 * screenHeight,
+    },
+    tooltipTextBox: {
+        position: 'absolute',
+        width: 246 * screenWidth,
+        height: 34 * screenHeight,
+        bottom: 0,
+        alignItems: 'center',
+        justifyContent: 'center',
     },
 });
 export const DeleteMemberTemplateStyles = StyleSheet.create({
