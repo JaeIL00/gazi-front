@@ -7,6 +7,7 @@ import MapView, { BoundingBox, Details, Region } from 'react-native-maps';
 import { useInfiniteQuery } from 'react-query';
 import { PERMISSIONS, RESULTS, check } from 'react-native-permissions';
 import { debounce } from 'lodash';
+import SplashScreen from 'react-native-splash-screen';
 
 import Colors from '../../../styles/Colors';
 import MediumText from '../../smallest/MediumText';
@@ -20,9 +21,78 @@ import { SingleLineInput } from '../../smallest/SingleLineInput';
 import { seviceHomeTemplateStyles } from '../../../styles/styles';
 import { screenFont, screenHeight, screenWidth } from '../../../utils/changeStyleSize';
 import { SeviceHomeTemplateProps, MapLocationTypes, PostTypes, MapBoundaryTypes } from '../../../types/types';
-import SplashScreen from 'react-native-splash-screen';
 
 const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritePost }: SeviceHomeTemplateProps) => {
+    const { accessToken } = useRecoilValue(userTokenAtom);
+
+    const [onModal, setOnModal] = useState<boolean>(false);
+    const [searchText, setSearchText] = useState<string>('');
+    const [nearPostList, setNearPostList] = useState<PostTypes[]>([]);
+    const [isFarMapLevel, setIsFarMapLevel] = useState<boolean>(false);
+    const [isAllowLocation, setIsAllowLocation] = useState<boolean>(false);
+    const [isNearPostSearch, setIsNearPostSearch] = useState<boolean>(false);
+    const [isBottomSheetMini, setIsBottomSheetMini] = useState<boolean>(false);
+    const [isBottomSheetFull, setIsBottomSheetFull] = useState<boolean>(false);
+    const [currentPosition, setCurrentPosition] = useState<MapLocationTypes>({
+        latitude: 37.49795103144074,
+        longitude: 127.02760985223079,
+    });
+    const [mapBoundaryState, setMapBoundaryState] = useState<MapBoundaryTypes>({
+        northEast: {
+            latitude: 37.45878314300355,
+            longitude: 126.8773839622736,
+        },
+        southWest: {
+            latitude: 37.45878314300355,
+            longitude: 126.8773839622736,
+        },
+        isNearSearch: false,
+    });
+
+    const indexNumber = useRef<number>(0);
+    const mapRef = useRef() as RefObject<MapView>;
+
+    // Get post of near by user API
+    const { hasNextPage, isFetching, isFetchingNextPage, fetchNextPage, refetch, remove } = useInfiniteQuery(
+        ['getNearPosts'],
+        ({ pageParam = 0 }) =>
+            nearByUserPostsAPI({
+                minLat: mapBoundaryState.southWest.latitude,
+                minLon: mapBoundaryState.southWest.longitude,
+                maxLat: mapBoundaryState.northEast.latitude,
+                maxLon: mapBoundaryState.northEast.longitude,
+                curLat: currentPosition.latitude,
+                curLon: currentPosition.longitude,
+                accessToken,
+                page: pageParam,
+                isNearSearch: mapBoundaryState.isNearSearch,
+            }),
+        {
+            enabled: false,
+            getNextPageParam: (lastPage, allPages) => {
+                const total = lastPage.data.data.totalPages;
+                const nextPage = lastPage.data.data.pageable.pageNumber + 1;
+                return nextPage === total ? undefined : nextPage;
+            },
+            onSuccess: data => {
+                const pageNumber = data.pages[indexNumber.current].data.data.pageable.pageNumber;
+                if (pageNumber === 0) {
+                    setNearPostList(data.pages[indexNumber.current].data.data.content);
+                    SplashScreen.hide();
+                } else {
+                    setNearPostList([...nearPostList, ...data.pages[indexNumber.current].data.data.content]);
+                }
+                if (!data.pages[indexNumber.current].data.data.last) {
+                    indexNumber.current = indexNumber.current + 1;
+                }
+            },
+            onError: ({ response }) => {
+                // For Debug
+                console.log('(ERROR) Get post of near by user API. respense: ', response);
+            },
+        },
+    );
+
     // Check Location Permission
     const checkLocationPermission = async (): Promise<boolean> => {
         try {
@@ -37,10 +107,6 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritePost }:
     };
 
     // Init first map rendering
-    const [currentPosition, setCurrentPosition] = useState<MapLocationTypes>({
-        latitude: 37.49795103144074,
-        longitude: 127.02760985223079,
-    });
     const isAllowPermissionInit = async () => {
         const isOkPermission = await checkLocationPermission();
         if (isOkPermission) {
@@ -53,29 +119,13 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritePost }:
             });
         }
     };
-    useLayoutEffect(() => {
-        isAllowPermissionInit();
-    }, []);
 
     // Fisrt render of map
-    const mapRef = useRef() as RefObject<MapView>;
     const mapRenderCompleteHandler = async () => {
         getBoundaryMap();
     };
 
     // Get current user position
-    const [isAllowLocation, setIsAllowLocation] = useState<boolean>(false);
-    const [mapBoundaryState, setMapBoundaryState] = useState<MapBoundaryTypes>({
-        northEast: {
-            latitude: 37.45878314300355,
-            longitude: 126.8773839622736,
-        },
-        southWest: {
-            latitude: 37.45878314300355,
-            longitude: 126.8773839622736,
-        },
-        isNearSearch: false,
-    });
     const onPressGetUserPosition = debounce(async () => {
         const isOkPermission = await checkLocationPermission();
         if (isOkPermission) {
@@ -109,7 +159,6 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritePost }:
     }, 300);
 
     // Get boundary of map
-    const [isNearPostSearch, setIsNearPostSearch] = useState<boolean>(false);
     const getBoundaryMap = useCallback(async () => {
         let boundaryValue;
         try {
@@ -136,7 +185,6 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritePost }:
     };
 
     // Again request modal button Handling
-    const [onModal, setOnModal] = useState<boolean>(false);
     const onPressModalButton = async (state: string) => {
         switch (state) {
             case 'CLOSE':
@@ -153,54 +201,9 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritePost }:
     };
 
     // Search text handling
-    const [searchText, setSearchText] = useState<string>('');
     const onChangeSearchText = (text: string) => {
         setSearchText(text);
     };
-
-    // Get post of near by user API
-    const userTk = useRecoilValue(userTokenAtom);
-    const indexNumber = useRef<number>(0);
-    const [nearPostList, setNearPostList] = useState<PostTypes[]>([]);
-    const { hasNextPage, isFetching, isFetchingNextPage, fetchNextPage, refetch, remove } = useInfiniteQuery(
-        ['getNearPosts'],
-        ({ pageParam = 0 }) =>
-            nearByUserPostsAPI({
-                minLat: mapBoundaryState.southWest.latitude,
-                minLon: mapBoundaryState.southWest.longitude,
-                maxLat: mapBoundaryState.northEast.latitude,
-                maxLon: mapBoundaryState.northEast.longitude,
-                curLat: currentPosition.latitude,
-                curLon: currentPosition.longitude,
-                accessToken: userTk.accessToken,
-                page: pageParam,
-                isNearSearch: mapBoundaryState.isNearSearch,
-            }),
-        {
-            enabled: false,
-            getNextPageParam: (lastPage, allPages) => {
-                const total = lastPage.data.data.totalPages;
-                const nextPage = lastPage.data.data.pageable.pageNumber + 1;
-                return nextPage === total ? undefined : nextPage;
-            },
-            onSuccess: data => {
-                const pageNumber = data.pages[indexNumber.current].data.data.pageable.pageNumber;
-                if (pageNumber === 0) {
-                    setNearPostList(data.pages[indexNumber.current].data.data.content);
-                    SplashScreen.hide();
-                } else {
-                    setNearPostList([...nearPostList, ...data.pages[indexNumber.current].data.data.content]);
-                }
-                if (!data.pages[indexNumber.current].data.data.last) {
-                    indexNumber.current = indexNumber.current + 1;
-                }
-            },
-            onError: ({ response }) => {
-                // For Debug
-                console.log('(ERROR) Get post of near by user API. respense: ', response);
-            },
-        },
-    );
 
     // Call next page API
     const callNextPageHandler = () => {
@@ -210,7 +213,6 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritePost }:
     };
 
     // Move to mini bottom sheet by move map
-    const [isBottomSheetMini, setIsBottomSheetMini] = useState<boolean>(false);
     const moveToBottomSheetMini = () => {
         if (!isBottomSheetMini) {
             setIsBottomSheetMini(true);
@@ -232,7 +234,6 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritePost }:
     );
 
     // Move to full bottom sheet by move map
-    const [isBottomSheetFull, setIsBottomSheetFull] = useState<boolean>(false);
     const moveToBottomSheetFull = (state: string) => {
         switch (state) {
             case 'FULL':
@@ -248,7 +249,6 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritePost }:
     };
 
     // Check map zoom level for warning
-    const [isFarMapLevel, setIsFarMapLevel] = useState<boolean>(false);
     const checkZoomLevelWarning = useCallback(
         (region: Region) => {
             if (region.latitudeDelta > 0.15) {
@@ -269,6 +269,10 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritePost }:
         },
         [isFarMapLevel],
     );
+
+    useLayoutEffect(() => {
+        isAllowPermissionInit();
+    }, []);
 
     return (
         <>
