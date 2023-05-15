@@ -370,7 +370,6 @@ export type NearbyPostListModalProps = {
     isBottomSheetFull: boolean;
     currentPosition: MapLocationTypes;
     mapBoundaryState: MapBoundaryTypes;
-    moveToBottomSheetMini: () => void;
     moveToBottomSheetFull: (state: string) => void;
     notBottomSheetMini: () => void;
     onPressGetUserPosition: () => void;
