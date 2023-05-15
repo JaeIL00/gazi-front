@@ -16,7 +16,7 @@ const WritePostAddKeyword = ({ keywordModalHandler, getKeywordHandler }: WritePo
     // Choose keyword step. all keyword and head keyword
     const [step, setStep] = useState(1);
     const stepHandler = () => {
-        if (step === 1) {
+        if (step === 1 && checkedKeywords.length > 0) {
             let newCheckHead: boolean[] = [];
             for (const index in chooseIssueList) {
                 newCheckHead = [...newCheckHead, false];
