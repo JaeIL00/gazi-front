@@ -216,6 +216,7 @@ export type TouchButtonProps = {
               right?: number;
           }
         | number;
+    marginLeft?: number;
 };
 export type SingleLineInputProps = {
     value: string;

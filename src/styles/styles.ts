@@ -42,6 +42,7 @@ export const touchButtonStyles = (
     borderRadius: number | undefined,
     borderBottomWidth: number | undefined,
     flex: number | undefined,
+    marginLeft: number | undefined,
 ) =>
     StyleSheet.create({
         container: {
@@ -58,6 +59,7 @@ export const touchButtonStyles = (
             borderWidth: borderWidth && borderWidth * screenFont,
             borderBottomWidth: borderBottomWidth && borderBottomWidth * screenFont,
             flex: flex && flex,
+            marginLeft: marginLeft && marginLeft * screenWidth,
         },
     });
 export const singleLineInputStyles = (
