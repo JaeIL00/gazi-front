@@ -23,6 +23,7 @@ import LikeKeywordSettingScreen from '../screens/myProfile/LikeKeywordSettingScr
 import { autoLoginAPI } from '../queries/api';
 import { RootStackParamList } from '../types/types';
 import { userInfoAtom, userTokenAtom } from '../store/atoms';
+import SplashScreen from 'react-native-splash-screen';
 
 export const RootStackNavigation = () => {
     const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -65,6 +66,7 @@ export const RootStackNavigation = () => {
                 nickname: data.nickName,
             });
             rootNavigation.navigate('BottomTab');
+            SplashScreen.hide();
         } catch (error) {
             // For Debug
             console.log('(ERROR) User authorization token set storage.', error);
@@ -81,6 +83,7 @@ export const RootStackNavigation = () => {
                 });
             } else {
                 rootNavigation.navigate('NotLoginHome');
+                SplashScreen.hide();
             }
         } catch (error) {
             // For Debug

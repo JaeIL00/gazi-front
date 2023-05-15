@@ -20,6 +20,7 @@ import { SingleLineInput } from '../../smallest/SingleLineInput';
 import { seviceHomeTemplateStyles } from '../../../styles/styles';
 import { screenFont, screenHeight, screenWidth } from '../../../utils/changeStyleSize';
 import { SeviceHomeTemplateProps, MapLocationTypes, PostTypes, MapBoundaryTypes } from '../../../types/types';
+import SplashScreen from 'react-native-splash-screen';
 
 const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritePost }: SeviceHomeTemplateProps) => {
     // Check Location Permission
@@ -186,6 +187,7 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritePost }:
                 const pageNumber = data.pages[indexNumber.current].data.data.pageable.pageNumber;
                 if (pageNumber === 0) {
                     setNearPostList(data.pages[indexNumber.current].data.data.content);
+                    SplashScreen.hide();
                 } else {
                     setNearPostList([...nearPostList, ...data.pages[indexNumber.current].data.data.content]);
                 }

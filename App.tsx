@@ -1,16 +1,10 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { SafeAreaView } from 'react-native';
 import { RootApp } from './src/RootApp';
 import { appStyles } from './src/styles/styles';
 import CodePush from 'react-native-code-push';
-import SplashScreen from 'react-native-splash-screen';
 
 function App(): JSX.Element {
-    useEffect(() => {
-        setTimeout(() => {
-            SplashScreen.hide();
-        }, 100);
-    });
     return (
         <SafeAreaView style={appStyles.container}>
             <RootApp />
