@@ -1,5 +1,5 @@
 import React, { RefObject, useCallback, useLayoutEffect, useRef, useState } from 'react';
-import { ActivityIndicator, Image, Linking, Modal, Platform, View } from 'react-native';
+import { ActivityIndicator, Image, Linking, Platform, View } from 'react-native';
 import Geolocation from '@react-native-community/geolocation';
 import DropShadow from 'react-native-drop-shadow';
 import { useRecoilValue } from 'recoil';
@@ -13,6 +13,7 @@ import Colors from '../../../styles/Colors';
 import MediumText from '../../smallest/MediumText';
 import TouchButton from '../../smallest/TouchButton';
 import MapWithMarker from '../../organisms/MapWithMarker';
+import ModalBackground from '../../smallest/ModalBackground';
 import NearbyPostListModal from '../../organisms/NearbyPostListModal';
 import FailPermissionModal from '../../organisms/FailPermissionModal';
 import { userTokenAtom } from '../../../store/atoms';
@@ -185,7 +186,7 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritePost }:
     };
 
     // Again request modal button Handling
-    const onPressModalButton = async (state: string) => {
+    const onPressModalButton = useCallback(async (state: string) => {
         switch (state) {
             case 'CLOSE':
                 setOnModal(false);
@@ -198,7 +199,7 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritePost }:
                 // For Debug
                 console.log('(ERROR) Again request modal button Handling. state: ', state);
         }
-    };
+    }, []);
 
     // Search text handling
     const onChangeSearchText = (text: string) => {
@@ -337,15 +338,13 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritePost }:
                 </View>
             )}
 
-            {onModal && (
-                <Modal transparent={true}>
-                    <FailPermissionModal
-                        permissionName="필수 권한 허용 안내"
-                        contentOne="위치 권한에 대한 사용을 거부하였습니다. 서비스 사용을 원하실 경우 해당 앱의 권한을 허용해주세요"
-                        onPressModalButton={onPressModalButton}
-                    />
-                </Modal>
-            )}
+            <ModalBackground visible={onModal}>
+                <FailPermissionModal
+                    permissionName="필수 권한 허용 안내"
+                    contentOne="위치 권한에 대한 사용을 거부하였습니다. 서비스 사용을 원하실 경우 해당 앱의 권한을 허용해주세요"
+                    onPressModalButton={onPressModalButton}
+                />
+            </ModalBackground>
 
             {isFarMapLevel && (
                 <View style={seviceHomeTemplateStyles.zoomWarning}>

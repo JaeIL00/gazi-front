@@ -18,6 +18,7 @@ import SemiBoldText from '../../smallest/SemiBoldText';
 import MultiLineInput from '../../smallest/MultiLineInput';
 import HeaderMolecule from '../../molecules/HeaderMolecule';
 import SearchLocation from '../../organisms/SearchLocation';
+import ModalBackground from '../../smallest/ModalBackground';
 import WritePhoto from '../../organisms/cummunity/WritePhoto';
 import FailPermissionModal from '../../organisms/FailPermissionModal';
 import WritePostAddKeyword from '../../organisms/cummunity/WritePostAddKeyword';
@@ -575,14 +576,14 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
                     </View>
                 )}
 
-                {imagePermission && (
+                <ModalBackground visible={imagePermission}>
                     <FailPermissionModal
                         permissionName="사진 접근 권한 허용하기"
                         contentOne="사진 업로드를 하시려면"
                         contentTwo=" 사진/카메라 권한 설정이 필요합니다"
                         onPressModalButton={onPressModalButton}
                     />
-                )}
+                </ModalBackground>
 
                 {(isPostLoading || isPostFileLoading || iscommentLoading || iscommentFileLoading) && (
                     <ActivityIndicator size="large" />

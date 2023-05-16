@@ -267,7 +267,8 @@ export type AppTextProps = {
     numberOfLines?: number;
 };
 export type ModalBackgroundProps = {
-    children?: ReactElement;
+    children: ReactElement;
+    visible: boolean;
 };
 
 // MOLECULES
