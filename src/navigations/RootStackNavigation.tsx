@@ -45,8 +45,9 @@ export const RootStackNavigation = () => {
     const errorLoginHandler = async (status: number) => {
         if (status === 400 || status === 404) {
             await AsyncStorage.multiRemove(['GAZI_ac_tk', 'GAZI_re_tk']);
-            rootNavigation.navigate('NotLoginHome');
         }
+        rootNavigation.navigate('NotLoginHome');
+        SplashScreen.hide();
     };
     const successTokenHandler = async (data: {
         accessToken: string;
