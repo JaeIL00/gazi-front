@@ -25,7 +25,6 @@ const NearbyPostListModal = ({
     isBottomSheetFull,
     currentPosition,
     mapBoundaryState,
-    moveToBottomSheetMini,
     moveToBottomSheetFull,
     notBottomSheetMini,
     onPressGetUserPosition,
@@ -221,7 +220,6 @@ const NearbyPostListModal = ({
     // Going to current position by toggle button
     const onPressCurrentPositionToggle = useCallback(() => {
         onPressGetUserPosition();
-        moveToBottomSheetMini();
     }, [currentPosition, mapBoundaryState]);
 
     return (

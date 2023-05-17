@@ -8,20 +8,37 @@ import NormalText from '../../smallest/NormalText';
 import TextButton from '../../molecules/TextButton';
 import SemiBoldText from '../../smallest/SemiBoldText';
 import HeaderMolecule from '../../molecules/HeaderMolecule';
+import useCheckKeyword from '../../../utils/hooks/useCheckKeyword';
 import { writePostAddKeywordStyles } from '../../../styles/styles';
 import { KeywordListTypes, WritePostAddKeywordProps } from '../../../types/types';
 import { issueKeywords, subwayKeywords, trafficKeywords } from '../../../utils/allKeywords';
 
 const WritePostAddKeyword = ({ keywordModalHandler, getKeywordHandler }: WritePostAddKeywordProps) => {
-    // Choose keyword step. all keyword and head keyword
-    const [step, setStep] = useState(1);
+    const [step, setStep] = useState<number>(1);
+    const [headKeyword, setHeadKeyword] = useState<number[]>([]);
+    const [chooseIssueList, setChooseIssueList] = useState<KeywordListTypes[]>([]);
+
+    // Custom hook useCheckKeyword
+    const {
+        checkTraffic,
+        checkSubway,
+        checkIssue,
+        checkHead,
+        checkedKeywords,
+        checkingInitialize,
+        checkingKeywordHandler,
+        checkedKeywordsHandler,
+        keywordSetStateHandler,
+    } = useCheckKeyword();
+
+    // Move step editting
     const stepHandler = () => {
-        if (step === 1) {
+        if (step === 1 && checkedKeywords.length > 0) {
             let newCheckHead: boolean[] = [];
             for (const index in chooseIssueList) {
                 newCheckHead = [...newCheckHead, false];
             }
-            setCheckHead(newCheckHead);
+            keywordSetStateHandler('HEAD', newCheckHead);
             getKeywordHandler('LIST', checkedKeywords);
             setStep(2);
         } else if (step === 2) {
@@ -46,91 +63,7 @@ const WritePostAddKeyword = ({ keywordModalHandler, getKeywordHandler }: WritePo
         }
     };
 
-    // Initialized check keywords
-    const [checkTraffic, setCheckTraffic] = useState<boolean[]>([]);
-    const [checkSubway, setCheckSubway] = useState<boolean[]>([]);
-    const [checkIssue, setCheckIssue] = useState<boolean[]>([]);
-    const [checkHead, setCheckHead] = useState<boolean[]>([]);
-    const checkingInitialize = () => {
-        let newCheckTraffic: boolean[] = [];
-        for (const index in trafficKeywords) {
-            newCheckTraffic = [...newCheckTraffic, false];
-        }
-        let newCheckSubway: boolean[] = [];
-        for (const index in subwayKeywords) {
-            newCheckSubway = [...newCheckSubway, false];
-        }
-        let newCheckIssue: boolean[] = [];
-        for (const index in issueKeywords) {
-            newCheckIssue = [...newCheckIssue, false];
-        }
-        setCheckTraffic(newCheckTraffic);
-        setCheckSubway(newCheckSubway);
-        setCheckIssue(newCheckIssue);
-    };
-    useLayoutEffect(() => {
-        checkingInitialize();
-    }, []);
-
-    // check Keyword Handling
-    const checkKeywordHandler = (list: string, index: number, id: number) => {
-        switch (list) {
-            case 'TRAFFIC':
-                const freshTraffic = [...checkTraffic];
-                freshTraffic.splice(index, 1, !freshTraffic[index]);
-                setCheckTraffic(freshTraffic);
-                break;
-            case 'SUBWAY':
-                if (id === 9998) {
-                    const freshSubway = [...checkSubway];
-                    const checkAll = freshSubway.map(() => !freshSubway[0]);
-                    setCheckSubway(checkAll);
-                } else {
-                    const freshSubway = [...checkSubway];
-                    freshSubway.splice(0, 1, false);
-                    freshSubway.splice(index, 1, !freshSubway[index]);
-                    setCheckSubway(freshSubway);
-                }
-                break;
-            case 'ISSUE':
-                const freshIssue = [...checkIssue];
-                freshIssue.splice(index, 1, !freshIssue[index]);
-                setCheckIssue(freshIssue);
-                break;
-            case 'HEAD':
-                const copyHead = [...checkHead];
-                const freshHead = copyHead.map(() => false);
-                freshHead.splice(index, 1, true);
-                setCheckHead(freshHead);
-                break;
-            default:
-                // For Debug
-                console.log('(ERROR) check Keyword Handling. listname:', list);
-                return;
-        }
-    };
-
-    // Checked state handling
-    const [checkedKeywords, setCheckedKeywords] = useState<number[]>([]);
-    const checkedKeywordsHandler = (list: KeywordListTypes[], isChecked: boolean[]) => {
-        const getId = list.map((item, index) => {
-            if (item.id !== 9999 && item.id !== 9998 && isChecked[index]) {
-                return item.id;
-            }
-        });
-        const cleanType = getId.filter(item => item !== undefined) as number[];
-        setCheckedKeywords(cleanType);
-    };
-    useEffect(() => {
-        const allList = [...trafficKeywords, ...subwayKeywords, ...issueKeywords];
-        const checkedList = [...checkTraffic, ...checkSubway, ...checkIssue];
-        checkedKeywordsHandler(allList, checkedList);
-        refreshIssueKeyword();
-    }, [checkTraffic, checkIssue, checkSubway]);
-
     // Choose head keyword
-    const [chooseIssueList, setChooseIssueList] = useState<KeywordListTypes[]>([]);
-    const [headKeyword, setHeadKeyword] = useState<number[]>([]);
     const refreshIssueKeyword = () => {
         const refresh = issueKeywords.map((item, index) => {
             if (checkIssue[index]) {
@@ -149,8 +82,24 @@ const WritePostAddKeyword = ({ keywordModalHandler, getKeywordHandler }: WritePo
         const cleanType = getId.filter(item => item !== undefined) as number[];
         setHeadKeyword(cleanType);
     };
+
+    // Initialized check keywords
+    useLayoutEffect(() => {
+        checkingInitialize();
+    }, []);
+
+    // Checked state handling
     useEffect(() => {
-        saveHeadKeyword();
+        const allList = [...trafficKeywords, ...subwayKeywords, ...issueKeywords];
+        const checkedList = [...checkTraffic, ...checkSubway, ...checkIssue];
+        checkedKeywordsHandler(allList, checkedList);
+        refreshIssueKeyword();
+    }, [checkTraffic, checkIssue, checkSubway]);
+
+    useEffect(() => {
+        if (chooseIssueList.length > 0) {
+            saveHeadKeyword();
+        }
     }, [checkHead]);
 
     return (
@@ -179,7 +128,7 @@ const WritePostAddKeyword = ({ keywordModalHandler, getKeywordHandler }: WritePo
                                 type="ISSUE"
                                 list={issueKeywords}
                                 isCheck={checkIssue}
-                                checkKeywordHandler={checkKeywordHandler}
+                                checkKeywordHandler={checkingKeywordHandler}
                                 checkTextColor="#7949C6"
                                 checkBorderColor={Colors.VIOLET}
                                 checkBackColor="#F1E9FF"
@@ -198,7 +147,7 @@ const WritePostAddKeyword = ({ keywordModalHandler, getKeywordHandler }: WritePo
                                 type="TRAFFIC"
                                 list={trafficKeywords}
                                 isCheck={checkTraffic}
-                                checkKeywordHandler={checkKeywordHandler}
+                                checkKeywordHandler={checkingKeywordHandler}
                                 checkTextColor="#7949C6"
                                 checkBorderColor={Colors.VIOLET}
                                 checkBackColor={Colors.WHITE}
@@ -208,7 +157,7 @@ const WritePostAddKeyword = ({ keywordModalHandler, getKeywordHandler }: WritePo
                                     type="SUBWAY"
                                     list={subwayKeywords}
                                     isCheck={checkSubway}
-                                    checkKeywordHandler={checkKeywordHandler}
+                                    checkKeywordHandler={checkingKeywordHandler}
                                     checkTextColor="#7949C6"
                                     checkBorderColor={Colors.VIOLET}
                                     checkBackColor="#F1E9FF"
@@ -229,7 +178,7 @@ const WritePostAddKeyword = ({ keywordModalHandler, getKeywordHandler }: WritePo
                         type="HEAD"
                         list={chooseIssueList}
                         isCheck={checkHead}
-                        checkKeywordHandler={checkKeywordHandler}
+                        checkKeywordHandler={checkingKeywordHandler}
                         checkTextColor={Colors.WHITE}
                         checkBorderColor={Colors.VIOLET}
                         checkBackColor={Colors.VIOLET}

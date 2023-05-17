@@ -196,7 +196,8 @@ export interface TabBarProps extends BottomTabBarProps {}
 // SMALLEST
 export type TouchButtonProps = {
     children?: ReactElement;
-    onPress: () => void;
+    onPressIn?: () => void;
+    onPress?: () => void;
     width?: number;
     height?: number;
     backgroundColor?: string;
@@ -216,6 +217,7 @@ export type TouchButtonProps = {
               right?: number;
           }
         | number;
+    marginLeft?: number;
 };
 export type SingleLineInputProps = {
     value: string;
@@ -266,7 +268,8 @@ export type AppTextProps = {
     numberOfLines?: number;
 };
 export type ModalBackgroundProps = {
-    children?: ReactElement;
+    children: ReactElement;
+    visible: boolean;
 };
 
 // MOLECULES
@@ -369,7 +372,6 @@ export type NearbyPostListModalProps = {
     isBottomSheetFull: boolean;
     currentPosition: MapLocationTypes;
     mapBoundaryState: MapBoundaryTypes;
-    moveToBottomSheetMini: () => void;
     moveToBottomSheetFull: (state: string) => void;
     notBottomSheetMini: () => void;
     onPressGetUserPosition: () => void;
@@ -460,4 +462,7 @@ export type LikeKeywordSettingTemplateProps = {
 };
 export type PoliciesTemplateProps = {
     moveToBackScreenHandler: () => void;
+};
+export type CommunityTemplateProps = {
+    moveToKeywordSettingScreen: () => void;
 };

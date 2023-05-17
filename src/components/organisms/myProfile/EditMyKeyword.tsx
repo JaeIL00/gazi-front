@@ -1,22 +1,23 @@
 import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { ActivityIndicator, ScrollView, View } from 'react-native';
+import { useMutation } from 'react-query';
+import { useRecoilValue } from 'recoil';
 
 import Icons from '../../smallest/Icons';
 import Spacer from '../../smallest/Spacer';
 import KeywordsList from '../KeywordsList';
 import Colors from '../../../styles/Colors';
 import BoldText from '../../smallest/BoldText';
-import TouchButton from '../../smallest/TouchButton';
 import TextButton from '../../molecules/TextButton';
+import TouchButton from '../../smallest/TouchButton';
 import SemiBoldText from '../../smallest/SemiBoldText';
+import useCheckKeyword from '../../../utils/hooks/useCheckKeyword';
+import { userTokenAtom } from '../../../store/atoms';
+import { EditMyKeywordProps } from '../../../types/types';
 import { editMyKeywordStyles } from '../../../styles/styles';
 import { screenHeight } from '../../../utils/changeStyleSize';
-import { EditMyKeywordProps, KeywordListTypes } from '../../../types/types';
-import { issueKeywordsNotEtc, subwayKeywords, trafficKeywords } from '../../../utils/allKeywords';
-import { useMutation } from 'react-query';
 import { editMyLikeKeywordsAPI } from '../../../queries/api';
-import { useRecoilValue } from 'recoil';
-import { userTokenAtom } from '../../../store/atoms';
+import { issueKeywordsNotEtc, subwayKeywords, trafficKeywords } from '../../../utils/allKeywords';
 
 const EditMyKeyword = ({
     myKeywordList,
@@ -26,14 +27,28 @@ const EditMyKeyword = ({
     controlEditWindowHandler,
     getMyKeywordRefetch,
 }: EditMyKeywordProps) => {
-    // Initialized check keywords
-    const [checkTraffic, setCheckTraffic] = useState<boolean[]>(checkInitTraffic);
-    const [checkSubway, setCheckSubway] = useState<boolean[]>(checkInitSubway);
-    const [checkIssue, setCheckIssue] = useState<boolean[]>(checkInitIssue);
+    const { accessToken } = useRecoilValue(userTokenAtom);
 
-    useLayoutEffect(() => {
-        checkMyKeyword();
-    }, []);
+    // Initialized check keywords
+    const [checkIssue, setCheckIssue] = useState<boolean[]>(checkInitIssue);
+    const [checkSubway, setCheckSubway] = useState<boolean[]>(checkInitSubway);
+    const [checkTraffic, setCheckTraffic] = useState<boolean[]>(checkInitTraffic);
+
+    // Custom hook useCheckKeyword
+    const { checkedKeywords, checkedKeywordsHandler } = useCheckKeyword();
+
+    // Edit keyword API
+    const { mutate, isLoading } = useMutation(editMyLikeKeywordsAPI, {
+        onSuccess: () => {
+            successEdit();
+        },
+        onError: ({ response }) => {
+            // For Debug
+            console.log('(ERROR) Edit keyword API.', response);
+        },
+    });
+
+    // Init checked
     const checkMyKeyword = () => {
         let checkedIndexTraffic: number[] = [];
         let checkedIndexIssue: number[] = [];
@@ -103,31 +118,6 @@ const EditMyKeyword = ({
         }
     };
 
-    // Checked state handling
-    const [checkedKeywords, setCheckedKeywords] = useState<number[]>([]);
-    const checkedKeywordsHandler = (list: KeywordListTypes[], isChecked: boolean[]) => {
-        const getId = list.map((item, index) => {
-            if (item.id !== 9999 && item.id !== 9998 && isChecked[index]) {
-                return item.id;
-            }
-        });
-        const cleanType = getId.filter(item => item !== undefined) as number[];
-        setCheckedKeywords(cleanType);
-    };
-    useEffect(() => {
-        // Traffic subway keword check
-        const subwaytrue = checkSubway.filter(item => item !== false);
-        if (subwaytrue.length > 0) {
-            setCheckTraffic(prev => {
-                prev.splice(2, 1, true);
-                return prev;
-            });
-        }
-        const allList = [...trafficKeywords, ...subwayKeywords, ...issueKeywordsNotEtc];
-        const checkedList = [...checkTraffic, ...checkSubway, ...checkIssue];
-        checkedKeywordsHandler(allList, checkedList);
-    }, [checkTraffic, checkIssue, checkSubway]);
-
     // Reset check of keyword
     const resetCheckedHandler = () => {
         setCheckTraffic(Array.from(Array(3), () => false));
@@ -135,18 +125,7 @@ const EditMyKeyword = ({
         setCheckIssue(Array.from(Array(28), () => false));
     };
 
-    // Edit keyword API
-    const { accessToken } = useRecoilValue(userTokenAtom);
-
-    const { mutate, isLoading } = useMutation(editMyLikeKeywordsAPI, {
-        onSuccess: () => {
-            successEdit();
-        },
-        onError: ({ response }) => {
-            // For Debug
-            console.log('(ERROR) Edit keyword API.', response);
-        },
-    });
+    // My keyword API success
     const successEdit = async () => {
         await getMyKeywordRefetch();
         controlEditWindowHandler('BACK');
@@ -173,6 +152,26 @@ const EditMyKeyword = ({
             deleteKeywordIdList: deleteKeywords,
         });
     };
+
+    // Init checking
+    useLayoutEffect(() => {
+        checkMyKeyword();
+    }, []);
+
+    // Check keyword
+    useEffect(() => {
+        // Traffic subway keword check
+        const subwaytrue = checkSubway.filter(item => item !== false);
+        if (subwaytrue.length > 0) {
+            setCheckTraffic(prev => {
+                prev.splice(2, 1, true);
+                return prev;
+            });
+        }
+        const allList = [...trafficKeywords, ...subwayKeywords, ...issueKeywordsNotEtc];
+        const checkedList = [...checkTraffic, ...checkSubway, ...checkIssue];
+        checkedKeywordsHandler(allList, checkedList);
+    }, [checkTraffic, checkIssue, checkSubway]);
 
     return (
         <>
