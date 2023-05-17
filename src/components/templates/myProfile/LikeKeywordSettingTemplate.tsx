@@ -9,15 +9,34 @@ import MediumText from '../../smallest/MediumText';
 import NormalText from '../../smallest/NormalText';
 import TouchButton from '../../smallest/TouchButton';
 import SemiBoldText from '../../smallest/SemiBoldText';
+import useCheckKeyword from '../../../utils/hooks/useCheckKeyword';
 import EditMyKeyword from '../../organisms/myProfile/EditMyKeyword';
 import { userTokenAtom } from '../../../store/atoms';
 import { geyMyLikeKeywordsAPI } from '../../../queries/api';
 import { likeKeywordSettingTemplateStyles } from '../../../styles/styles';
 import { LikeKeywordSettingTemplateProps, MyLikeKeywordTypes } from '../../../types/types';
-import { issueKeywordsNotEtc, subwayKeywords, trafficKeywords } from '../../../utils/allKeywords';
 
 const LikeKeywordSettingTemplate = ({ moveToBackScreenHandler }: LikeKeywordSettingTemplateProps) => {
+    const { accessToken } = useRecoilValue(userTokenAtom);
+
     const [isEditWindow, setIsEditWindow] = useState<boolean>(false);
+    const [myKeywordList, setMyKeywordList] = useState<MyLikeKeywordTypes[]>([]);
+
+    // Custom hook useCheckKeyword
+    const { checkTraffic, checkSubway, checkIssue, checkingInitialize } = useCheckKeyword();
+
+    // My like keyword API
+    const { refetch: getMyKeywordRefetch } = useQuery('getMyLikeKeyword', () => geyMyLikeKeywordsAPI(accessToken), {
+        onSuccess: ({ data }) => {
+            setMyKeywordList(data.data);
+        },
+        onError: error => {
+            // For Debug
+            console.log('(ERROR), Get my like keyword list API.', error);
+        },
+    });
+
+    // Like keyword move step handler
     const controlEditWindowHandler = (state: string) => {
         switch (state) {
             case 'GO':
@@ -32,39 +51,7 @@ const LikeKeywordSettingTemplate = ({ moveToBackScreenHandler }: LikeKeywordSett
         }
     };
 
-    const { accessToken } = useRecoilValue(userTokenAtom);
-    const [myKeywordList, setMyKeywordList] = useState<MyLikeKeywordTypes[]>([]);
-    const { refetch: getMyKeywordRefetch } = useQuery('getMyLikeKeyword', () => geyMyLikeKeywordsAPI(accessToken), {
-        onSuccess: ({ data }) => {
-            setMyKeywordList(data.data);
-        },
-        onError: error => {
-            // For Debug
-            console.log('(ERROR), Get my like keyword list API.', error);
-        },
-    });
-
     // Initialized check keywords
-    const [checkTraffic, setCheckTraffic] = useState<boolean[]>([]);
-    const [checkSubway, setCheckSubway] = useState<boolean[]>([]);
-    const [checkIssue, setCheckIssue] = useState<boolean[]>([]);
-    const checkingInitialize = () => {
-        let newCheckTraffic: boolean[] = [];
-        for (const index in trafficKeywords) {
-            newCheckTraffic = [...newCheckTraffic, false];
-        }
-        let newCheckSubway: boolean[] = [];
-        for (const index in subwayKeywords) {
-            newCheckSubway = [...newCheckSubway, false];
-        }
-        let newCheckIssue: boolean[] = [];
-        for (const index in issueKeywordsNotEtc) {
-            newCheckIssue = [...newCheckIssue, false];
-        }
-        setCheckTraffic(newCheckTraffic);
-        setCheckSubway(newCheckSubway);
-        setCheckIssue(newCheckIssue);
-    };
     useEffect(() => {
         checkingInitialize();
     }, []);

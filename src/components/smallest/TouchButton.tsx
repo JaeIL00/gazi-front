@@ -6,6 +6,7 @@ import { touchButtonStyles } from '../../styles/styles';
 
 const TouchButton = ({
     children,
+    onPressIn,
     onPress,
     width,
     height,
@@ -23,6 +24,7 @@ const TouchButton = ({
 }: TouchButtonProps) => {
     return (
         <TouchableOpacity
+            onPressIn={onPressIn}
             onPress={onPress}
             style={
                 touchButtonStyles(

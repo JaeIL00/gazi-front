@@ -196,7 +196,8 @@ export interface TabBarProps extends BottomTabBarProps {}
 // SMALLEST
 export type TouchButtonProps = {
     children?: ReactElement;
-    onPress: () => void;
+    onPressIn?: () => void;
+    onPress?: () => void;
     width?: number;
     height?: number;
     backgroundColor?: string;
