@@ -13,6 +13,7 @@ import { NearbyPostListModalProps, PostTypes } from '../../types/types';
 
 const FULL_ANIM_VALUE = -415 * screenHeight;
 const MIDDLE_ANIM_VALUE = 0;
+const MARKER_ANIM_VALUE = 110 * screenHeight;
 const MINI_ANIM_VALUE = 152 * screenHeight;
 const INIT_MINI = 440 * screenHeight;
 const INIT_OUTPUT = INIT_MINI + 100;
@@ -25,6 +26,7 @@ const NearbyPostListModal = ({
     isBottomSheetFull,
     currentPosition,
     mapBoundaryState,
+    markerPost,
     moveToBottomSheetFull,
     notBottomSheetMini,
     onPressGetUserPosition,
@@ -211,6 +213,26 @@ const NearbyPostListModal = ({
         }
     }, [isBottomSheetMini]);
 
+    // Marker post bottom sheet animate position
+    useEffect(() => {
+        if (markerPost) {
+            Animated.timing(animRef, {
+                toValue: MARKER_ANIM_VALUE,
+                duration: 200,
+                useNativeDriver: true,
+            }).start();
+            animType.current = 'marker';
+        } else if (animType.current === 'marker') {
+            Animated.timing(animRef, {
+                toValue: MINI_ANIM_VALUE,
+                duration: 200,
+                useNativeDriver: true,
+            }).start();
+            isModalRef.current = true;
+            animType.current = 'mini';
+        }
+    }, [markerPost]);
+
     // Flatlist function
     const keyExtractor = useCallback((item: PostTypes) => item.postId + 'list', []);
     const postList = useCallback(({ item }: { item: PostTypes }) => <PostListItem post={item} isBorder={false} />, []);
@@ -306,9 +328,11 @@ const NearbyPostListModal = ({
                     <View style={nearbyPostListModalStyles.slideBar} />
                 </View>
 
-                <View style={nearbyPostListModalStyles.titleBox}>
-                    <SemiBoldText text="00님 주변에서 일어나고 있는 일" color={Colors.BLACK} size={18} />
-                </View>
+                {!markerPost && (
+                    <View style={nearbyPostListModalStyles.titleBox}>
+                        <SemiBoldText text="00님 주변에서 일어나고 있는 일" color={Colors.BLACK} size={18} />
+                    </View>
+                )}
                 <Spacer height={10} />
             </Animated.View>
             <Animated.View
@@ -325,29 +349,33 @@ const NearbyPostListModal = ({
                         ],
                     },
                 ]}>
-                <FlatList
-                    keyExtractor={keyExtractor}
-                    data={nearPostList}
-                    renderItem={postList}
-                    ItemSeparatorComponent={ItemSeparatorComponent}
-                    ListFooterComponent={ListFooterComponent}
-                    showsVerticalScrollIndicator={false}
-                    onEndReachedThreshold={0.5}
-                    onEndReached={({ distanceFromEnd }) => {
-                        if (distanceFromEnd > 0) {
-                            callNextPageHandler();
-                        }
-                    }}
-                    getItemLayout={(data, index) => ({
-                        length: nearPostList.length,
-                        offset: nearPostList.length * index,
-                        index,
-                    })}
-                    initialNumToRender={5}
-                    maxToRenderPerBatch={9}
-                />
+                {!markerPost && (
+                    <FlatList
+                        keyExtractor={keyExtractor}
+                        data={nearPostList}
+                        renderItem={postList}
+                        ItemSeparatorComponent={ItemSeparatorComponent}
+                        ListFooterComponent={ListFooterComponent}
+                        showsVerticalScrollIndicator={false}
+                        onEndReachedThreshold={0.5}
+                        onEndReached={({ distanceFromEnd }) => {
+                            if (distanceFromEnd > 0) {
+                                callNextPageHandler();
+                            }
+                        }}
+                        getItemLayout={(data, index) => ({
+                            length: nearPostList.length,
+                            offset: nearPostList.length * index,
+                            index,
+                        })}
+                        initialNumToRender={5}
+                        maxToRenderPerBatch={9}
+                    />
+                )}
+                {markerPost && <PostListItem post={markerPost} isBorder={false} isMarkerPost={true} />}
             </Animated.View>
-            {!isBottomSheetFull && (
+
+            {!isBottomSheetFull && !markerPost && (
                 <Animated.View
                     {...panResponder.panHandlers}
                     style={[

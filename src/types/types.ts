@@ -359,15 +359,18 @@ export type MapWithMarkerProps = {
     mapRenderCompleteHandler: () => void;
     checkMapGesture: (region: Region, details: Details) => void;
     checkZoomLevelWarning: (region: Region) => void;
+    findMarkerPost: (id: number) => void;
 };
 export type PostListItemProps = {
-    post: PostTypes;
+    post: PostTypes | null;
     isBorder: boolean;
+    isMarkerPost?: boolean;
 };
 export type NearbyPostListModalProps = {
     isModalRef: React.MutableRefObject<boolean>;
     handleModalTrigger: boolean;
     nearPostList: PostTypes[];
+    markerPost: PostTypes | null;
     isBottomSheetMini: boolean;
     isBottomSheetFull: boolean;
     currentPosition: MapLocationTypes;

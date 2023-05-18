@@ -14,6 +14,7 @@ const MapWithMarker = ({
     mapRenderCompleteHandler,
     checkZoomLevelWarning,
     checkMapGesture,
+    findMarkerPost,
 }: MapWithMarkerProps) => {
     const MARKER_RANGE_IMAGE = require('../../assets/icons/map-marker-range.png');
     const MARKER_IMAGE = require('../../assets/icons/map-marker.png');
@@ -86,7 +87,8 @@ const MapWithMarker = ({
                             longitude: item.longitude,
                         }}
                         anchor={{ x: 0.5, y: 0.5 }}
-                        style={mapWithMarkerStyles.markerBox}>
+                        style={mapWithMarkerStyles.markerBox}
+                        onPress={() => findMarkerPost(item.postId)}>
                         <Image source={markertypeIcon()} style={mapWithMarkerStyles.issueMarker} />
                     </Marker>
                 );
