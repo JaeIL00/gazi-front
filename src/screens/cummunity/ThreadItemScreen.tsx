@@ -26,13 +26,11 @@ const ThreadItemScreen = () => {
     const isFocus = useIsFocused();
     return (
         <View style={threadItemScreenStyles.container}>
-            {isFocus && (
-                <ThreadItemTemplate
-                    postId={postId}
-                    movetoCommunityScreen={movetoCommunityScreen}
-                    moveToWriteScreen={moveToWriteScreen}
-                />
-            )}
+            <ThreadItemTemplate
+                postId={postId}
+                movetoCommunityScreen={movetoCommunityScreen}
+                moveToWriteScreen={moveToWriteScreen}
+            />
         </View>
     );
 };

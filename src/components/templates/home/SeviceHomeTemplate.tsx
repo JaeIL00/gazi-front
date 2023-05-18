@@ -29,6 +29,7 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritePost }:
     const [onModal, setOnModal] = useState<boolean>(false);
     const [searchText, setSearchText] = useState<string>('');
     const [nearPostList, setNearPostList] = useState<PostTypes[]>([]);
+    const [markerPost, setMarkerPost] = useState<PostTypes | null>(null);
     const [isFarMapLevel, setIsFarMapLevel] = useState<boolean>(false);
     const [isAllowLocation, setIsAllowLocation] = useState<boolean>(false);
     const [isNearPostSearch, setIsNearPostSearch] = useState<boolean>(false);
@@ -185,6 +186,12 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritePost }:
         refetch();
     };
 
+    // Find map marker post
+    const findMarkerPost = (id: number) => {
+        const findPost = nearPostList.filter(item => item.postId === id);
+        setMarkerPost(findPost[0]);
+    };
+
     // Again request modal button Handling
     const onPressModalButton = useCallback(async (state: string) => {
         switch (state) {
@@ -230,8 +237,11 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritePost }:
                 moveToBottomSheetMini();
                 setIsNearPostSearch(true);
             }
+            if (details.isGesture && markerPost) {
+                setMarkerPost(null);
+            }
         },
-        [isBottomSheetMini],
+        [isBottomSheetMini, markerPost, setMarkerPost],
     );
 
     // Move to full bottom sheet by move map
@@ -285,6 +295,7 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritePost }:
                 checkMapGesture={checkMapGesture}
                 checkZoomLevelWarning={checkZoomLevelWarning}
                 mapRenderCompleteHandler={mapRenderCompleteHandler}
+                findMarkerPost={findMarkerPost}
             />
             <View style={seviceHomeTemplateStyles.searchLayout}>
                 {Platform.OS === 'android' && (
@@ -315,6 +326,7 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritePost }:
                 isModalRef={isModalRef}
                 handleModalTrigger={handleModalTrigger}
                 nearPostList={nearPostList}
+                markerPost={markerPost}
                 isBottomSheetMini={isBottomSheetMini}
                 isBottomSheetFull={isBottomSheetFull}
                 currentPosition={currentPosition}

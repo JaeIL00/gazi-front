@@ -97,9 +97,10 @@ const InitLikeKeywordTemplate = ({ moveToScreen }: InitLikeKeywordTemplateProps)
                         list={trafficKeywords}
                         isCheck={checkTraffic}
                         checkKeywordHandler={checkingKeywordHandler}
-                        checkTextColor={Colors.BLACK}
-                        checkBorderColor={Colors.BLACK}
-                        checkBackColor={Colors.WHITE}
+                        checkTextColor={Colors.WHITE}
+                        checkBorderColor={undefined}
+                        checkBackColor={Colors.BLACK}
+                        trafficKeywordColor={Colors.BLACK}
                     />
                     {checkTraffic[2] && (
                         <KeywordsList

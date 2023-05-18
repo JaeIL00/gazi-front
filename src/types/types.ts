@@ -135,6 +135,18 @@ export type MyLikeKeywordTypes = {
     vehicle: string | null;
     keywordName: string;
 };
+export type ImageViewTypes = {
+    postTitle: string;
+    postCount: number;
+    fileList: {
+        fileName: string;
+        fileUrl: string;
+    }[];
+    nickName: string;
+    distance: string;
+    time: string;
+    imageIndex: number;
+};
 
 // ATOM
 export type userTokenAtomTypes = {
@@ -163,6 +175,7 @@ export type RootStackParamList = {
     Login: undefined;
     RequestPermission: undefined;
     InitKeyword: undefined;
+    ImageView: ImageViewTypes;
     BottomTab?: {
         screen: string;
     };
@@ -218,6 +231,12 @@ export type TouchButtonProps = {
           }
         | number;
     marginLeft?: number;
+};
+export type CommentImageProps = {
+    fileUrl: string;
+    width: number;
+    height: number;
+    moveImageViewScreen: () => void;
 };
 export type SingleLineInputProps = {
     value: string;
@@ -350,6 +369,7 @@ export type KeywordsListProps = {
     checkTextColor: string;
     checkBorderColor: string | undefined;
     checkBackColor: string;
+    trafficKeywordColor?: string;
 };
 export type MapWithMarkerProps = {
     mapRef: RefObject<MapView>;
@@ -359,15 +379,18 @@ export type MapWithMarkerProps = {
     mapRenderCompleteHandler: () => void;
     checkMapGesture: (region: Region, details: Details) => void;
     checkZoomLevelWarning: (region: Region) => void;
+    findMarkerPost: (id: number) => void;
 };
 export type PostListItemProps = {
-    post: PostTypes;
+    post: PostTypes | null;
     isBorder: boolean;
+    isMarkerPost?: boolean;
 };
 export type NearbyPostListModalProps = {
     isModalRef: React.MutableRefObject<boolean>;
     handleModalTrigger: boolean;
     nearPostList: PostTypes[];
+    markerPost: PostTypes | null;
     isBottomSheetMini: boolean;
     isBottomSheetFull: boolean;
     currentPosition: MapLocationTypes;
