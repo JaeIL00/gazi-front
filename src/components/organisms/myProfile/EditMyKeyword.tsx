@@ -207,7 +207,8 @@ const EditMyKeyword = ({
                             checkKeywordHandler={checkKeywordHandler}
                             checkTextColor="#7949C6"
                             checkBorderColor={Colors.VIOLET}
-                            checkBackColor={Colors.WHITE}
+                            checkBackColor="#F1E9FF"
+                            trafficKeywordColor="#7949C6"
                         />
                         {checkTraffic[2] && (
                             <KeywordsList

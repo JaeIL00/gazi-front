@@ -369,6 +369,7 @@ export type KeywordsListProps = {
     checkTextColor: string;
     checkBorderColor: string | undefined;
     checkBackColor: string;
+    trafficKeywordColor?: string;
 };
 export type MapWithMarkerProps = {
     mapRef: RefObject<MapView>;

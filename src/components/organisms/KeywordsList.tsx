@@ -12,6 +12,7 @@ const KeywordsList = ({
     list,
     isCheck,
     checkKeywordHandler,
+    trafficKeywordColor,
     checkTextColor,
     checkBorderColor,
     checkBackColor,
@@ -34,7 +35,13 @@ const KeywordsList = ({
                         paddingHorizontal={14}
                         paddingVertical={8}
                         backgroundColor={
-                            isCheck[index] ? checkBackColor : type === HEAD_KEYWORD ? '#F1E9FF' : Colors.WHITE
+                            item.keywordName === '지하철' && isCheck[index]
+                                ? Colors.WHITE
+                                : isCheck[index]
+                                ? checkBackColor
+                                : type === HEAD_KEYWORD
+                                ? '#F1E9FF'
+                                : Colors.WHITE
                         }>
                         <>
                             {type === SUBWAY_KEYWORD && (
@@ -48,7 +55,9 @@ const KeywordsList = ({
                                 <NormalText
                                     text={item.keywordName}
                                     color={
-                                        isCheck[index]
+                                        item.keywordName === '지하철' && isCheck[index]
+                                            ? trafficKeywordColor!
+                                            : isCheck[index]
                                             ? checkTextColor
                                             : type === HEAD_KEYWORD
                                             ? '#7949C6'
