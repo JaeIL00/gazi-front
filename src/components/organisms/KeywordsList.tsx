@@ -19,6 +19,9 @@ const KeywordsList = ({
 }: KeywordsListProps) => {
     const HEAD_KEYWORD = 'HEAD';
     const SUBWAY_KEYWORD = 'SUBWAY';
+    const PURPLE = '#7949C6';
+    const LIGHT_PURPLE = '#F1E9FF';
+
     return (
         <ScrollView contentContainerStyle={keywordsListStyles.container}>
             {list.map((item, index) => (
@@ -40,7 +43,7 @@ const KeywordsList = ({
                                 : isCheck[index]
                                 ? checkBackColor
                                 : type === HEAD_KEYWORD
-                                ? '#F1E9FF'
+                                ? LIGHT_PURPLE
                                 : Colors.WHITE
                         }>
                         <>
@@ -60,7 +63,7 @@ const KeywordsList = ({
                                             : isCheck[index]
                                             ? checkTextColor
                                             : type === HEAD_KEYWORD
-                                            ? '#7949C6'
+                                            ? PURPLE
                                             : Colors.TXT_GRAY
                                     }
                                     size={16}
