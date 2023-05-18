@@ -417,7 +417,7 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
                                     {writePostData.dto.latitude && writePostData.dto.placeName ? (
                                         <>
                                             <Image
-                                                source={require('../../../assets/icons/location-pin-outline.png')}
+                                                source={require('../../../assets/icons/location-pin-outline-black.png')}
                                                 style={writePostOrCommentTemplateStyles.locationIcon}
                                             />
                                             <Spacer width={5} />
@@ -467,7 +467,7 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
                                     {writePostData.dto.latitude && writePostData.dto.placeName ? (
                                         <>
                                             <Image
-                                                source={require('../../../assets/icons/location-pin-outline.png')}
+                                                source={require('../../../assets/icons/location-pin-outline-black.png')}
                                                 style={writePostOrCommentTemplateStyles.locationIcon}
                                             />
                                             <Spacer width={5} />

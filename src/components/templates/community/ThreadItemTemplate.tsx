@@ -81,8 +81,15 @@ const ThreadItemTemplate = ({ postId, movetoCommunityScreen, moveToWriteScreen }
 
     // Comment thread list render
     const renderItem = useCallback(
-        ({ item }: { item: CommentTypes }) => <CommentListItem comment={item} reportHandler={reportHandler} />,
-        [],
+        ({ item }: { item: CommentTypes }) => (
+            <CommentListItem
+                comment={item}
+                reportHandler={reportHandler}
+                postTitle={postValue.title}
+                postCount={postValue.rePostCount}
+            />
+        ),
+        [postValue],
     );
     const ItemSeparatorComponent = useCallback(() => <Spacer height={29} />, []);
 

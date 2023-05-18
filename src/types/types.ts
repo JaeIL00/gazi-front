@@ -135,6 +135,18 @@ export type MyLikeKeywordTypes = {
     vehicle: string | null;
     keywordName: string;
 };
+export type ImageViewTypes = {
+    postTitle: string;
+    postCount: number;
+    fileList: {
+        fileName: string;
+        fileUrl: string;
+    }[];
+    nickName: string;
+    distance: string;
+    time: string;
+    imageIndex: number;
+};
 
 // ATOM
 export type userTokenAtomTypes = {
@@ -163,6 +175,7 @@ export type RootStackParamList = {
     Login: undefined;
     RequestPermission: undefined;
     InitKeyword: undefined;
+    ImageView: ImageViewTypes;
     BottomTab?: {
         screen: string;
     };
@@ -218,6 +231,12 @@ export type TouchButtonProps = {
           }
         | number;
     marginLeft?: number;
+};
+export type CommentImageProps = {
+    fileUrl: string;
+    width: number;
+    height: number;
+    moveImageViewScreen: () => void;
 };
 export type SingleLineInputProps = {
     value: string;

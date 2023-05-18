@@ -24,6 +24,7 @@ import { autoLoginAPI } from '../queries/api';
 import { RootStackParamList } from '../types/types';
 import { userInfoAtom, userTokenAtom } from '../store/atoms';
 import SplashScreen from 'react-native-splash-screen';
+import ImageViewScreen from '../screens/cummunity/ImageViewScreen';
 
 export const RootStackNavigation = () => {
     const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -116,6 +117,7 @@ export const RootStackNavigation = () => {
             <Stack.Screen name="RequestPermission" component={RequestPermissionScreen} />
             <Stack.Screen name="InitKeyword" component={InitLikeKeywordScreen} />
             <Stack.Screen name="Login" component={LoginScreen} />
+            <Stack.Screen name="ImageView" component={ImageViewScreen} />
         </Stack.Navigator>
     );
 };
