@@ -582,6 +582,7 @@ export const writePostAddKeywordStyles = StyleSheet.create({
         height: '100%',
         backgroundColor: Colors.BACKGROUND_DEFAULT,
         paddingHorizontal: 16 * screenWidth,
+        zIndex: 9999,
     },
     headerBox: {
         flexDirection: 'row',
@@ -985,6 +986,7 @@ export const writePostOrCommentTemplateStyles = StyleSheet.create({
         width: '100%',
         height: '100%',
         backgroundColor: Colors.BACKGROUND_DEFAULT,
+        zIndex: 9999,
     },
     searchToggleIcon: {
         width: 10 * screenWidth,
@@ -996,7 +998,6 @@ export const writePostOrCommentTemplateStyles = StyleSheet.create({
     },
     inputBox: {
         paddingHorizontal: 16 * screenWidth,
-        height: 300 * screenHeight,
         paddingTop: 10 * screenHeight,
     },
     errorModalBack: {
@@ -1025,7 +1026,7 @@ export const writePostOrCommentTemplateStyles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
-    bottomBarBox: {
+    bottomBox: {
         width: '100%',
         backgroundColor: Colors.BACKGROUND_DEFAULT,
         position: 'absolute',

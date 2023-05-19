@@ -39,12 +39,15 @@ const WritePostAddKeyword = ({ keywordModalHandler, getKeywordHandler }: WritePo
                 newCheckHead = [...newCheckHead, false];
             }
             keywordSetStateHandler('HEAD', newCheckHead);
-            getKeywordHandler('LIST', checkedKeywords);
             setStep(2);
         } else if (step === 2) {
             // save and close
             if (headKeyword.length > 0) {
-                getKeywordHandler('HEAD', headKeyword);
+                const chooseKeywords = [...headKeyword, ...checkedKeywords];
+                console.log(chooseKeywords);
+                const lastKeywords = chooseKeywords.filter((item, index) => chooseKeywords.indexOf(item) === index);
+                console.log(lastKeywords);
+                getKeywordHandler(lastKeywords);
                 keywordModalHandler('CLOSE');
             }
         }

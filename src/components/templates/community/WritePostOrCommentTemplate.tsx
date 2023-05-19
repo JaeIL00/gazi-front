@@ -1,5 +1,5 @@
 import React, { RefObject, useCallback, useRef, useState } from 'react';
-import { ActivityIndicator, Image, ImageSourcePropType, Linking, View } from 'react-native';
+import { ActivityIndicator, Image, ImageSourcePropType, Linking, ScrollView, View } from 'react-native';
 import { useMutation } from 'react-query';
 import { useRecoilValue } from 'recoil';
 import { debounce } from 'lodash';
@@ -23,11 +23,11 @@ import WritePhoto from '../../organisms/cummunity/WritePhoto';
 import FailPermissionModal from '../../organisms/FailPermissionModal';
 import WritePostAddKeyword from '../../organisms/cummunity/WritePostAddKeyword';
 import { userTokenAtom } from '../../../store/atoms';
-import { issueKeywords } from '../../../utils/allKeywords';
-import { screenWidth } from '../../../utils/changeStyleSize';
+import { issueKeywords, subwayKeywords, trafficKeywords } from '../../../utils/allKeywords';
+import { screenFont, screenHeight, screenWidth } from '../../../utils/changeStyleSize';
 import { SingleLineInput } from '../../smallest/SingleLineInput';
 import { writePostOrCommentTemplateStyles } from '../../../styles/styles';
-import { WritePostOrCommentTemplateProps, WritePostTypes } from '../../../types/types';
+import { KeywordListTypes, WritePostOrCommentTemplateProps, WritePostTypes } from '../../../types/types';
 import { writeCommentAPI, writeCommentFilesAPI, writePostAPI, writePostFilesAPI } from '../../../queries/api';
 import FastImage from 'react-native-fast-image';
 import { PERMISSIONS, RESULTS, checkMultiple } from 'react-native-permissions';
@@ -52,6 +52,7 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
     const [markerType, setMarkerType] = useState<ImageSourcePropType>();
     const [imagePermission, setImagePermission] = useState<boolean>(false);
     const [isCamAllowPermission, setIsCamAllowPermission] = useState<boolean>(false);
+    const [chooseKeywords, setChooseKeywords] = useState<KeywordListTypes[]>([]);
     const [writePostData, setWritePostData] = useState<WritePostTypes>({
         dto: {
             title: '',
@@ -120,18 +121,19 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
             dto: { ...writePostData.dto, latitude: location.lat, longitude: location.lng, placeName },
         });
     };
-    const getKeywordHandler = (state: string, keyword: number[]) => {
-        switch (state) {
-            case 'LIST':
-                setWritePostData({ ...writePostData, dto: { ...writePostData.dto, keywordIdList: keyword } });
-                break;
-            case 'HEAD':
-                setWritePostData({ ...writePostData, dto: { ...writePostData.dto, headKeywordId: keyword[0] } });
-                break;
-            default:
-                // For Debug
-                console.log('(ERROR) Get keyword function of keyword modal.', state);
+    const getKeywordHandler = (keyword: number[]) => {
+        const allKeywords = [...issueKeywords, ...trafficKeywords, ...subwayKeywords];
+        let newlist = allKeywords.filter((item, index) => keyword.includes(item.id));
+        if (newlist[0].id !== keyword[0]) {
+            const headIndex = newlist.findIndex(item => item.id === keyword[0]);
+            newlist.unshift(newlist[headIndex]);
+            newlist.splice(headIndex + 1, 1);
         }
+        setChooseKeywords(newlist);
+        setWritePostData({
+            ...writePostData,
+            dto: { ...writePostData.dto, keywordIdList: keyword, headKeywordId: keyword[0] },
+        });
     };
     const getImageHandler = (files: Asset[]) => {
         setWritePostData({ ...writePostData, files });
@@ -556,51 +558,6 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
                         </View>
                     </View>
                 )}
-                <View style={writePostOrCommentTemplateStyles.inputBox}>
-                    {!postThreadInfo && (
-                        <SingleLineInput
-                            value={title}
-                            onChangeText={text => onChangeTitleText(text)}
-                            placeFontFamily="Pretendard-SemiBold"
-                            fontFamily="Pretendard-SemiBold"
-                            placeholder="제목을 입력해주세요"
-                            fontSize={24}
-                        />
-                    )}
-                    <MultiLineInput
-                        value={content}
-                        onChangeText={text => onChangeContentText(text)}
-                        placeholder="무슨일이 일어나고 있나요?"
-                        maxLength={300}
-                        height={213}
-                    />
-                </View>
-
-                {/* <WritePhoto getImageHandler={getImageHandler} notAllowPermission={notAllowPermission} /> */}
-
-                {isCamAllowPermission && <PhotoGallery closeGalleryHandling={closeGalleryHandling} />}
-                <View style={writePostOrCommentTemplateStyles.bottomBarBox}>
-                    <TouchButton
-                        onPress={openGalleryHandler}
-                        alignSelf="flex-start"
-                        paddingHorizontal={16}
-                        paddingVertical={11}>
-                        <View style={writePostOrCommentTemplateStyles.bottomBarBotton}>
-                            <View style={writePostOrCommentTemplateStyles.addPhotoBox}>
-                                <FastImage
-                                    source={require('../../../assets/icons/camera-outline.png')}
-                                    style={writePostOrCommentTemplateStyles.cameraIcon}
-                                />
-                                <Spacer width={4} />
-                                <MediumText text="사진추가" size={14} color="#706C76" />
-                            </View>
-
-                            <View>
-                                <NormalText text={`${content.length}/300`} size={12} color="#706C76" />
-                            </View>
-                        </View>
-                    </TouchButton>
-                </View>
 
                 {loactionModal && (
                     <View style={writePostOrCommentTemplateStyles.searchContainer}>
@@ -628,6 +585,84 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
                         getKeywordHandler={getKeywordHandler}
                     />
                 )}
+
+                <View style={writePostOrCommentTemplateStyles.inputBox}>
+                    {!postThreadInfo && (
+                        <SingleLineInput
+                            value={title}
+                            onChangeText={text => onChangeTitleText(text)}
+                            placeFontFamily="Pretendard-SemiBold"
+                            fontFamily="Pretendard-SemiBold"
+                            placeholder="제목을 입력해주세요"
+                            fontSize={24}
+                        />
+                    )}
+                    <MultiLineInput
+                        value={content}
+                        onChangeText={text => onChangeContentText(text)}
+                        placeholder="무슨일이 일어나고 있나요?"
+                        maxLength={300}
+                        height={213}
+                    />
+                </View>
+
+                {/* <WritePhoto getImageHandler={getImageHandler} notAllowPermission={notAllowPermission} /> */}
+
+                {isCamAllowPermission && <PhotoGallery closeGalleryHandling={closeGalleryHandling} />}
+                <View style={writePostOrCommentTemplateStyles.bottomBox}>
+                    <View
+                        style={{
+                            paddingHorizontal: 16 * screenWidth,
+                            paddingBottom: 13 * screenHeight,
+                            backgroundColor: Colors.WHITE,
+                        }}>
+                        {chooseKeywords && (
+                            <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+                                <>
+                                    {chooseKeywords.map(item => (
+                                        <View
+                                            key={item.id}
+                                            style={{
+                                                borderColor: Colors.TXT_LIGHTGRAY,
+                                                borderWidth: 0.8 * screenFont,
+                                                borderRadius: 21.57 * screenFont,
+                                                paddingHorizontal: 10 * screenWidth,
+                                                paddingVertical: 5 * screenHeight,
+                                                marginRight: 3 * screenWidth,
+                                            }}>
+                                            <MediumText
+                                                text={item.keywordName}
+                                                size={12}
+                                                color={Colors.TXT_LIGHTGRAY}
+                                            />
+                                        </View>
+                                    ))}
+                                </>
+                            </ScrollView>
+                        )}
+                    </View>
+
+                    <TouchButton
+                        onPress={openGalleryHandler}
+                        alignSelf="flex-start"
+                        paddingHorizontal={16}
+                        paddingVertical={11}>
+                        <View style={writePostOrCommentTemplateStyles.bottomBarBotton}>
+                            <View style={writePostOrCommentTemplateStyles.addPhotoBox}>
+                                <FastImage
+                                    source={require('../../../assets/icons/camera-outline.png')}
+                                    style={writePostOrCommentTemplateStyles.cameraIcon}
+                                />
+                                <Spacer width={4} />
+                                <MediumText text="사진추가" size={14} color="#706C76" />
+                            </View>
+
+                            <View>
+                                <NormalText text={`${content.length}/300`} size={12} color="#706C76" />
+                            </View>
+                        </View>
+                    </TouchButton>
+                </View>
 
                 {onErrorModal && (
                     <View style={writePostOrCommentTemplateStyles.errorModalBack}>

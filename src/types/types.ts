@@ -409,7 +409,7 @@ export type SearchLocationProps = {
 };
 export type WritePostAddKeywordProps = {
     keywordModalHandler: (state: string) => void;
-    getKeywordHandler: (state: string, keyword: number[]) => void;
+    getKeywordHandler: (keyword: number[]) => void;
 };
 export type WritePhotoProps = {
     getImageHandler: (files: Asset[]) => void;
