@@ -31,8 +31,8 @@ export const nextStepButtonPosition = StyleSheet.create({
 
 // SMALLEST
 export const touchButtonStyles = (
-    width: number | undefined,
-    height: number | undefined,
+    width: number | string | undefined,
+    height: number | string | undefined,
     backgroundColor: string | undefined,
     paddingHorizontal: number | undefined,
     paddingVertical: number | undefined,
@@ -46,8 +46,8 @@ export const touchButtonStyles = (
 ) =>
     StyleSheet.create({
         container: {
-            width: width && width * screenWidth,
-            height: height && height * screenHeight,
+            width: typeof width === 'string' ? width : width && width * screenWidth,
+            height: typeof height === 'string' ? height : height && height * screenHeight,
             backgroundColor: backgroundColor,
             paddingHorizontal: paddingHorizontal && paddingHorizontal * screenWidth,
             paddingVertical: paddingVertical && paddingVertical * screenHeight,
@@ -236,6 +236,44 @@ export const moveBackWithPageTitleStyles = StyleSheet.create({
     buttonContainer: {
         paddingTop: 30 * screenHeight,
         paddingBottom: 43 * screenHeight,
+    },
+});
+export const photoGalleryStyles = StyleSheet.create({
+    container: {
+        backgroundColor: Colors.WHITE,
+        position: 'absolute',
+        width: '100%',
+        height: '100%',
+        top: 0,
+        zIndex: 9999,
+    },
+    headerBox: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        paddingHorizontal: 22 * screenWidth,
+        paddingVertical: 16 * screenHeight,
+    },
+    albumButtonBox: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    albumButtonIcon: {
+        width: 12 * screenWidth,
+        height: 12 * screenWidth,
+    },
+    imageBox: {
+        width: 118 * screenWidth,
+        height: 118 * screenWidth,
+        justifyContent: 'center',
+    },
+    cameraIcon: {
+        width: 55.41 * screenWidth,
+        height: 55.41 * screenWidth,
+    },
+    imageSize: {
+        width: '100%',
+        height: '100%',
     },
 });
 export const serviceAgreementStyles = StyleSheet.create({
@@ -582,14 +620,11 @@ export const writePostAddKeywordStyles = StyleSheet.create({
 export const writePhotoStyles = StyleSheet.create({
     container: {
         flexDirection: 'row',
-        paddingHorizontal: 16 * screenWidth,
+
         position: 'absolute',
-        bottom: 26 * screenHeight,
+        bottom: 0,
     },
-    cameraIcon: {
-        width: 30 * screenWidth,
-        height: 30 * screenWidth,
-    },
+
     previewBox: {
         width: 71 * screenWidth,
         height: 71 * screenWidth,
@@ -919,7 +954,7 @@ export const seviceHomeTemplateStyles = StyleSheet.create({
 });
 export const writePostOrCommentTemplateStyles = StyleSheet.create({
     container: {
-        backgroundColor: Colors.BACKGROUND_DEFAULT,
+        backgroundColor: Colors.WHITE,
         flex: 1,
         position: 'absolute',
         width: '100%',
@@ -989,6 +1024,26 @@ export const writePostOrCommentTemplateStyles = StyleSheet.create({
     mapMarkerPosition: {
         justifyContent: 'center',
         alignItems: 'center',
+    },
+    bottomBarBox: {
+        width: '100%',
+        backgroundColor: Colors.BACKGROUND_DEFAULT,
+        position: 'absolute',
+        bottom: 0,
+    },
+    bottomBarBotton: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        width: '100%',
+    },
+    addPhotoBox: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    cameraIcon: {
+        width: 24 * screenWidth,
+        height: 24 * screenWidth,
     },
 });
 export const myProfileTemplateStyles = StyleSheet.create({

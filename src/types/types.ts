@@ -211,8 +211,8 @@ export type TouchButtonProps = {
     children?: ReactElement;
     onPressIn?: () => void;
     onPress?: () => void;
-    width?: number;
-    height?: number;
+    width?: number | string;
+    height?: number | string;
     backgroundColor?: string;
     paddingHorizontal?: number;
     paddingVertical?: number;
@@ -343,6 +343,9 @@ export type HeaderMoleculeProps = {
 export interface MoveBackWithPageTitleProps extends PageTitleWithExplainProps {
     onPress: () => void;
 }
+export type PhotoGalleryProps = {
+    closeGalleryHandling: () => void;
+};
 export type ServiceAgreementProps = {
     finishSlideComponentHandler: (state: string) => void;
 };

@@ -29,9 +29,29 @@ import { SingleLineInput } from '../../smallest/SingleLineInput';
 import { writePostOrCommentTemplateStyles } from '../../../styles/styles';
 import { WritePostOrCommentTemplateProps, WritePostTypes } from '../../../types/types';
 import { writeCommentAPI, writeCommentFilesAPI, writePostAPI, writePostFilesAPI } from '../../../queries/api';
+import FastImage from 'react-native-fast-image';
+import { PERMISSIONS, RESULTS, checkMultiple } from 'react-native-permissions';
+import PhotoGallery from '../../organisms/PhotoGallery';
+import { useRootNavigation, useRootRoute } from '../../../navigations/RootStackNavigation';
 
 const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostOrCommentTemplateProps) => {
-    // Write post data for API request
+    const rootNavigation = useRootNavigation();
+    const rootRoute = useRootRoute();
+
+    const { accessToken } = useRecoilValue(userTokenAtom);
+
+    const mapRef = useRef() as RefObject<MapView>;
+
+    const [title, setTitle] = useState<string>('');
+    const [postId, setPostId] = useState<number>(0);
+    const [content, setcontent] = useState<string>('');
+    const [onErrorText, setOnErrorText] = useState<string>('');
+    const [keywordModal, setKeywordModal] = useState<boolean>(false);
+    const [onErrorModal, setOnErrorModal] = useState<boolean>(false);
+    const [loactionModal, setLoactionModal] = useState<boolean>(false);
+    const [markerType, setMarkerType] = useState<ImageSourcePropType>();
+    const [imagePermission, setImagePermission] = useState<boolean>(false);
+    const [isCamAllowPermission, setIsCamAllowPermission] = useState<boolean>(false);
     const [writePostData, setWritePostData] = useState<WritePostTypes>({
         dto: {
             title: '',
@@ -46,6 +66,54 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
         thumbnail: null,
         backgroundMap: '',
     });
+
+    // Write post API and
+    const { mutate: postMutate, isLoading: isPostLoading } = useMutation(writePostAPI, {
+        onSuccess: ({ data }) => {
+            const responsePostId: number = data.data;
+            postUploadFilesHandler(responsePostId);
+        },
+        onError: error => {
+            // For Debug
+            console.log('(ERROR) Write post API.', error);
+        },
+    });
+    // Post upload files API
+    const { mutate: postFileMutate, isLoading: isPostFileLoading } = useMutation(writePostFilesAPI, {
+        onSuccess: () => {
+            moveToScreen('GO', postId);
+        },
+        onError: error => {
+            // For Debug
+            console.log('(ERROR) Upload files API.', error);
+        },
+    });
+    // Write comment API
+    const { mutate: commentMutate, isLoading: iscommentLoading } = useMutation(writeCommentAPI, {
+        onSuccess: ({ data }) => {
+            const responseRepostId = data.data;
+            commentUploadFilesHandler(responseRepostId);
+        },
+        onError: error => {
+            // For Debug
+            console.log('(ERROR) Write comment API.', error);
+        },
+    });
+
+    // Comment upload files API
+    const { mutate: commentFileMutate, isLoading: iscommentFileLoading } = useMutation(writeCommentFilesAPI, {
+        onSuccess: ({ data }) => {
+            if (postThreadInfo) {
+                moveToScreen('GO', postThreadInfo?.postId);
+            }
+        },
+        onError: error => {
+            // For Debug
+            console.log('(ERROR) Comment upload files.', error);
+        },
+    });
+
+    // Write post data for request API
     const getLocationHandler = (location: { lat: number; lng: number }, placeName: string) => {
         setWritePostData({
             ...writePostData,
@@ -69,22 +137,38 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
         setWritePostData({ ...writePostData, files });
     };
 
-    // Write post API and check essential value
-    const { accessToken } = useRecoilValue(userTokenAtom);
-    const [postId, setPostId] = useState<number>(0);
-    const [onErrorModal, setOnErrorModal] = useState(false);
-    const [onErrorText, setOnErrorText] = useState('');
-    const { mutate: postMutate, isLoading: isPostLoading } = useMutation(writePostAPI, {
-        onSuccess: ({ data }) => {
-            const responsePostId: number = data.data;
-            postUploadFilesHandler(responsePostId);
-        },
-        onError: error => {
+    // Check image library permission
+    const checkImagePermission = async (): Promise<boolean> => {
+        try {
+            const check = await checkMultiple([PERMISSIONS.ANDROID.READ_MEDIA_IMAGES, PERMISSIONS.ANDROID.CAMERA]);
+            const isAllow =
+                check['android.permission.CAMERA'] === RESULTS.GRANTED &&
+                check['android.permission.READ_MEDIA_IMAGES'] === RESULTS.GRANTED;
+            console.log(isAllow);
+            return isAllow;
+        } catch (error) {
             // For Debug
-            console.log('(ERROR) Write post API.', error);
-        },
-    });
-    const mapRef = useRef() as RefObject<MapView>;
+            console.log('(ERROR) Check image library permission');
+            return false;
+        }
+    };
+
+    // Get image in library
+    const openGalleryHandler = async () => {
+        const isAllow = await checkImagePermission();
+        if (isAllow) {
+            setIsCamAllowPermission(true);
+        } else {
+            notAllowPermission();
+        }
+    };
+
+    // Close gallery button
+    const closeGalleryHandling = () => {
+        setIsCamAllowPermission(false);
+    };
+
+    // Check essential value of write post
     const finishWritingHandler = () => {
         const isNotEnoughLocation = !writePostData.dto.latitude || !writePostData.dto.longitude;
         const isNotEnoughKeyword = !writePostData.dto.keywordIdList || !writePostData.dto.headKeywordId;
@@ -132,16 +216,7 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
         setOnErrorModal(false);
     };
 
-    // Post upload files
-    const { mutate: postFileMutate, isLoading: isPostFileLoading } = useMutation(writePostFilesAPI, {
-        onSuccess: () => {
-            moveToScreen('GO', postId);
-        },
-        onError: error => {
-            // For Debug
-            console.log('(ERROR) Upload files API.', error);
-        },
-    });
+    // Upload post formdata
     const postUploadFilesHandler = (id: number) => {
         setPostId(id);
         const formdata = new FormData();
@@ -179,30 +254,7 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
         });
     };
 
-    // Write comment API
-    const { mutate: commentMutate, isLoading: iscommentLoading } = useMutation(writeCommentAPI, {
-        onSuccess: ({ data }) => {
-            const responseRepostId = data.data;
-            commentUploadFilesHandler(responseRepostId);
-        },
-        onError: error => {
-            // For Debug
-            console.log('(ERROR) Write comment API.', error);
-        },
-    });
-
     // Comment upload files
-    const { mutate: commentFileMutate, isLoading: iscommentFileLoading } = useMutation(writeCommentFilesAPI, {
-        onSuccess: ({ data }) => {
-            if (postThreadInfo) {
-                moveToScreen('GO', postThreadInfo?.postId);
-            }
-        },
-        onError: error => {
-            // For Debug
-            console.log('(ERROR) Comment upload files.', error);
-        },
-    });
     const commentUploadFilesHandler = (rePostId: number) => {
         if (writePostData.files[0]) {
             const formdata = new FormData();
@@ -223,7 +275,6 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
     };
 
     // Guide image library permission
-    const [imagePermission, setImagePermission] = useState(false);
     const notAllowPermission = () => {
         setImagePermission(true);
     };
@@ -243,7 +294,7 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
     };
 
     // Search location modal
-    const [loactionModal, setLoactionModal] = useState<boolean>(false);
+
     const locationModalHandler = (state: string) => {
         switch (state) {
             case 'OPEN':
@@ -259,7 +310,6 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
     };
 
     // Set post keyword modal
-    const [keywordModal, setKeywordModal] = useState<boolean>(false);
     const keywordModalHandler = (state: string) => {
         switch (state) {
             case 'OPEN':
@@ -275,8 +325,7 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
     };
 
     // Input text title and content
-    const [title, setTitle] = useState('');
-    const [content, setcontent] = useState('');
+
     const onChangeTitleText = (text: string) => {
         setTitle(text);
         inputTitleDate(text);
@@ -299,7 +348,6 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
     );
 
     // Map snapshot handler for post. map and marker
-    const [markerType, setMarkerType] = useState<ImageSourcePropType>();
     const mapSnapshotWithWritePostHandler = () => {
         mapRef.current?.render();
         mapRef.current?.animateToRegion(
@@ -395,7 +443,6 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
                         <TouchButton
                             onPress={() => {
                                 finishWritingHandler();
-                                // moveToScreen('GO')
                             }}>
                             <SemiBoldText text="다음" size={16} color={Colors.TXT_GRAY} />
                         </TouchButton>
@@ -529,7 +576,31 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
                     />
                 </View>
 
-                <WritePhoto getImageHandler={getImageHandler} notAllowPermission={notAllowPermission} />
+                {/* <WritePhoto getImageHandler={getImageHandler} notAllowPermission={notAllowPermission} /> */}
+
+                {isCamAllowPermission && <PhotoGallery closeGalleryHandling={closeGalleryHandling} />}
+                <View style={writePostOrCommentTemplateStyles.bottomBarBox}>
+                    <TouchButton
+                        onPress={openGalleryHandler}
+                        alignSelf="flex-start"
+                        paddingHorizontal={16}
+                        paddingVertical={11}>
+                        <View style={writePostOrCommentTemplateStyles.bottomBarBotton}>
+                            <View style={writePostOrCommentTemplateStyles.addPhotoBox}>
+                                <FastImage
+                                    source={require('../../../assets/icons/camera-outline.png')}
+                                    style={writePostOrCommentTemplateStyles.cameraIcon}
+                                />
+                                <Spacer width={4} />
+                                <MediumText text="사진추가" size={14} color="#706C76" />
+                            </View>
+
+                            <View>
+                                <NormalText text={`${content.length}/300`} size={12} color="#706C76" />
+                            </View>
+                        </View>
+                    </TouchButton>
+                </View>
 
                 {loactionModal && (
                     <View style={writePostOrCommentTemplateStyles.searchContainer}>

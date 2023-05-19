@@ -25,9 +25,7 @@ const WritePostOrCommentScreen = () => {
         }
     };
 
-    const isFocused = useIsFocused();
-
-    return <>{isFocused && <WritePostOrCommentTemplate moveToScreen={moveToScreen} postThreadInfo={data} />}</>;
+    return <WritePostOrCommentTemplate moveToScreen={moveToScreen} postThreadInfo={data} />;
 };
 
 export default WritePostOrCommentScreen;

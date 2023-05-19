@@ -93,7 +93,8 @@ export const RootStackNavigation = () => {
         }
     };
     useLayoutEffect(() => {
-        checkAsyncStorage();
+        // checkAsyncStorage();
+        SplashScreen.hide();
     }, []);
 
     return (
@@ -102,6 +103,7 @@ export const RootStackNavigation = () => {
                 headerShown: false,
                 presentation: 'containedModal',
             }}>
+            <Stack.Screen name="WritePostOrComment" component={WritePostOrCommentScreen} />
             <Stack.Screen name="NotLoginHome" component={NotLoginHomeScreen} />
             <Stack.Screen name="BottomTab" component={BottomTabNavigation} />
             <Stack.Screen name="Policies" component={PoliciesScreen} />
@@ -111,7 +113,6 @@ export const RootStackNavigation = () => {
             <Stack.Screen name="AccountManagement" component={AccountManagementScreen} />
             <Stack.Screen name="DeleteMember" component={DeleteMemberScreen} />
             <Stack.Screen name="MyPostComment" component={MyPostCommentScreen} />
-            <Stack.Screen name="WritePostOrComment" component={WritePostOrCommentScreen} />
             <Stack.Screen name="ThreadItem" component={ThreadItemScreen} />
             <Stack.Screen name="EditNickname" component={EditNicknameScreen} />
             <Stack.Screen name="RequestPermission" component={RequestPermissionScreen} />
