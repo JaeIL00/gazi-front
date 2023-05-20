@@ -297,6 +297,7 @@ export type AppTextProps = {
 export type ModalBackgroundProps = {
     children: ReactElement;
     visible: boolean;
+    onRequestClose: () => void;
 };
 
 // MOLECULES
@@ -439,6 +440,8 @@ export type EditMyKeywordProps = {
 
 // TEMPLATES
 export type InputEmailTemplateProps = {
+    minutes: number;
+    seconds: number;
     onPressNextStep: () => void;
     resetTimeHandler: () => void;
     didAuthEmail: () => void;

@@ -7,14 +7,14 @@ const useKeyboardMotion = (upNum: number, downNum: number) => {
     const buttonUpAnimationHandler = () => {
         Animated.timing(bottomValue, {
             toValue: upNum * screenHeight,
-            duration: 300,
+            duration: 1,
             useNativeDriver: true,
         }).start();
     };
     const buttonDownAnimationHandler = () => {
         Animated.timing(bottomValue, {
             toValue: downNum * screenHeight,
-            duration: 50,
+            duration: 30,
             useNativeDriver: true,
         }).start();
     };

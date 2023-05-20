@@ -23,10 +23,7 @@ export const globalBackWhiteStyles = StyleSheet.create({
     },
 });
 export const nextStepButtonPosition = StyleSheet.create({
-    button: {
-        width: '100%',
-        position: 'absolute',
-    },
+    button: {},
 });
 
 // SMALLEST
@@ -769,11 +766,29 @@ export const inputEmailTemplateStyles = StyleSheet.create({
     container: {
         flex: 1,
     },
+    mainContent: {
+        flexGrow: 1,
+    },
     emailErrorTextBox: {
         flexDirection: 'row',
         paddingLeft: 10 * screenWidth,
         justifyContent: 'flex-start',
         alignItems: 'center',
+    },
+    bottomBox: {
+        flexShrink: 1,
+    },
+    resendMailButtonBox: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingTop: 24 * screenHeight,
+        paddingBottom: 36 * screenHeight,
+        justifyContent: 'center',
+    },
+    resendButton: {
+        borderBottomWidth: 1.5 * screenFont,
+        borderColor: Colors.TXT_GRAY,
+        marginLeft: 8 * screenWidth,
     },
 });
 export const emailWithPasswordTemplateStyles = StyleSheet.create({
