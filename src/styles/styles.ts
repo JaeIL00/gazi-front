@@ -71,6 +71,7 @@ export const singleLineInputStyles = (
 ) =>
     StyleSheet.create({
         common: {
+            flex: 1,
             fontSize: fontSize ? fontSize * screenFont : 16 * screenFont,
             width: width && width * screenWidth,
             height: height && height * screenHeight,
@@ -893,7 +894,7 @@ export const completedJoinTemplateStyles = StyleSheet.create({
         bottom: 42 * screenHeight,
     },
 });
-export const seviceHomeTemplateStyles = StyleSheet.create({
+export const serviceHomeTemplateStyles = StyleSheet.create({
     searchLayout: {
         position: 'absolute',
         top: 16 * screenHeight,

@@ -179,7 +179,7 @@ const NearbyPostListModal = ({
 
     // Press hardware back key
     useEffect(() => {
-        if (handleModalTrigger) {
+        if (handleModalTrigger || nearPostList) {
             Animated.timing(animRef, {
                 toValue: MIDDLE_ANIM_VALUE,
                 duration: 200,
@@ -198,7 +198,7 @@ const NearbyPostListModal = ({
             isModalRef.current = false;
             animType.current = 'middle';
         }
-    }, [handleModalTrigger]);
+    }, [handleModalTrigger, nearPostList]);
 
     // Move to mini bottom sheet by move map
     useEffect(() => {

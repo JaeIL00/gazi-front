@@ -13,6 +13,12 @@ export type KeywordListTypes = {
     keywordName: string;
     vehicleType: string | null;
 };
+export type SearchHistoryTypes = {
+    formatted_address: string;
+    name: string;
+
+    location: { lat: number; lng: number };
+};
 export type MapLocationTypes = {
     latitude: number;
     longitude: number;
@@ -407,7 +413,10 @@ export type NearbyPostListModalProps = {
     moveToWritePost: () => void;
 };
 export type SearchLocationProps = {
+    isHome: boolean;
+    placeholder: string;
     getLocationHandler: (location: { lat: number; lng: number }, placeName: string) => void;
+    searchModalHandler?: (state: string) => void;
 };
 export type WritePostAddKeywordProps = {
     keywordModalHandler: (state: string) => void;

@@ -673,7 +673,11 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
 
                         <Spacer height={28} />
 
-                        <SearchLocation getLocationHandler={getLocationHandler} />
+                        <SearchLocation
+                            getLocationHandler={getLocationHandler}
+                            placeholder="어디에서 일어난 일인가요?"
+                            isHome={false}
+                        />
                     </View>
                 )}
 

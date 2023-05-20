@@ -1,21 +1,24 @@
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { BackHandler, Platform, ToastAndroid, View } from 'react-native';
-import { useFocusEffect } from '@react-navigation/native';
+import { useFocusEffect, useIsFocused } from '@react-navigation/native';
 
 import SeviceHomeTemplate from '../components/templates/home/SeviceHomeTemplate';
 import { seviceHomeScreenStyles } from '../styles/styles';
 import { useRootNavigation } from '../navigations/RootStackNavigation';
 
 const SeviceHomeScreen = () => {
+    const isFocus = useIsFocused();
     const rootNavigation = useRootNavigation();
+
+    const isModalRef = useRef<boolean>(false);
+
+    const [isAppExit, setIsAppExit] = useState<boolean>(false);
+    const [handleModalTrigger, setHandleModalTrigger] = useState<boolean>(false);
     const moveToWritePost = () => {
         rootNavigation.navigate('WritePostOrComment');
     };
 
     // Android back button & Header Back Button Handling
-    const [isAppExit, setIsAppExit] = useState(false);
-    const [handleModalTrigger, setHandleModalTrigger] = useState(false);
-    const isModalRef = useRef(false);
     const handleBackButton = (): boolean => {
         if (isModalRef.current) {
             // Bottom sheet doesn't initialized position. So move to init position
@@ -38,18 +41,16 @@ const SeviceHomeScreen = () => {
         }
         return true;
     };
-    useFocusEffect(
-        useCallback(() => {
-            if (Platform.OS === 'android') {
-                BackHandler.addEventListener('hardwareBackPress', handleBackButton);
-            }
-            return () => {
-                if (Platform.OS === 'android') {
-                    BackHandler.removeEventListener('hardwareBackPress', handleBackButton);
-                }
-            };
-        }, [isAppExit]),
-    );
+
+    useEffect(() => {
+        if (Platform.OS === 'android' && isFocus) {
+            BackHandler.addEventListener('hardwareBackPress', handleBackButton);
+        }
+        return () => {
+            BackHandler.removeEventListener('hardwareBackPress', handleBackButton);
+        };
+    }, [isFocus]);
+
     return (
         <View style={seviceHomeScreenStyles.container}>
             <SeviceHomeTemplate
