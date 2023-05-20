@@ -96,7 +96,7 @@ export const multiLineInputStyles = (
     StyleSheet.create({
         common: {
             fontSize: fontSize ? fontSize * screenFont : 16 * screenFont,
-            height: height && height * screenHeight,
+            minHeight: height && height * screenHeight,
             textAlignVertical: 'top',
         },
         input: {
@@ -961,18 +961,22 @@ export const writePostOrCommentTemplateStyles = StyleSheet.create({
         width: '100%',
         height: '100%',
     },
-    headerBox: {
-        paddingHorizontal: 16 * screenWidth,
-        paddingBottom: 12 * screenHeight,
-        borderWidth: 1 * screenFont,
-        borderColor: '#EBEBEB',
-    },
     headerNavigateBox: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        paddingTop: 17 * screenHeight,
-        paddingBottom: 26 * screenHeight,
+        paddingHorizontal: 16 * screenWidth,
+        paddingVertical: 16 * screenHeight,
     },
+    contentBox: {
+        flex: 1,
+    },
+    settingContainer: {
+        borderBottomWidth: 1 * screenFont,
+        borderColor: '#EBEBEB',
+        paddingHorizontal: 16 * screenWidth,
+        paddingBottom: 12 * screenHeight,
+    },
+    contentInputFocus: { height: 400 * screenHeight },
     settingBox: {
         flexDirection: 'row',
         alignItems: 'center',
@@ -1027,10 +1031,8 @@ export const writePostOrCommentTemplateStyles = StyleSheet.create({
         alignItems: 'center',
     },
     bottomBox: {
-        width: '100%',
+        flexShrink: 1,
         backgroundColor: Colors.BACKGROUND_DEFAULT,
-        position: 'absolute',
-        bottom: 0,
     },
     bottomBarBotton: {
         flexDirection: 'row',
@@ -1045,6 +1047,20 @@ export const writePostOrCommentTemplateStyles = StyleSheet.create({
     cameraIcon: {
         width: 24 * screenWidth,
         height: 24 * screenWidth,
+    },
+    bottomKeyword: {
+        paddingHorizontal: 16 * screenWidth,
+        paddingTop: 8 * screenHeight,
+        paddingBottom: 13 * screenHeight,
+        backgroundColor: Colors.WHITE,
+    },
+    bottomKeywordItem: {
+        borderColor: Colors.TXT_LIGHTGRAY,
+        borderWidth: 0.8 * screenFont,
+        borderRadius: 21.57 * screenFont,
+        paddingHorizontal: 10 * screenWidth,
+        paddingVertical: 5 * screenHeight,
+        marginRight: 3 * screenWidth,
     },
 });
 export const myProfileTemplateStyles = StyleSheet.create({

@@ -44,9 +44,7 @@ const WritePostAddKeyword = ({ keywordModalHandler, getKeywordHandler }: WritePo
             // save and close
             if (headKeyword.length > 0) {
                 const chooseKeywords = [...headKeyword, ...checkedKeywords];
-                console.log(chooseKeywords);
                 const lastKeywords = chooseKeywords.filter((item, index) => chooseKeywords.indexOf(item) === index);
-                console.log(lastKeywords);
                 getKeywordHandler(lastKeywords);
                 keywordModalHandler('CLOSE');
             }

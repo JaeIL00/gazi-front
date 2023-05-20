@@ -1,5 +1,14 @@
 import React, { RefObject, useCallback, useRef, useState } from 'react';
-import { ActivityIndicator, Image, ImageSourcePropType, Linking, ScrollView, View } from 'react-native';
+import {
+    ActivityIndicator,
+    Animated,
+    Image,
+    ImageSourcePropType,
+    Linking,
+    ScrollView,
+    TouchableOpacity,
+    View,
+} from 'react-native';
 import { useMutation } from 'react-query';
 import { useRecoilValue } from 'recoil';
 import { debounce } from 'lodash';
@@ -49,6 +58,8 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
     const [keywordModal, setKeywordModal] = useState<boolean>(false);
     const [onErrorModal, setOnErrorModal] = useState<boolean>(false);
     const [loactionModal, setLoactionModal] = useState<boolean>(false);
+    const [inputFocusBlur, setInputFocusBlur] = useState<boolean>(false);
+
     const [markerType, setMarkerType] = useState<ImageSourcePropType>();
     const [imagePermission, setImagePermission] = useState<boolean>(false);
     const [isCamAllowPermission, setIsCamAllowPermission] = useState<boolean>(false);
@@ -139,6 +150,21 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
         setWritePostData({ ...writePostData, files });
     };
 
+    // Content input focue blur handler
+    const inputFocusBlurHandler = (state: string) => {
+        switch (state) {
+            case 'FOCUS':
+                setInputFocusBlur(true);
+                break;
+            case 'BLUR':
+                setInputFocusBlur(false);
+                break;
+            default:
+                // For Debug
+                console.log('(ERROR) Content input focue blur handler.', state);
+        }
+    };
+
     // Check image library permission
     const checkImagePermission = async (): Promise<boolean> => {
         try {
@@ -146,7 +172,6 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
             const isAllow =
                 check['android.permission.CAMERA'] === RESULTS.GRANTED &&
                 check['android.permission.READ_MEDIA_IMAGES'] === RESULTS.GRANTED;
-            console.log(isAllow);
             return isAllow;
         } catch (error) {
             // For Debug
@@ -437,199 +462,167 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
                 )}
             </MapView>
             <View style={writePostOrCommentTemplateStyles.container}>
-                <View style={writePostOrCommentTemplateStyles.headerBox}>
-                    <View style={writePostOrCommentTemplateStyles.headerNavigateBox}>
-                        <TouchButton onPress={() => moveToScreen('BACK', null)}>
-                            <Icons type="ionicons" name="close-sharp" size={20} color={Colors.BLACK} />
-                        </TouchButton>
-                        <TouchButton
-                            onPress={() => {
-                                finishWritingHandler();
-                            }}>
-                            <SemiBoldText text="다음" size={16} color={Colors.TXT_GRAY} />
-                        </TouchButton>
+                <View style={writePostOrCommentTemplateStyles.headerNavigateBox}>
+                    <TouchButton onPress={() => moveToScreen('BACK', null)}>
+                        <Icons type="ionicons" name="close-sharp" size={20} color={Colors.BLACK} />
+                    </TouchButton>
+                    <TouchButton onPress={finishWritingHandler}>
+                        <SemiBoldText text="다음" size={16} color={Colors.TXT_GRAY} />
+                    </TouchButton>
+                </View>
+                <ScrollView style={writePostOrCommentTemplateStyles.contentBox}>
+                    <View style={writePostOrCommentTemplateStyles.settingContainer}>
+                        {postThreadInfo ? (
+                            <View>
+                                <SemiBoldText text={postThreadInfo.title} size={20} color={Colors.BLACK} />
+                                <Spacer height={4} />
+                                <NormalText
+                                    text={`${postThreadInfo.rePostCount} post • updated ${postThreadInfo.time}`}
+                                    size={12}
+                                    color={Colors.BLACK}
+                                />
+                            </View>
+                        ) : (
+                            <View style={writePostOrCommentTemplateStyles.settingBox}>
+                                <TouchButton onPress={() => locationModalHandler('OPEN')}>
+                                    <View style={writePostOrCommentTemplateStyles.settingButton}>
+                                        {writePostData.dto.latitude && writePostData.dto.placeName ? (
+                                            <>
+                                                <Image
+                                                    source={require('../../../assets/icons/location-pin-outline-black.png')}
+                                                    style={writePostOrCommentTemplateStyles.locationIcon}
+                                                />
+                                                <Spacer width={5} />
+                                                <MediumText
+                                                    text={writePostData.dto.placeName}
+                                                    size={13}
+                                                    color={Colors.BLACK}
+                                                />
+                                            </>
+                                        ) : (
+                                            <MediumText text="위치설정" size={13} color={Colors.BLACK} />
+                                        )}
+                                        <Spacer width={4} />
+                                        <Image
+                                            source={require('../../../assets/icons/triangle-down.png')}
+                                            style={writePostOrCommentTemplateStyles.searchToggleIcon}
+                                        />
+                                    </View>
+                                </TouchButton>
+                                <Spacer width={13} />
+                                <TouchButton onPress={() => keywordModalHandler('OPEN')}>
+                                    <View style={writePostOrCommentTemplateStyles.settingBox}>
+                                        {writePostData.dto.headKeywordId ? (
+                                            <MediumText
+                                                text={issueKeywords[writePostData.dto.headKeywordId! - 1].keywordName}
+                                                size={13}
+                                                color={Colors.BLACK}
+                                            />
+                                        ) : (
+                                            <MediumText text="키워드설정" size={13} color={Colors.BLACK} />
+                                        )}
+                                        <Spacer width={4} />
+                                        <Image
+                                            source={require('../../../assets/icons/triangle-down.png')}
+                                            style={writePostOrCommentTemplateStyles.searchToggleIcon}
+                                        />
+                                    </View>
+                                </TouchButton>
+                            </View>
+                        )}
+                        {postThreadInfo && (
+                            <View style={writePostOrCommentTemplateStyles.conditionSettingBox}>
+                                <View style={writePostOrCommentTemplateStyles.settingBox}>
+                                    <TouchButton onPress={() => locationModalHandler('OPEN')}>
+                                        <View style={writePostOrCommentTemplateStyles.settingButton}>
+                                            {writePostData.dto.latitude && writePostData.dto.placeName ? (
+                                                <>
+                                                    <Image
+                                                        source={require('../../../assets/icons/location-pin-outline-black.png')}
+                                                        style={writePostOrCommentTemplateStyles.locationIcon}
+                                                    />
+                                                    <Spacer width={5} />
+                                                    <MediumText
+                                                        text={writePostData.dto.placeName}
+                                                        size={13}
+                                                        color={Colors.BLACK}
+                                                    />
+                                                </>
+                                            ) : (
+                                                <MediumText text="위치설정" size={13} color={Colors.BLACK} />
+                                            )}
+                                            <Spacer width={4} />
+                                            <Image
+                                                source={require('../../../assets/icons/triangle-down.png')}
+                                                style={writePostOrCommentTemplateStyles.searchToggleIcon}
+                                            />
+                                        </View>
+                                    </TouchButton>
+                                    <Spacer width={13} />
+                                    <TouchButton onPress={() => keywordModalHandler('OPEN')}>
+                                        <View style={writePostOrCommentTemplateStyles.settingBox}>
+                                            {writePostData.dto.headKeywordId ? (
+                                                <MediumText
+                                                    text={
+                                                        issueKeywords[writePostData.dto.headKeywordId! - 1].keywordName
+                                                    }
+                                                    size={13}
+                                                    color={Colors.BLACK}
+                                                />
+                                            ) : (
+                                                <MediumText text="키워드설정" size={13} color={Colors.BLACK} />
+                                            )}
+                                            <Spacer width={4} />
+                                            <Image
+                                                source={require('../../../assets/icons/triangle-down.png')}
+                                                style={writePostOrCommentTemplateStyles.searchToggleIcon}
+                                            />
+                                        </View>
+                                    </TouchButton>
+                                </View>
+                            </View>
+                        )}
                     </View>
-                    {postThreadInfo ? (
+                    <View style={writePostOrCommentTemplateStyles.inputBox}>
+                        {!postThreadInfo && (
+                            <SingleLineInput
+                                value={title}
+                                onChangeText={text => onChangeTitleText(text)}
+                                placeFontFamily="Pretendard-SemiBold"
+                                fontFamily="Pretendard-SemiBold"
+                                placeholder="제목을 입력해주세요"
+                                fontSize={24}
+                            />
+                        )}
                         <View>
-                            <SemiBoldText text={postThreadInfo.title} size={20} color={Colors.BLACK} />
-                            <Spacer height={4} />
-                            <NormalText
-                                text={`${postThreadInfo.rePostCount} post • updated ${postThreadInfo.time}`}
-                                size={12}
-                                color={Colors.BLACK}
+                            <MultiLineInput
+                                value={content}
+                                onChangeText={text => onChangeContentText(text)}
+                                placeholder="무슨일이 일어나고 있나요?"
+                                maxLength={300}
+                                inputFocusBlur={inputFocusBlur}
+                                inputFocusBlurHandler={inputFocusBlurHandler}
                             />
                         </View>
-                    ) : (
-                        <View style={writePostOrCommentTemplateStyles.settingBox}>
-                            <TouchButton onPress={() => locationModalHandler('OPEN')}>
-                                <View style={writePostOrCommentTemplateStyles.settingButton}>
-                                    {writePostData.dto.latitude && writePostData.dto.placeName ? (
-                                        <>
-                                            <Image
-                                                source={require('../../../assets/icons/location-pin-outline-black.png')}
-                                                style={writePostOrCommentTemplateStyles.locationIcon}
-                                            />
-                                            <Spacer width={5} />
-                                            <MediumText
-                                                text={writePostData.dto.placeName}
-                                                size={13}
-                                                color={Colors.BLACK}
-                                            />
-                                        </>
-                                    ) : (
-                                        <MediumText text="위치설정" size={13} color={Colors.BLACK} />
-                                    )}
-                                    <Spacer width={4} />
-                                    <Image
-                                        source={require('../../../assets/icons/triangle-down.png')}
-                                        style={writePostOrCommentTemplateStyles.searchToggleIcon}
-                                    />
-                                </View>
-                            </TouchButton>
-                            <Spacer width={13} />
-                            <TouchButton onPress={() => keywordModalHandler('OPEN')}>
-                                <View style={writePostOrCommentTemplateStyles.settingBox}>
-                                    {writePostData.dto.headKeywordId ? (
-                                        <MediumText
-                                            text={issueKeywords[writePostData.dto.headKeywordId! - 1].keywordName}
-                                            size={13}
-                                            color={Colors.BLACK}
-                                        />
-                                    ) : (
-                                        <MediumText text="키워드설정" size={13} color={Colors.BLACK} />
-                                    )}
-                                    <Spacer width={4} />
-                                    <Image
-                                        source={require('../../../assets/icons/triangle-down.png')}
-                                        style={writePostOrCommentTemplateStyles.searchToggleIcon}
-                                    />
-                                </View>
-                            </TouchButton>
-                        </View>
-                    )}
-                </View>
-                {postThreadInfo && (
-                    <View style={writePostOrCommentTemplateStyles.conditionSettingBox}>
-                        <View style={writePostOrCommentTemplateStyles.settingBox}>
-                            <TouchButton onPress={() => locationModalHandler('OPEN')}>
-                                <View style={writePostOrCommentTemplateStyles.settingButton}>
-                                    {writePostData.dto.latitude && writePostData.dto.placeName ? (
-                                        <>
-                                            <Image
-                                                source={require('../../../assets/icons/location-pin-outline-black.png')}
-                                                style={writePostOrCommentTemplateStyles.locationIcon}
-                                            />
-                                            <Spacer width={5} />
-                                            <MediumText
-                                                text={writePostData.dto.placeName}
-                                                size={13}
-                                                color={Colors.BLACK}
-                                            />
-                                        </>
-                                    ) : (
-                                        <MediumText text="위치설정" size={13} color={Colors.BLACK} />
-                                    )}
-                                    <Spacer width={4} />
-                                    <Image
-                                        source={require('../../../assets/icons/triangle-down.png')}
-                                        style={writePostOrCommentTemplateStyles.searchToggleIcon}
-                                    />
-                                </View>
-                            </TouchButton>
-                            <Spacer width={13} />
-                            <TouchButton onPress={() => keywordModalHandler('OPEN')}>
-                                <View style={writePostOrCommentTemplateStyles.settingBox}>
-                                    {writePostData.dto.headKeywordId ? (
-                                        <MediumText
-                                            text={issueKeywords[writePostData.dto.headKeywordId! - 1].keywordName}
-                                            size={13}
-                                            color={Colors.BLACK}
-                                        />
-                                    ) : (
-                                        <MediumText text="키워드설정" size={13} color={Colors.BLACK} />
-                                    )}
-                                    <Spacer width={4} />
-                                    <Image
-                                        source={require('../../../assets/icons/triangle-down.png')}
-                                        style={writePostOrCommentTemplateStyles.searchToggleIcon}
-                                    />
-                                </View>
-                            </TouchButton>
-                        </View>
                     </View>
-                )}
-
-                {loactionModal && (
-                    <View style={writePostOrCommentTemplateStyles.searchContainer}>
-                        <HeaderMolecule
-                            isPaddingHorizontal={true}
-                            isWorkDone={writePostData.dto.latitude !== null}
-                            backHandler={locationModalHandler}
-                            headerFinish={true}
-                            isNextStep={false}
-                            title="위치 설정"
-                            finishText="완료"
-                            background="undefined"
-                            finishFunction={() => locationModalHandler('CLOSE')}
-                        />
-
-                        <Spacer height={28} />
-
-                        <SearchLocation getLocationHandler={getLocationHandler} />
-                    </View>
-                )}
-
-                {keywordModal && (
-                    <WritePostAddKeyword
-                        keywordModalHandler={keywordModalHandler}
-                        getKeywordHandler={getKeywordHandler}
-                    />
-                )}
-
-                <View style={writePostOrCommentTemplateStyles.inputBox}>
-                    {!postThreadInfo && (
-                        <SingleLineInput
-                            value={title}
-                            onChangeText={text => onChangeTitleText(text)}
-                            placeFontFamily="Pretendard-SemiBold"
-                            fontFamily="Pretendard-SemiBold"
-                            placeholder="제목을 입력해주세요"
-                            fontSize={24}
+                    {!inputFocusBlur && (
+                        <TouchableOpacity
+                            style={writePostOrCommentTemplateStyles.contentInputFocus}
+                            onPress={() => inputFocusBlurHandler('FOCUS')}
                         />
                     )}
-                    <MultiLineInput
-                        value={content}
-                        onChangeText={text => onChangeContentText(text)}
-                        placeholder="무슨일이 일어나고 있나요?"
-                        maxLength={300}
-                        height={213}
-                    />
-                </View>
+                </ScrollView>
 
                 {/* <WritePhoto getImageHandler={getImageHandler} notAllowPermission={notAllowPermission} /> */}
 
                 {isCamAllowPermission && <PhotoGallery closeGalleryHandling={closeGalleryHandling} />}
                 <View style={writePostOrCommentTemplateStyles.bottomBox}>
-                    <View
-                        style={{
-                            paddingHorizontal: 16 * screenWidth,
-                            paddingBottom: 13 * screenHeight,
-                            backgroundColor: Colors.WHITE,
-                        }}>
+                    <View style={writePostOrCommentTemplateStyles.bottomKeyword}>
                         {chooseKeywords && (
                             <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
                                 <>
                                     {chooseKeywords.map(item => (
-                                        <View
-                                            key={item.id}
-                                            style={{
-                                                borderColor: Colors.TXT_LIGHTGRAY,
-                                                borderWidth: 0.8 * screenFont,
-                                                borderRadius: 21.57 * screenFont,
-                                                paddingHorizontal: 10 * screenWidth,
-                                                paddingVertical: 5 * screenHeight,
-                                                marginRight: 3 * screenWidth,
-                                            }}>
+                                        <View key={item.id} style={writePostOrCommentTemplateStyles.bottomKeywordItem}>
                                             <MediumText
                                                 text={item.keywordName}
                                                 size={12}
@@ -664,6 +657,32 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
                     </TouchButton>
                 </View>
 
+                {loactionModal && (
+                    <View style={writePostOrCommentTemplateStyles.searchContainer}>
+                        <HeaderMolecule
+                            isPaddingHorizontal={true}
+                            isWorkDone={writePostData.dto.latitude !== null}
+                            backHandler={locationModalHandler}
+                            headerFinish={true}
+                            isNextStep={false}
+                            title="위치 설정"
+                            finishText="완료"
+                            background="undefined"
+                            finishFunction={() => locationModalHandler('CLOSE')}
+                        />
+
+                        <Spacer height={28} />
+
+                        <SearchLocation getLocationHandler={getLocationHandler} />
+                    </View>
+                )}
+
+                {keywordModal && (
+                    <WritePostAddKeyword
+                        keywordModalHandler={keywordModalHandler}
+                        getKeywordHandler={getKeywordHandler}
+                    />
+                )}
                 {onErrorModal && (
                     <View style={writePostOrCommentTemplateStyles.errorModalBack}>
                         <View style={writePostOrCommentTemplateStyles.errorModalBox}>

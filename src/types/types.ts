@@ -262,6 +262,8 @@ export type MultiLineInputProps = {
     height?: number;
     fontFamily?: string | null;
     placeFontFamily?: string | null;
+    inputFocusBlur: boolean;
+    inputFocusBlurHandler: (state: string) => void;
     onChangeText: (text: string) => void;
     onSubmitEditing?: () => void;
 };
