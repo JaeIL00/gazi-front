@@ -195,7 +195,9 @@ export type RootStackParamList = {
         | undefined;
     EditNickname: undefined;
     AccountManagement: undefined;
-    LikeKeywordSetting: undefined;
+    LikeKeywordSetting: {
+        isFromCommunity?: boolean;
+    };
     Policies: undefined;
     ThreadItem: {
         postId: number;
@@ -507,6 +509,7 @@ export type ChangePasswordTemplateProps = {
     moveToBackScreenHandler: () => void;
 };
 export type LikeKeywordSettingTemplateProps = {
+    isFromCommunity: boolean | undefined;
     moveToBackScreenHandler: () => void;
 };
 export type PoliciesTemplateProps = {

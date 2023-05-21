@@ -16,10 +16,13 @@ import { geyMyLikeKeywordsAPI } from '../../../queries/api';
 import { likeKeywordSettingTemplateStyles } from '../../../styles/styles';
 import { LikeKeywordSettingTemplateProps, MyLikeKeywordTypes } from '../../../types/types';
 
-const LikeKeywordSettingTemplate = ({ moveToBackScreenHandler }: LikeKeywordSettingTemplateProps) => {
+const LikeKeywordSettingTemplate = ({
+    moveToBackScreenHandler,
+    isFromCommunity = false,
+}: LikeKeywordSettingTemplateProps) => {
     const { accessToken } = useRecoilValue(userTokenAtom);
 
-    const [isEditWindow, setIsEditWindow] = useState<boolean>(false);
+    const [isEditWindow, setIsEditWindow] = useState<boolean>(isFromCommunity);
     const [myKeywordList, setMyKeywordList] = useState<MyLikeKeywordTypes[]>([]);
 
     // Custom hook useCheckKeyword
@@ -28,6 +31,7 @@ const LikeKeywordSettingTemplate = ({ moveToBackScreenHandler }: LikeKeywordSett
     // My like keyword API
     const { refetch: getMyKeywordRefetch } = useQuery('getMyLikeKeyword', () => geyMyLikeKeywordsAPI(accessToken), {
         onSuccess: ({ data }) => {
+            // console.log(data);
             setMyKeywordList(data.data);
         },
         onError: error => {

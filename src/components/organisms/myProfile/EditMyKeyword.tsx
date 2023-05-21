@@ -47,7 +47,6 @@ const EditMyKeyword = ({
             console.log('(ERROR) Edit keyword API.', response);
         },
     });
-
     // Init checked
     const checkMyKeyword = () => {
         let checkedIndexTraffic: number[] = [];
@@ -156,7 +155,7 @@ const EditMyKeyword = ({
     // Init checking
     useLayoutEffect(() => {
         checkMyKeyword();
-    }, []);
+    }, [myKeywordList]);
 
     // Check keyword
     useEffect(() => {

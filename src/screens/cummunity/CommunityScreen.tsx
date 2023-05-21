@@ -8,7 +8,7 @@ import { useRootNavigation } from '../../navigations/RootStackNavigation';
 const CommunityScreen = () => {
     const rootNavigation = useRootNavigation();
     const moveToKeywordSettingScreen = () => {
-        rootNavigation.navigate('LikeKeywordSetting');
+        rootNavigation.navigate('LikeKeywordSetting', { isFromCommunity: true });
     };
 
     return (
