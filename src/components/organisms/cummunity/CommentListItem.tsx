@@ -8,22 +8,12 @@ import NormalText from '../../smallest/NormalText';
 import MediumText from '../../smallest/MediumText';
 import TouchButton from '../../smallest/TouchButton';
 import SemiBoldText from '../../smallest/SemiBoldText';
-import { CommentTypes, ImageViewTypes } from '../../../types/types';
+import { CommentListItemProps, ImageViewTypes } from '../../../types/types';
 import { commentListItemStyles } from '../../../styles/styles';
 import { useRootNavigation } from '../../../navigations/RootStackNavigation';
 import CommentImageItem from '../../molecules/CommentImageItem';
 
-const CommentListcomment = ({
-    comment,
-    postTitle,
-    postCount,
-    reportHandler,
-}: {
-    comment: CommentTypes;
-    postTitle: string;
-    postCount: number;
-    reportHandler: (repostId: number) => void;
-}) => {
+const CommentListItem = ({ comment, postTitle, postCount, reportHandler }: CommentListItemProps) => {
     const rootNavigation = useRootNavigation();
     const moveImageViewScreen = (viewData: ImageViewTypes) => {
         rootNavigation.navigate('ImageView', viewData);
@@ -206,4 +196,4 @@ const CommentListcomment = ({
     );
 };
 
-export default CommentListcomment;
+export default CommentListItem;

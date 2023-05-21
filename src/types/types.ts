@@ -355,6 +355,12 @@ export interface MoveBackWithPageTitleProps extends PageTitleWithExplainProps {
 export type PhotoGalleryProps = {
     closeGalleryHandling: () => void;
 };
+export type CommentListItemProps = {
+    comment: CommentTypes;
+    postTitle: string;
+    postCount: number;
+    reportHandler: (repostId: number) => void;
+};
 export type ServiceAgreementProps = {
     finishSlideComponentHandler: (state: string) => void;
 };
