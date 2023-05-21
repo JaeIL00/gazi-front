@@ -1,7 +1,6 @@
 import React, { RefObject, useCallback, useRef, useState } from 'react';
 import {
     ActivityIndicator,
-    Animated,
     Image,
     ImageSourcePropType,
     Linking,
@@ -14,6 +13,8 @@ import { useRecoilValue } from 'recoil';
 import { debounce } from 'lodash';
 import { Asset } from 'react-native-image-picker';
 import MapView, { Marker } from 'react-native-maps';
+import FastImage from 'react-native-fast-image';
+import { PERMISSIONS, RESULTS, checkMultiple } from 'react-native-permissions';
 
 import Icons from '../../smallest/Icons';
 import Spacer from '../../smallest/Spacer';
@@ -24,6 +25,7 @@ import MediumText from '../../smallest/MediumText';
 import TextButton from '../../molecules/TextButton';
 import TouchButton from '../../smallest/TouchButton';
 import SemiBoldText from '../../smallest/SemiBoldText';
+import PhotoGallery from '../../organisms/PhotoGallery';
 import MultiLineInput from '../../smallest/MultiLineInput';
 import HeaderMolecule from '../../molecules/HeaderMolecule';
 import SearchLocation from '../../organisms/SearchLocation';
@@ -32,16 +34,13 @@ import WritePhoto from '../../organisms/cummunity/WritePhoto';
 import FailPermissionModal from '../../organisms/FailPermissionModal';
 import WritePostAddKeyword from '../../organisms/cummunity/WritePostAddKeyword';
 import { userTokenAtom } from '../../../store/atoms';
-import { issueKeywords, subwayKeywords, trafficKeywords } from '../../../utils/allKeywords';
-import { screenFont, screenHeight, screenWidth } from '../../../utils/changeStyleSize';
+import { screenWidth } from '../../../utils/changeStyleSize';
 import { SingleLineInput } from '../../smallest/SingleLineInput';
 import { writePostOrCommentTemplateStyles } from '../../../styles/styles';
+import { useRootNavigation, useRootRoute } from '../../../navigations/RootStackNavigation';
+import { issueKeywords, subwayKeywords, trafficKeywords } from '../../../utils/allKeywords';
 import { KeywordListTypes, WritePostOrCommentTemplateProps, WritePostTypes } from '../../../types/types';
 import { writeCommentAPI, writeCommentFilesAPI, writePostAPI, writePostFilesAPI } from '../../../queries/api';
-import FastImage from 'react-native-fast-image';
-import { PERMISSIONS, RESULTS, checkMultiple } from 'react-native-permissions';
-import PhotoGallery from '../../organisms/PhotoGallery';
-import { useRootNavigation, useRootRoute } from '../../../navigations/RootStackNavigation';
 
 const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostOrCommentTemplateProps) => {
     const rootNavigation = useRootNavigation();
@@ -705,7 +704,7 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
                     </View>
                 )}
 
-                <ModalBackground visible={imagePermission}>
+                <ModalBackground visible={imagePermission} onRequestClose={() => setImagePermission(false)}>
                     <FailPermissionModal
                         permissionName="사진 접근 권한 허용하기"
                         contentOne="사진 업로드를 하시려면"
