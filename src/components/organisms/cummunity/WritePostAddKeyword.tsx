@@ -34,17 +34,14 @@ const WritePostAddKeyword = ({ keywordModalHandler, getKeywordHandler }: WritePo
     // Move step editting
     const stepHandler = () => {
         if (step === 1 && checkedKeywords.length > 0) {
-            let newCheckHead: boolean[] = [];
-            for (const index in chooseIssueList) {
-                newCheckHead = [...newCheckHead, false];
-            }
+            let newCheckHead: boolean[] = Array(chooseIssueList.length).fill(false);
             keywordSetStateHandler('HEAD', newCheckHead);
             setStep(2);
         } else if (step === 2) {
             // save and close
             if (headKeyword.length > 0) {
-                const chooseKeywords = [...headKeyword, ...checkedKeywords];
-                const lastKeywords = chooseKeywords.filter((item, index) => chooseKeywords.indexOf(item) === index);
+                const mergedKeywords = [...headKeyword, ...checkedKeywords];
+                const lastKeywords = mergedKeywords.filter((item, index) => mergedKeywords.indexOf(item) === index);
                 getKeywordHandler(lastKeywords);
                 keywordModalHandler('CLOSE');
             }
