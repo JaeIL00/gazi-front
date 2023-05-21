@@ -2,9 +2,9 @@ import React from 'react';
 import { View } from 'react-native';
 
 import ThreadItemTemplate from '../../components/templates/community/ThreadItemTemplate';
+import { useIsFocused } from '@react-navigation/native';
 import { threadItemScreenStyles } from '../../styles/styles';
 import { useRootNavigation, useRootRoute } from '../../navigations/RootStackNavigation';
-import { useIsFocused } from '@react-navigation/native';
 
 const ThreadItemScreen = () => {
     const route = useRootRoute<'ThreadItem'>();
@@ -26,11 +26,13 @@ const ThreadItemScreen = () => {
     const isFocus = useIsFocused();
     return (
         <View style={threadItemScreenStyles.container}>
-            <ThreadItemTemplate
-                postId={postId}
-                movetoCommunityScreen={movetoCommunityScreen}
-                moveToWriteScreen={moveToWriteScreen}
-            />
+            {isFocus && (
+                <ThreadItemTemplate
+                    postId={postId}
+                    movetoCommunityScreen={movetoCommunityScreen}
+                    moveToWriteScreen={moveToWriteScreen}
+                />
+            )}
         </View>
     );
 };

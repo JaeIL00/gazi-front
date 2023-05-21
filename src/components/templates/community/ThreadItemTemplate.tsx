@@ -19,6 +19,11 @@ import { CommentTopicTypes, CommentTypes, ThreadItemTemplateProps } from '../../
 
 const ThreadItemTemplate = ({ postId, movetoCommunityScreen, moveToWriteScreen }: ThreadItemTemplateProps) => {
     const { accessToken } = useRecoilValue(userTokenAtom);
+
+    const firstCommentId = useRef<number>();
+    const indexNumber = useRef<number>(0);
+
+    const [commentList, setCommentList] = useState<CommentTypes[]>([]);
     const [postValue, setPostValue] = useState<CommentTopicTypes>({
         title: '',
         rePostCount: 0,
@@ -27,8 +32,6 @@ const ThreadItemTemplate = ({ postId, movetoCommunityScreen, moveToWriteScreen }
         distance: '',
         backgroundMapUrl: '',
     });
-    const [commentList, setCommentList] = useState<CommentTypes[]>([]);
-    const firstCommentId = useRef<number>();
 
     // Get comment list API
     const {
@@ -41,25 +44,33 @@ const ThreadItemTemplate = ({ postId, movetoCommunityScreen, moveToWriteScreen }
     } = useInfiniteQuery(
         ['getCommentList'],
         ({ pageParam = 0 }) =>
-            getCommentListAPI({ accessToken, postId, curX: 37.49795103144074, curY: 127.02760985223079 }),
+            getCommentListAPI({
+                accessToken,
+                postId,
+                curX: 37.49795103144074,
+                curY: 127.02760985223079,
+                page: pageParam,
+            }),
         {
+            cacheTime: 0,
             getNextPageParam: (lastPage, allPages) => {
-                // const total = lastPage.data.data.totalPages;
-                // const nextPage = lastPage.data.data.pageable.pageNumber + 1;
-                // return nextPage > total ? undefined : nextPage;
-                // console.log('last', lastPage.data);
+                const total = lastPage.data.data.postList.totalPages;
+                const nextPage = lastPage.data.data.postList.pageable.pageNumber + 1;
+                return nextPage === total ? undefined : nextPage;
             },
             onSuccess: data => {
-                const pageNumber = data.pages[0].data.data.postList.pageable.pageNumber;
-                const responseCommentList: CommentTypes[] = data.pages[0].data.data.postList.content;
+                const pageNumber = data.pages[indexNumber.current].data.data.postList.pageable.pageNumber;
+                const responseCommentList: CommentTypes[] = data.pages[indexNumber.current].data.data.postList.content;
                 if (pageNumber === 0) {
-                    getCommentTopic(data.pages[0].data.data, responseCommentList);
+                    getCommentTopic(data.pages[indexNumber.current].data.data, responseCommentList);
                 } else {
                     const getNotReport = responseCommentList.filter((item: CommentTypes) => !item.report);
-                    setCommentList([...responseCommentList, ...getNotReport]);
+                    setCommentList([...commentList, ...getNotReport]);
                 }
                 if (data.pages[0].data.data.postList.last) {
                     firstCommentId.current = responseCommentList.pop()?.postId;
+                } else {
+                    indexNumber.current = indexNumber.current + 1;
                 }
             },
             onError: ({ response }) => {
@@ -168,6 +179,12 @@ const ThreadItemTemplate = ({ postId, movetoCommunityScreen, moveToWriteScreen }
                         contentContainerStyle={threadItemTemplateStyles.commentListBox}
                         ItemSeparatorComponent={ItemSeparatorComponent}
                         showsVerticalScrollIndicator={false}
+                        onEndReachedThreshold={1.3}
+                        onEndReached={() => {
+                            if (hasNextPage) {
+                                fetchNextPage();
+                            }
+                        }}
                     />
                 </View>
             </View>

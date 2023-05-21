@@ -202,15 +202,22 @@ export const getAllPostAPI = async (param: { accessToken: string; curLat: number
     });
     return response;
 };
-export const getCommentListAPI = async (param: { accessToken: string; postId: number; curX: number; curY: number }) => {
+export const getCommentListAPI = async (param: {
+    accessToken: string;
+    postId: number;
+    curX: number;
+    curY: number;
+    page: number;
+}) => {
     const response = await Axios({
-        url: `/api/v1/post/top-post?postId=${param.postId}&curX=${param.curX}&curY=${param.curY}`,
+        url: `/api/v1/post/top-post?postId=${param.postId}&curX=${param.curX}&curY=${param.curY}&page=${param.page}`,
         method: 'get',
         headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${param.accessToken}`,
         },
     });
+
     return response;
 };
 export const reportAPI = async (param: {
