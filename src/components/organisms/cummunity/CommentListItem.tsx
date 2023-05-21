@@ -79,7 +79,7 @@ const CommentListItem = ({ comment, postTitle, postCount, reportHandler, firstCo
                 });
             }
         }, 1000),
-        [firstCommentId],
+        [firstCommentId, comment],
     );
     const delHelpfulMutate = useCallback(
         debounce(() => {
