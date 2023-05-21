@@ -1044,7 +1044,6 @@ export const writePostOrCommentTemplateStyles = StyleSheet.create({
         borderRadius: 12 * screenFont,
     },
     conditionSettingBox: {
-        paddingLeft: 16 * screenWidth,
         paddingTop: 14 * screenHeight,
     },
     mapSize: {

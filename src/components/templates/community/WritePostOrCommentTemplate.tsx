@@ -670,7 +670,7 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
                             finishFunction={() => locationModalHandler('CLOSE')}
                         />
 
-                        <Spacer height={28} />
+                        <Spacer height={12} />
 
                         <SearchLocation
                             getLocationHandler={getLocationHandler}
