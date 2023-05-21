@@ -840,6 +840,9 @@ export const emailLoginTemplateStyles = StyleSheet.create({
     container: {
         flex: 1,
     },
+    mainContent: {
+        flexGrow: 1,
+    },
     underBar: {
         borderBottomColor: Colors.TXT_GRAY,
         borderBottomWidth: 2 * screenFont,
@@ -851,6 +854,12 @@ export const emailLoginTemplateStyles = StyleSheet.create({
         alignItems: 'center',
         position: 'absolute',
         bottom: -21 * screenHeight,
+    },
+    bottomBox: {
+        paddingBottom: 37 * screenHeight,
+    },
+    bottomContain: {
+        flexShrink: 1,
     },
 });
 export const initLikeKeywordTemplateStyles = StyleSheet.create({
