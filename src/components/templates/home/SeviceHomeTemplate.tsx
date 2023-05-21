@@ -1,5 +1,5 @@
 import React, { RefObject, useCallback, useLayoutEffect, useRef, useState } from 'react';
-import { ActivityIndicator, Image, Linking, Platform, View } from 'react-native';
+import { ActivityIndicator, Image, Linking, Modal, Platform, TouchableOpacity, View } from 'react-native';
 import Geolocation from '@react-native-community/geolocation';
 import DropShadow from 'react-native-drop-shadow';
 import { useRecoilValue } from 'recoil';
@@ -11,30 +11,34 @@ import SplashScreen from 'react-native-splash-screen';
 
 import Colors from '../../../styles/Colors';
 import MediumText from '../../smallest/MediumText';
+import NormalText from '../../smallest/NormalText';
 import TouchButton from '../../smallest/TouchButton';
 import MapWithMarker from '../../organisms/MapWithMarker';
+import SearchLocation from '../../organisms/SearchLocation';
 import ModalBackground from '../../smallest/ModalBackground';
-import NearbyPostListModal from '../../organisms/NearbyPostListModal';
 import FailPermissionModal from '../../organisms/FailPermissionModal';
+import NearbyPostListModal from '../../organisms/NearbyPostListModal';
 import { userTokenAtom } from '../../../store/atoms';
 import { nearByUserPostsAPI } from '../../../queries/api';
-import { SingleLineInput } from '../../smallest/SingleLineInput';
-import { seviceHomeTemplateStyles } from '../../../styles/styles';
+import { serviceHomeTemplateStyles } from '../../../styles/styles';
 import { screenFont, screenHeight, screenWidth } from '../../../utils/changeStyleSize';
 import { SeviceHomeTemplateProps, MapLocationTypes, PostTypes, MapBoundaryTypes } from '../../../types/types';
 
 const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritePost }: SeviceHomeTemplateProps) => {
     const { accessToken } = useRecoilValue(userTokenAtom);
 
-    const [onModal, setOnModal] = useState<boolean>(false);
-    const [searchText, setSearchText] = useState<string>('');
+    const indexNumber = useRef<number>(0);
+    const mapRef = useRef() as RefObject<MapView>;
+
+    const [searchModal, setSearchModal] = useState<boolean>(false);
     const [nearPostList, setNearPostList] = useState<PostTypes[]>([]);
-    const [markerPost, setMarkerPost] = useState<PostTypes | null>(null);
     const [isFarMapLevel, setIsFarMapLevel] = useState<boolean>(false);
+    const [markerPost, setMarkerPost] = useState<PostTypes | null>(null);
     const [isAllowLocation, setIsAllowLocation] = useState<boolean>(false);
-    const [isNearPostSearch, setIsNearPostSearch] = useState<boolean>(false);
     const [isBottomSheetMini, setIsBottomSheetMini] = useState<boolean>(false);
     const [isBottomSheetFull, setIsBottomSheetFull] = useState<boolean>(false);
+    const [isNearPostSearchTopBar, setIsNearPostSearchTopBar] = useState<boolean>(false);
+    const [onLocationPermissionModal, setOnLocationPermissionModal] = useState<boolean>(false);
     const [currentPosition, setCurrentPosition] = useState<MapLocationTypes>({
         latitude: 37.49795103144074,
         longitude: 127.02760985223079,
@@ -51,11 +55,8 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritePost }:
         isNearSearch: false,
     });
 
-    const indexNumber = useRef<number>(0);
-    const mapRef = useRef() as RefObject<MapView>;
-
     // Get post of near by user API
-    const { hasNextPage, isFetching, isFetchingNextPage, fetchNextPage, refetch, remove } = useInfiniteQuery(
+    const { hasNextPage, isFetching, fetchNextPage, refetch, remove } = useInfiniteQuery(
         ['getNearPosts'],
         ({ pageParam = 0 }) =>
             nearByUserPostsAPI({
@@ -94,6 +95,34 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritePost }:
             },
         },
     );
+
+    // Search modal handler
+    const searchModalHandler = (state: string) => {
+        switch (state) {
+            case 'OPEN':
+                setSearchModal(true);
+                break;
+            case 'CLOSE':
+                setSearchModal(false);
+                break;
+            default:
+                // For Debug
+                console.log('(ERROR) Search modal handler.', state);
+        }
+    };
+
+    // Seach location to move map
+    const getLocationHandler = (location: { lat: number; lng: number }) => {
+        setCurrentPosition({
+            latitude: location.lat,
+            longitude: location.lng,
+        });
+        setTimeout(() => {
+            getBoundaryMap();
+        }, 500);
+        setIsNearPostSearchTopBar(false);
+        setSearchModal(false);
+    };
 
     // Check Location Permission
     const checkLocationPermission = async (): Promise<boolean> => {
@@ -141,9 +170,6 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritePost }:
                         longitude: info.coords.longitude,
                     });
                     setIsAllowLocation(true);
-                    setTimeout(() => {
-                        getBoundaryMap();
-                    }, 1000);
                 } else {
                     mapRef.current?.animateToRegion({
                         latitude: currentPosition.latitude,
@@ -151,11 +177,11 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritePost }:
                         latitudeDelta: 0.04,
                         longitudeDelta: 0.027,
                     });
-                    setIsNearPostSearch(false);
+                    setIsNearPostSearchTopBar(false);
                 }
             });
         } else {
-            setOnModal(true);
+            setOnLocationPermissionModal(true);
             setIsAllowLocation(false);
         }
     }, 300);
@@ -175,7 +201,7 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritePost }:
             console.log('(ERROR) Get boundary of map.', err);
         } finally {
             if (boundaryValue) {
-                setIsNearPostSearch(false);
+                setIsNearPostSearchTopBar(false);
                 initNearPosts();
             }
         }
@@ -196,10 +222,10 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritePost }:
     const onPressModalButton = useCallback(async (state: string) => {
         switch (state) {
             case 'CLOSE':
-                setOnModal(false);
+                setOnLocationPermissionModal(false);
                 break;
             case 'MOVE':
-                setOnModal(false);
+                setOnLocationPermissionModal(false);
                 await Linking.openSettings();
                 break;
             default:
@@ -207,11 +233,6 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritePost }:
                 console.log('(ERROR) Again request modal button Handling. state: ', state);
         }
     }, []);
-
-    // Search text handling
-    const onChangeSearchText = (text: string) => {
-        setSearchText(text);
-    };
 
     // Call next page API
     const callNextPageHandler = () => {
@@ -235,7 +256,7 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritePost }:
         (region: Region, details: Details) => {
             if (details.isGesture) {
                 moveToBottomSheetMini();
-                setIsNearPostSearch(true);
+                setIsNearPostSearchTopBar(true);
             }
             if (details.isGesture && markerPost) {
                 setMarkerPost(null);
@@ -297,30 +318,39 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritePost }:
                 mapRenderCompleteHandler={mapRenderCompleteHandler}
                 findMarkerPost={findMarkerPost}
             />
-            <View style={seviceHomeTemplateStyles.searchLayout}>
+            <View style={serviceHomeTemplateStyles.searchLayout}>
                 {Platform.OS === 'android' && (
-                    <DropShadow style={seviceHomeTemplateStyles.dropshadow}>
-                        <View style={seviceHomeTemplateStyles.inputBox}>
-                            <Image
-                                source={require('../../../assets/icons/search.png')}
-                                style={seviceHomeTemplateStyles.searchIcon}
-                            />
-                            <SingleLineInput
-                                value={searchText}
-                                placeholder="지금 어디로 가시나요?"
-                                onChangeText={onChangeSearchText}
-                                fontSize={16}
-                            />
-                        </View>
+                    <DropShadow style={serviceHomeTemplateStyles.dropshadow}>
+                        <TouchableOpacity onPress={() => searchModalHandler('OPEN')} activeOpacity={1}>
+                            <View style={serviceHomeTemplateStyles.inputBox}>
+                                <Image
+                                    source={require('../../../assets/icons/search.png')}
+                                    style={serviceHomeTemplateStyles.searchIcon}
+                                />
+                                <NormalText text="지금 어디로 가시나요?" size={16} color={Colors.TXT_LIGHTGRAY} />
+                            </View>
+                        </TouchableOpacity>
                     </DropShadow>
                 )}
-                <View>
+                {/* Temporary planning*/}
+                {/* <View>
                     <Image
                         source={require('../../../assets/icons/bell-fill.png')}
-                        style={seviceHomeTemplateStyles.bellIcon}
+                        style={serviceHomeTemplateStyles.bellIcon}
+                    />
+                </View> */}
+            </View>
+
+            <Modal visible={searchModal} onRequestClose={() => setSearchModal(false)}>
+                <View style={{ backgroundColor: '#fff', paddingTop: 16 * screenHeight }}>
+                    <SearchLocation
+                        getLocationHandler={getLocationHandler}
+                        placeholder="지금 어디로 가시나요?"
+                        isHome={true}
+                        searchModalHandler={searchModalHandler}
                     />
                 </View>
-            </View>
+            </Modal>
 
             <NearbyPostListModal
                 isModalRef={isModalRef}
@@ -350,7 +380,7 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritePost }:
                 </View>
             )}
 
-            <ModalBackground visible={onModal}>
+            <ModalBackground visible={onLocationPermissionModal}>
                 <FailPermissionModal
                     permissionName="필수 권한 허용 안내"
                     contentOne="위치 권한에 대한 사용을 거부하였습니다. 서비스 사용을 원하실 경우 해당 앱의 권한을 허용해주세요"
@@ -359,13 +389,13 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritePost }:
             </ModalBackground>
 
             {isFarMapLevel && (
-                <View style={seviceHomeTemplateStyles.zoomWarning}>
+                <View style={serviceHomeTemplateStyles.zoomWarning}>
                     <MediumText text="사건 확인을 위해 지도를 확인해 주세요" size={14} color={Colors.WHITE} />
                 </View>
             )}
 
-            {isNearPostSearch && !isFarMapLevel && Platform.OS === 'android' && (
-                <DropShadow style={seviceHomeTemplateStyles.mapMoveSearch}>
+            {isNearPostSearchTopBar && !isFarMapLevel && Platform.OS === 'android' && (
+                <DropShadow style={serviceHomeTemplateStyles.mapMoveSearch}>
                     <TouchButton
                         onPress={getBoundaryMap}
                         backgroundColor="#F8F7FA"

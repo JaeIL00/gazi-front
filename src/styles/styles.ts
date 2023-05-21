@@ -23,16 +23,13 @@ export const globalBackWhiteStyles = StyleSheet.create({
     },
 });
 export const nextStepButtonPosition = StyleSheet.create({
-    button: {
-        width: '100%',
-        position: 'absolute',
-    },
+    button: {},
 });
 
 // SMALLEST
 export const touchButtonStyles = (
-    width: number | undefined,
-    height: number | undefined,
+    width: number | string | undefined,
+    height: number | string | undefined,
     backgroundColor: string | undefined,
     paddingHorizontal: number | undefined,
     paddingVertical: number | undefined,
@@ -46,8 +43,8 @@ export const touchButtonStyles = (
 ) =>
     StyleSheet.create({
         container: {
-            width: width && width * screenWidth,
-            height: height && height * screenHeight,
+            width: typeof width === 'string' ? width : width && width * screenWidth,
+            height: typeof height === 'string' ? height : height && height * screenHeight,
             backgroundColor: backgroundColor,
             paddingHorizontal: paddingHorizontal && paddingHorizontal * screenWidth,
             paddingVertical: paddingVertical && paddingVertical * screenHeight,
@@ -71,6 +68,7 @@ export const singleLineInputStyles = (
 ) =>
     StyleSheet.create({
         common: {
+            flex: 1,
             fontSize: fontSize ? fontSize * screenFont : 16 * screenFont,
             width: width && width * screenWidth,
             height: height && height * screenHeight,
@@ -96,7 +94,7 @@ export const multiLineInputStyles = (
     StyleSheet.create({
         common: {
             fontSize: fontSize ? fontSize * screenFont : 16 * screenFont,
-            height: height && height * screenHeight,
+            minHeight: height && height * screenHeight,
             textAlignVertical: 'top',
         },
         input: {
@@ -236,6 +234,44 @@ export const moveBackWithPageTitleStyles = StyleSheet.create({
     buttonContainer: {
         paddingTop: 30 * screenHeight,
         paddingBottom: 43 * screenHeight,
+    },
+});
+export const photoGalleryStyles = StyleSheet.create({
+    container: {
+        backgroundColor: Colors.WHITE,
+        position: 'absolute',
+        width: '100%',
+        height: '100%',
+        top: 0,
+        zIndex: 9999,
+    },
+    headerBox: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        paddingHorizontal: 22 * screenWidth,
+        paddingVertical: 16 * screenHeight,
+    },
+    albumButtonBox: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    albumButtonIcon: {
+        width: 12 * screenWidth,
+        height: 12 * screenWidth,
+    },
+    imageBox: {
+        width: 118 * screenWidth,
+        height: 118 * screenWidth,
+        justifyContent: 'center',
+    },
+    cameraIcon: {
+        width: 55.41 * screenWidth,
+        height: 55.41 * screenWidth,
+    },
+    imageSize: {
+        width: '100%',
+        height: '100%',
     },
 });
 export const serviceAgreementStyles = StyleSheet.create({
@@ -544,6 +580,7 @@ export const writePostAddKeywordStyles = StyleSheet.create({
         height: '100%',
         backgroundColor: Colors.BACKGROUND_DEFAULT,
         paddingHorizontal: 16 * screenWidth,
+        zIndex: 9999,
     },
     headerBox: {
         flexDirection: 'row',
@@ -582,14 +619,11 @@ export const writePostAddKeywordStyles = StyleSheet.create({
 export const writePhotoStyles = StyleSheet.create({
     container: {
         flexDirection: 'row',
-        paddingHorizontal: 16 * screenWidth,
+
         position: 'absolute',
-        bottom: 26 * screenHeight,
+        bottom: 0,
     },
-    cameraIcon: {
-        width: 30 * screenWidth,
-        height: 30 * screenWidth,
-    },
+
     previewBox: {
         width: 71 * screenWidth,
         height: 71 * screenWidth,
@@ -732,11 +766,29 @@ export const inputEmailTemplateStyles = StyleSheet.create({
     container: {
         flex: 1,
     },
+    mainContent: {
+        flexGrow: 1,
+    },
     emailErrorTextBox: {
         flexDirection: 'row',
         paddingLeft: 10 * screenWidth,
         justifyContent: 'flex-start',
         alignItems: 'center',
+    },
+    bottomBox: {
+        flexShrink: 1,
+    },
+    resendMailButtonBox: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingTop: 24 * screenHeight,
+        paddingBottom: 36 * screenHeight,
+        justifyContent: 'center',
+    },
+    resendButton: {
+        borderBottomWidth: 1.5 * screenFont,
+        borderColor: Colors.TXT_GRAY,
+        marginLeft: 8 * screenWidth,
     },
 });
 export const emailWithPasswordTemplateStyles = StyleSheet.create({
@@ -857,7 +909,7 @@ export const completedJoinTemplateStyles = StyleSheet.create({
         bottom: 42 * screenHeight,
     },
 });
-export const seviceHomeTemplateStyles = StyleSheet.create({
+export const serviceHomeTemplateStyles = StyleSheet.create({
     searchLayout: {
         position: 'absolute',
         top: 16 * screenHeight,
@@ -919,24 +971,28 @@ export const seviceHomeTemplateStyles = StyleSheet.create({
 });
 export const writePostOrCommentTemplateStyles = StyleSheet.create({
     container: {
-        backgroundColor: Colors.BACKGROUND_DEFAULT,
+        backgroundColor: Colors.WHITE,
         flex: 1,
         position: 'absolute',
         width: '100%',
         height: '100%',
     },
-    headerBox: {
-        paddingHorizontal: 16 * screenWidth,
-        paddingBottom: 12 * screenHeight,
-        borderWidth: 1 * screenFont,
-        borderColor: '#EBEBEB',
-    },
     headerNavigateBox: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        paddingTop: 17 * screenHeight,
-        paddingBottom: 26 * screenHeight,
+        paddingHorizontal: 16 * screenWidth,
+        paddingVertical: 16 * screenHeight,
     },
+    contentBox: {
+        flex: 1,
+    },
+    settingContainer: {
+        borderBottomWidth: 1 * screenFont,
+        borderColor: '#EBEBEB',
+        paddingHorizontal: 16 * screenWidth,
+        paddingBottom: 12 * screenHeight,
+    },
+    contentInputFocus: { height: 400 * screenHeight },
     settingBox: {
         flexDirection: 'row',
         alignItems: 'center',
@@ -950,6 +1006,7 @@ export const writePostOrCommentTemplateStyles = StyleSheet.create({
         width: '100%',
         height: '100%',
         backgroundColor: Colors.BACKGROUND_DEFAULT,
+        zIndex: 9999,
     },
     searchToggleIcon: {
         width: 10 * screenWidth,
@@ -961,7 +1018,6 @@ export const writePostOrCommentTemplateStyles = StyleSheet.create({
     },
     inputBox: {
         paddingHorizontal: 16 * screenWidth,
-        height: 300 * screenHeight,
         paddingTop: 10 * screenHeight,
     },
     errorModalBack: {
@@ -989,6 +1045,38 @@ export const writePostOrCommentTemplateStyles = StyleSheet.create({
     mapMarkerPosition: {
         justifyContent: 'center',
         alignItems: 'center',
+    },
+    bottomBox: {
+        flexShrink: 1,
+        backgroundColor: Colors.BACKGROUND_DEFAULT,
+    },
+    bottomBarBotton: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        width: '100%',
+    },
+    addPhotoBox: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    cameraIcon: {
+        width: 24 * screenWidth,
+        height: 24 * screenWidth,
+    },
+    bottomKeyword: {
+        paddingHorizontal: 16 * screenWidth,
+        paddingTop: 8 * screenHeight,
+        paddingBottom: 13 * screenHeight,
+        backgroundColor: Colors.WHITE,
+    },
+    bottomKeywordItem: {
+        borderColor: Colors.TXT_LIGHTGRAY,
+        borderWidth: 0.8 * screenFont,
+        borderRadius: 21.57 * screenFont,
+        paddingHorizontal: 10 * screenWidth,
+        paddingVertical: 5 * screenHeight,
+        marginRight: 3 * screenWidth,
     },
 });
 export const myProfileTemplateStyles = StyleSheet.create({

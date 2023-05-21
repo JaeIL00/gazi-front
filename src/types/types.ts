@@ -13,6 +13,12 @@ export type KeywordListTypes = {
     keywordName: string;
     vehicleType: string | null;
 };
+export type SearchHistoryTypes = {
+    formatted_address: string;
+    name: string;
+
+    location: { lat: number; lng: number };
+};
 export type MapLocationTypes = {
     latitude: number;
     longitude: number;
@@ -211,8 +217,8 @@ export type TouchButtonProps = {
     children?: ReactElement;
     onPressIn?: () => void;
     onPress?: () => void;
-    width?: number;
-    height?: number;
+    width?: number | string;
+    height?: number | string;
     backgroundColor?: string;
     paddingHorizontal?: number;
     paddingVertical?: number;
@@ -262,6 +268,8 @@ export type MultiLineInputProps = {
     height?: number;
     fontFamily?: string | null;
     placeFontFamily?: string | null;
+    inputFocusBlur: boolean;
+    inputFocusBlurHandler: (state: string) => void;
     onChangeText: (text: string) => void;
     onSubmitEditing?: () => void;
 };
@@ -289,6 +297,7 @@ export type AppTextProps = {
 export type ModalBackgroundProps = {
     children: ReactElement;
     visible: boolean;
+    onRequestClose: () => void;
 };
 
 // MOLECULES
@@ -343,6 +352,9 @@ export type HeaderMoleculeProps = {
 export interface MoveBackWithPageTitleProps extends PageTitleWithExplainProps {
     onPress: () => void;
 }
+export type PhotoGalleryProps = {
+    closeGalleryHandling: () => void;
+};
 export type ServiceAgreementProps = {
     finishSlideComponentHandler: (state: string) => void;
 };
@@ -402,11 +414,14 @@ export type NearbyPostListModalProps = {
     moveToWritePost: () => void;
 };
 export type SearchLocationProps = {
+    isHome: boolean;
+    placeholder: string;
     getLocationHandler: (location: { lat: number; lng: number }, placeName: string) => void;
+    searchModalHandler?: (state: string) => void;
 };
 export type WritePostAddKeywordProps = {
     keywordModalHandler: (state: string) => void;
-    getKeywordHandler: (state: string, keyword: number[]) => void;
+    getKeywordHandler: (keyword: number[]) => void;
 };
 export type WritePhotoProps = {
     getImageHandler: (files: Asset[]) => void;
@@ -425,6 +440,8 @@ export type EditMyKeywordProps = {
 
 // TEMPLATES
 export type InputEmailTemplateProps = {
+    minutes: number;
+    seconds: number;
     onPressNextStep: () => void;
     resetTimeHandler: () => void;
     didAuthEmail: () => void;
