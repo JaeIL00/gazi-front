@@ -1340,7 +1340,7 @@ export const communityTemplateStyles = StyleSheet.create({
         width: '50%',
         paddingBottom: 7 * screenHeight,
         paddingTop: 13 * screenHeight,
-        borderColor: Colors.BLACK,
+        borderBottomWidth: 1.5 * screenFont,
     },
     contentBox: {
         flex: 1,

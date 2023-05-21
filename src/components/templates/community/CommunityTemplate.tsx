@@ -219,7 +219,7 @@ const CommunityTemplate = ({ moveToKeywordSettingScreen }: CommunityTemplateProp
                     style={[
                         communityTemplateStyles.tabButton,
                         {
-                            borderBottomWidth: isLikePostTab ? undefined : 1.5 * screenFont,
+                            borderColor: isLikePostTab ? '#EBEBEB' : Colors.BLACK,
                         },
                     ]}>
                     <TouchButton onPress={() => tabHandler('ALL')}>
@@ -230,7 +230,7 @@ const CommunityTemplate = ({ moveToKeywordSettingScreen }: CommunityTemplateProp
                     style={[
                         communityTemplateStyles.tabButton,
                         {
-                            borderBottomWidth: isLikePostTab ? 1.5 * screenFont : undefined,
+                            borderColor: isLikePostTab ? Colors.BLACK : '#EBEBEB',
                         },
                     ]}>
                     <TouchButton onPress={() => tabHandler('LIKE')}>
