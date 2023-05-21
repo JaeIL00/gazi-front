@@ -62,7 +62,7 @@ export type CommentTypes = {
     nickName: string;
     report: boolean;
     time: string;
-    id: number;
+    postId: number;
 };
 export type LocationResultTypes = {
     business_status: string;
@@ -359,6 +359,7 @@ export type CommentListItemProps = {
     comment: CommentTypes;
     postTitle: string;
     postCount: number;
+    firstCommentId: number | undefined;
     reportHandler: (repostId: number) => void;
 };
 export type ServiceAgreementProps = {

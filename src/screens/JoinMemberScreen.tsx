@@ -105,7 +105,6 @@ const JoinMemberScreen = () => {
 
     // Android back button & Header Back Button Handling
     const handleBackButton = (): boolean => {
-        console.log('hooo');
         if (step === 4) {
             // For Debug
             rootNavigation.navigate('NotLoginHome');

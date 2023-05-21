@@ -231,6 +231,41 @@ export const reportAPI = async (param: {
     });
     return response;
 };
+export const addHelpfulCommentAPI = async (param: {
+    accessToken: string;
+    data: {
+        postId: number | null;
+        repostId: number | null;
+    };
+}) => {
+    const response = await Axios({
+        url: '/api/v1/like',
+        method: 'post',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${param.accessToken}`,
+        },
+        data: JSON.stringify(param.data),
+    });
+    return response;
+};
+export const delHelpfulCommentAPI = async (param: {
+    accessToken: string;
+    data: {
+        postId: number | null;
+        repostId: number | null;
+    };
+}) => {
+    const response = await Axios({
+        url: '/api/v1/like',
+        method: 'delete',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        data: JSON.stringify(param.data),
+    });
+    return response;
+};
 
 // TEMPORARY COMMUNITY
 export const writePostAPI = async (param: { accessToken: string; data: PostDto }) => {

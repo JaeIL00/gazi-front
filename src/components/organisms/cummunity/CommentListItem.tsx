@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Image, View } from 'react-native';
+import { useMutation } from 'react-query';
 
 import Icons from '../../smallest/Icons';
 import Spacer from '../../smallest/Spacer';
@@ -8,16 +9,106 @@ import NormalText from '../../smallest/NormalText';
 import MediumText from '../../smallest/MediumText';
 import TouchButton from '../../smallest/TouchButton';
 import SemiBoldText from '../../smallest/SemiBoldText';
-import { CommentListItemProps, ImageViewTypes } from '../../../types/types';
-import { commentListItemStyles } from '../../../styles/styles';
-import { useRootNavigation } from '../../../navigations/RootStackNavigation';
 import CommentImageItem from '../../molecules/CommentImageItem';
+import { commentListItemStyles } from '../../../styles/styles';
+import { CommentListItemProps, ImageViewTypes } from '../../../types/types';
+import { useRootNavigation } from '../../../navigations/RootStackNavigation';
+import { addHelpfulCommentAPI, delHelpfulCommentAPI } from '../../../queries/api';
+import { debounce } from 'lodash';
+import { useRecoilValue } from 'recoil';
+import { userTokenAtom } from '../../../store/atoms';
 
-const CommentListItem = ({ comment, postTitle, postCount, reportHandler }: CommentListItemProps) => {
+const CommentListItem = ({ comment, postTitle, postCount, reportHandler, firstCommentId }: CommentListItemProps) => {
     const rootNavigation = useRootNavigation();
+
+    const { accessToken } = useRecoilValue(userTokenAtom);
+
+    const [isHelpful, setIsHelpful] = useState<boolean>(comment.like);
+    const [helpfulCount, setHelpfulCount] = useState<number>(comment.likeCount);
+
+    // Add helpful comment API
+    const { mutate: addHelpfultMutate } = useMutation(addHelpfulCommentAPI, {
+        onSuccess: () => {},
+        onError: error => {
+            // For Debug
+            console.log('(ERROR) Add helpful comment API', error);
+        },
+    });
+
+    // Delete helpful comment API
+    const { mutate: delHelpfultMutate } = useMutation(delHelpfulCommentAPI, {
+        onSuccess: () => {},
+        onError: error => {
+            // For Debug
+            console.log('(ERROR) Delete helpful comment API', error);
+        },
+    });
+
+    useEffect(() => {
+        console.log(comment.postId, comment.like);
+    }, []);
+
+    // Helpful comment handler
+    const helpfulCommentHandler = () => {
+        setIsHelpful(!isHelpful);
+        if (isHelpful) {
+            setHelpfulCount(helpfulCount - 1);
+            delHelpfulMutate();
+        } else {
+            setHelpfulCount(helpfulCount + 1);
+            addHelpfulMutate();
+        }
+    };
+    const addHelpfulMutate = useCallback(
+        debounce(() => {
+            if (firstCommentId === comment.postId) {
+                addHelpfultMutate({
+                    accessToken,
+                    data: {
+                        postId: comment.postId,
+                        repostId: null,
+                    },
+                });
+            } else {
+                addHelpfultMutate({
+                    accessToken,
+                    data: {
+                        postId: null,
+                        repostId: comment.postId,
+                    },
+                });
+            }
+        }, 1000),
+        [firstCommentId],
+    );
+    const delHelpfulMutate = useCallback(
+        debounce(() => {
+            if (firstCommentId === comment.postId) {
+                delHelpfultMutate({
+                    accessToken,
+                    data: {
+                        postId: comment.postId,
+                        repostId: null,
+                    },
+                });
+            } else {
+                delHelpfultMutate({
+                    accessToken,
+                    data: {
+                        postId: null,
+                        repostId: comment.postId,
+                    },
+                });
+            }
+        }, 1000),
+        [firstCommentId],
+    );
+
+    // Move image view screen
     const moveImageViewScreen = (viewData: ImageViewTypes) => {
         rootNavigation.navigate('ImageView', viewData);
     };
+
     return (
         <View style={commentListItemStyles.container}>
             <View style={commentListItemStyles.lineSphere} />
@@ -33,7 +124,7 @@ const CommentListItem = ({ comment, postTitle, postCount, reportHandler }: Comme
                                 <MediumText text={`${comment.distance} | ${comment.time}`} size={11} color="#999999" />
                             </View>
                         </View>
-                        <TouchButton onPress={() => reportHandler(comment.id)} hitSlop={10}>
+                        <TouchButton onPress={() => reportHandler(comment.postId)} hitSlop={10}>
                             <MediumText text="신고하기" size={11} color={Colors.BLACK} />
                         </TouchButton>
                     </View>
@@ -184,11 +275,20 @@ const CommentListItem = ({ comment, postTitle, postCount, reportHandler }: Comme
 
                 <Spacer height={9} />
 
-                <TouchButton onPress={() => {}} alignSelf="flex-start">
+                <TouchButton onPress={helpfulCommentHandler} alignSelf="flex-start" hitSlop={10}>
                     <View style={commentListItemStyles.likeBox}>
-                        <Icons type="feather" name="thumbs-up" size={15} color={Colors.TXT_GRAY} />
+                        <Icons
+                            type="feather"
+                            name="thumbs-up"
+                            size={15}
+                            color={isHelpful ? Colors.VIOLET : Colors.TXT_GRAY}
+                        />
                         <Spacer width={2} />
-                        <NormalText text={`도움돼요 ${comment.likeCount}`} size={13} color={Colors.TXT_GRAY} />
+                        <NormalText
+                            text={`도움돼요 ${helpfulCount}`}
+                            size={13}
+                            color={isHelpful ? Colors.VIOLET : Colors.TXT_GRAY}
+                        />
                     </View>
                 </TouchButton>
             </View>

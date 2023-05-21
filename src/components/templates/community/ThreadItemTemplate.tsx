@@ -29,6 +29,8 @@ const ThreadItemTemplate = ({ postId, movetoCommunityScreen, moveToWriteScreen }
     });
     const [commentList, setCommentList] = useState<CommentTypes[]>([]);
     const firstCommentId = useRef<number>();
+
+    // Get comment list API
     const {
         hasNextPage,
         isFetching,
@@ -57,7 +59,7 @@ const ThreadItemTemplate = ({ postId, movetoCommunityScreen, moveToWriteScreen }
                     setCommentList([...responseCommentList, ...getNotReport]);
                 }
                 if (data.pages[0].data.data.postList.last) {
-                    firstCommentId.current = responseCommentList.pop()?.id;
+                    firstCommentId.current = responseCommentList.pop()?.postId;
                 }
             },
             onError: ({ response }) => {
@@ -66,6 +68,19 @@ const ThreadItemTemplate = ({ postId, movetoCommunityScreen, moveToWriteScreen }
             },
         },
     );
+
+    // Comment report API
+    const { mutate, isLoading } = useMutation(reportAPI, {
+        onSuccess: () => {
+            commentRemove();
+            commentRefetch();
+        },
+        onError: ({ response }) => {
+            // For Debug
+            console.log('(ERROR) report API. respense: ', response);
+        },
+    });
+
     const getCommentTopic = (data: CommentTopicTypes, content: CommentTypes[]) => {
         setPostValue({
             title: data.title,
@@ -87,23 +102,13 @@ const ThreadItemTemplate = ({ postId, movetoCommunityScreen, moveToWriteScreen }
                 reportHandler={reportHandler}
                 postTitle={postValue.title}
                 postCount={postValue.rePostCount}
+                firstCommentId={firstCommentId.current}
             />
         ),
         [postValue],
     );
     const ItemSeparatorComponent = useCallback(() => <Spacer height={29} />, []);
 
-    // report API
-    const { mutate, isLoading } = useMutation(reportAPI, {
-        onSuccess: () => {
-            commentRemove();
-            commentRefetch();
-        },
-        onError: ({ response }) => {
-            // For Debug
-            console.log('(ERROR) report API. respense: ', response);
-        },
-    });
     const reportHandler = (repostId: number) => {
         if (firstCommentId.current === repostId) {
             mutate({
