@@ -199,6 +199,7 @@ export type RootStackParamList = {
     Policies: undefined;
     ThreadItem: {
         postId: number;
+        freshRePostCount?: number;
     };
     MyPostComment: undefined;
     ChangePassword: undefined;
@@ -479,7 +480,7 @@ export type WritePostOrCommentTemplateProps = {
               postId: number;
           }
         | undefined;
-    moveToScreen: (state: string, postId: number | null) => void;
+    moveToScreen: (state: string, postId: number | null, freshRePostCount?: number) => void;
 };
 export type EditNicknameTemplateProps = {
     moveToMyProfileScreen: (state: string) => void;
@@ -489,6 +490,7 @@ export type MyProfileTemplateProps = {
 };
 export type ThreadItemTemplateProps = {
     postId: number;
+    freshRePostCount?: number;
     movetoCommunityScreen: () => void;
     moveToWriteScreen: (title: string, rePostCount: number, time: string) => void;
 };

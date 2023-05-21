@@ -9,11 +9,12 @@ const WritePostOrCommentScreen = () => {
     const data = route.params;
 
     const rootNavigation = useRootNavigation();
-    const moveToScreen = (state: string, postId: number | null) => {
+    const moveToScreen = (state: string, postId: number | null, freshRePostCount?: number) => {
         switch (state) {
             case 'GO':
                 rootNavigation.navigate('ThreadItem', {
                     postId: postId!,
+                    freshRePostCount,
                 });
                 break;
             case 'BACK':

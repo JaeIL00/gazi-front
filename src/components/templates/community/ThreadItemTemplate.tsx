@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { FlatList, Image, Platform, View } from 'react-native';
 import DropShadow from 'react-native-drop-shadow';
 import { useRecoilValue } from 'recoil';
@@ -17,7 +17,12 @@ import { getCommentListAPI, reportAPI } from '../../../queries/api';
 import { screenHeight, screenWidth } from '../../../utils/changeStyleSize';
 import { CommentTopicTypes, CommentTypes, ThreadItemTemplateProps } from '../../../types/types';
 
-const ThreadItemTemplate = ({ postId, movetoCommunityScreen, moveToWriteScreen }: ThreadItemTemplateProps) => {
+const ThreadItemTemplate = ({
+    postId,
+    freshRePostCount,
+    movetoCommunityScreen,
+    moveToWriteScreen,
+}: ThreadItemTemplateProps) => {
     const { accessToken } = useRecoilValue(userTokenAtom);
 
     const firstCommentId = useRef<number>();
@@ -139,6 +144,13 @@ const ThreadItemTemplate = ({ postId, movetoCommunityScreen, moveToWriteScreen }
             });
         }
     };
+
+    // If write comment, get fresh list
+    useLayoutEffect(() => {
+        indexNumber.current = 0;
+        commentRemove();
+        commentRefetch();
+    }, [freshRePostCount]);
 
     return (
         <>

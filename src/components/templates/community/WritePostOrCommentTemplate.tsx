@@ -115,7 +115,7 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
     const { mutate: commentFileMutate, isLoading: iscommentFileLoading } = useMutation(writeCommentFilesAPI, {
         onSuccess: ({ data }) => {
             if (postThreadInfo) {
-                moveToScreen('GO', postThreadInfo.postId);
+                moveToScreen('GO', postThreadInfo.postId, postThreadInfo.rePostCount);
             }
         },
         onError: error => {
@@ -297,7 +297,7 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
             });
         } else {
             if (postThreadInfo) {
-                moveToScreen('GO', postThreadInfo.postId);
+                moveToScreen('GO', postThreadInfo.postId, postThreadInfo.rePostCount + 1);
             }
         }
     };
