@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { Image, View } from 'react-native';
 import { useMutation } from 'react-query';
 
@@ -47,10 +47,6 @@ const CommentListItem = ({ comment, postTitle, postCount, reportHandler, firstCo
             console.log('(ERROR) Delete helpful comment API', error);
         },
     });
-
-    useEffect(() => {
-        console.log(comment.postId, comment.like);
-    }, []);
 
     // Helpful comment handler
     const helpfulCommentHandler = () => {
