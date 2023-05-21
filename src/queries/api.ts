@@ -261,6 +261,7 @@ export const delHelpfulCommentAPI = async (param: {
         method: 'delete',
         headers: {
             'Content-Type': 'application/json',
+            Authorization: `Bearer ${param.accessToken}`,
         },
         data: JSON.stringify(param.data),
     });

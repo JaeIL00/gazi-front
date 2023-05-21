@@ -28,7 +28,9 @@ const CommentListItem = ({ comment, postTitle, postCount, reportHandler, firstCo
 
     // Add helpful comment API
     const { mutate: addHelpfultMutate } = useMutation(addHelpfulCommentAPI, {
-        onSuccess: () => {},
+        onSuccess: data => {
+            console.log(data);
+        },
         onError: error => {
             // For Debug
             console.log('(ERROR) Add helpful comment API', error);
@@ -37,7 +39,9 @@ const CommentListItem = ({ comment, postTitle, postCount, reportHandler, firstCo
 
     // Delete helpful comment API
     const { mutate: delHelpfultMutate } = useMutation(delHelpfulCommentAPI, {
-        onSuccess: () => {},
+        onSuccess: data => {
+            console.log(data);
+        },
         onError: error => {
             // For Debug
             console.log('(ERROR) Delete helpful comment API', error);
@@ -84,6 +88,7 @@ const CommentListItem = ({ comment, postTitle, postCount, reportHandler, firstCo
     const delHelpfulMutate = useCallback(
         debounce(() => {
             if (firstCommentId === comment.postId) {
+                console.log('first');
                 delHelpfultMutate({
                     accessToken,
                     data: {
@@ -92,6 +97,7 @@ const CommentListItem = ({ comment, postTitle, postCount, reportHandler, firstCo
                     },
                 });
             } else {
+                console.log('others');
                 delHelpfultMutate({
                     accessToken,
                     data: {
