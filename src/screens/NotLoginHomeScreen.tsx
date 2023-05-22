@@ -1,14 +1,13 @@
 import React from 'react';
-import { View } from 'react-native';
 
+import ScreenWrapper from '../components/organisms/ScreenWrapper';
 import NotLoginTemplate from '../components/templates/home/NotLoginTemplate';
-import { globalDefaultStyles } from '../styles/styles';
 
 const NotLoginHomeScreen = () => {
     return (
-        <View style={globalDefaultStyles.container}>
+        <ScreenWrapper isPaddingHorizontal={true}>
             <NotLoginTemplate />
-        </View>
+        </ScreenWrapper>
     );
 };
 

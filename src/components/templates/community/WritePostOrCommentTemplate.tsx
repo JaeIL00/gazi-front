@@ -5,6 +5,7 @@ import {
     ImageSourcePropType,
     Linking,
     ScrollView,
+    StatusBar,
     TouchableOpacity,
     View,
 } from 'react-native';
@@ -442,6 +443,7 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
 
     return (
         <>
+            <StatusBar backgroundColor={Colors.WHITE} barStyle="dark-content" />
             <MapView
                 ref={mapRef}
                 style={writePostOrCommentTemplateStyles.mapSize}

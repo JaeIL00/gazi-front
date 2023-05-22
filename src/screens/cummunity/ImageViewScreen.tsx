@@ -6,10 +6,11 @@ import FastImage from 'react-native-fast-image';
 import Colors from '../../styles/Colors';
 import Icons from '../../components/smallest/Icons';
 import Spacer from '../../components/smallest/Spacer';
+import NormalText from '../../components/smallest/NormalText';
 import MediumText from '../../components/smallest/MediumText';
 import TouchButton from '../../components/smallest/TouchButton';
 import SemiBoldText from '../../components/smallest/SemiBoldText';
-import NormalText from '../../components/smallest/NormalText';
+import ScreenWrapper from '../../components/organisms/ScreenWrapper';
 import { imageViewScreenStyles } from '../../styles/styles';
 import { useRootNavigation, useRootRoute } from '../../navigations/RootStackNavigation';
 
@@ -33,63 +34,69 @@ const ImageViewScreen = () => {
     }, [imageRef]);
 
     return (
-        <View style={imageViewScreenStyles.container}>
-            {Platform.OS === 'android' && (
-                <DropShadow style={imageViewScreenStyles.backButtonShadow}>
-                    <View style={imageViewScreenStyles.backButtonBox}>
-                        <TouchButton onPress={() => rootNavigation.goBack()}>
-                            <Icons type="ionicons" name="close" size={24} color={Colors.WHITE} />
-                        </TouchButton>
+        <ScreenWrapper isPaddingHorizontal={false}>
+            <>
+                {Platform.OS === 'android' && (
+                    <DropShadow style={imageViewScreenStyles.backButtonShadow}>
+                        <View style={imageViewScreenStyles.backButtonBox}>
+                            <TouchButton onPress={() => rootNavigation.goBack()}>
+                                <Icons type="ionicons" name="close" size={24} color={Colors.WHITE} />
+                            </TouchButton>
+                        </View>
+                    </DropShadow>
+                )}
+
+                <ScrollView
+                    ref={imageRef}
+                    horizontal={true}
+                    showsHorizontalScrollIndicator={false}
+                    pagingEnabled={true}>
+                    {viewData.fileList.map(item => (
+                        <FastImage
+                            key={item.fileName}
+                            source={{ uri: item.fileUrl }}
+                            style={{ width: windowWidth, height: windowHeight }}
+                            resizeMode={FastImage.resizeMode.contain}
+                        />
+                    ))}
+                </ScrollView>
+
+                <View style={imageViewScreenStyles.bottomTitleBox}>
+                    <View>
+                        <SemiBoldText text={viewData.postTitle} size={20} color={Colors.WHITE} />
+                        <Spacer height={4} />
+                        <MediumText text={viewData.nickName} size={14} color={Colors.TXT_GRAY} />
                     </View>
-                </DropShadow>
-            )}
 
-            <ScrollView ref={imageRef} horizontal={true} showsHorizontalScrollIndicator={false} pagingEnabled={true}>
-                {viewData.fileList.map(item => (
-                    <FastImage
-                        key={item.fileName}
-                        source={{ uri: item.fileUrl }}
-                        style={{ width: windowWidth, height: windowHeight }}
-                        resizeMode={FastImage.resizeMode.contain}
-                    />
-                ))}
-            </ScrollView>
-
-            <View style={imageViewScreenStyles.bottomTitleBox}>
-                <View>
-                    <SemiBoldText text={viewData.postTitle} size={20} color={Colors.WHITE} />
-                    <Spacer height={4} />
-                    <MediumText text={viewData.nickName} size={14} color={Colors.TXT_GRAY} />
+                    <View style={imageViewScreenStyles.bottomInfoBox}>
+                        <View style={imageViewScreenStyles.iconBox}>
+                            <FastImage
+                                source={require('../../assets/icons/location-pin-outline-gray.png')}
+                                style={imageViewScreenStyles.iconSize}
+                            />
+                            <Spacer width={2.76} />
+                            <NormalText text={viewData.distance} size={13} color={Colors.TXT_GRAY} />
+                        </View>
+                        <View style={imageViewScreenStyles.iconBox}>
+                            <FastImage
+                                source={require('../../assets/icons/clock.png')}
+                                style={imageViewScreenStyles.iconSize}
+                            />
+                            <Spacer width={2.76} />
+                            <NormalText text={viewData.time} size={13} color={Colors.TXT_GRAY} />
+                        </View>
+                        <View style={imageViewScreenStyles.iconBox}>
+                            <FastImage
+                                source={require('../../assets/icons/message-square.png')}
+                                style={imageViewScreenStyles.iconSize}
+                            />
+                            <Spacer width={2.76} />
+                            <NormalText text={`${viewData.postCount}posts`} size={13} color={Colors.TXT_GRAY} />
+                        </View>
+                    </View>
                 </View>
-
-                <View style={imageViewScreenStyles.bottomInfoBox}>
-                    <View style={imageViewScreenStyles.iconBox}>
-                        <FastImage
-                            source={require('../../assets/icons/location-pin-outline-gray.png')}
-                            style={imageViewScreenStyles.iconSize}
-                        />
-                        <Spacer width={2.76} />
-                        <NormalText text={viewData.distance} size={13} color={Colors.TXT_GRAY} />
-                    </View>
-                    <View style={imageViewScreenStyles.iconBox}>
-                        <FastImage
-                            source={require('../../assets/icons/clock.png')}
-                            style={imageViewScreenStyles.iconSize}
-                        />
-                        <Spacer width={2.76} />
-                        <NormalText text={viewData.time} size={13} color={Colors.TXT_GRAY} />
-                    </View>
-                    <View style={imageViewScreenStyles.iconBox}>
-                        <FastImage
-                            source={require('../../assets/icons/message-square.png')}
-                            style={imageViewScreenStyles.iconSize}
-                        />
-                        <Spacer width={2.76} />
-                        <NormalText text={`${viewData.postCount}posts`} size={13} color={Colors.TXT_GRAY} />
-                    </View>
-                </View>
-            </View>
-        </View>
+            </>
+        </ScreenWrapper>
     );
 };
 

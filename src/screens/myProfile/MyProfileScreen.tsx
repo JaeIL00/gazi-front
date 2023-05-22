@@ -1,6 +1,7 @@
 import React from 'react';
-import { View } from 'react-native';
+import { StatusBar, View } from 'react-native';
 
+import Colors from '../../styles/Colors';
 import MyProfileTemplate from '../../components/templates/myProfile/MyProfileTemplate';
 import { globalBackWhiteStyles } from '../../styles/styles';
 import { useRootNavigation } from '../../navigations/RootStackNavigation';
@@ -16,6 +17,7 @@ const MyProfileScreen = () => {
     };
     return (
         <View style={globalBackWhiteStyles.container}>
+            <StatusBar backgroundColor={Colors.WHITE} barStyle="dark-content" />
             <MyProfileTemplate moveToScreen={moveToScreen} />
         </View>
     );

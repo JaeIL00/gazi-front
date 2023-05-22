@@ -1,8 +1,7 @@
 import React from 'react';
-import { View } from 'react-native';
 
+import ScreenWrapper from '../../components/organisms/ScreenWrapper';
 import LikeKeywordSettingTemplate from '../../components/templates/myProfile/LikeKeywordSettingTemplate';
-import { globalBackWhiteStyles } from '../../styles/styles';
 import { useRootNavigation, useRootRoute } from '../../navigations/RootStackNavigation';
 
 const LikeKeywordSettingScreen = () => {
@@ -16,12 +15,12 @@ const LikeKeywordSettingScreen = () => {
         rootNavigation.goBack();
     };
     return (
-        <View style={globalBackWhiteStyles.container}>
+        <ScreenWrapper isPaddingHorizontal={false}>
             <LikeKeywordSettingTemplate
                 moveToBackScreenHandler={moveToBackScreenHandler}
                 isFromCommunity={isFromCommunity}
             />
-        </View>
+        </ScreenWrapper>
     );
 };
 

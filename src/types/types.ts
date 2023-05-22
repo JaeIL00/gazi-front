@@ -355,6 +355,10 @@ export type HeaderMoleculeProps = {
 export interface MoveBackWithPageTitleProps extends PageTitleWithExplainProps {
     onPress: () => void;
 }
+export type ScreenWrapperProps = {
+    children: ReactElement;
+    isPaddingHorizontal: boolean;
+};
 export type PhotoGalleryProps = {
     closeGalleryHandling: () => void;
 };

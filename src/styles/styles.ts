@@ -9,13 +9,6 @@ export const appStyles = StyleSheet.create({
         flex: 1,
     },
 });
-export const globalDefaultStyles = StyleSheet.create({
-    container: {
-        flex: 1,
-        paddingHorizontal: 16 * screenWidth,
-        backgroundColor: Colors.BACKGROUND_DEFAULT,
-    },
-});
 export const globalBackWhiteStyles = StyleSheet.create({
     container: {
         flex: 1,
@@ -1513,22 +1506,6 @@ export const likeKeywordSettingTemplateStyles = StyleSheet.create({
 export const seviceHomeScreenStyles = StyleSheet.create({
     container: {
         flex: 1,
-    },
-});
-export const myProfileScreenStyles = StyleSheet.create({
-    container: {
-        flex: 1,
-    },
-});
-export const editNicknameScreenStyles = StyleSheet.create({
-    container: {
-        flex: 1,
-    },
-});
-export const threadItemScreenStyles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: Colors.BACKGROUND_DEFAULT,
     },
 });
 export const JoinMemberScreenStyles = StyleSheet.create({

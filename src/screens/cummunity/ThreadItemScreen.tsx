@@ -1,9 +1,8 @@
 import React from 'react';
-import { View } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 
+import ScreenWrapper from '../../components/organisms/ScreenWrapper';
 import ThreadItemTemplate from '../../components/templates/community/ThreadItemTemplate';
-import { threadItemScreenStyles } from '../../styles/styles';
 import { useRootNavigation, useRootRoute } from '../../navigations/RootStackNavigation';
 
 const ThreadItemScreen = () => {
@@ -26,14 +25,14 @@ const ThreadItemScreen = () => {
 
     const isFocus = useIsFocused();
     return (
-        <View style={threadItemScreenStyles.container}>
+        <ScreenWrapper isPaddingHorizontal={false}>
             <ThreadItemTemplate
                 postId={postId}
                 movetoCommunityScreen={movetoCommunityScreen}
                 moveToWriteScreen={moveToWriteScreen}
                 freshRePostCount={freshRePostCount}
             />
-        </View>
+        </ScreenWrapper>
     );
 };
 export default ThreadItemScreen;
