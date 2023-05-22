@@ -1,4 +1,4 @@
-import React, { useCallback, useLayoutEffect, useState } from 'react';
+import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { FlatList, View } from 'react-native';
 import { CameraRoll, PhotoIdentifier } from '@react-native-camera-roll/camera-roll';
 import FastImage from 'react-native-fast-image';
@@ -9,11 +9,12 @@ import Spacer from '../smallest/Spacer';
 import Colors from '../../styles/Colors';
 import MediumText from '../smallest/MediumText';
 import TouchButton from '../smallest/TouchButton';
+import { PhotoGalleryProps, uploadImageFileTypes } from '../../types/types';
 import { photoGalleryStyles } from '../../styles/styles';
-import { screenHeight } from '../../utils/changeStyleSize';
-import { PhotoGalleryProps } from '../../types/types';
+import { screenFont, screenHeight, screenWidth } from '../../utils/changeStyleSize';
 
-const PhotoGallery = ({ closeGalleryHandling }: PhotoGalleryProps) => {
+const PhotoGallery = ({ closeGalleryHandling, getImageHandler }: PhotoGalleryProps) => {
+    const [checkIndex, setCheckIndex] = useState<number[]>([]);
     const [galleryCursor, setGalleryCursor] = useState<string>();
     const [galleryList, setGalleryList] = useState<PhotoIdentifier[]>([
         {
@@ -41,7 +42,7 @@ const PhotoGallery = ({ closeGalleryHandling }: PhotoGalleryProps) => {
     const getGalleryPhotos = async () => {
         try {
             const { edges, page_info } = await CameraRoll.getPhotos({
-                first: 100,
+                first: 50,
                 assetType: 'Photos',
                 after: galleryCursor,
                 groupTypes: 'Album',
@@ -59,41 +60,95 @@ const PhotoGallery = ({ closeGalleryHandling }: PhotoGalleryProps) => {
     };
 
     // Camera button
-    const onPressListBox = async (index: number) => {
+    const onPressListBox = async (pressedItem: PhotoIdentifier, index: number) => {
+        const fileName = pressedItem.node.image.uri.split('/').pop() as string;
+        const prevCheck = checkIndex.find(chIndex => chIndex === index);
         if (index === 0) {
             // Needs check camera permission
             await launchCamera({
                 mediaType: 'photo',
             });
+            return;
+        }
+        if (prevCheck) {
+            setCheckIndex(checkIndex.filter(chIndex => chIndex !== index));
+            getImageHandler(
+                {
+                    uri: pressedItem.node.image.uri,
+                    fileName,
+                    type: pressedItem.node.type,
+                },
+                'DEL',
+            );
         } else {
+            if (checkIndex.length <= 9) {
+                setCheckIndex([...checkIndex, index]);
+                getImageHandler(
+                    {
+                        uri: pressedItem.node.image.uri,
+                        fileName,
+                        type: pressedItem.node.type,
+                    },
+                    'ADD',
+                );
+            }
         }
     };
 
     // Gallery flat list
-    const renderItem = useCallback(({ item, index }: { item: PhotoIdentifier; index: number }) => {
-        return (
-            <View
-                key={item.node.timestamp}
-                style={[
-                    photoGalleryStyles.imageBox,
-                    {
-                        marginRight: (index + 1) % 3 === 0 ? undefined : 3 * screenHeight,
-                        backgroundColor: index === 0 ? '#E8E8E8' : '#D9D9D9',
-                    },
-                ]}>
-                <TouchButton onPress={() => onPressListBox(index)} height="100%">
-                    {index === 0 ? (
-                        <FastImage
-                            source={require('../../assets/icons/camera-fill.png')}
-                            style={photoGalleryStyles.cameraIcon}
-                        />
-                    ) : (
-                        <FastImage source={{ uri: item.node.image.uri }} style={photoGalleryStyles.imageSize} />
-                    )}
-                </TouchButton>
-            </View>
-        );
-    }, []);
+    const renderItem = useCallback(
+        ({ item, index }: { item: PhotoIdentifier; index: number }) => {
+            checkIndex.indexOf(index);
+            return (
+                <View
+                    key={item.node.timestamp}
+                    style={[
+                        photoGalleryStyles.imageContainer,
+                        {
+                            marginRight: (index + 1) % 3 === 0 ? undefined : 3 * screenHeight,
+                            backgroundColor: index === 0 ? '#E8E8E8' : '#D9D9D9',
+                        },
+                    ]}>
+                    <TouchButton onPress={() => onPressListBox(item, index)} height="100%">
+                        {index === 0 ? (
+                            <FastImage
+                                source={require('../../assets/icons/camera-fill.png')}
+                                style={photoGalleryStyles.cameraIcon}
+                            />
+                        ) : (
+                            <View style={photoGalleryStyles.imageBox}>
+                                <FastImage source={{ uri: item.node.image.uri }} style={photoGalleryStyles.imageSize} />
+                                <View
+                                    style={[
+                                        photoGalleryStyles.imageBlurBox,
+                                        {
+                                            backgroundColor:
+                                                checkIndex.indexOf(index) !== -1 ? '#FFFFFF59' : 'transparent',
+                                        },
+                                    ]}
+                                />
+                                <View
+                                    style={[
+                                        photoGalleryStyles.imageCheckBox,
+                                        {
+                                            backgroundColor:
+                                                checkIndex.indexOf(index) !== -1 ? Colors.VIOLET : '#D9D9D94D',
+                                            borderWidth:
+                                                checkIndex.indexOf(index) !== -1 ? undefined : 1.5 * screenFont,
+                                        },
+                                    ]}>
+                                    {checkIndex.indexOf(index) !== -1 && (
+                                        <Icons type="octicons" name="check" size={16} color={Colors.WHITE} />
+                                    )}
+                                </View>
+                            </View>
+                        )}
+                    </TouchButton>
+                </View>
+            );
+        },
+        [checkIndex],
+    );
     const ItemSeparatorComponent = useCallback(() => <Spacer height={3} />, []);
 
     // Initialized photo list
@@ -125,7 +180,7 @@ const PhotoGallery = ({ closeGalleryHandling }: PhotoGalleryProps) => {
                 renderItem={renderItem}
                 ItemSeparatorComponent={ItemSeparatorComponent}
                 numColumns={3}
-                onEndReachedThreshold={4}
+                onEndReachedThreshold={0.7}
                 onEndReached={() => {
                     getGalleryPhotos();
                 }}

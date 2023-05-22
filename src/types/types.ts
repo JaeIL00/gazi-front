@@ -64,6 +64,11 @@ export type CommentTypes = {
     time: string;
     postId: number;
 };
+export type uploadImageFileTypes = {
+    uri: string;
+    fileName: string;
+    type: string;
+};
 export type LocationResultTypes = {
     business_status: string;
     formatted_address: string;
@@ -123,7 +128,7 @@ export type CommentReqTypes = {
 };
 export type WritePostTypes = {
     dto: PostDto;
-    files: Asset[];
+    files: uploadImageFileTypes[];
     thumbnail: Asset | null;
     backgroundMap: string;
 };
@@ -361,6 +366,7 @@ export type ScreenWrapperProps = {
 };
 export type PhotoGalleryProps = {
     closeGalleryHandling: () => void;
+    getImageHandler: (file: uploadImageFileTypes, state: string) => void;
 };
 export type CommentListItemProps = {
     comment: CommentTypes;

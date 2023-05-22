@@ -1,9 +1,10 @@
-import React, { RefObject, useCallback, useRef, useState } from 'react';
+import React, { RefObject, useCallback, useEffect, useRef, useState } from 'react';
 import {
     ActivityIndicator,
     Image,
     ImageSourcePropType,
     Linking,
+    Modal,
     ScrollView,
     StatusBar,
     TouchableOpacity,
@@ -35,12 +36,17 @@ import WritePhoto from '../../organisms/cummunity/WritePhoto';
 import FailPermissionModal from '../../organisms/FailPermissionModal';
 import WritePostAddKeyword from '../../organisms/cummunity/WritePostAddKeyword';
 import { userTokenAtom } from '../../../store/atoms';
-import { screenWidth } from '../../../utils/changeStyleSize';
+import { screenFont, screenHeight, screenWidth } from '../../../utils/changeStyleSize';
 import { SingleLineInput } from '../../smallest/SingleLineInput';
 import { writePostOrCommentTemplateStyles } from '../../../styles/styles';
 import { useRootNavigation, useRootRoute } from '../../../navigations/RootStackNavigation';
 import { issueKeywords, subwayKeywords, trafficKeywords } from '../../../utils/allKeywords';
-import { KeywordListTypes, WritePostOrCommentTemplateProps, WritePostTypes } from '../../../types/types';
+import {
+    KeywordListTypes,
+    WritePostOrCommentTemplateProps,
+    WritePostTypes,
+    uploadImageFileTypes,
+} from '../../../types/types';
 import { writeCommentAPI, writeCommentFilesAPI, writePostAPI, writePostFilesAPI } from '../../../queries/api';
 
 const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostOrCommentTemplateProps) => {
@@ -59,11 +65,11 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
     const [onErrorModal, setOnErrorModal] = useState<boolean>(false);
     const [loactionModal, setLoactionModal] = useState<boolean>(false);
     const [inputFocusBlur, setInputFocusBlur] = useState<boolean>(false);
-
     const [markerType, setMarkerType] = useState<ImageSourcePropType>();
     const [imagePermission, setImagePermission] = useState<boolean>(false);
-    const [isCamAllowPermission, setIsCamAllowPermission] = useState<boolean>(false);
     const [chooseKeywords, setChooseKeywords] = useState<KeywordListTypes[]>([]);
+    const [isCamAllowPermission, setIsCamAllowPermission] = useState<boolean>(false);
+    const [checkImageFileList, setCheckImageFileList] = useState<uploadImageFileTypes[]>([]);
     const [writePostData, setWritePostData] = useState<WritePostTypes>({
         dto: {
             title: '',
@@ -146,8 +152,21 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
             dto: { ...writePostData.dto, keywordIdList: keyword, headKeywordId: keyword[0] },
         });
     };
-    const getImageHandler = (files: Asset[]) => {
-        setWritePostData({ ...writePostData, files });
+
+    // Get image from gallery
+    const getImageHandler = (file: uploadImageFileTypes, state: string) => {
+        switch (state) {
+            case 'ADD':
+                setWritePostData({ ...writePostData, files: [...writePostData.files, file] });
+                break;
+            case 'DEL':
+                const freshFiles = writePostData.files.filter(item => item.uri !== file.uri);
+                setWritePostData({ ...writePostData, files: freshFiles });
+                break;
+            default:
+                // For Debug
+                console.log('(ERROR) Get image from gallery.', state, file);
+        }
     };
 
     // Content input focue blur handler
@@ -616,12 +635,12 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
                     )}
                 </ScrollView>
 
-                {/* <WritePhoto getImageHandler={getImageHandler} notAllowPermission={notAllowPermission} /> */}
-
-                {isCamAllowPermission && <PhotoGallery closeGalleryHandling={closeGalleryHandling} />}
+                <Modal visible={isCamAllowPermission} onRequestClose={() => setIsCamAllowPermission(false)}>
+                    <PhotoGallery closeGalleryHandling={closeGalleryHandling} getImageHandler={getImageHandler} />
+                </Modal>
                 <View style={writePostOrCommentTemplateStyles.bottomBox}>
                     <View style={writePostOrCommentTemplateStyles.bottomKeyword}>
-                        {chooseKeywords && (
+                        {chooseKeywords.length > 0 && (
                             <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
                                 <>
                                     {chooseKeywords.map(item => (
@@ -631,6 +650,29 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
                                                 size={12}
                                                 color={Colors.TXT_LIGHTGRAY}
                                             />
+                                        </View>
+                                    ))}
+                                </>
+                            </ScrollView>
+                        )}
+                        {writePostData.files.length > 0 && (
+                            <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+                                <>
+                                    {writePostData.files.map(item => (
+                                        <View style={writePostOrCommentTemplateStyles.bottomImageBox}>
+                                            <View style={writePostOrCommentTemplateStyles.bottomImageInnerBox}>
+                                                <Image
+                                                    source={{ uri: item.uri }}
+                                                    style={writePostOrCommentTemplateStyles.bottomImageSize}
+                                                />
+                                            </View>
+                                            <TouchableOpacity
+                                                onPress={() => getImageHandler(item, 'DEL')}
+                                                activeOpacity={1}
+                                                style={writePostOrCommentTemplateStyles.bottomImageDelButton}>
+                                                <View style={writePostOrCommentTemplateStyles.bottomImageDelIconBack} />
+                                                <Icons type="ionicons" name="close-circle" size={20} color="#000000" />
+                                            </TouchableOpacity>
                                         </View>
                                     ))}
                                 </>

@@ -93,8 +93,8 @@ export const RootStackNavigation = () => {
         }
     };
     useLayoutEffect(() => {
-        // checkAsyncStorage();
-        SplashScreen.hide();
+        checkAsyncStorage();
+        // SplashScreen.hide();
     }, []);
 
     return (

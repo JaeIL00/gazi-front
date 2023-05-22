@@ -253,7 +253,7 @@ export const photoGalleryStyles = StyleSheet.create({
         width: 12 * screenWidth,
         height: 12 * screenWidth,
     },
-    imageBox: {
+    imageContainer: {
         width: 118 * screenWidth,
         height: 118 * screenWidth,
         justifyContent: 'center',
@@ -265,6 +265,27 @@ export const photoGalleryStyles = StyleSheet.create({
     imageSize: {
         width: '100%',
         height: '100%',
+    },
+    imageBox: {
+        position: 'relative',
+        width: '100%',
+        height: '100%',
+    },
+    imageBlurBox: {
+        width: '100%',
+        height: '100%',
+        position: 'absolute',
+    },
+    imageCheckBox: {
+        width: 24 * screenWidth,
+        height: 24 * screenWidth,
+        borderRadius: 24 * screenFont,
+        borderColor: Colors.WHITE,
+        position: 'absolute',
+        right: 10 * screenWidth,
+        top: 10 * screenWidth,
+        justifyContent: 'center',
+        alignItems: 'center',
     },
 });
 export const serviceAgreementStyles = StyleSheet.create({
@@ -1078,6 +1099,39 @@ export const writePostOrCommentTemplateStyles = StyleSheet.create({
         paddingHorizontal: 10 * screenWidth,
         paddingVertical: 5 * screenHeight,
         marginRight: 3 * screenWidth,
+    },
+    bottomImageBox: {
+        position: 'relative',
+        marginRight: 8 * screenWidth,
+        width: 66 * screenWidth,
+        height: 70 * screenWidth,
+    },
+    bottomImageInnerBox: {
+        width: '100%',
+        height: 66 * screenWidth,
+        position: 'absolute',
+        bottom: 0,
+    },
+    bottomImageSize: {
+        width: '100%',
+        height: '100%',
+        borderRadius: 10 * screenFont,
+        borderWidth: 1 * screenFont,
+        borderColor: '#E3E3E3',
+    },
+    bottomImageDelButton: {
+        position: 'absolute',
+        height: 25 * screenHeight,
+        top: -2 * screenWidth,
+        right: -4 * screenWidth,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    bottomImageDelIconBack: {
+        position: 'absolute',
+        width: '40%',
+        height: '40%',
+        backgroundColor: Colors.WHITE,
     },
 });
 export const myProfileTemplateStyles = StyleSheet.create({
