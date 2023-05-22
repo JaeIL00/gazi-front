@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { FlatList, View } from 'react-native';
-import { CameraRoll, PhotoIdentifier } from '@react-native-camera-roll/camera-roll';
+import { FlatList, Image, Modal, ScrollView, TouchableOpacity, View } from 'react-native';
+import { AssetType, CameraRoll, GroupTypes, PhotoIdentifier } from '@react-native-camera-roll/camera-roll';
 import FastImage from 'react-native-fast-image';
 import { launchCamera } from 'react-native-image-picker';
 
@@ -9,13 +9,17 @@ import Spacer from '../smallest/Spacer';
 import Colors from '../../styles/Colors';
 import MediumText from '../smallest/MediumText';
 import TouchButton from '../smallest/TouchButton';
-import { PhotoGalleryProps, uploadImageFileTypes } from '../../types/types';
+import { GalleryAlbumListTypes, PhotoGalleryProps, uploadImageFileTypes } from '../../types/types';
 import { photoGalleryStyles } from '../../styles/styles';
 import { screenFont, screenHeight, screenWidth } from '../../utils/changeStyleSize';
+import SemiBoldText from '../smallest/SemiBoldText';
 
 const PhotoGallery = ({ closeGalleryHandling, getImageHandler }: PhotoGalleryProps) => {
     const [checkIndex, setCheckIndex] = useState<number[]>([]);
     const [galleryCursor, setGalleryCursor] = useState<string>();
+    const [currentAlbum, setCurrentAlbum] = useState<string>('최근 항목');
+    const [albumListWindow, setAlbumListWindow] = useState<boolean>(false);
+    const [albumList, setAlbumList] = useState<GalleryAlbumListTypes[]>([]);
     const [galleryList, setGalleryList] = useState<PhotoIdentifier[]>([
         {
             node: {
@@ -38,23 +42,85 @@ const PhotoGallery = ({ closeGalleryHandling, getImageHandler }: PhotoGalleryPro
         },
     ]);
 
-    // Get gallery photo
-    const getGalleryPhotos = async () => {
+    // Get gallery album
+    const getGalleryAlbum = async () => {
         try {
-            const { edges, page_info } = await CameraRoll.getPhotos({
-                first: 50,
+            let allCount: number = 0;
+            let freshAlbumList: GalleryAlbumListTypes[] = [];
+            const albumList = await CameraRoll.getAlbums({
                 assetType: 'Photos',
-                after: galleryCursor,
-                groupTypes: 'Album',
-                // groupName: 'KakaoTalk',
             });
+            const { edges } = await CameraRoll.getPhotos({
+                first: 1,
+                assetType: 'Photos',
+                groupTypes: 'Album',
+            });
+            albumList.forEach(item => (allCount += item.count));
+            freshAlbumList = [
+                ...freshAlbumList,
+                {
+                    title: '최근 항목',
+                    count: allCount,
+                    thumbnail: edges[0].node.image.uri,
+                },
+            ];
+
+            for (const index in albumList) {
+                const { edges } = await CameraRoll.getPhotos({
+                    first: 1,
+                    assetType: 'Photos',
+                    groupTypes: 'Album',
+                    groupName: albumList[index].title,
+                });
+                freshAlbumList = [
+                    ...freshAlbumList,
+                    {
+                        title: albumList[index].title,
+                        count: albumList[index].count,
+                        thumbnail: edges[0].node.image.uri,
+                    },
+                ];
+            }
+            setAlbumList(freshAlbumList);
+        } catch (error) {
+            // For Debug
+            console.log('(ERROR) Get album in gallery', error);
+        }
+    };
+    // Get gallery photo
+    const getGalleryPhotos = async (title: string) => {
+        let options: {
+            first: number;
+            assetType: AssetType;
+            after: string | undefined;
+            groupTypes: GroupTypes;
+            groupName?: string;
+        } = {
+            first: 50,
+            assetType: 'Photos',
+            after: galleryCursor,
+            groupTypes: 'Album',
+        };
+        try {
+            if (title !== '최근 항목') {
+                options = {
+                    first: 50,
+                    assetType: 'Photos',
+                    after: galleryCursor,
+                    groupTypes: 'Album',
+                    groupName: title,
+                };
+            }
+            const { edges, page_info } = await CameraRoll.getPhotos(options);
             if (page_info.has_next_page === false) {
                 setGalleryCursor('');
+                setGalleryList([]);
             } else {
                 setGalleryCursor(page_info.end_cursor);
             }
-            setGalleryList([...galleryList, ...edges]);
+            setGalleryList(prev => [...prev, ...edges]);
         } catch (error) {
+            // For Debug
             console.log('(ERROR) Get photo in gallery', error);
         }
     };
@@ -93,6 +159,12 @@ const PhotoGallery = ({ closeGalleryHandling, getImageHandler }: PhotoGalleryPro
                 );
             }
         }
+    };
+
+    const onPressChangeAlbum = async (title: string) => {
+        setCurrentAlbum(title);
+        setAlbumListWindow(false);
+        getGalleryPhotos(title);
     };
 
     // Gallery flat list
@@ -153,28 +225,41 @@ const PhotoGallery = ({ closeGalleryHandling, getImageHandler }: PhotoGalleryPro
 
     // Initialized photo list
     useLayoutEffect(() => {
-        getGalleryPhotos();
+        getGalleryPhotos('최근 항목');
+        getGalleryAlbum();
     }, []);
 
     return (
         <View style={photoGalleryStyles.container}>
-            <View style={photoGalleryStyles.headerBox}>
+            <View
+                style={[
+                    photoGalleryStyles.headerBox,
+                    {
+                        borderColor: '#EBEBEB',
+                        borderBottomWidth: albumListWindow ? 1 * screenFont : undefined,
+                    },
+                ]}>
                 <TouchButton onPress={closeGalleryHandling}>
                     <Icons type="ionicons" name="close" size={24} color={Colors.BLACK} />
                 </TouchButton>
-                <TouchButton onPress={() => {}}>
+                <TouchButton onPress={() => setAlbumListWindow(!albumListWindow)}>
                     <View style={photoGalleryStyles.albumButtonBox}>
-                        <MediumText text="최근 항목" size={18} color="#000000" />
+                        <MediumText text={currentAlbum} size={18} color="#000000" />
                         <Spacer width={5} />
                         <FastImage
                             source={require('../../assets/icons/triangle-down.png')}
-                            style={photoGalleryStyles.albumButtonIcon}
+                            style={[
+                                photoGalleryStyles.albumButtonIcon,
+                                {
+                                    transform: albumListWindow ? [{ rotate: '180deg' }] : [{ rotate: '0deg' }],
+                                    marginTop: 3 * screenHeight,
+                                },
+                            ]}
                         />
                     </View>
                 </TouchButton>
                 <Spacer width={24} />
             </View>
-
             <FlatList
                 data={galleryList}
                 renderItem={renderItem}
@@ -182,9 +267,42 @@ const PhotoGallery = ({ closeGalleryHandling, getImageHandler }: PhotoGalleryPro
                 numColumns={3}
                 onEndReachedThreshold={0.7}
                 onEndReached={() => {
-                    getGalleryPhotos();
+                    getGalleryPhotos(currentAlbum);
                 }}
             />
+            {albumListWindow && (
+                <View style={{ position: 'relative' }}>
+                    <ScrollView
+                        showsVerticalScrollIndicator={false}
+                        style={{ backgroundColor: Colors.WHITE }}
+                        contentContainerStyle={{ paddingBottom: 80 * screenHeight }}>
+                        {albumList.map(item => (
+                            <TouchableOpacity
+                                key={item.title}
+                                onPress={() => onPressChangeAlbum(item.title)}
+                                activeOpacity={1}
+                                style={{
+                                    flexDirection: 'row',
+                                    alignItems: 'center',
+                                    paddingVertical: 10 * screenHeight,
+                                    paddingLeft: 16 * screenWidth,
+                                    borderBottomWidth: 1 * screenFont,
+                                    borderColor: '#EBEBEB',
+                                }}>
+                                <Image
+                                    source={{ uri: item.thumbnail }}
+                                    style={{ width: 60 * screenWidth, height: 60 * screenWidth }}
+                                />
+                                <View style={{ paddingLeft: 10 * screenWidth }}>
+                                    <SemiBoldText text={item.title} size={16} color={Colors.BLACK} />
+                                    <Spacer height={1} />
+                                    <MediumText text={item.count + ''} size={11} color={Colors.TXT_GRAY} />
+                                </View>
+                            </TouchableOpacity>
+                        ))}
+                    </ScrollView>
+                </View>
+            )}
         </View>
     );
 };

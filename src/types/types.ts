@@ -69,6 +69,11 @@ export type uploadImageFileTypes = {
     fileName: string;
     type: string;
 };
+export type GalleryAlbumListTypes = {
+    title: string;
+    count: number;
+    thumbnail: string;
+};
 export type LocationResultTypes = {
     business_status: string;
     formatted_address: string;
