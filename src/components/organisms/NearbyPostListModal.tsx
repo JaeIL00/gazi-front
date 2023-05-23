@@ -10,6 +10,8 @@ import SemiBoldText from '../smallest/SemiBoldText';
 import { screenHeight } from '../../utils/changeStyleSize';
 import { nearbyPostListModalStyles } from '../../styles/styles';
 import { NearbyPostListModalProps, PostTypes } from '../../types/types';
+import { useRecoilValue } from 'recoil';
+import { userInfoAtom } from '../../store/atoms';
 
 const FULL_ANIM_VALUE = -415 * screenHeight;
 const MIDDLE_ANIM_VALUE = 0;
@@ -33,6 +35,8 @@ const NearbyPostListModal = ({
     callNextPageHandler,
     moveToWritePost,
 }: NearbyPostListModalProps) => {
+    const { nickname } = useRecoilValue(userInfoAtom);
+
     // Modal animation handling
     const animRef = useRef<Animated.Value>(new Animated.Value(0)).current;
     const opacityRef = useRef<Animated.Value>(new Animated.Value(0)).current;
@@ -333,7 +337,11 @@ const NearbyPostListModal = ({
                 {!markerPost && (
                     <>
                         <View style={nearbyPostListModalStyles.titleBox}>
-                            <SemiBoldText text="00님 주변에서 일어나고 있는 일" color={Colors.BLACK} size={18} />
+                            <SemiBoldText
+                                text={`${nickname}님 주변에서 일어나고 있는 일`}
+                                color={Colors.BLACK}
+                                size={18}
+                            />
                         </View>
                         <Spacer height={10} />
                     </>
