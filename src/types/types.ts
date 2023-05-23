@@ -19,6 +19,11 @@ export type SearchHistoryTypes = {
 
     location: { lat: number; lng: number };
 };
+export type MyCommentTypes = {
+    content: string;
+    createTime: string;
+    title: string;
+};
 export type MapLocationTypes = {
     latitude: number;
     longitude: number;

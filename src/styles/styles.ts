@@ -543,7 +543,10 @@ export const postListItemStyles = StyleSheet.create({
     container: {
         flexDirection: 'row',
         justifyContent: 'space-between',
+        paddingHorizontal: 16 * screenWidth,
+        paddingVertical: 16 * screenHeight,
         width: '100%',
+        // backgroundColor: 'tomato',
     },
     textBox: {
         width: '68%',
@@ -552,14 +555,6 @@ export const postListItemStyles = StyleSheet.create({
         width: 77 * screenWidth,
         height: 77 * screenWidth,
         borderRadius: 5 * screenFont,
-    },
-    postBottomBar: {
-        borderBottomWidth: 1 * screenFont,
-        borderColor: '#EBEBEB',
-        width: '120%',
-        position: 'absolute',
-        left: -16 * screenWidth,
-        bottom: -15 * screenHeight,
     },
 });
 export const searchLocationStyles = StyleSheet.create({
@@ -1302,7 +1297,7 @@ export const myPostCommentTemplateStyles = StyleSheet.create({
         width: '50%',
         paddingBottom: 7 * screenHeight,
         paddingTop: 12 * screenHeight,
-        borderColor: Colors.BLACK,
+        borderBottomWidth: 1.5 * screenFont,
     },
 });
 export const AccountManagementTemplateStyles = StyleSheet.create({
@@ -1391,8 +1386,6 @@ export const communityTemplateStyles = StyleSheet.create({
     },
     contentBox: {
         flex: 1,
-        paddingHorizontal: 16 * screenWidth,
-        paddingTop: 17 * screenHeight,
     },
     nothingBox: {
         alignItems: 'center',

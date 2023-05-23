@@ -120,6 +120,23 @@ export const editNicknameAPI = async (param: { accessToken: string; data: string
     });
     return response;
 };
+export const getMyPostCommentAPI = async (param: {
+    accessToken: string;
+    curLat: number;
+    curLon: number;
+    isPost: boolean;
+    page: number;
+}) => {
+    const response = await Axios({
+        url: `/api/v1/post/myPost?curLat=${param.curLat}&curLon=${param.curLon}&isPost=${param.isPost}&page=${param.page}`,
+        method: 'get',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${param.accessToken}`,
+        },
+    });
+    return response;
+};
 
 // KEYWORD
 export const addLikeKeywordsAPI = async (param: { accessToken: string; data: number[] }) => {

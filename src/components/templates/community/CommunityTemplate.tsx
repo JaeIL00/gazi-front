@@ -254,8 +254,10 @@ const CommunityTemplate = ({ moveToKeywordSettingScreen }: CommunityTemplateProp
                     <View
                         style={{
                             width: '100%',
-                            height: 30 * screenHeight,
+                            height: 47 * screenHeight,
                             marginBottom: 24 * screenHeight,
+                            paddingHorizontal: 16 * screenWidth,
+                            paddingTop: 17 * screenHeight,
                         }}>
                         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                             <TouchButton
@@ -291,7 +293,7 @@ const CommunityTemplate = ({ moveToKeywordSettingScreen }: CommunityTemplateProp
                         keyExtractor={keyExtractor}
                         data={isLikePostTab ? likeKeywordPostList : allPostList}
                         renderItem={renderItem}
-                        ItemSeparatorComponent={ItemSeparatorComponent}
+                        // ItemSeparatorComponent={ItemSeparatorComponent}
                         ListFooterComponent={ListFooterComponent}
                         onEndReachedThreshold={1.8}
                         onEndReached={() => {
