@@ -84,7 +84,6 @@ const CommentListItem = ({ comment, postTitle, postCount, reportHandler, firstCo
     const delHelpfulMutate = useCallback(
         debounce(() => {
             if (firstCommentId === comment.postId) {
-                console.log('first');
                 delHelpfultMutate({
                     accessToken,
                     data: {
@@ -93,7 +92,6 @@ const CommentListItem = ({ comment, postTitle, postCount, reportHandler, firstCo
                     },
                 });
             } else {
-                console.log('others');
                 delHelpfultMutate({
                     accessToken,
                     data: {

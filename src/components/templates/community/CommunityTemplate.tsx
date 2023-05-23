@@ -109,7 +109,6 @@ const CommunityTemplate = ({ moveToKeywordSettingScreen }: CommunityTemplateProp
     // Get all post list handler
     const getAllPostHandler = (pageNumber: number, content: PostTypes[], isLast: boolean) => {
         if (pageNumber === 0) {
-            console.log(pageNumber);
             setAllPostList(content);
         } else {
             setAllPostList([...allPostList, ...content]);
