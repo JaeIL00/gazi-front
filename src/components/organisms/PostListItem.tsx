@@ -38,7 +38,6 @@ const PostListItem = ({ post, isBorder, isMarkerPost }: PostListItemProps) => {
                             )}
                         </View>
                     </TouchButton>
-                    {/* {isBorder && <View style={postListItemStyles.postBottomBar} />} */}
                 </View>
             )}
         </>
