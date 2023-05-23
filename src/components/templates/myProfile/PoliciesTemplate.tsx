@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Image, View } from 'react-native';
+import { Image, Modal, View } from 'react-native';
 
 import Spacer from '../../smallest/Spacer';
 import Colors from '../../../styles/Colors';
@@ -61,11 +61,10 @@ const PoliciesTemplate = ({ moveToBackScreenHandler }: PoliciesTemplateProps) =>
                     </View>
                 </TouchButton>
             </View>
-            {uri && (
-                <View style={PoliciesTemplateStyles.webviewBox}>
-                    <WebViewComponent uri={uri} closeHandler={seturi} />
-                </View>
-            )}
+
+            <Modal visible={uri.length > 0}>
+                <WebViewComponent uri={uri} closeHandler={seturi} />
+            </Modal>
         </View>
     );
 };

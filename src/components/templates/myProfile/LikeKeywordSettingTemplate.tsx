@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Image, View } from 'react-native';
 import { useQuery } from 'react-query';
 import { useRecoilValue } from 'recoil';
@@ -9,21 +9,20 @@ import MediumText from '../../smallest/MediumText';
 import NormalText from '../../smallest/NormalText';
 import TouchButton from '../../smallest/TouchButton';
 import SemiBoldText from '../../smallest/SemiBoldText';
-import useCheckKeyword from '../../../utils/hooks/useCheckKeyword';
 import EditMyKeyword from '../../organisms/myProfile/EditMyKeyword';
 import { userTokenAtom } from '../../../store/atoms';
 import { geyMyLikeKeywordsAPI } from '../../../queries/api';
 import { likeKeywordSettingTemplateStyles } from '../../../styles/styles';
 import { LikeKeywordSettingTemplateProps, MyLikeKeywordTypes } from '../../../types/types';
 
-const LikeKeywordSettingTemplate = ({ moveToBackScreenHandler }: LikeKeywordSettingTemplateProps) => {
+const LikeKeywordSettingTemplate = ({
+    moveToBackScreenHandler,
+    isFromCommunity = false,
+}: LikeKeywordSettingTemplateProps) => {
     const { accessToken } = useRecoilValue(userTokenAtom);
 
-    const [isEditWindow, setIsEditWindow] = useState<boolean>(false);
+    const [isEditWindow, setIsEditWindow] = useState<boolean>(isFromCommunity);
     const [myKeywordList, setMyKeywordList] = useState<MyLikeKeywordTypes[]>([]);
-
-    // Custom hook useCheckKeyword
-    const { checkTraffic, checkSubway, checkIssue, checkingInitialize } = useCheckKeyword();
 
     // My like keyword API
     const { refetch: getMyKeywordRefetch } = useQuery('getMyLikeKeyword', () => geyMyLikeKeywordsAPI(accessToken), {
@@ -50,11 +49,6 @@ const LikeKeywordSettingTemplate = ({ moveToBackScreenHandler }: LikeKeywordSett
                 console.log('(ERROR) Edit keyword window handler.', state);
         }
     };
-
-    // Initialized check keywords
-    useEffect(() => {
-        checkingInitialize();
-    }, []);
 
     return (
         <View style={likeKeywordSettingTemplateStyles.container}>
@@ -85,9 +79,7 @@ const LikeKeywordSettingTemplate = ({ moveToBackScreenHandler }: LikeKeywordSett
                 {isEditWindow ? (
                     <EditMyKeyword
                         myKeywordList={myKeywordList}
-                        checkInitTraffic={checkTraffic}
-                        checkInitSubway={checkSubway}
-                        checkInitIssue={checkIssue}
+                        isFromCommunity={isFromCommunity}
                         controlEditWindowHandler={controlEditWindowHandler}
                         getMyKeywordRefetch={getMyKeywordRefetch}
                     />
@@ -96,7 +88,7 @@ const LikeKeywordSettingTemplate = ({ moveToBackScreenHandler }: LikeKeywordSett
                         <View style={likeKeywordSettingTemplateStyles.contentTitleBox}>
                             <SemiBoldText text="내가 고른 키워드" size={16} color={Colors.BLACK} />
                         </View>
-                        {myKeywordList ? (
+                        {myKeywordList.length > 0 ? (
                             <View style={likeKeywordSettingTemplateStyles.myKeywordBox}>
                                 {myKeywordList.map(item => (
                                     <View key={item.id} style={likeKeywordSettingTemplateStyles.myKeywordList}>

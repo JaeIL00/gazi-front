@@ -9,13 +9,6 @@ export const appStyles = StyleSheet.create({
         flex: 1,
     },
 });
-export const globalDefaultStyles = StyleSheet.create({
-    container: {
-        flex: 1,
-        paddingHorizontal: 16 * screenWidth,
-        backgroundColor: Colors.BACKGROUND_DEFAULT,
-    },
-});
 export const globalBackWhiteStyles = StyleSheet.create({
     container: {
         flex: 1,
@@ -260,7 +253,7 @@ export const photoGalleryStyles = StyleSheet.create({
         width: 12 * screenWidth,
         height: 12 * screenWidth,
     },
-    imageBox: {
+    imageContainer: {
         width: 118 * screenWidth,
         height: 118 * screenWidth,
         justifyContent: 'center',
@@ -272,6 +265,27 @@ export const photoGalleryStyles = StyleSheet.create({
     imageSize: {
         width: '100%',
         height: '100%',
+    },
+    imageBox: {
+        position: 'relative',
+        width: '100%',
+        height: '100%',
+    },
+    imageBlurBox: {
+        width: '100%',
+        height: '100%',
+        position: 'absolute',
+    },
+    imageCheckBox: {
+        width: 24 * screenWidth,
+        height: 24 * screenWidth,
+        borderRadius: 24 * screenFont,
+        borderColor: Colors.WHITE,
+        position: 'absolute',
+        right: 10 * screenWidth,
+        top: 10 * screenWidth,
+        justifyContent: 'center',
+        alignItems: 'center',
     },
 });
 export const serviceAgreementStyles = StyleSheet.create({
@@ -529,7 +543,10 @@ export const postListItemStyles = StyleSheet.create({
     container: {
         flexDirection: 'row',
         justifyContent: 'space-between',
+        paddingHorizontal: 16 * screenWidth,
+        paddingVertical: 16 * screenHeight,
         width: '100%',
+        // backgroundColor: 'tomato',
     },
     textBox: {
         width: '68%',
@@ -538,14 +555,6 @@ export const postListItemStyles = StyleSheet.create({
         width: 77 * screenWidth,
         height: 77 * screenWidth,
         borderRadius: 5 * screenFont,
-    },
-    postBottomBar: {
-        borderBottomWidth: 1 * screenFont,
-        borderColor: '#EBEBEB',
-        width: '120%',
-        position: 'absolute',
-        left: -16 * screenWidth,
-        bottom: -15 * screenHeight,
     },
 });
 export const searchLocationStyles = StyleSheet.create({
@@ -840,6 +849,9 @@ export const emailLoginTemplateStyles = StyleSheet.create({
     container: {
         flex: 1,
     },
+    mainContent: {
+        flexGrow: 1,
+    },
     underBar: {
         borderBottomColor: Colors.TXT_GRAY,
         borderBottomWidth: 2 * screenFont,
@@ -851,6 +863,12 @@ export const emailLoginTemplateStyles = StyleSheet.create({
         alignItems: 'center',
         position: 'absolute',
         bottom: -21 * screenHeight,
+    },
+    bottomBox: {
+        paddingBottom: 37 * screenHeight,
+    },
+    bottomContain: {
+        flexShrink: 1,
     },
 });
 export const initLikeKeywordTemplateStyles = StyleSheet.create({
@@ -1035,7 +1053,6 @@ export const writePostOrCommentTemplateStyles = StyleSheet.create({
         borderRadius: 12 * screenFont,
     },
     conditionSettingBox: {
-        paddingLeft: 16 * screenWidth,
         paddingTop: 14 * screenHeight,
     },
     mapSize: {
@@ -1077,6 +1094,39 @@ export const writePostOrCommentTemplateStyles = StyleSheet.create({
         paddingHorizontal: 10 * screenWidth,
         paddingVertical: 5 * screenHeight,
         marginRight: 3 * screenWidth,
+    },
+    bottomImageBox: {
+        position: 'relative',
+        marginRight: 8 * screenWidth,
+        width: 66 * screenWidth,
+        height: 70 * screenWidth,
+    },
+    bottomImageInnerBox: {
+        width: '100%',
+        height: 66 * screenWidth,
+        position: 'absolute',
+        bottom: 0,
+    },
+    bottomImageSize: {
+        width: '100%',
+        height: '100%',
+        borderRadius: 10 * screenFont,
+        borderWidth: 1 * screenFont,
+        borderColor: '#E3E3E3',
+    },
+    bottomImageDelButton: {
+        position: 'absolute',
+        height: 25 * screenHeight,
+        top: -2 * screenWidth,
+        right: -4 * screenWidth,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    bottomImageDelIconBack: {
+        position: 'absolute',
+        width: '40%',
+        height: '40%',
+        backgroundColor: Colors.WHITE,
     },
 });
 export const myProfileTemplateStyles = StyleSheet.create({
@@ -1247,7 +1297,7 @@ export const myPostCommentTemplateStyles = StyleSheet.create({
         width: '50%',
         paddingBottom: 7 * screenHeight,
         paddingTop: 12 * screenHeight,
-        borderColor: Colors.BLACK,
+        borderBottomWidth: 1.5 * screenFont,
     },
 });
 export const AccountManagementTemplateStyles = StyleSheet.create({
@@ -1332,12 +1382,10 @@ export const communityTemplateStyles = StyleSheet.create({
         width: '50%',
         paddingBottom: 7 * screenHeight,
         paddingTop: 13 * screenHeight,
-        borderColor: Colors.BLACK,
+        borderBottomWidth: 1.5 * screenFont,
     },
     contentBox: {
         flex: 1,
-        paddingHorizontal: 16 * screenWidth,
-        paddingTop: 17 * screenHeight,
     },
     nothingBox: {
         alignItems: 'center',
@@ -1352,6 +1400,10 @@ export const communityTemplateStyles = StyleSheet.create({
         flex: 1,
         position: 'relative',
     },
+    emptyButtonBox: {
+        paddingTop: 16 * screenHeight,
+        paddingLeft: 16 * screenWidth,
+    },
     addKeywordButton: {
         flexDirection: 'row',
         alignItems: 'center',
@@ -1364,7 +1416,8 @@ export const communityTemplateStyles = StyleSheet.create({
     },
     tooltipBox: {
         position: 'absolute',
-        top: 35 * screenHeight,
+        top: 51 * screenHeight,
+        left: 16 * screenWidth,
     },
     tooltipImg: {
         width: 246 * screenWidth,
@@ -1505,22 +1558,6 @@ export const likeKeywordSettingTemplateStyles = StyleSheet.create({
 export const seviceHomeScreenStyles = StyleSheet.create({
     container: {
         flex: 1,
-    },
-});
-export const myProfileScreenStyles = StyleSheet.create({
-    container: {
-        flex: 1,
-    },
-});
-export const editNicknameScreenStyles = StyleSheet.create({
-    container: {
-        flex: 1,
-    },
-});
-export const threadItemScreenStyles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: Colors.BACKGROUND_DEFAULT,
     },
 });
 export const JoinMemberScreenStyles = StyleSheet.create({

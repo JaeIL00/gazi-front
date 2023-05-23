@@ -1,7 +1,8 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { BackHandler, Platform, ToastAndroid, View } from 'react-native';
-import { useFocusEffect, useIsFocused } from '@react-navigation/native';
+import React, { useEffect, useRef, useState } from 'react';
+import { BackHandler, Platform, StatusBar, ToastAndroid, View } from 'react-native';
+import { useIsFocused } from '@react-navigation/native';
 
+import Colors from '../styles/Colors';
 import SeviceHomeTemplate from '../components/templates/home/SeviceHomeTemplate';
 import { seviceHomeScreenStyles } from '../styles/styles';
 import { useRootNavigation } from '../navigations/RootStackNavigation';
@@ -53,6 +54,7 @@ const SeviceHomeScreen = () => {
 
     return (
         <View style={seviceHomeScreenStyles.container}>
+            <StatusBar backgroundColor={Colors.BACKGROUND_DEFAULT} barStyle="dark-content" />
             <SeviceHomeTemplate
                 isModalRef={isModalRef}
                 handleModalTrigger={handleModalTrigger}

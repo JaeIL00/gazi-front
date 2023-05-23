@@ -1,8 +1,7 @@
 import React from 'react';
-import { View } from 'react-native';
 
+import ScreenWrapper from '../../components/organisms/ScreenWrapper';
 import DeleteMemberTemplate from '../../components/templates/myProfile/DeleteMemberTemplate';
-import { globalBackWhiteStyles } from '../../styles/styles';
 import { useRootNavigation } from '../../navigations/RootStackNavigation';
 
 const DeleteMemberScreen = () => {
@@ -21,9 +20,9 @@ const DeleteMemberScreen = () => {
         }
     };
     return (
-        <View style={globalBackWhiteStyles.container}>
+        <ScreenWrapper isPaddingHorizontal={false}>
             <DeleteMemberTemplate moveToScreenHandler={moveToScreenHandler} />
-        </View>
+        </ScreenWrapper>
     );
 };
 

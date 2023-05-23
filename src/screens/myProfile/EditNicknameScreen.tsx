@@ -1,8 +1,7 @@
 import React from 'react';
-import { View } from 'react-native';
 
+import ScreenWrapper from '../../components/organisms/ScreenWrapper';
 import EditNicknameTemplate from '../../components/templates/myProfile/EditNicknameTemplate';
-import { editNicknameScreenStyles } from '../../styles/styles';
 import { useRootNavigation } from '../../navigations/RootStackNavigation';
 
 const EditNicknameScreen = () => {
@@ -13,9 +12,9 @@ const EditNicknameScreen = () => {
         }
     };
     return (
-        <View style={editNicknameScreenStyles.container}>
+        <ScreenWrapper isPaddingHorizontal={false}>
             <EditNicknameTemplate moveToMyProfileScreen={moveToMyProfileScreen} />
-        </View>
+        </ScreenWrapper>
     );
 };
 export default EditNicknameScreen;

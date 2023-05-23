@@ -15,6 +15,7 @@ import { JoinMemberScreenStyles } from '../styles/styles';
 import { emailAuthAtom, joinMemberAtom } from '../store/atoms';
 import { useRootNavigation } from '../navigations/RootStackNavigation';
 import ModalBackground from '../components/smallest/ModalBackground';
+import ScreenWrapper from '../components/organisms/ScreenWrapper';
 
 const JoinMemberScreen = () => {
     const rootNavigation = useRootNavigation();
@@ -105,7 +106,6 @@ const JoinMemberScreen = () => {
 
     // Android back button & Header Back Button Handling
     const handleBackButton = (): boolean => {
-        console.log('hooo');
         if (step === 4) {
             // For Debug
             rootNavigation.navigate('NotLoginHome');
@@ -138,46 +138,48 @@ const JoinMemberScreen = () => {
     }, [step, isSlideComponent]);
 
     return (
-        <View style={JoinMemberScreenStyles.container}>
-            <View style={JoinMemberScreenStyles.inner}>
-                <MoveBackWithPageTitle
-                    oneTitle={oneTitle}
-                    twoTitle={twoTitle}
-                    explainText={explain && explain}
-                    explainSize={explain ? 13 : undefined}
-                    onPress={handleBackButton}
-                />
-
-                <Spacer height={51} />
-
-                {step === 1 && (
-                    <InputEmailTemplate
-                        minutes={min}
-                        seconds={sec}
-                        resetTimeHandler={resetTimeHandler}
-                        onPressNextStep={onPressNextStep}
-                        didAuthEmail={didAuthEmail}
+        <ScreenWrapper isPaddingHorizontal={false}>
+            <>
+                <View style={JoinMemberScreenStyles.inner}>
+                    <MoveBackWithPageTitle
+                        oneTitle={oneTitle}
+                        twoTitle={twoTitle}
+                        explainText={explain && explain}
+                        explainSize={explain ? 13 : undefined}
+                        onPress={handleBackButton}
                     />
+
+                    <Spacer height={51} />
+
+                    {step === 1 && (
+                        <InputEmailTemplate
+                            minutes={min}
+                            seconds={sec}
+                            resetTimeHandler={resetTimeHandler}
+                            onPressNextStep={onPressNextStep}
+                            didAuthEmail={didAuthEmail}
+                        />
+                    )}
+                    {step === 2 && <EmailWithPasswordTemplate onPressNextStep={onPressNextStep} />}
+                    {step === 3 && <NicknameTemplate onPressNextStep={onPressNextStep} />}
+                    {step === 4 && <CompletedJoinTemplate onPressNextStep={onPressNextStep} />}
+
+                    <ModalBackground
+                        visible={isSlideComponent && step === 1}
+                        onRequestClose={() => setIsSlideComponent(false)}>
+                        <AuthEmail
+                            min={min}
+                            sec={sec}
+                            resetTimeHandler={resetTimeHandler}
+                            finishSlideComponentHandler={finishSlideComponentHandler}
+                        />
+                    </ModalBackground>
+                </View>
+                {isSlideComponent && step === 2 && (
+                    <ServiceAgreement finishSlideComponentHandler={finishSlideComponentHandler} />
                 )}
-                {step === 2 && <EmailWithPasswordTemplate onPressNextStep={onPressNextStep} />}
-                {step === 3 && <NicknameTemplate onPressNextStep={onPressNextStep} />}
-                {step === 4 && <CompletedJoinTemplate onPressNextStep={onPressNextStep} />}
-
-                <ModalBackground
-                    visible={isSlideComponent && step === 1}
-                    onRequestClose={() => setIsSlideComponent(false)}>
-                    <AuthEmail
-                        min={min}
-                        sec={sec}
-                        resetTimeHandler={resetTimeHandler}
-                        finishSlideComponentHandler={finishSlideComponentHandler}
-                    />
-                </ModalBackground>
-            </View>
-            {isSlideComponent && step === 2 && (
-                <ServiceAgreement finishSlideComponentHandler={finishSlideComponentHandler} />
-            )}
-        </View>
+            </>
+        </ScreenWrapper>
     );
 };
 

@@ -1,11 +1,12 @@
-import React, { RefObject, useCallback, useRef, useState } from 'react';
+import React, { RefObject, useCallback, useEffect, useRef, useState } from 'react';
 import {
     ActivityIndicator,
-    Animated,
     Image,
     ImageSourcePropType,
     Linking,
+    Modal,
     ScrollView,
+    StatusBar,
     TouchableOpacity,
     View,
 } from 'react-native';
@@ -14,6 +15,8 @@ import { useRecoilValue } from 'recoil';
 import { debounce } from 'lodash';
 import { Asset } from 'react-native-image-picker';
 import MapView, { Marker } from 'react-native-maps';
+import FastImage from 'react-native-fast-image';
+import { PERMISSIONS, RESULTS, checkMultiple } from 'react-native-permissions';
 
 import Icons from '../../smallest/Icons';
 import Spacer from '../../smallest/Spacer';
@@ -24,6 +27,7 @@ import MediumText from '../../smallest/MediumText';
 import TextButton from '../../molecules/TextButton';
 import TouchButton from '../../smallest/TouchButton';
 import SemiBoldText from '../../smallest/SemiBoldText';
+import PhotoGallery from '../../organisms/PhotoGallery';
 import MultiLineInput from '../../smallest/MultiLineInput';
 import HeaderMolecule from '../../molecules/HeaderMolecule';
 import SearchLocation from '../../organisms/SearchLocation';
@@ -32,16 +36,18 @@ import WritePhoto from '../../organisms/cummunity/WritePhoto';
 import FailPermissionModal from '../../organisms/FailPermissionModal';
 import WritePostAddKeyword from '../../organisms/cummunity/WritePostAddKeyword';
 import { userTokenAtom } from '../../../store/atoms';
-import { issueKeywords, subwayKeywords, trafficKeywords } from '../../../utils/allKeywords';
 import { screenFont, screenHeight, screenWidth } from '../../../utils/changeStyleSize';
 import { SingleLineInput } from '../../smallest/SingleLineInput';
 import { writePostOrCommentTemplateStyles } from '../../../styles/styles';
-import { KeywordListTypes, WritePostOrCommentTemplateProps, WritePostTypes } from '../../../types/types';
-import { writeCommentAPI, writeCommentFilesAPI, writePostAPI, writePostFilesAPI } from '../../../queries/api';
-import FastImage from 'react-native-fast-image';
-import { PERMISSIONS, RESULTS, checkMultiple } from 'react-native-permissions';
-import PhotoGallery from '../../organisms/PhotoGallery';
 import { useRootNavigation, useRootRoute } from '../../../navigations/RootStackNavigation';
+import { issueKeywords, subwayKeywords, trafficKeywords } from '../../../utils/allKeywords';
+import {
+    KeywordListTypes,
+    WritePostOrCommentTemplateProps,
+    WritePostTypes,
+    uploadImageFileTypes,
+} from '../../../types/types';
+import { writeCommentAPI, writeCommentFilesAPI, writePostAPI, writePostFilesAPI } from '../../../queries/api';
 
 const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostOrCommentTemplateProps) => {
     const rootNavigation = useRootNavigation();
@@ -59,11 +65,11 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
     const [onErrorModal, setOnErrorModal] = useState<boolean>(false);
     const [loactionModal, setLoactionModal] = useState<boolean>(false);
     const [inputFocusBlur, setInputFocusBlur] = useState<boolean>(false);
-
     const [markerType, setMarkerType] = useState<ImageSourcePropType>();
     const [imagePermission, setImagePermission] = useState<boolean>(false);
-    const [isCamAllowPermission, setIsCamAllowPermission] = useState<boolean>(false);
     const [chooseKeywords, setChooseKeywords] = useState<KeywordListTypes[]>([]);
+    const [isCamAllowPermission, setIsCamAllowPermission] = useState<boolean>(false);
+    const [checkImageFileList, setCheckImageFileList] = useState<uploadImageFileTypes[]>([]);
     const [writePostData, setWritePostData] = useState<WritePostTypes>({
         dto: {
             title: '',
@@ -116,7 +122,7 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
     const { mutate: commentFileMutate, isLoading: iscommentFileLoading } = useMutation(writeCommentFilesAPI, {
         onSuccess: ({ data }) => {
             if (postThreadInfo) {
-                moveToScreen('GO', postThreadInfo?.postId);
+                moveToScreen('GO', postThreadInfo.postId, postThreadInfo.rePostCount);
             }
         },
         onError: error => {
@@ -146,8 +152,21 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
             dto: { ...writePostData.dto, keywordIdList: keyword, headKeywordId: keyword[0] },
         });
     };
-    const getImageHandler = (files: Asset[]) => {
-        setWritePostData({ ...writePostData, files });
+
+    // Get image from gallery
+    const getImageHandler = (file: uploadImageFileTypes, state: string) => {
+        switch (state) {
+            case 'ADD':
+                setWritePostData({ ...writePostData, files: [...writePostData.files, file] });
+                break;
+            case 'DEL':
+                const freshFiles = writePostData.files.filter(item => item.uri !== file.uri);
+                setWritePostData({ ...writePostData, files: freshFiles });
+                break;
+            default:
+                // For Debug
+                console.log('(ERROR) Get image from gallery.', state, file);
+        }
     };
 
     // Content input focue blur handler
@@ -297,7 +316,9 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
                 rePostId,
             });
         } else {
-            moveToScreen('GO', postId);
+            if (postThreadInfo) {
+                moveToScreen('GO', postThreadInfo.postId, postThreadInfo.rePostCount + 1);
+            }
         }
     };
 
@@ -441,6 +462,7 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
 
     return (
         <>
+            <StatusBar backgroundColor={Colors.WHITE} barStyle="dark-content" />
             <MapView
                 ref={mapRef}
                 style={writePostOrCommentTemplateStyles.mapSize}
@@ -613,12 +635,12 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
                     )}
                 </ScrollView>
 
-                {/* <WritePhoto getImageHandler={getImageHandler} notAllowPermission={notAllowPermission} /> */}
-
-                {isCamAllowPermission && <PhotoGallery closeGalleryHandling={closeGalleryHandling} />}
+                <Modal visible={isCamAllowPermission} onRequestClose={() => setIsCamAllowPermission(false)}>
+                    <PhotoGallery closeGalleryHandling={closeGalleryHandling} getImageHandler={getImageHandler} />
+                </Modal>
                 <View style={writePostOrCommentTemplateStyles.bottomBox}>
                     <View style={writePostOrCommentTemplateStyles.bottomKeyword}>
-                        {chooseKeywords && (
+                        {chooseKeywords.length > 0 && (
                             <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
                                 <>
                                     {chooseKeywords.map(item => (
@@ -628,6 +650,29 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
                                                 size={12}
                                                 color={Colors.TXT_LIGHTGRAY}
                                             />
+                                        </View>
+                                    ))}
+                                </>
+                            </ScrollView>
+                        )}
+                        {writePostData.files.length > 0 && (
+                            <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+                                <>
+                                    {writePostData.files.map(item => (
+                                        <View style={writePostOrCommentTemplateStyles.bottomImageBox}>
+                                            <View style={writePostOrCommentTemplateStyles.bottomImageInnerBox}>
+                                                <Image
+                                                    source={{ uri: item.uri }}
+                                                    style={writePostOrCommentTemplateStyles.bottomImageSize}
+                                                />
+                                            </View>
+                                            <TouchableOpacity
+                                                onPress={() => getImageHandler(item, 'DEL')}
+                                                activeOpacity={1}
+                                                style={writePostOrCommentTemplateStyles.bottomImageDelButton}>
+                                                <View style={writePostOrCommentTemplateStyles.bottomImageDelIconBack} />
+                                                <Icons type="ionicons" name="close-circle" size={20} color="#000000" />
+                                            </TouchableOpacity>
                                         </View>
                                     ))}
                                 </>
@@ -671,7 +716,7 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
                             finishFunction={() => locationModalHandler('CLOSE')}
                         />
 
-                        <Spacer height={28} />
+                        <Spacer height={12} />
 
                         <SearchLocation
                             getLocationHandler={getLocationHandler}
@@ -705,7 +750,7 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
                     </View>
                 )}
 
-                <ModalBackground visible={imagePermission}>
+                <ModalBackground visible={imagePermission} onRequestClose={() => setImagePermission(false)}>
                     <FailPermissionModal
                         permissionName="사진 접근 권한 허용하기"
                         contentOne="사진 업로드를 하시려면"

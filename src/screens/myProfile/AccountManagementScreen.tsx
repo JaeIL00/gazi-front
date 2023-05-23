@@ -1,8 +1,7 @@
 import React from 'react';
-import { View } from 'react-native';
 
+import ScreenWrapper from '../../components/organisms/ScreenWrapper';
 import AccountManagementTemplate from '../../components/templates/myProfile/AccountManagementTemplate';
-import { globalBackWhiteStyles } from '../../styles/styles';
 import { useRootNavigation } from '../../navigations/RootStackNavigation';
 
 const AccountManagementScreen = () => {
@@ -28,9 +27,9 @@ const AccountManagementScreen = () => {
     };
 
     return (
-        <View style={globalBackWhiteStyles.container}>
+        <ScreenWrapper isPaddingHorizontal={false}>
             <AccountManagementTemplate moveToScreenHandler={moveToScreenHandler} />
-        </View>
+        </ScreenWrapper>
     );
 };
 export default AccountManagementScreen;

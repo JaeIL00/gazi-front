@@ -1,14 +1,14 @@
 import React from 'react';
-import { View } from 'react-native';
-
-import ThreadItemTemplate from '../../components/templates/community/ThreadItemTemplate';
-import { threadItemScreenStyles } from '../../styles/styles';
-import { useRootNavigation, useRootRoute } from '../../navigations/RootStackNavigation';
 import { useIsFocused } from '@react-navigation/native';
+
+import ScreenWrapper from '../../components/organisms/ScreenWrapper';
+import ThreadItemTemplate from '../../components/templates/community/ThreadItemTemplate';
+import { useRootNavigation, useRootRoute } from '../../navigations/RootStackNavigation';
 
 const ThreadItemScreen = () => {
     const route = useRootRoute<'ThreadItem'>();
     const postId = route.params.postId;
+    const freshRePostCount = route.params.freshRePostCount;
 
     const rootNavigation = useRootNavigation();
     const movetoCommunityScreen = () => {
@@ -25,13 +25,14 @@ const ThreadItemScreen = () => {
 
     const isFocus = useIsFocused();
     return (
-        <View style={threadItemScreenStyles.container}>
+        <ScreenWrapper isPaddingHorizontal={false}>
             <ThreadItemTemplate
                 postId={postId}
                 movetoCommunityScreen={movetoCommunityScreen}
                 moveToWriteScreen={moveToWriteScreen}
+                freshRePostCount={freshRePostCount}
             />
-        </View>
+        </ScreenWrapper>
     );
 };
 export default ThreadItemScreen;

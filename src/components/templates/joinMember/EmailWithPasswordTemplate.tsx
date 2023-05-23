@@ -90,16 +90,16 @@ const EmailWithPasswordTemplate = ({ onPressNextStep }: EmailWithPasswordProps) 
                 />
             </View>
 
-            <Animated.View style={[nextStepButtonPosition.button, { transform: [{ translateY: bottomValue }] }]}>
-                <TextButton
-                    onPress={canMoveNextStepHandler}
-                    text="회원가입"
-                    height={48}
-                    backgroundColor={isPasswordLeng && isPasswordReg ? Colors.BLACK : Colors.BTN_GRAY}
-                    textColor={Colors.WHITE}
-                    fontSize={17}
-                />
-            </Animated.View>
+            {/* <Animated.View style={[nextStepButtonPosition.button, { transform: [{ translateY: bottomValue }] }]}> */}
+            <TextButton
+                onPress={canMoveNextStepHandler}
+                text="회원가입"
+                height={48}
+                backgroundColor={isPasswordLeng && isPasswordReg ? Colors.BLACK : Colors.BTN_GRAY}
+                textColor={Colors.WHITE}
+                fontSize={17}
+            />
+            {/* </Animated.View> */}
         </View>
     );
 };

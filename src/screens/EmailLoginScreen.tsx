@@ -1,8 +1,7 @@
 import React from 'react';
-import { View } from 'react-native';
 
+import ScreenWrapper from '../components/organisms/ScreenWrapper';
 import EmailLoginTemplate from '../components/templates/emailLogin/EmailLoginTemplate';
-import { globalDefaultStyles } from '../styles/styles';
 import { useRootNavigation } from '../navigations/RootStackNavigation';
 
 const EmailLoginScreen = () => {
@@ -24,9 +23,9 @@ const EmailLoginScreen = () => {
     };
 
     return (
-        <View style={globalDefaultStyles.container}>
+        <ScreenWrapper isPaddingHorizontal={true}>
             <EmailLoginTemplate moveServiceHomeHandler={moveScreenHandler} />
-        </View>
+        </ScreenWrapper>
     );
 };
 

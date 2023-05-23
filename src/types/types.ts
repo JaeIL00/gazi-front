@@ -19,6 +19,11 @@ export type SearchHistoryTypes = {
 
     location: { lat: number; lng: number };
 };
+export type MyCommentTypes = {
+    content: string;
+    createTime: string;
+    title: string;
+};
 export type MapLocationTypes = {
     latitude: number;
     longitude: number;
@@ -62,7 +67,17 @@ export type CommentTypes = {
     nickName: string;
     report: boolean;
     time: string;
-    id: number;
+    postId: number;
+};
+export type uploadImageFileTypes = {
+    uri: string;
+    fileName: string;
+    type: string;
+};
+export type GalleryAlbumListTypes = {
+    title: string;
+    count: number;
+    thumbnail: string;
 };
 export type LocationResultTypes = {
     business_status: string;
@@ -123,7 +138,7 @@ export type CommentReqTypes = {
 };
 export type WritePostTypes = {
     dto: PostDto;
-    files: Asset[];
+    files: uploadImageFileTypes[];
     thumbnail: Asset | null;
     backgroundMap: string;
 };
@@ -195,10 +210,13 @@ export type RootStackParamList = {
         | undefined;
     EditNickname: undefined;
     AccountManagement: undefined;
-    LikeKeywordSetting: undefined;
+    LikeKeywordSetting: {
+        isFromCommunity?: boolean;
+    };
     Policies: undefined;
     ThreadItem: {
         postId: number;
+        freshRePostCount?: number;
     };
     MyPostComment: undefined;
     ChangePassword: undefined;
@@ -352,8 +370,20 @@ export type HeaderMoleculeProps = {
 export interface MoveBackWithPageTitleProps extends PageTitleWithExplainProps {
     onPress: () => void;
 }
+export type ScreenWrapperProps = {
+    children: ReactElement;
+    isPaddingHorizontal: boolean;
+};
 export type PhotoGalleryProps = {
     closeGalleryHandling: () => void;
+    getImageHandler: (file: uploadImageFileTypes, state: string) => void;
+};
+export type CommentListItemProps = {
+    comment: CommentTypes;
+    postTitle: string;
+    postCount: number;
+    firstCommentId: number | undefined;
+    reportHandler: (repostId: number) => void;
 };
 export type ServiceAgreementProps = {
     finishSlideComponentHandler: (state: string) => void;
@@ -429,9 +459,7 @@ export type WritePhotoProps = {
 };
 export type EditMyKeywordProps = {
     myKeywordList: MyLikeKeywordTypes[];
-    checkInitTraffic: boolean[];
-    checkInitSubway: boolean[];
-    checkInitIssue: boolean[];
+    isFromCommunity: boolean;
     controlEditWindowHandler: (state: string) => void;
     getMyKeywordRefetch: <TPageData>(
         options?: (RefetchOptions & RefetchQueryFilters<TPageData>) | undefined,
@@ -472,7 +500,7 @@ export type WritePostOrCommentTemplateProps = {
               postId: number;
           }
         | undefined;
-    moveToScreen: (state: string, postId: number | null) => void;
+    moveToScreen: (state: string, postId: number | null, freshRePostCount?: number) => void;
 };
 export type EditNicknameTemplateProps = {
     moveToMyProfileScreen: (state: string) => void;
@@ -482,6 +510,7 @@ export type MyProfileTemplateProps = {
 };
 export type ThreadItemTemplateProps = {
     postId: number;
+    freshRePostCount?: number;
     movetoCommunityScreen: () => void;
     moveToWriteScreen: (title: string, rePostCount: number, time: string) => void;
 };
@@ -498,6 +527,7 @@ export type ChangePasswordTemplateProps = {
     moveToBackScreenHandler: () => void;
 };
 export type LikeKeywordSettingTemplateProps = {
+    isFromCommunity: boolean | undefined;
     moveToBackScreenHandler: () => void;
 };
 export type PoliciesTemplateProps = {
