@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, Animated, Keyboard, KeyboardAvoidingView, ToastAndroid, View } from 'react-native';
+import React, { useState } from 'react';
+import { ActivityIndicator, KeyboardAvoidingView, ToastAndroid, View } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useMutation } from 'react-query';
 import { debounce } from 'lodash';
@@ -13,13 +13,11 @@ import MediumText from '../../smallest/MediumText';
 import TextButton from '../../molecules/TextButton';
 import TouchButton from '../../smallest/TouchButton';
 import LoginTextInput from '../../molecules/LoginTextInput';
-import useKeyboardMotion from '../../../utils/hooks/useKeyboardMotion';
 import MoveBackWithPageTitle from '../../organisms/MoveBackWithPageTitle';
 import { loginAPI } from '../../../queries/api';
-import { userInfoAtom, userTokenAtom } from '../../../store/atoms';
 import { EmailLoginTemplateProps } from '../../../types/types';
-import { emailLoginTemplateStyles, nextStepButtonPosition } from '../../../styles/styles';
-import { screenHeight } from '../../../utils/changeStyleSize';
+import { emailLoginTemplateStyles } from '../../../styles/styles';
+import { userInfoAtom, userTokenAtom } from '../../../store/atoms';
 
 const EmailLoginTemplate = ({ moveServiceHomeHandler }: EmailLoginTemplateProps) => {
     // Text change Handling
@@ -60,6 +58,7 @@ const EmailLoginTemplate = ({ moveServiceHomeHandler }: EmailLoginTemplateProps)
         refreshToken: string;
         memberId: number;
         nickName: string;
+        email: string;
     }) => {
         try {
             await AsyncStorage.setItem('GAZI_ac_tk', data.accessToken);
@@ -71,6 +70,7 @@ const EmailLoginTemplate = ({ moveServiceHomeHandler }: EmailLoginTemplateProps)
             setUserInfo({
                 memberId: data.memberId,
                 nickname: data.nickName,
+                email: data.email,
             });
         } catch (err) {
             // For Debug

@@ -177,6 +177,7 @@ export type userTokenAtomTypes = {
 export type userInfoAtomTypes = {
     memberId: number | null;
     nickname: string;
+    email: string;
 };
 
 export type joinMemberTypes = {

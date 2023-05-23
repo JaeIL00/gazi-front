@@ -55,6 +55,7 @@ export const RootStackNavigation = () => {
         refreshToken: string;
         memberId: number;
         nickName: string;
+        email: string;
     }) => {
         try {
             await AsyncStorage.setItem('GAZI_ac_tk', data.accessToken);
@@ -66,6 +67,7 @@ export const RootStackNavigation = () => {
             setUserInfo({
                 memberId: data.memberId,
                 nickname: data.nickName,
+                email: data.email,
             });
             rootNavigation.navigate('BottomTab');
             SplashScreen.hide();
@@ -94,7 +96,6 @@ export const RootStackNavigation = () => {
     };
     useLayoutEffect(() => {
         checkAsyncStorage();
-        // SplashScreen.hide();
     }, []);
 
     return (
