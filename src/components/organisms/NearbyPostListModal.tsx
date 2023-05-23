@@ -235,8 +235,10 @@ const NearbyPostListModal = ({
 
     // Flatlist function
     const keyExtractor = useCallback((item: PostTypes) => item.postId + 'list', []);
-    const postList = useCallback(({ item }: { item: PostTypes }) => <PostListItem post={item} isBorder={false} />, []);
-    const ItemSeparatorComponent = useCallback(() => <Spacer height={20} />, []);
+    const postList = useCallback(
+        ({ item }: { item: PostTypes }) => <PostListItem post={item} isBorder={false} isNearList={true} />,
+        [],
+    );
     const ListFooterComponent = useCallback(() => <Spacer height={20} />, []);
 
     // Going to current position by toggle button
@@ -329,11 +331,13 @@ const NearbyPostListModal = ({
                 </View>
 
                 {!markerPost && (
-                    <View style={nearbyPostListModalStyles.titleBox}>
-                        <SemiBoldText text="00님 주변에서 일어나고 있는 일" color={Colors.BLACK} size={18} />
-                    </View>
+                    <>
+                        <View style={nearbyPostListModalStyles.titleBox}>
+                            <SemiBoldText text="00님 주변에서 일어나고 있는 일" color={Colors.BLACK} size={18} />
+                        </View>
+                        <Spacer height={10} />
+                    </>
                 )}
-                <Spacer height={10} />
             </Animated.View>
             <Animated.View
                 style={[
@@ -354,22 +358,19 @@ const NearbyPostListModal = ({
                         keyExtractor={keyExtractor}
                         data={nearPostList}
                         renderItem={postList}
-                        ItemSeparatorComponent={ItemSeparatorComponent}
                         ListFooterComponent={ListFooterComponent}
                         showsVerticalScrollIndicator={false}
                         onEndReachedThreshold={0.5}
-                        onEndReached={({ distanceFromEnd }) => {
-                            if (distanceFromEnd > 0) {
-                                callNextPageHandler();
-                            }
+                        onEndReached={() => {
+                            callNextPageHandler();
                         }}
-                        getItemLayout={(data, index) => ({
-                            length: nearPostList.length,
-                            offset: nearPostList.length * index,
-                            index,
-                        })}
-                        initialNumToRender={5}
-                        maxToRenderPerBatch={9}
+                        // getItemLayout={(data, index) => ({
+                        //     length: nearPostList.length,
+                        //     offset: nearPostList.length * index,
+                        //     index,
+                        // })}
+                        // initialNumToRender={5}
+                        // maxToRenderPerBatch={9}
                     />
                 )}
                 {markerPost && <PostListItem post={markerPost} isBorder={false} isMarkerPost={true} />}

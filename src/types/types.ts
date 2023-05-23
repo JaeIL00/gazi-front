@@ -426,6 +426,7 @@ export type MapWithMarkerProps = {
 export type PostListItemProps = {
     post: PostTypes | null;
     isBorder: boolean;
+    isNearList?: boolean;
     isMarkerPost?: boolean;
 };
 export type NearbyPostListModalProps = {

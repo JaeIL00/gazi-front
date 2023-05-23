@@ -470,7 +470,6 @@ export const nearbyPostListModalStyles = StyleSheet.create({
         top: 0,
     },
     listBox: {
-        paddingHorizontal: 16 * screenWidth,
         backgroundColor: Colors.BACKGROUND_DEFAULT,
         marginTop: -1,
         height: NEAR_LIST_HEIGHT,
@@ -544,9 +543,7 @@ export const postListItemStyles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         paddingHorizontal: 16 * screenWidth,
-        paddingVertical: 16 * screenHeight,
         width: '100%',
-        // backgroundColor: 'tomato',
     },
     textBox: {
         width: '68%',

@@ -10,16 +10,22 @@ import SemiBoldText from '../smallest/SemiBoldText';
 import { PostListItemProps } from '../../types/types';
 import { postListItemStyles } from '../../styles/styles';
 import { useRootNavigation } from '../../navigations/RootStackNavigation';
-import { screenFont } from '../../utils/changeStyleSize';
+import { screenFont, screenHeight } from '../../utils/changeStyleSize';
 
-const PostListItem = ({ post, isBorder, isMarkerPost }: PostListItemProps) => {
+const PostListItem = ({ post, isBorder, isMarkerPost, isNearList }: PostListItemProps) => {
     const rootNavigation = useRootNavigation();
     return (
         <>
             {post && (
                 <View style={{ borderBottomWidth: isBorder ? 1 * screenFont : undefined, borderColor: '#EBEBEB' }}>
                     <TouchButton onPress={() => rootNavigation.navigate('ThreadItem', { postId: post.postId })}>
-                        <View style={postListItemStyles.container}>
+                        <View
+                            style={[
+                                postListItemStyles.container,
+                                {
+                                    paddingVertical: isNearList ? 10 * screenHeight : 16 * screenHeight,
+                                },
+                            ]}>
                             <View style={postListItemStyles.textBox}>
                                 <SemiBoldText text={post.title} size={isMarkerPost ? 18 : 16} color={Colors.BLACK} />
                                 {isMarkerPost && <Spacer height={5} />}
