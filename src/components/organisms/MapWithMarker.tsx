@@ -35,8 +35,7 @@ const MapWithMarker = ({
             pitchEnabled={false}
             onRegionChangeComplete={checkZoomLevelWarning}
             onRegionChange={checkMapGesture}
-            // onMapReady={mapRenderCompleteHandler}
-        >
+            onMapReady={mapRenderCompleteHandler}>
             {isAllowLocation && (
                 <Marker
                     coordinate={{
