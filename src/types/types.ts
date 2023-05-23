@@ -459,9 +459,7 @@ export type WritePhotoProps = {
 };
 export type EditMyKeywordProps = {
     myKeywordList: MyLikeKeywordTypes[];
-    checkInitTraffic: boolean[];
-    checkInitSubway: boolean[];
-    checkInitIssue: boolean[];
+    isFromCommunity: boolean;
     controlEditWindowHandler: (state: string) => void;
     getMyKeywordRefetch: <TPageData>(
         options?: (RefetchOptions & RefetchQueryFilters<TPageData>) | undefined,
