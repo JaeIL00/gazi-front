@@ -167,7 +167,6 @@ const CommunityTemplate = ({ moveToKeywordSettingScreen }: CommunityTemplateProp
     // Flst list props callback
     const keyExtractor = useCallback((item: PostTypes) => item.postId + '', []);
     const renderItem = useCallback(({ item }: { item: PostTypes }) => <PostListItem post={item} isBorder={true} />, []);
-    const ItemSeparatorComponent = useCallback(() => <Spacer height={33} />, []);
     const ListFooterComponent = useCallback(() => <Spacer height={260} />, []);
 
     // Refresh my keyword setting
@@ -211,35 +210,37 @@ const CommunityTemplate = ({ moveToKeywordSettingScreen }: CommunityTemplateProp
             <View style={communityTemplateStyles.contentBox}>
                 {isLikePostTab && !myKeywordList && (
                     <View style={communityTemplateStyles.emptyKeywordBox}>
-                        <TouchButton onPress={moveToKeywordSettingScreen}>
-                            <View style={communityTemplateStyles.addKeywordButton}>
-                                <Icons type="entypo" name="plus" size={16} color={Colors.VIOLET} />
-                                <Spacer width={4} />
-                                <MediumText text="관심 키워드 추가하기" size={14} color={Colors.VIOLET} />
-                            </View>
-                        </TouchButton>
-                        <Animated.View
-                            style={[
-                                communityTemplateStyles.tooltipBox,
-                                {
-                                    opacity: tooltipAnimRef.interpolate({
-                                        inputRange: [0, 10],
-                                        outputRange: [10, 0],
-                                    }),
-                                },
-                            ]}>
-                            <Image
-                                source={require('../../../assets/icons/text-balloon.png')}
-                                style={communityTemplateStyles.tooltipImg}
-                            />
-                            <View style={communityTemplateStyles.tooltipTextBox}>
-                                <MediumText
-                                    text="관심 키워드를 추가하면 한번에 모아볼 수 있어요"
-                                    size={12}
-                                    color={Colors.WHITE}
+                        <View style={communityTemplateStyles.emptyButtonBox}>
+                            <TouchButton onPress={moveToKeywordSettingScreen}>
+                                <View style={communityTemplateStyles.addKeywordButton}>
+                                    <Icons type="entypo" name="plus" size={16} color={Colors.VIOLET} />
+                                    <Spacer width={4} />
+                                    <MediumText text="관심 키워드 추가하기" size={14} color={Colors.VIOLET} />
+                                </View>
+                            </TouchButton>
+                            <Animated.View
+                                style={[
+                                    communityTemplateStyles.tooltipBox,
+                                    {
+                                        opacity: tooltipAnimRef.interpolate({
+                                            inputRange: [0, 10],
+                                            outputRange: [10, 0],
+                                        }),
+                                    },
+                                ]}>
+                                <Image
+                                    source={require('../../../assets/icons/text-balloon.png')}
+                                    style={communityTemplateStyles.tooltipImg}
                                 />
-                            </View>
-                        </Animated.View>
+                                <View style={communityTemplateStyles.tooltipTextBox}>
+                                    <MediumText
+                                        text="관심 키워드를 추가하면 한번에 모아볼 수 있어요"
+                                        size={12}
+                                        color={Colors.WHITE}
+                                    />
+                                </View>
+                            </Animated.View>
+                        </View>
                         <View style={communityTemplateStyles.nothingBox}>
                             <Image
                                 source={require('../../../assets/icons/warning.png')}
@@ -293,7 +294,6 @@ const CommunityTemplate = ({ moveToKeywordSettingScreen }: CommunityTemplateProp
                         keyExtractor={keyExtractor}
                         data={isLikePostTab ? likeKeywordPostList : allPostList}
                         renderItem={renderItem}
-                        // ItemSeparatorComponent={ItemSeparatorComponent}
                         ListFooterComponent={ListFooterComponent}
                         onEndReachedThreshold={1.8}
                         onEndReached={() => {

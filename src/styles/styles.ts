@@ -1400,6 +1400,10 @@ export const communityTemplateStyles = StyleSheet.create({
         flex: 1,
         position: 'relative',
     },
+    emptyButtonBox: {
+        paddingTop: 16 * screenHeight,
+        paddingLeft: 16 * screenWidth,
+    },
     addKeywordButton: {
         flexDirection: 'row',
         alignItems: 'center',
@@ -1412,7 +1416,8 @@ export const communityTemplateStyles = StyleSheet.create({
     },
     tooltipBox: {
         position: 'absolute',
-        top: 35 * screenHeight,
+        top: 51 * screenHeight,
+        left: 16 * screenWidth,
     },
     tooltipImg: {
         width: 246 * screenWidth,

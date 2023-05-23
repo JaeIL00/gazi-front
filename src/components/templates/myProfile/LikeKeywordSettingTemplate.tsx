@@ -31,7 +31,7 @@ const LikeKeywordSettingTemplate = ({
     // My like keyword API
     const { refetch: getMyKeywordRefetch } = useQuery('getMyLikeKeyword', () => geyMyLikeKeywordsAPI(accessToken), {
         onSuccess: ({ data }) => {
-            // console.log(data);
+            console.log(data.data);
             setMyKeywordList(data.data);
         },
         onError: error => {
@@ -100,7 +100,7 @@ const LikeKeywordSettingTemplate = ({
                         <View style={likeKeywordSettingTemplateStyles.contentTitleBox}>
                             <SemiBoldText text="내가 고른 키워드" size={16} color={Colors.BLACK} />
                         </View>
-                        {myKeywordList ? (
+                        {myKeywordList.length > 0 ? (
                             <View style={likeKeywordSettingTemplateStyles.myKeywordBox}>
                                 {myKeywordList.map(item => (
                                     <View key={item.id} style={likeKeywordSettingTemplateStyles.myKeywordList}>
