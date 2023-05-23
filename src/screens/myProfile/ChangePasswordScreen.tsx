@@ -1,8 +1,7 @@
 import React from 'react';
-import { View } from 'react-native';
 
+import ScreenWrapper from '../../components/organisms/ScreenWrapper';
 import ChangePasswordTemplate from '../../components/templates/myProfile/ChangePasswordTemplate';
-import { globalBackWhiteStyles } from '../../styles/styles';
 import { useRootNavigation } from '../../navigations/RootStackNavigation';
 
 const ChangePasswordScreen = () => {
@@ -11,9 +10,9 @@ const ChangePasswordScreen = () => {
         rootNavigation.goBack();
     };
     return (
-        <View style={globalBackWhiteStyles.container}>
+        <ScreenWrapper isPaddingHorizontal={false}>
             <ChangePasswordTemplate moveToBackScreenHandler={moveToBackScreenHandler} />
-        </View>
+        </ScreenWrapper>
     );
 };
 

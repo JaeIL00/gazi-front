@@ -1,24 +1,26 @@
 import React from 'react';
+import { TouchableOpacity, View } from 'react-native';
 import { WebView } from 'react-native-webview';
+
+import Icons from '../smallest/Icons';
+import Colors from '../../styles/Colors';
 import { WebViewComponentProps } from '../../types/types';
 import { webViewComponentStyles } from '../../styles/styles';
-import { Text, TouchableOpacity, View } from 'react-native';
-import { screenFont } from '../../utils/changeStyleSize';
+import { screenHeight, screenWidth } from '../../utils/changeStyleSize';
 
 const WebViewComponent = ({ uri, closeHandler }: WebViewComponentProps) => {
     return (
         <View style={{ height: '100%' }}>
             <TouchableOpacity
                 style={{
-                    height: '5%',
-                    backgroundColor: '#fff',
-                    borderBottomWidth: 1 * screenFont,
-                    borderColor: '#333',
-                    alignItems: 'center',
-                    justifyContent: 'center',
+                    paddingBottom: 10 * screenHeight,
+                    paddingTop: 13 * screenHeight,
+                    paddingLeft: 16 * screenWidth,
+                    alignSelf: 'flex-start',
                 }}
-                onPress={() => closeHandler('')}>
-                <Text style={{ fontWeight: '600', fontSize: 20 * screenFont }}>닫기</Text>
+                onPress={() => closeHandler('')}
+                activeOpacity={1}>
+                <Icons type="ionicons" name="close" size={24} color={Colors.BLACK} />
             </TouchableOpacity>
             <WebView source={{ uri }} style={webViewComponentStyles.webview} />
         </View>

@@ -1,5 +1,5 @@
 import React, { RefObject, useCallback, useLayoutEffect, useRef, useState } from 'react';
-import { ActivityIndicator, Image, Linking, Platform, View } from 'react-native';
+import { ActivityIndicator, Image, Linking, Modal, Platform, TouchableOpacity, View } from 'react-native';
 import Geolocation from '@react-native-community/geolocation';
 import DropShadow from 'react-native-drop-shadow';
 import { useRecoilValue } from 'recoil';
@@ -7,63 +7,42 @@ import MapView, { BoundingBox, Details, Region } from 'react-native-maps';
 import { useInfiniteQuery } from 'react-query';
 import { PERMISSIONS, RESULTS, check } from 'react-native-permissions';
 import { debounce } from 'lodash';
+import SplashScreen from 'react-native-splash-screen';
 
 import Colors from '../../../styles/Colors';
 import MediumText from '../../smallest/MediumText';
+import NormalText from '../../smallest/NormalText';
 import TouchButton from '../../smallest/TouchButton';
 import MapWithMarker from '../../organisms/MapWithMarker';
-import NearbyPostListModal from '../../organisms/NearbyPostListModal';
+import SearchLocation from '../../organisms/SearchLocation';
+import ModalBackground from '../../smallest/ModalBackground';
 import FailPermissionModal from '../../organisms/FailPermissionModal';
+import NearbyPostListModal from '../../organisms/NearbyPostListModal';
 import { userTokenAtom } from '../../../store/atoms';
 import { nearByUserPostsAPI } from '../../../queries/api';
-import { SingleLineInput } from '../../smallest/SingleLineInput';
-import { seviceHomeTemplateStyles } from '../../../styles/styles';
+import { serviceHomeTemplateStyles } from '../../../styles/styles';
 import { screenFont, screenHeight, screenWidth } from '../../../utils/changeStyleSize';
 import { SeviceHomeTemplateProps, MapLocationTypes, PostTypes, MapBoundaryTypes } from '../../../types/types';
 
 const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritePost }: SeviceHomeTemplateProps) => {
-    // Check Location Permission
-    const checkLocationPermission = async (): Promise<boolean> => {
-        try {
-            const locationPermmission = await check(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION);
-            const isAllow = locationPermmission === RESULTS.GRANTED;
-            return isAllow;
-        } catch (err) {
-            // For Debug
-            console.log('(ERROR) Check Location Permission.', err);
-            return false;
-        }
-    };
+    const { accessToken } = useRecoilValue(userTokenAtom);
 
-    // Init first map rendering
+    const indexNumber = useRef<number>(0);
+    const mapRef = useRef() as RefObject<MapView>;
+
+    const [searchModal, setSearchModal] = useState<boolean>(false);
+    const [nearPostList, setNearPostList] = useState<PostTypes[]>([]);
+    const [isFarMapLevel, setIsFarMapLevel] = useState<boolean>(false);
+    const [markerPost, setMarkerPost] = useState<PostTypes | null>(null);
+    const [isAllowLocation, setIsAllowLocation] = useState<boolean>(false);
+    const [isBottomSheetMini, setIsBottomSheetMini] = useState<boolean>(false);
+    const [isBottomSheetFull, setIsBottomSheetFull] = useState<boolean>(false);
+    const [isNearPostSearchTopBar, setIsNearPostSearchTopBar] = useState<boolean>(false);
+    const [onLocationPermissionModal, setOnLocationPermissionModal] = useState<boolean>(false);
     const [currentPosition, setCurrentPosition] = useState<MapLocationTypes>({
         latitude: 37.49795103144074,
         longitude: 127.02760985223079,
     });
-    const isAllowPermissionInit = async () => {
-        const isOkPermission = await checkLocationPermission();
-        if (isOkPermission) {
-            Geolocation.getCurrentPosition(info => {
-                setCurrentPosition({
-                    latitude: info.coords.latitude,
-                    longitude: info.coords.longitude,
-                });
-                setIsAllowLocation(true);
-            });
-        }
-    };
-    useLayoutEffect(() => {
-        isAllowPermissionInit();
-    }, []);
-
-    // Fisrt render of map
-    const mapRef = useRef() as RefObject<MapView>;
-    const mapRenderCompleteHandler = async () => {
-        getBoundaryMap();
-    };
-
-    // Get current user position
-    const [isAllowLocation, setIsAllowLocation] = useState<boolean>(false);
     const [mapBoundaryState, setMapBoundaryState] = useState<MapBoundaryTypes>({
         northEast: {
             latitude: 37.45878314300355,
@@ -75,93 +54,9 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritePost }:
         },
         isNearSearch: false,
     });
-    const onPressGetUserPosition = debounce(async () => {
-        const isOkPermission = await checkLocationPermission();
-        if (isOkPermission) {
-            Geolocation.getCurrentPosition(info => {
-                if (
-                    info.coords.latitude !== currentPosition.latitude &&
-                    info.coords.longitude !== currentPosition.longitude
-                ) {
-                    setCurrentPosition({
-                        latitude: info.coords.latitude,
-                        longitude: info.coords.longitude,
-                    });
-                    setIsAllowLocation(true);
-                    setTimeout(() => {
-                        getBoundaryMap();
-                    }, 1000);
-                } else {
-                    mapRef.current?.animateToRegion({
-                        latitude: currentPosition.latitude,
-                        longitude: currentPosition.longitude,
-                        latitudeDelta: 0.04,
-                        longitudeDelta: 0.027,
-                    });
-                    setIsNearPostSearch(false);
-                }
-            });
-        } else {
-            setOnModal(true);
-            setIsAllowLocation(false);
-        }
-    }, 300);
-
-    // Get boundary of map
-    const [isNearPostSearch, setIsNearPostSearch] = useState<boolean>(false);
-    const getBoundaryMap = useCallback(async () => {
-        let boundaryValue;
-        try {
-            boundaryValue = (await mapRef.current?.getMapBoundaries()) as BoundingBox;
-            setMapBoundaryState({
-                ...mapBoundaryState,
-                northEast: boundaryValue.northEast,
-                southWest: boundaryValue.southWest,
-            });
-        } catch (err) {
-            // For Debug
-            console.log('(ERROR) Get boundary of map.', err);
-        } finally {
-            if (boundaryValue) {
-                setIsNearPostSearch(false);
-                initNearPosts();
-            }
-        }
-    }, []);
-    const initNearPosts = () => {
-        indexNumber.current = 0;
-        remove();
-        refetch();
-    };
-
-    // Again request modal button Handling
-    const [onModal, setOnModal] = useState<boolean>(false);
-    const onPressModalButton = async (state: string) => {
-        switch (state) {
-            case 'CLOSE':
-                setOnModal(false);
-                break;
-            case 'MOVE':
-                setOnModal(false);
-                await Linking.openSettings();
-                break;
-            default:
-                // For Debug
-                console.log('(ERROR) Again request modal button Handling. state: ', state);
-        }
-    };
-
-    // Search text handling
-    const [searchText, setSearchText] = useState<string>('');
-    const onChangeSearchText = (text: string) => {
-        setSearchText(text);
-    };
 
     // Get post of near by user API
-    const userTk = useRecoilValue(userTokenAtom);
-    const indexNumber = useRef<number>(0);
-    const [nearPostList, setNearPostList] = useState<PostTypes[]>([]);
-    const { hasNextPage, isFetching, isFetchingNextPage, fetchNextPage, refetch, remove } = useInfiniteQuery(
+    const { hasNextPage, isFetching, fetchNextPage, refetch, remove } = useInfiniteQuery(
         ['getNearPosts'],
         ({ pageParam = 0 }) =>
             nearByUserPostsAPI({
@@ -171,7 +66,7 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritePost }:
                 maxLon: mapBoundaryState.northEast.longitude,
                 curLat: currentPosition.latitude,
                 curLon: currentPosition.longitude,
-                accessToken: userTk.accessToken,
+                accessToken,
                 page: pageParam,
                 isNearSearch: mapBoundaryState.isNearSearch,
             }),
@@ -186,6 +81,7 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritePost }:
                 const pageNumber = data.pages[indexNumber.current].data.data.pageable.pageNumber;
                 if (pageNumber === 0) {
                     setNearPostList(data.pages[indexNumber.current].data.data.content);
+                    SplashScreen.hide();
                 } else {
                     setNearPostList([...nearPostList, ...data.pages[indexNumber.current].data.data.content]);
                 }
@@ -200,6 +96,144 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritePost }:
         },
     );
 
+    // Search modal handler
+    const searchModalHandler = (state: string) => {
+        switch (state) {
+            case 'OPEN':
+                setSearchModal(true);
+                break;
+            case 'CLOSE':
+                setSearchModal(false);
+                break;
+            default:
+                // For Debug
+                console.log('(ERROR) Search modal handler.', state);
+        }
+    };
+
+    // Seach location to move map
+    const getLocationHandler = (location: { lat: number; lng: number }) => {
+        setCurrentPosition({
+            latitude: location.lat,
+            longitude: location.lng,
+        });
+        setTimeout(() => {
+            getBoundaryMap();
+        }, 500);
+        setIsNearPostSearchTopBar(false);
+        setSearchModal(false);
+    };
+
+    // Check Location Permission
+    const checkLocationPermission = async (): Promise<boolean> => {
+        try {
+            const locationPermmission = await check(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION);
+            const isAllow = locationPermmission === RESULTS.GRANTED;
+            return isAllow;
+        } catch (err) {
+            // For Debug
+            console.log('(ERROR) Check Location Permission.', err);
+            return false;
+        }
+    };
+
+    // Init first map rendering
+    const isAllowPermissionInit = async () => {
+        const isOkPermission = await checkLocationPermission();
+        if (isOkPermission) {
+            Geolocation.getCurrentPosition(info => {
+                setCurrentPosition({
+                    latitude: info.coords.latitude,
+                    longitude: info.coords.longitude,
+                });
+                setIsAllowLocation(true);
+            });
+        }
+    };
+
+    // Fisrt render of map
+    const mapRenderCompleteHandler = async () => {
+        getBoundaryMap();
+    };
+
+    // Get current user position
+    const onPressGetUserPosition = debounce(async () => {
+        const isOkPermission = await checkLocationPermission();
+        if (isOkPermission) {
+            Geolocation.getCurrentPosition(info => {
+                if (
+                    info.coords.latitude !== currentPosition.latitude &&
+                    info.coords.longitude !== currentPosition.longitude
+                ) {
+                    setCurrentPosition({
+                        latitude: info.coords.latitude,
+                        longitude: info.coords.longitude,
+                    });
+                    setIsAllowLocation(true);
+                } else {
+                    mapRef.current?.animateToRegion({
+                        latitude: currentPosition.latitude,
+                        longitude: currentPosition.longitude,
+                        latitudeDelta: 0.04,
+                        longitudeDelta: 0.027,
+                    });
+                    setIsNearPostSearchTopBar(false);
+                }
+            });
+        } else {
+            setOnLocationPermissionModal(true);
+            setIsAllowLocation(false);
+        }
+    }, 300);
+
+    // Get boundary of map
+    const getBoundaryMap = useCallback(async () => {
+        let boundaryValue;
+        try {
+            boundaryValue = (await mapRef.current?.getMapBoundaries()) as BoundingBox;
+            setMapBoundaryState({
+                ...mapBoundaryState,
+                northEast: boundaryValue.northEast,
+                southWest: boundaryValue.southWest,
+            });
+        } catch (err) {
+            // For Debug
+            console.log('(ERROR) Get boundary of map.', err);
+        } finally {
+            if (boundaryValue) {
+                setIsNearPostSearchTopBar(false);
+                initNearPosts();
+            }
+        }
+    }, []);
+    const initNearPosts = () => {
+        indexNumber.current = 0;
+        remove();
+        refetch();
+    };
+
+    // Find map marker post
+    const findMarkerPost = (id: number) => {
+        const findPost = nearPostList.filter(item => item.postId === id);
+        setMarkerPost(findPost[0]);
+    };
+
+    // Again request modal button Handling
+    const onPressModalButton = useCallback(async (state: string) => {
+        switch (state) {
+            case 'CLOSE':
+                setOnLocationPermissionModal(false);
+                break;
+            case 'MOVE':
+                setOnLocationPermissionModal(false);
+                await Linking.openSettings();
+                break;
+            default:
+                // For Debug
+                console.log('(ERROR) Again request modal button Handling. state: ', state);
+        }
+    }, []);
+
     // Call next page API
     const callNextPageHandler = () => {
         if (hasNextPage) {
@@ -208,7 +242,6 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritePost }:
     };
 
     // Move to mini bottom sheet by move map
-    const [isBottomSheetMini, setIsBottomSheetMini] = useState<boolean>(false);
     const moveToBottomSheetMini = () => {
         if (!isBottomSheetMini) {
             setIsBottomSheetMini(true);
@@ -223,14 +256,16 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritePost }:
         (region: Region, details: Details) => {
             if (details.isGesture) {
                 moveToBottomSheetMini();
-                setIsNearPostSearch(true);
+                setIsNearPostSearchTopBar(true);
+            }
+            if (details.isGesture && markerPost) {
+                setMarkerPost(null);
             }
         },
-        [isBottomSheetMini],
+        [isBottomSheetMini, markerPost, setMarkerPost],
     );
 
     // Move to full bottom sheet by move map
-    const [isBottomSheetFull, setIsBottomSheetFull] = useState<boolean>(false);
     const moveToBottomSheetFull = (state: string) => {
         switch (state) {
             case 'FULL':
@@ -246,7 +281,6 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritePost }:
     };
 
     // Check map zoom level for warning
-    const [isFarMapLevel, setIsFarMapLevel] = useState<boolean>(false);
     const checkZoomLevelWarning = useCallback(
         (region: Region) => {
             if (region.latitudeDelta > 0.15) {
@@ -268,6 +302,10 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritePost }:
         [isFarMapLevel],
     );
 
+    useLayoutEffect(() => {
+        isAllowPermissionInit();
+    }, []);
+
     return (
         <>
             <MapWithMarker
@@ -278,41 +316,51 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritePost }:
                 checkMapGesture={checkMapGesture}
                 checkZoomLevelWarning={checkZoomLevelWarning}
                 mapRenderCompleteHandler={mapRenderCompleteHandler}
+                findMarkerPost={findMarkerPost}
             />
-            <View style={seviceHomeTemplateStyles.searchLayout}>
+            <View style={serviceHomeTemplateStyles.searchLayout}>
                 {Platform.OS === 'android' && (
-                    <DropShadow style={seviceHomeTemplateStyles.dropshadow}>
-                        <View style={seviceHomeTemplateStyles.inputBox}>
-                            <Image
-                                source={require('../../../assets/icons/search.png')}
-                                style={seviceHomeTemplateStyles.searchIcon}
-                            />
-                            <SingleLineInput
-                                value={searchText}
-                                placeholder="지금 어디로 가시나요?"
-                                onChangeText={onChangeSearchText}
-                                fontSize={16}
-                            />
-                        </View>
+                    <DropShadow style={serviceHomeTemplateStyles.dropshadow}>
+                        <TouchableOpacity onPress={() => searchModalHandler('OPEN')} activeOpacity={1}>
+                            <View style={serviceHomeTemplateStyles.inputBox}>
+                                <Image
+                                    source={require('../../../assets/icons/search.png')}
+                                    style={serviceHomeTemplateStyles.searchIcon}
+                                />
+                                <NormalText text="지금 어디로 가시나요?" size={16} color={Colors.TXT_LIGHTGRAY} />
+                            </View>
+                        </TouchableOpacity>
                     </DropShadow>
                 )}
-                <View>
+                {/* Temporary planning*/}
+                {/* <View>
                     <Image
                         source={require('../../../assets/icons/bell-fill.png')}
-                        style={seviceHomeTemplateStyles.bellIcon}
+                        style={serviceHomeTemplateStyles.bellIcon}
+                    />
+                </View> */}
+            </View>
+
+            <Modal visible={searchModal} onRequestClose={() => setSearchModal(false)}>
+                <View style={{ backgroundColor: '#fff', paddingTop: 16 * screenHeight }}>
+                    <SearchLocation
+                        getLocationHandler={getLocationHandler}
+                        placeholder="지금 어디로 가시나요?"
+                        isHome={true}
+                        searchModalHandler={searchModalHandler}
                     />
                 </View>
-            </View>
+            </Modal>
 
             <NearbyPostListModal
                 isModalRef={isModalRef}
                 handleModalTrigger={handleModalTrigger}
                 nearPostList={nearPostList}
+                markerPost={markerPost}
                 isBottomSheetMini={isBottomSheetMini}
                 isBottomSheetFull={isBottomSheetFull}
                 currentPosition={currentPosition}
                 mapBoundaryState={mapBoundaryState}
-                moveToBottomSheetMini={moveToBottomSheetMini}
                 moveToBottomSheetFull={moveToBottomSheetFull}
                 notBottomSheetMini={notBottomSheetMini}
                 onPressGetUserPosition={onPressGetUserPosition}
@@ -331,22 +379,23 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritePost }:
                     <ActivityIndicator size="large" />
                 </View>
             )}
-            {onModal && (
+
+            <ModalBackground visible={onLocationPermissionModal}>
                 <FailPermissionModal
                     permissionName="필수 권한 허용 안내"
                     contentOne="위치 권한에 대한 사용을 거부하였습니다. 서비스 사용을 원하실 경우 해당 앱의 권한을 허용해주세요"
                     onPressModalButton={onPressModalButton}
                 />
-            )}
+            </ModalBackground>
 
             {isFarMapLevel && (
-                <View style={seviceHomeTemplateStyles.zoomWarning}>
+                <View style={serviceHomeTemplateStyles.zoomWarning}>
                     <MediumText text="사건 확인을 위해 지도를 확인해 주세요" size={14} color={Colors.WHITE} />
                 </View>
             )}
 
-            {isNearPostSearch && !isFarMapLevel && Platform.OS === 'android' && (
-                <DropShadow style={seviceHomeTemplateStyles.mapMoveSearch}>
+            {isNearPostSearchTopBar && !isFarMapLevel && Platform.OS === 'android' && (
+                <DropShadow style={serviceHomeTemplateStyles.mapMoveSearch}>
                     <TouchButton
                         onPress={getBoundaryMap}
                         backgroundColor="#F8F7FA"

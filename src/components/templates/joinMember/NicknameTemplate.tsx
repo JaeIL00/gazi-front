@@ -13,7 +13,7 @@ import TextButton from '../../molecules/TextButton';
 import useKeyboardMotion from '../../../utils/hooks/useKeyboardMotion';
 import { NicknameTemplateProps } from '../../../types/types';
 import { SingleLineInput } from '../../smallest/SingleLineInput';
-import { joinMemberAtom, userTokenAtom } from '../../../store/atoms';
+import { joinMemberAtom, userInfoAtom, userTokenAtom } from '../../../store/atoms';
 import { joinMemberAPI, checkNicknameAPI } from '../../../queries/api';
 import { nextStepButtonPosition, nicknameTemplateStyles } from '../../../styles/styles';
 
@@ -58,9 +58,10 @@ const NicknameTemplate = ({ onPressNextStep }: NicknameTemplateProps) => {
 
     // Join member API
     const [tokenAtom, setTokenAtom] = useRecoilState(userTokenAtom);
+    const [userInfo, setUserInfo] = useRecoilState(userInfoAtom);
     const { mutate, isLoading } = useMutation(joinMemberAPI, {
-        onSuccess: data => {
-            successJoinMemberHandler(data.data.data);
+        onSuccess: ({ data }) => {
+            successJoinMemberHandler(data.data);
         },
         onError: ({ response }) => {
             // For Debug
@@ -68,13 +69,24 @@ const NicknameTemplate = ({ onPressNextStep }: NicknameTemplateProps) => {
             ToastAndroid.show('회원가입 실패', 4000);
         },
     });
-    const successJoinMemberHandler = async (data: { accessToken: string; refreshToken: string }) => {
+    const successJoinMemberHandler = async (data: {
+        accessToken: string;
+        refreshToken: string;
+        memberId: number;
+        nickName: string;
+        email: string;
+    }) => {
         try {
             await AsyncStorage.setItem('GAZI_ac_tk', data.accessToken);
             await AsyncStorage.setItem('GAZI_re_tk', data.refreshToken);
             setTokenAtom({
                 accessToken: data.accessToken,
                 refreshToken: data.refreshToken,
+            });
+            setUserInfo({
+                memberId: data.memberId,
+                nickname: data.nickName,
+                email: data.email,
             });
         } catch (err) {
             // For Debug

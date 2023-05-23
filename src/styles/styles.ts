@@ -9,13 +9,6 @@ export const appStyles = StyleSheet.create({
         flex: 1,
     },
 });
-export const globalDefaultStyles = StyleSheet.create({
-    container: {
-        flex: 1,
-        paddingHorizontal: 16 * screenWidth,
-        backgroundColor: Colors.BACKGROUND_DEFAULT,
-    },
-});
 export const globalBackWhiteStyles = StyleSheet.create({
     container: {
         flex: 1,
@@ -23,16 +16,13 @@ export const globalBackWhiteStyles = StyleSheet.create({
     },
 });
 export const nextStepButtonPosition = StyleSheet.create({
-    button: {
-        width: '100%',
-        position: 'absolute',
-    },
+    button: {},
 });
 
 // SMALLEST
 export const touchButtonStyles = (
-    width: number | undefined,
-    height: number | undefined,
+    width: number | string | undefined,
+    height: number | string | undefined,
     backgroundColor: string | undefined,
     paddingHorizontal: number | undefined,
     paddingVertical: number | undefined,
@@ -42,11 +32,12 @@ export const touchButtonStyles = (
     borderRadius: number | undefined,
     borderBottomWidth: number | undefined,
     flex: number | undefined,
+    marginLeft: number | undefined,
 ) =>
     StyleSheet.create({
         container: {
-            width: width && width * screenWidth,
-            height: height && height * screenHeight,
+            width: typeof width === 'string' ? width : width && width * screenWidth,
+            height: typeof height === 'string' ? height : height && height * screenHeight,
             backgroundColor: backgroundColor,
             paddingHorizontal: paddingHorizontal && paddingHorizontal * screenWidth,
             paddingVertical: paddingVertical && paddingVertical * screenHeight,
@@ -58,6 +49,7 @@ export const touchButtonStyles = (
             borderWidth: borderWidth && borderWidth * screenFont,
             borderBottomWidth: borderBottomWidth && borderBottomWidth * screenFont,
             flex: flex && flex,
+            marginLeft: marginLeft && marginLeft * screenWidth,
         },
     });
 export const singleLineInputStyles = (
@@ -69,6 +61,7 @@ export const singleLineInputStyles = (
 ) =>
     StyleSheet.create({
         common: {
+            flex: 1,
             fontSize: fontSize ? fontSize * screenFont : 16 * screenFont,
             width: width && width * screenWidth,
             height: height && height * screenHeight,
@@ -94,7 +87,7 @@ export const multiLineInputStyles = (
     StyleSheet.create({
         common: {
             fontSize: fontSize ? fontSize * screenFont : 16 * screenFont,
-            height: height && height * screenHeight,
+            minHeight: height && height * screenHeight,
             textAlignVertical: 'top',
         },
         input: {
@@ -234,6 +227,65 @@ export const moveBackWithPageTitleStyles = StyleSheet.create({
     buttonContainer: {
         paddingTop: 30 * screenHeight,
         paddingBottom: 43 * screenHeight,
+    },
+});
+export const photoGalleryStyles = StyleSheet.create({
+    container: {
+        backgroundColor: Colors.WHITE,
+        position: 'absolute',
+        width: '100%',
+        height: '100%',
+        top: 0,
+        zIndex: 9999,
+    },
+    headerBox: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        paddingHorizontal: 22 * screenWidth,
+        paddingVertical: 16 * screenHeight,
+    },
+    albumButtonBox: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    albumButtonIcon: {
+        width: 12 * screenWidth,
+        height: 12 * screenWidth,
+    },
+    imageContainer: {
+        width: 118 * screenWidth,
+        height: 118 * screenWidth,
+        justifyContent: 'center',
+    },
+    cameraIcon: {
+        width: 55.41 * screenWidth,
+        height: 55.41 * screenWidth,
+    },
+    imageSize: {
+        width: '100%',
+        height: '100%',
+    },
+    imageBox: {
+        position: 'relative',
+        width: '100%',
+        height: '100%',
+    },
+    imageBlurBox: {
+        width: '100%',
+        height: '100%',
+        position: 'absolute',
+    },
+    imageCheckBox: {
+        width: 24 * screenWidth,
+        height: 24 * screenWidth,
+        borderRadius: 24 * screenFont,
+        borderColor: Colors.WHITE,
+        position: 'absolute',
+        right: 10 * screenWidth,
+        top: 10 * screenWidth,
+        justifyContent: 'center',
+        alignItems: 'center',
     },
 });
 export const serviceAgreementStyles = StyleSheet.create({
@@ -418,7 +470,6 @@ export const nearbyPostListModalStyles = StyleSheet.create({
         top: 0,
     },
     listBox: {
-        paddingHorizontal: 16 * screenWidth,
         backgroundColor: Colors.BACKGROUND_DEFAULT,
         marginTop: -1,
         height: NEAR_LIST_HEIGHT,
@@ -491,6 +542,7 @@ export const postListItemStyles = StyleSheet.create({
     container: {
         flexDirection: 'row',
         justifyContent: 'space-between',
+        paddingHorizontal: 16 * screenWidth,
         width: '100%',
     },
     textBox: {
@@ -500,14 +552,6 @@ export const postListItemStyles = StyleSheet.create({
         width: 77 * screenWidth,
         height: 77 * screenWidth,
         borderRadius: 5 * screenFont,
-    },
-    postBottomBar: {
-        borderBottomWidth: 1 * screenFont,
-        borderColor: '#EBEBEB',
-        width: '120%',
-        position: 'absolute',
-        left: -16 * screenWidth,
-        bottom: -15 * screenHeight,
     },
 });
 export const searchLocationStyles = StyleSheet.create({
@@ -542,6 +586,7 @@ export const writePostAddKeywordStyles = StyleSheet.create({
         height: '100%',
         backgroundColor: Colors.BACKGROUND_DEFAULT,
         paddingHorizontal: 16 * screenWidth,
+        zIndex: 9999,
     },
     headerBox: {
         flexDirection: 'row',
@@ -580,14 +625,11 @@ export const writePostAddKeywordStyles = StyleSheet.create({
 export const writePhotoStyles = StyleSheet.create({
     container: {
         flexDirection: 'row',
-        paddingHorizontal: 16 * screenWidth,
+
         position: 'absolute',
-        bottom: 26 * screenHeight,
+        bottom: 0,
     },
-    cameraIcon: {
-        width: 30 * screenWidth,
-        height: 30 * screenWidth,
-    },
+
     previewBox: {
         width: 71 * screenWidth,
         height: 71 * screenWidth,
@@ -730,11 +772,29 @@ export const inputEmailTemplateStyles = StyleSheet.create({
     container: {
         flex: 1,
     },
+    mainContent: {
+        flexGrow: 1,
+    },
     emailErrorTextBox: {
         flexDirection: 'row',
         paddingLeft: 10 * screenWidth,
         justifyContent: 'flex-start',
         alignItems: 'center',
+    },
+    bottomBox: {
+        flexShrink: 1,
+    },
+    resendMailButtonBox: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingTop: 24 * screenHeight,
+        paddingBottom: 36 * screenHeight,
+        justifyContent: 'center',
+    },
+    resendButton: {
+        borderBottomWidth: 1.5 * screenFont,
+        borderColor: Colors.TXT_GRAY,
+        marginLeft: 8 * screenWidth,
     },
 });
 export const emailWithPasswordTemplateStyles = StyleSheet.create({
@@ -786,6 +846,9 @@ export const emailLoginTemplateStyles = StyleSheet.create({
     container: {
         flex: 1,
     },
+    mainContent: {
+        flexGrow: 1,
+    },
     underBar: {
         borderBottomColor: Colors.TXT_GRAY,
         borderBottomWidth: 2 * screenFont,
@@ -797,6 +860,12 @@ export const emailLoginTemplateStyles = StyleSheet.create({
         alignItems: 'center',
         position: 'absolute',
         bottom: -21 * screenHeight,
+    },
+    bottomBox: {
+        paddingBottom: 37 * screenHeight,
+    },
+    bottomContain: {
+        flexShrink: 1,
     },
 });
 export const initLikeKeywordTemplateStyles = StyleSheet.create({
@@ -855,7 +924,7 @@ export const completedJoinTemplateStyles = StyleSheet.create({
         bottom: 42 * screenHeight,
     },
 });
-export const seviceHomeTemplateStyles = StyleSheet.create({
+export const serviceHomeTemplateStyles = StyleSheet.create({
     searchLayout: {
         position: 'absolute',
         top: 16 * screenHeight,
@@ -917,24 +986,28 @@ export const seviceHomeTemplateStyles = StyleSheet.create({
 });
 export const writePostOrCommentTemplateStyles = StyleSheet.create({
     container: {
-        backgroundColor: Colors.BACKGROUND_DEFAULT,
+        backgroundColor: Colors.WHITE,
         flex: 1,
         position: 'absolute',
         width: '100%',
         height: '100%',
     },
-    headerBox: {
-        paddingHorizontal: 16 * screenWidth,
-        paddingBottom: 12 * screenHeight,
-        borderWidth: 1 * screenFont,
-        borderColor: '#EBEBEB',
-    },
     headerNavigateBox: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        paddingTop: 17 * screenHeight,
-        paddingBottom: 26 * screenHeight,
+        paddingHorizontal: 16 * screenWidth,
+        paddingVertical: 16 * screenHeight,
     },
+    contentBox: {
+        flex: 1,
+    },
+    settingContainer: {
+        borderBottomWidth: 1 * screenFont,
+        borderColor: '#EBEBEB',
+        paddingHorizontal: 16 * screenWidth,
+        paddingBottom: 12 * screenHeight,
+    },
+    contentInputFocus: { height: 400 * screenHeight },
     settingBox: {
         flexDirection: 'row',
         alignItems: 'center',
@@ -948,6 +1021,7 @@ export const writePostOrCommentTemplateStyles = StyleSheet.create({
         width: '100%',
         height: '100%',
         backgroundColor: Colors.BACKGROUND_DEFAULT,
+        zIndex: 9999,
     },
     searchToggleIcon: {
         width: 10 * screenWidth,
@@ -959,7 +1033,6 @@ export const writePostOrCommentTemplateStyles = StyleSheet.create({
     },
     inputBox: {
         paddingHorizontal: 16 * screenWidth,
-        height: 300 * screenHeight,
         paddingTop: 10 * screenHeight,
     },
     errorModalBack: {
@@ -977,7 +1050,6 @@ export const writePostOrCommentTemplateStyles = StyleSheet.create({
         borderRadius: 12 * screenFont,
     },
     conditionSettingBox: {
-        paddingLeft: 16 * screenWidth,
         paddingTop: 14 * screenHeight,
     },
     mapSize: {
@@ -987,6 +1059,71 @@ export const writePostOrCommentTemplateStyles = StyleSheet.create({
     mapMarkerPosition: {
         justifyContent: 'center',
         alignItems: 'center',
+    },
+    bottomBox: {
+        flexShrink: 1,
+        backgroundColor: Colors.BACKGROUND_DEFAULT,
+    },
+    bottomBarBotton: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        width: '100%',
+    },
+    addPhotoBox: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    cameraIcon: {
+        width: 24 * screenWidth,
+        height: 24 * screenWidth,
+    },
+    bottomKeyword: {
+        paddingHorizontal: 16 * screenWidth,
+        paddingTop: 8 * screenHeight,
+        paddingBottom: 13 * screenHeight,
+        backgroundColor: Colors.WHITE,
+    },
+    bottomKeywordItem: {
+        borderColor: Colors.TXT_LIGHTGRAY,
+        borderWidth: 0.8 * screenFont,
+        borderRadius: 21.57 * screenFont,
+        paddingHorizontal: 10 * screenWidth,
+        paddingVertical: 5 * screenHeight,
+        marginRight: 3 * screenWidth,
+    },
+    bottomImageBox: {
+        position: 'relative',
+        marginRight: 8 * screenWidth,
+        width: 66 * screenWidth,
+        height: 70 * screenWidth,
+    },
+    bottomImageInnerBox: {
+        width: '100%',
+        height: 66 * screenWidth,
+        position: 'absolute',
+        bottom: 0,
+    },
+    bottomImageSize: {
+        width: '100%',
+        height: '100%',
+        borderRadius: 10 * screenFont,
+        borderWidth: 1 * screenFont,
+        borderColor: '#E3E3E3',
+    },
+    bottomImageDelButton: {
+        position: 'absolute',
+        height: 25 * screenHeight,
+        top: -2 * screenWidth,
+        right: -4 * screenWidth,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    bottomImageDelIconBack: {
+        position: 'absolute',
+        width: '40%',
+        height: '40%',
+        backgroundColor: Colors.WHITE,
     },
 });
 export const myProfileTemplateStyles = StyleSheet.create({
@@ -1157,7 +1294,7 @@ export const myPostCommentTemplateStyles = StyleSheet.create({
         width: '50%',
         paddingBottom: 7 * screenHeight,
         paddingTop: 12 * screenHeight,
-        borderColor: Colors.BLACK,
+        borderBottomWidth: 1.5 * screenFont,
     },
 });
 export const AccountManagementTemplateStyles = StyleSheet.create({
@@ -1225,6 +1362,9 @@ export const PoliciesTemplateStyles = StyleSheet.create({
     },
 });
 export const communityTemplateStyles = StyleSheet.create({
+    container: {
+        flex: 1,
+    },
     headerBox: {
         flexDirection: 'row',
         alignItems: 'center',
@@ -1239,7 +1379,54 @@ export const communityTemplateStyles = StyleSheet.create({
         width: '50%',
         paddingBottom: 7 * screenHeight,
         paddingTop: 13 * screenHeight,
-        borderColor: Colors.BLACK,
+        borderBottomWidth: 1.5 * screenFont,
+    },
+    contentBox: {
+        flex: 1,
+    },
+    nothingBox: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        flex: 0.8,
+    },
+    nothingIcon: {
+        width: 88 * screenWidth,
+        height: 88 * screenWidth,
+    },
+    emptyKeywordBox: {
+        flex: 1,
+        position: 'relative',
+    },
+    emptyButtonBox: {
+        paddingTop: 16 * screenHeight,
+        paddingLeft: 16 * screenWidth,
+    },
+    addKeywordButton: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingHorizontal: 16 * screenWidth,
+        paddingVertical: 4 * screenHeight,
+        borderColor: Colors.VIOLET,
+        borderRadius: 16 * screenFont,
+        borderWidth: 1 * screenFont,
+        alignSelf: 'flex-start',
+    },
+    tooltipBox: {
+        position: 'absolute',
+        top: 51 * screenHeight,
+        left: 16 * screenWidth,
+    },
+    tooltipImg: {
+        width: 246 * screenWidth,
+        height: 42 * screenHeight,
+    },
+    tooltipTextBox: {
+        position: 'absolute',
+        width: 246 * screenWidth,
+        height: 34 * screenHeight,
+        bottom: 0,
+        alignItems: 'center',
+        justifyContent: 'center',
     },
 });
 export const DeleteMemberTemplateStyles = StyleSheet.create({
@@ -1370,22 +1557,6 @@ export const seviceHomeScreenStyles = StyleSheet.create({
         flex: 1,
     },
 });
-export const myProfileScreenStyles = StyleSheet.create({
-    container: {
-        flex: 1,
-    },
-});
-export const editNicknameScreenStyles = StyleSheet.create({
-    container: {
-        flex: 1,
-    },
-});
-export const threadItemScreenStyles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: Colors.BACKGROUND_DEFAULT,
-    },
-});
 export const JoinMemberScreenStyles = StyleSheet.create({
     container: {
         flex: 1,
@@ -1394,5 +1565,52 @@ export const JoinMemberScreenStyles = StyleSheet.create({
     inner: {
         flex: 1,
         paddingHorizontal: 16 * screenWidth,
+    },
+});
+export const imageViewScreenStyles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: Colors.BLACK,
+    },
+    backButtonShadow: {
+        position: 'absolute',
+        top: 5 * screenHeight,
+        left: 16 * screenWidth,
+        zIndex: 99,
+        shadowColor: '#000000',
+        shadowOffset: {
+            width: 0,
+            height: 4 * screenHeight,
+        },
+        shadowOpacity: 0.15,
+        shadowRadius: 4 * screenFont,
+    },
+    backButtonBox: {
+        width: 36 * screenWidth,
+        height: 36 * screenWidth,
+        backgroundColor: '#171717CC',
+        borderRadius: 36 * screenFont,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    bottomTitleBox: {
+        backgroundColor: '#292929CC',
+        position: 'absolute',
+        bottom: 0,
+        width: '100%',
+        paddingHorizontal: 16 * screenWidth,
+        paddingTop: 19 * screenHeight,
+        paddingBottom: 13 * screenHeight,
+    },
+    bottomInfoBox: {
+        paddingTop: 24 * screenHeight,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+    },
+    iconBox: { flexDirection: 'row', alignItems: 'center' },
+    iconSize: {
+        width: 12.24 * screenWidth,
+        height: 12.24 * screenWidth,
     },
 });

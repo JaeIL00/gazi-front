@@ -1,7 +1,7 @@
 import React from 'react';
-import { View } from 'react-native';
+
+import ScreenWrapper from '../../components/organisms/ScreenWrapper';
 import PoliciesTemplate from '../../components/templates/myProfile/PoliciesTemplate';
-import { globalBackWhiteStyles } from '../../styles/styles';
 import { useRootNavigation } from '../../navigations/RootStackNavigation';
 
 const PoliciesScreen = () => {
@@ -10,9 +10,9 @@ const PoliciesScreen = () => {
         rootNavigation.goBack();
     };
     return (
-        <View style={globalBackWhiteStyles.container}>
+        <ScreenWrapper isPaddingHorizontal={false}>
             <PoliciesTemplate moveToBackScreenHandler={moveToBackScreenHandler} />
-        </View>
+        </ScreenWrapper>
     );
 };
 

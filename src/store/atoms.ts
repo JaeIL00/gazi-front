@@ -16,6 +16,7 @@ export const userInfoAtom = atom<userInfoAtomTypes>({
     default: {
         memberId: null,
         nickname: '',
+        email: '',
     },
 });
 

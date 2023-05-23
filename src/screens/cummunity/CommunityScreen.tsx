@@ -1,14 +1,23 @@
 import React from 'react';
-import { View } from 'react-native';
+import { StatusBar, View } from 'react-native';
+
+import Colors from '../../styles/Colors';
 import CommunityTemplate from '../../components/templates/community/CommunityTemplate';
+import { globalBackWhiteStyles } from '../../styles/styles';
 import { useRootNavigation } from '../../navigations/RootStackNavigation';
-import { useIsFocused } from '@react-navigation/native';
 
 const CommunityScreen = () => {
     const rootNavigation = useRootNavigation();
-    const isFocused = useIsFocused();
+    const moveToKeywordSettingScreen = () => {
+        rootNavigation.navigate('LikeKeywordSetting', { isFromCommunity: true });
+    };
 
-    return <View>{isFocused && <CommunityTemplate />}</View>;
+    return (
+        <View style={globalBackWhiteStyles.container}>
+            <StatusBar backgroundColor={Colors.WHITE} barStyle="dark-content" />
+            <CommunityTemplate moveToKeywordSettingScreen={moveToKeywordSettingScreen} />
+        </View>
+    );
 };
 
 export default CommunityScreen;

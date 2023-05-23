@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useState } from 'react';
+import React, { useEffect, useLayoutEffect } from 'react';
 import { Platform, ScrollView, View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { useRecoilValue } from 'recoil';
@@ -13,90 +13,29 @@ import TextButton from '../../molecules/TextButton';
 import TouchButton from '../../smallest/TouchButton';
 import SemiBoldText from '../../smallest/SemiBoldText';
 import KeywordsList from '../../organisms/KeywordsList';
+import useCheckKeyword from '../../../utils/hooks/useCheckKeyword';
 import MoveBackWithPageTitle from '../../organisms/MoveBackWithPageTitle';
 import { userTokenAtom } from '../../../store/atoms';
 import { addLikeKeywordsAPI } from '../../../queries/api';
+import { InitLikeKeywordTemplateProps } from '../../../types/types';
 import { initLikeKeywordTemplateStyles } from '../../../styles/styles';
-import { InitLikeKeywordTemplateProps, KeywordListTypes } from '../../../types/types';
 import { issueKeywordsNotEtc, subwayKeywords, trafficKeywords } from '../../../utils/allKeywords';
 
 const InitLikeKeywordTemplate = ({ moveToScreen }: InitLikeKeywordTemplateProps) => {
-    // Initialized check keywords
-    const [checkTraffic, setCheckTraffic] = useState<boolean[]>([]);
-    const [checkSubway, setCheckSubway] = useState<boolean[]>([]);
-    const [checkIssue, setCheckIssue] = useState<boolean[]>([]);
-    const checkingInitialize = () => {
-        let newCheckTraffic: boolean[] = [];
-        for (const index in trafficKeywords) {
-            newCheckTraffic = [...newCheckTraffic, false];
-        }
-        let newCheckSubway: boolean[] = [];
-        for (const index in subwayKeywords) {
-            newCheckSubway = [...newCheckSubway, false];
-        }
-        let newCheckIssue: boolean[] = [];
-        for (const index in issueKeywordsNotEtc) {
-            newCheckIssue = [...newCheckIssue, false];
-        }
-        setCheckTraffic(newCheckTraffic);
-        setCheckSubway(newCheckSubway);
-        setCheckIssue(newCheckIssue);
-    };
-    useLayoutEffect(() => {
-        checkingInitialize();
-    }, []);
+    const { accessToken } = useRecoilValue(userTokenAtom);
 
-    // check Keyword Handling
-    const checkKeywordHandler = (list: string, index: number, id: number) => {
-        switch (list) {
-            case 'TRAFFIC':
-                const freshTraffic = [...checkTraffic];
-                freshTraffic.splice(index, 1, !freshTraffic[index]);
-                setCheckTraffic(freshTraffic);
-                break;
-            case 'SUBWAY':
-                if (id === 9998) {
-                    const freshSubway = [...checkSubway];
-                    const checkAll = freshSubway.map(() => !freshSubway[0]);
-                    setCheckSubway(checkAll);
-                } else {
-                    const freshSubway = [...checkSubway];
-                    freshSubway.splice(0, 1, false);
-                    freshSubway.splice(index, 1, !freshSubway[index]);
-                    setCheckSubway(freshSubway);
-                }
-                break;
-            case 'ISSUE':
-                const freshIssue = [...checkIssue];
-                freshIssue.splice(index, 1, !freshIssue[index]);
-                setCheckIssue(freshIssue);
-                break;
-            default:
-                // For Debug
-                console.log('(ERROR) check Keyword Handling. listname:', list);
-                return;
-        }
-    };
-
-    // Checked state handling
-    const [checkedKeywords, setCheckedKeywords] = useState<number[]>([]);
-    const checkedKeywordsHandler = (list: KeywordListTypes[], isChecked: boolean[]) => {
-        const getId = list.map((item, index) => {
-            if (item.id !== 9999 && item.id !== 9998 && isChecked[index]) {
-                return item.id;
-            }
-        });
-        const cleanType = getId.filter(item => item !== undefined) as number[];
-        setCheckedKeywords(cleanType);
-    };
-    useEffect(() => {
-        const allList = [...trafficKeywords, ...subwayKeywords, ...issueKeywordsNotEtc];
-        const checkedList = [...checkTraffic, ...checkSubway, ...checkIssue];
-        checkedKeywordsHandler(allList, checkedList);
-    }, [checkTraffic, checkIssue, checkSubway]);
+    // Custom hook useCheckKeyword
+    const {
+        checkTraffic,
+        checkSubway,
+        checkIssue,
+        checkedKeywords,
+        checkedKeywordsHandler,
+        checkingInitialize,
+        checkingKeywordHandler,
+    } = useCheckKeyword();
 
     // Send like keywords API
-    const userTk = useRecoilValue(userTokenAtom);
     const { mutate } = useMutation(addLikeKeywordsAPI, {
         onSuccess: () => {
             moveToScreen('OK');
@@ -106,14 +45,28 @@ const InitLikeKeywordTemplate = ({ moveToScreen }: InitLikeKeywordTemplateProps)
             console.log('(ERROR) Send like keywords API', response);
         },
     });
+
+    // Put my keeyword to server
     const onPressLikedKeyword = debounce(() => {
         if (checkedKeywords.length > 0) {
             mutate({
-                accessToken: userTk.accessToken,
+                accessToken,
                 data: checkedKeywords,
             });
         }
     }, 300);
+
+    // Initialized check keywords
+    useLayoutEffect(() => {
+        checkingInitialize();
+    }, []);
+
+    // Checked state handling
+    useEffect(() => {
+        const allList = [...trafficKeywords, ...subwayKeywords, ...issueKeywordsNotEtc];
+        const checkedList = [...checkTraffic, ...checkSubway, ...checkIssue];
+        checkedKeywordsHandler(allList, checkedList);
+    }, [checkTraffic, checkIssue, checkSubway]);
 
     return (
         <View style={initLikeKeywordTemplateStyles.container}>
@@ -143,17 +96,18 @@ const InitLikeKeywordTemplate = ({ moveToScreen }: InitLikeKeywordTemplateProps)
                         type="TRAFFIC"
                         list={trafficKeywords}
                         isCheck={checkTraffic}
-                        checkKeywordHandler={checkKeywordHandler}
-                        checkTextColor={Colors.BLACK}
-                        checkBorderColor={Colors.BLACK}
-                        checkBackColor={Colors.WHITE}
+                        checkKeywordHandler={checkingKeywordHandler}
+                        checkTextColor={Colors.WHITE}
+                        checkBorderColor={undefined}
+                        checkBackColor={Colors.BLACK}
+                        trafficKeywordColor={Colors.BLACK}
                     />
                     {checkTraffic[2] && (
                         <KeywordsList
                             type="SUBWAY"
                             list={subwayKeywords}
                             isCheck={checkSubway}
-                            checkKeywordHandler={checkKeywordHandler}
+                            checkKeywordHandler={checkingKeywordHandler}
                             checkTextColor={Colors.WHITE}
                             checkBorderColor={undefined}
                             checkBackColor={Colors.BLACK}
@@ -170,7 +124,7 @@ const InitLikeKeywordTemplate = ({ moveToScreen }: InitLikeKeywordTemplateProps)
                         type="ISSUE"
                         list={issueKeywordsNotEtc}
                         isCheck={checkIssue}
-                        checkKeywordHandler={checkKeywordHandler}
+                        checkKeywordHandler={checkingKeywordHandler}
                         checkTextColor={Colors.WHITE}
                         checkBorderColor={undefined}
                         checkBackColor={Colors.BLACK}

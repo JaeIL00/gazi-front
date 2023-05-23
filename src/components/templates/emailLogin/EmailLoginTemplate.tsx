@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, Animated, Keyboard, ToastAndroid, View } from 'react-native';
+import React, { useState } from 'react';
+import { ActivityIndicator, KeyboardAvoidingView, ToastAndroid, View } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useMutation } from 'react-query';
 import { debounce } from 'lodash';
@@ -13,12 +13,11 @@ import MediumText from '../../smallest/MediumText';
 import TextButton from '../../molecules/TextButton';
 import TouchButton from '../../smallest/TouchButton';
 import LoginTextInput from '../../molecules/LoginTextInput';
-import useKeyboardMotion from '../../../utils/hooks/useKeyboardMotion';
 import MoveBackWithPageTitle from '../../organisms/MoveBackWithPageTitle';
 import { loginAPI } from '../../../queries/api';
-import { userInfoAtom, userTokenAtom } from '../../../store/atoms';
 import { EmailLoginTemplateProps } from '../../../types/types';
-import { emailLoginTemplateStyles, nextStepButtonPosition } from '../../../styles/styles';
+import { emailLoginTemplateStyles } from '../../../styles/styles';
+import { userInfoAtom, userTokenAtom } from '../../../store/atoms';
 
 const EmailLoginTemplate = ({ moveServiceHomeHandler }: EmailLoginTemplateProps) => {
     // Text change Handling
@@ -59,6 +58,7 @@ const EmailLoginTemplate = ({ moveServiceHomeHandler }: EmailLoginTemplateProps)
         refreshToken: string;
         memberId: number;
         nickName: string;
+        email: string;
     }) => {
         try {
             await AsyncStorage.setItem('GAZI_ac_tk', data.accessToken);
@@ -70,6 +70,7 @@ const EmailLoginTemplate = ({ moveServiceHomeHandler }: EmailLoginTemplateProps)
             setUserInfo({
                 memberId: data.memberId,
                 nickname: data.nickName,
+                email: data.email,
             });
         } catch (err) {
             // For Debug
@@ -80,53 +81,47 @@ const EmailLoginTemplate = ({ moveServiceHomeHandler }: EmailLoginTemplateProps)
         }
     };
 
-    // Change button Position by keyboard activity
-    const { bottomValue, buttonUpAnimationHandler, buttonDownAnimationHandler } = useKeyboardMotion(410, 595);
-    useEffect(() => {
-        const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', buttonUpAnimationHandler);
-        const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', buttonDownAnimationHandler);
-
-        return () => {
-            keyboardDidShowListener.remove();
-            keyboardDidHideListener.remove();
-        };
-    }, []);
-
     return (
         <View style={emailLoginTemplateStyles.container}>
-            <MoveBackWithPageTitle
-                oneTitle="이메일로 로그인"
-                twoTitle=""
-                onPress={() => moveServiceHomeHandler('BACK')}
-            />
+            <View style={emailLoginTemplateStyles.mainContent}>
+                <MoveBackWithPageTitle
+                    oneTitle="이메일로 로그인"
+                    twoTitle=""
+                    onPress={() => moveServiceHomeHandler('BACK')}
+                />
 
-            <Spacer height={75} />
-            <View>
-                <LoginTextInput
-                    title="Email"
-                    value={email}
-                    placeholder="이메일(아이디)입력"
-                    onChangeText={onChangeEmail}
-                    keyboardType="email-address"
-                />
-                <Spacer height={20} />
-                <LoginTextInput
-                    title="Password"
-                    value={password}
-                    placeholder="비밀번호 입력"
-                    onChangeText={onChangePassword}
-                    secureTextEntry={true}
-                />
-                {loginErrorText && (
-                    <View style={emailLoginTemplateStyles.emailErrorTextBox}>
-                        <Icons type={'fontisto'} name={'close'} size={14} color={Colors.STATUS_RED} />
-                        <Spacer width={4} />
-                        <MediumText text={loginErrorText} size={12} color={Colors.STATUS_RED} />
-                    </View>
-                )}
+                <Spacer height={75} />
+
+                <View>
+                    <LoginTextInput
+                        title="Email"
+                        value={email}
+                        placeholder="이메일(아이디)입력"
+                        onChangeText={onChangeEmail}
+                        keyboardType="email-address"
+                    />
+                    <Spacer height={20} />
+                    <LoginTextInput
+                        title="Password"
+                        value={password}
+                        placeholder="비밀번호 입력"
+                        onChangeText={onChangePassword}
+                        secureTextEntry={true}
+                    />
+                    {loginErrorText && (
+                        <View style={emailLoginTemplateStyles.emailErrorTextBox}>
+                            <Icons type={'fontisto'} name={'close'} size={14} color={Colors.STATUS_RED} />
+                            <Spacer width={4} />
+                            <MediumText text={loginErrorText} size={12} color={Colors.STATUS_RED} />
+                        </View>
+                    )}
+                </View>
             </View>
 
-            <Animated.View style={[nextStepButtonPosition.button, { transform: [{ translateY: bottomValue }] }]}>
+            <KeyboardAvoidingView
+                behavior="height"
+                style={emailLoginTemplateStyles.bottomBox}
+                contentContainerStyle={emailLoginTemplateStyles.bottomContain}>
                 <TextButton
                     onPress={onPressLoginButton}
                     text="로그인"
@@ -135,13 +130,16 @@ const EmailLoginTemplate = ({ moveServiceHomeHandler }: EmailLoginTemplateProps)
                     textColor={Colors.WHITE}
                     fontSize={17}
                 />
+
                 <Spacer height={24} />
-                <TouchButton onPress={() => ToastAndroid.show('개발 우선순위가 많이 밀렸어요ㅜ', 4000)}>
+
+                <TouchButton onPress={() => {}}>
                     <View style={emailLoginTemplateStyles.underBar}>
                         <BoldText text="비밀번호 찾기" size={13} color={Colors.TXT_GRAY} />
                     </View>
                 </TouchButton>
-            </Animated.View>
+            </KeyboardAvoidingView>
+
             {isLoading && <ActivityIndicator size="large" />}
         </View>
     );

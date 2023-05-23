@@ -120,6 +120,23 @@ export const editNicknameAPI = async (param: { accessToken: string; data: string
     });
     return response;
 };
+export const getMyPostCommentAPI = async (param: {
+    accessToken: string;
+    curLat: number;
+    curLon: number;
+    isPost: boolean;
+    page: number;
+}) => {
+    const response = await Axios({
+        url: `/api/v1/post/myPost?curLat=${param.curLat}&curLon=${param.curLon}&isPost=${param.isPost}&page=${param.page}`,
+        method: 'get',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${param.accessToken}`,
+        },
+    });
+    return response;
+};
 
 // KEYWORD
 export const addLikeKeywordsAPI = async (param: { accessToken: string; data: number[] }) => {
@@ -202,15 +219,22 @@ export const getAllPostAPI = async (param: { accessToken: string; curLat: number
     });
     return response;
 };
-export const getCommentListAPI = async (param: { accessToken: string; postId: number; curX: number; curY: number }) => {
+export const getCommentListAPI = async (param: {
+    accessToken: string;
+    postId: number;
+    curX: number;
+    curY: number;
+    page: number;
+}) => {
     const response = await Axios({
-        url: `/api/v1/post/top-post?postId=${param.postId}&curX=${param.curX}&curY=${param.curY}`,
+        url: `/api/v1/post/top-post?postId=${param.postId}&curX=${param.curX}&curY=${param.curY}&page=${param.page}`,
         method: 'get',
         headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${param.accessToken}`,
         },
     });
+
     return response;
 };
 export const reportAPI = async (param: {
@@ -223,6 +247,42 @@ export const reportAPI = async (param: {
     const response = await Axios({
         url: '/api/v1/report',
         method: 'post',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${param.accessToken}`,
+        },
+        data: JSON.stringify(param.data),
+    });
+    return response;
+};
+export const addHelpfulCommentAPI = async (param: {
+    accessToken: string;
+    data: {
+        postId: number | null;
+        repostId: number | null;
+    };
+}) => {
+    const response = await Axios({
+        url: '/api/v1/like',
+        method: 'post',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${param.accessToken}`,
+        },
+        data: JSON.stringify(param.data),
+    });
+    return response;
+};
+export const delHelpfulCommentAPI = async (param: {
+    accessToken: string;
+    data: {
+        postId: number | null;
+        repostId: number | null;
+    };
+}) => {
+    const response = await Axios({
+        url: '/api/v1/like',
+        method: 'delete',
         headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${param.accessToken}`,

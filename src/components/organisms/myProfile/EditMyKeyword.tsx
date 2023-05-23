@@ -1,46 +1,60 @@
 import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { ActivityIndicator, ScrollView, View } from 'react-native';
+import { useMutation } from 'react-query';
+import { useRecoilValue } from 'recoil';
 
 import Icons from '../../smallest/Icons';
 import Spacer from '../../smallest/Spacer';
 import KeywordsList from '../KeywordsList';
 import Colors from '../../../styles/Colors';
 import BoldText from '../../smallest/BoldText';
-import TouchButton from '../../smallest/TouchButton';
 import TextButton from '../../molecules/TextButton';
+import TouchButton from '../../smallest/TouchButton';
 import SemiBoldText from '../../smallest/SemiBoldText';
+import useCheckKeyword from '../../../utils/hooks/useCheckKeyword';
+import { userTokenAtom } from '../../../store/atoms';
+import { EditMyKeywordProps } from '../../../types/types';
 import { editMyKeywordStyles } from '../../../styles/styles';
 import { screenHeight } from '../../../utils/changeStyleSize';
-import { EditMyKeywordProps, KeywordListTypes } from '../../../types/types';
-import { issueKeywordsNotEtc, subwayKeywords, trafficKeywords } from '../../../utils/allKeywords';
-import { useMutation } from 'react-query';
 import { editMyLikeKeywordsAPI } from '../../../queries/api';
-import { useRecoilValue } from 'recoil';
-import { userTokenAtom } from '../../../store/atoms';
+import { issueKeywordsNotEtc, subwayKeywords, trafficKeywords } from '../../../utils/allKeywords';
+import { useRootNavigation } from '../../../navigations/RootStackNavigation';
 
 const EditMyKeyword = ({
     myKeywordList,
-    checkInitTraffic,
-    checkInitSubway,
-    checkInitIssue,
+    isFromCommunity,
     controlEditWindowHandler,
     getMyKeywordRefetch,
 }: EditMyKeywordProps) => {
-    // Initialized check keywords
-    const [checkTraffic, setCheckTraffic] = useState<boolean[]>(checkInitTraffic);
-    const [checkSubway, setCheckSubway] = useState<boolean[]>(checkInitSubway);
-    const [checkIssue, setCheckIssue] = useState<boolean[]>(checkInitIssue);
+    const rootNavigation = useRootNavigation();
+    const { accessToken } = useRecoilValue(userTokenAtom);
 
-    useLayoutEffect(() => {
-        checkMyKeyword();
-    }, []);
+    // Initialized check keywords
+    const [editCheckIssue, setEditCheckIssue] = useState<boolean[]>(Array(issueKeywordsNotEtc.length).fill(false));
+    const [editCheckSubway, setEditCheckSubway] = useState<boolean[]>(Array(subwayKeywords.length).fill(false));
+    const [editCheckTraffic, setEditCheckTraffic] = useState<boolean[]>(Array(trafficKeywords.length).fill(false));
+
+    // Custom hook useCheckKeyword
+    const { checkedKeywords, checkedKeywordsHandler } = useCheckKeyword();
+
+    // Edit keyword API
+    const { mutate, isLoading } = useMutation(editMyLikeKeywordsAPI, {
+        onSuccess: () => {
+            successEdit();
+        },
+        onError: ({ response }) => {
+            // For Debug
+            console.log('(ERROR) Edit keyword API.', response);
+        },
+    });
+    // Init checked
     const checkMyKeyword = () => {
         let checkedIndexTraffic: number[] = [];
         let checkedIndexIssue: number[] = [];
         let checkedIndexSubway: number[] = [];
-        const freshTraffic = [...checkTraffic];
-        const freshIssue = [...checkIssue];
-        const freshSubway = [...checkSubway];
+        const freshTraffic = [...editCheckTraffic];
+        const freshIssue = [...editCheckIssue];
+        const freshSubway = [...editCheckSubway];
         for (const index in myKeywordList) {
             if (myKeywordList[index].id === 10 || myKeywordList[index].id === 11) {
                 const checkIndex = trafficKeywords.findIndex(item => item.id === myKeywordList[index].id);
@@ -62,12 +76,12 @@ const EditMyKeyword = ({
         for (const index in checkedIndexSubway) {
             freshSubway.splice(checkedIndexSubway[index], 1, true);
         }
-        setCheckTraffic(freshTraffic);
-        setCheckIssue(freshIssue);
+        setEditCheckTraffic(freshTraffic);
+        setEditCheckIssue(freshIssue);
         if (checkedIndexSubway.length === 23) {
-            setCheckSubway(Array.from(Array(24), () => true));
+            setEditCheckSubway(Array.from(Array(24), () => true));
         } else {
-            setCheckSubway(freshSubway);
+            setEditCheckSubway(freshSubway);
         }
     };
 
@@ -75,26 +89,26 @@ const EditMyKeyword = ({
     const checkKeywordHandler = (list: string, index: number, id: number) => {
         switch (list) {
             case 'TRAFFIC':
-                const freshTraffic = [...checkTraffic];
+                const freshTraffic = [...editCheckTraffic];
                 freshTraffic.splice(index, 1, !freshTraffic[index]);
-                setCheckTraffic(freshTraffic);
+                setEditCheckTraffic(freshTraffic);
                 break;
             case 'SUBWAY':
                 if (id === 9998) {
-                    const freshSubway = [...checkSubway];
+                    const freshSubway = [...editCheckSubway];
                     const checkAll = freshSubway.map(() => !freshSubway[0]);
-                    setCheckSubway(checkAll);
+                    setEditCheckSubway(checkAll);
                 } else {
-                    const freshSubway = [...checkSubway];
+                    const freshSubway = [...editCheckSubway];
                     freshSubway.splice(0, 1, false);
                     freshSubway.splice(index, 1, !freshSubway[index]);
-                    setCheckSubway(freshSubway);
+                    setEditCheckSubway(freshSubway);
                 }
                 break;
             case 'ISSUE':
-                const freshIssue = [...checkIssue];
+                const freshIssue = [...editCheckIssue];
                 freshIssue.splice(index, 1, !freshIssue[index]);
-                setCheckIssue(freshIssue);
+                setEditCheckIssue(freshIssue);
                 break;
             default:
                 // For Debug
@@ -103,53 +117,21 @@ const EditMyKeyword = ({
         }
     };
 
-    // Checked state handling
-    const [checkedKeywords, setCheckedKeywords] = useState<number[]>([]);
-    const checkedKeywordsHandler = (list: KeywordListTypes[], isChecked: boolean[]) => {
-        const getId = list.map((item, index) => {
-            if (item.id !== 9999 && item.id !== 9998 && isChecked[index]) {
-                return item.id;
-            }
-        });
-        const cleanType = getId.filter(item => item !== undefined) as number[];
-        setCheckedKeywords(cleanType);
-    };
-    useEffect(() => {
-        // Traffic subway keword check
-        const subwaytrue = checkSubway.filter(item => item !== false);
-        if (subwaytrue.length > 0) {
-            setCheckTraffic(prev => {
-                prev.splice(2, 1, true);
-                return prev;
-            });
-        }
-        const allList = [...trafficKeywords, ...subwayKeywords, ...issueKeywordsNotEtc];
-        const checkedList = [...checkTraffic, ...checkSubway, ...checkIssue];
-        checkedKeywordsHandler(allList, checkedList);
-    }, [checkTraffic, checkIssue, checkSubway]);
-
     // Reset check of keyword
     const resetCheckedHandler = () => {
-        setCheckTraffic(Array.from(Array(3), () => false));
-        setCheckSubway(Array.from(Array(24), () => false));
-        setCheckIssue(Array.from(Array(28), () => false));
+        setEditCheckTraffic(Array.from(Array(3), () => false));
+        setEditCheckSubway(Array.from(Array(24), () => false));
+        setEditCheckIssue(Array.from(Array(28), () => false));
     };
 
-    // Edit keyword API
-    const { accessToken } = useRecoilValue(userTokenAtom);
-
-    const { mutate, isLoading } = useMutation(editMyLikeKeywordsAPI, {
-        onSuccess: () => {
-            successEdit();
-        },
-        onError: ({ response }) => {
-            // For Debug
-            console.log('(ERROR) Edit keyword API.', response);
-        },
-    });
+    // My keyword API success
     const successEdit = async () => {
         await getMyKeywordRefetch();
-        controlEditWindowHandler('BACK');
+        if (isFromCommunity) {
+            rootNavigation.navigate('BottomTab', { screen: 'Community' });
+        } else {
+            controlEditWindowHandler('BACK');
+        }
     };
     const putNewKeywordList = () => {
         let addKeywords: number[] = [];
@@ -174,6 +156,26 @@ const EditMyKeyword = ({
         });
     };
 
+    // Init checking
+    useLayoutEffect(() => {
+        checkMyKeyword();
+    }, [myKeywordList]);
+
+    // Check keyword
+    useEffect(() => {
+        // Traffic subway keword check
+        const subwaytrue = editCheckSubway.filter(item => item !== false);
+        if (subwaytrue.length > 0) {
+            setEditCheckTraffic(prev => {
+                prev.splice(2, 1, true);
+                return prev;
+            });
+        }
+        const allList = [...trafficKeywords, ...subwayKeywords, ...issueKeywordsNotEtc];
+        const checkedList = [...editCheckTraffic, ...editCheckSubway, ...editCheckIssue];
+        checkedKeywordsHandler(allList, checkedList);
+    }, [editCheckTraffic, editCheckIssue, editCheckSubway]);
+
     return (
         <>
             <View style={{ paddingBottom: 90 * screenHeight }}>
@@ -186,7 +188,7 @@ const EditMyKeyword = ({
                         <KeywordsList
                             type="ISSUE"
                             list={issueKeywordsNotEtc}
-                            isCheck={checkIssue}
+                            isCheck={editCheckIssue}
                             checkKeywordHandler={checkKeywordHandler}
                             checkTextColor="#7949C6"
                             checkBorderColor={Colors.VIOLET}
@@ -204,17 +206,18 @@ const EditMyKeyword = ({
                         <KeywordsList
                             type="TRAFFIC"
                             list={trafficKeywords}
-                            isCheck={checkTraffic}
+                            isCheck={editCheckTraffic}
                             checkKeywordHandler={checkKeywordHandler}
                             checkTextColor="#7949C6"
                             checkBorderColor={Colors.VIOLET}
-                            checkBackColor={Colors.WHITE}
+                            checkBackColor="#F1E9FF"
+                            trafficKeywordColor="#7949C6"
                         />
-                        {checkTraffic[2] && (
+                        {editCheckTraffic[2] && (
                             <KeywordsList
                                 type="SUBWAY"
                                 list={subwayKeywords}
-                                isCheck={checkSubway}
+                                isCheck={editCheckSubway}
                                 checkKeywordHandler={checkKeywordHandler}
                                 checkTextColor="#7949C6"
                                 checkBorderColor={Colors.VIOLET}

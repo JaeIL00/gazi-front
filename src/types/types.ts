@@ -13,6 +13,17 @@ export type KeywordListTypes = {
     keywordName: string;
     vehicleType: string | null;
 };
+export type SearchHistoryTypes = {
+    formatted_address: string;
+    name: string;
+
+    location: { lat: number; lng: number };
+};
+export type MyCommentTypes = {
+    content: string;
+    createTime: string;
+    title: string;
+};
 export type MapLocationTypes = {
     latitude: number;
     longitude: number;
@@ -56,7 +67,17 @@ export type CommentTypes = {
     nickName: string;
     report: boolean;
     time: string;
-    id: number;
+    postId: number;
+};
+export type uploadImageFileTypes = {
+    uri: string;
+    fileName: string;
+    type: string;
+};
+export type GalleryAlbumListTypes = {
+    title: string;
+    count: number;
+    thumbnail: string;
 };
 export type LocationResultTypes = {
     business_status: string;
@@ -117,7 +138,7 @@ export type CommentReqTypes = {
 };
 export type WritePostTypes = {
     dto: PostDto;
-    files: Asset[];
+    files: uploadImageFileTypes[];
     thumbnail: Asset | null;
     backgroundMap: string;
 };
@@ -135,6 +156,18 @@ export type MyLikeKeywordTypes = {
     vehicle: string | null;
     keywordName: string;
 };
+export type ImageViewTypes = {
+    postTitle: string;
+    postCount: number;
+    fileList: {
+        fileName: string;
+        fileUrl: string;
+    }[];
+    nickName: string;
+    distance: string;
+    time: string;
+    imageIndex: number;
+};
 
 // ATOM
 export type userTokenAtomTypes = {
@@ -144,6 +177,7 @@ export type userTokenAtomTypes = {
 export type userInfoAtomTypes = {
     memberId: number | null;
     nickname: string;
+    email: string;
 };
 
 export type joinMemberTypes = {
@@ -163,6 +197,7 @@ export type RootStackParamList = {
     Login: undefined;
     RequestPermission: undefined;
     InitKeyword: undefined;
+    ImageView: ImageViewTypes;
     BottomTab?: {
         screen: string;
     };
@@ -176,10 +211,13 @@ export type RootStackParamList = {
         | undefined;
     EditNickname: undefined;
     AccountManagement: undefined;
-    LikeKeywordSetting: undefined;
+    LikeKeywordSetting: {
+        isFromCommunity?: boolean;
+    };
     Policies: undefined;
     ThreadItem: {
         postId: number;
+        freshRePostCount?: number;
     };
     MyPostComment: undefined;
     ChangePassword: undefined;
@@ -196,9 +234,10 @@ export interface TabBarProps extends BottomTabBarProps {}
 // SMALLEST
 export type TouchButtonProps = {
     children?: ReactElement;
-    onPress: () => void;
-    width?: number;
-    height?: number;
+    onPressIn?: () => void;
+    onPress?: () => void;
+    width?: number | string;
+    height?: number | string;
     backgroundColor?: string;
     paddingHorizontal?: number;
     paddingVertical?: number;
@@ -216,6 +255,13 @@ export type TouchButtonProps = {
               right?: number;
           }
         | number;
+    marginLeft?: number;
+};
+export type CommentImageProps = {
+    fileUrl: string;
+    width: number;
+    height: number;
+    moveImageViewScreen: () => void;
 };
 export type SingleLineInputProps = {
     value: string;
@@ -241,6 +287,8 @@ export type MultiLineInputProps = {
     height?: number;
     fontFamily?: string | null;
     placeFontFamily?: string | null;
+    inputFocusBlur: boolean;
+    inputFocusBlurHandler: (state: string) => void;
     onChangeText: (text: string) => void;
     onSubmitEditing?: () => void;
 };
@@ -266,7 +314,9 @@ export type AppTextProps = {
     numberOfLines?: number;
 };
 export type ModalBackgroundProps = {
-    children?: ReactElement;
+    children: ReactElement;
+    visible: boolean;
+    onRequestClose: () => void;
 };
 
 // MOLECULES
@@ -321,6 +371,21 @@ export type HeaderMoleculeProps = {
 export interface MoveBackWithPageTitleProps extends PageTitleWithExplainProps {
     onPress: () => void;
 }
+export type ScreenWrapperProps = {
+    children: ReactElement;
+    isPaddingHorizontal: boolean;
+};
+export type PhotoGalleryProps = {
+    closeGalleryHandling: () => void;
+    getImageHandler: (file: uploadImageFileTypes, state: string) => void;
+};
+export type CommentListItemProps = {
+    comment: CommentTypes;
+    postTitle: string;
+    postCount: number;
+    firstCommentId: number | undefined;
+    reportHandler: (repostId: number) => void;
+};
 export type ServiceAgreementProps = {
     finishSlideComponentHandler: (state: string) => void;
 };
@@ -347,6 +412,7 @@ export type KeywordsListProps = {
     checkTextColor: string;
     checkBorderColor: string | undefined;
     checkBackColor: string;
+    trafficKeywordColor?: string;
 };
 export type MapWithMarkerProps = {
     mapRef: RefObject<MapView>;
@@ -356,20 +422,23 @@ export type MapWithMarkerProps = {
     mapRenderCompleteHandler: () => void;
     checkMapGesture: (region: Region, details: Details) => void;
     checkZoomLevelWarning: (region: Region) => void;
+    findMarkerPost: (id: number) => void;
 };
 export type PostListItemProps = {
-    post: PostTypes;
+    post: PostTypes | null;
     isBorder: boolean;
+    isNearList?: boolean;
+    isMarkerPost?: boolean;
 };
 export type NearbyPostListModalProps = {
     isModalRef: React.MutableRefObject<boolean>;
     handleModalTrigger: boolean;
     nearPostList: PostTypes[];
+    markerPost: PostTypes | null;
     isBottomSheetMini: boolean;
     isBottomSheetFull: boolean;
     currentPosition: MapLocationTypes;
     mapBoundaryState: MapBoundaryTypes;
-    moveToBottomSheetMini: () => void;
     moveToBottomSheetFull: (state: string) => void;
     notBottomSheetMini: () => void;
     onPressGetUserPosition: () => void;
@@ -377,11 +446,14 @@ export type NearbyPostListModalProps = {
     moveToWritePost: () => void;
 };
 export type SearchLocationProps = {
+    isHome: boolean;
+    placeholder: string;
     getLocationHandler: (location: { lat: number; lng: number }, placeName: string) => void;
+    searchModalHandler?: (state: string) => void;
 };
 export type WritePostAddKeywordProps = {
     keywordModalHandler: (state: string) => void;
-    getKeywordHandler: (state: string, keyword: number[]) => void;
+    getKeywordHandler: (keyword: number[]) => void;
 };
 export type WritePhotoProps = {
     getImageHandler: (files: Asset[]) => void;
@@ -389,9 +461,7 @@ export type WritePhotoProps = {
 };
 export type EditMyKeywordProps = {
     myKeywordList: MyLikeKeywordTypes[];
-    checkInitTraffic: boolean[];
-    checkInitSubway: boolean[];
-    checkInitIssue: boolean[];
+    isFromCommunity: boolean;
     controlEditWindowHandler: (state: string) => void;
     getMyKeywordRefetch: <TPageData>(
         options?: (RefetchOptions & RefetchQueryFilters<TPageData>) | undefined,
@@ -400,6 +470,8 @@ export type EditMyKeywordProps = {
 
 // TEMPLATES
 export type InputEmailTemplateProps = {
+    minutes: number;
+    seconds: number;
     onPressNextStep: () => void;
     resetTimeHandler: () => void;
     didAuthEmail: () => void;
@@ -430,7 +502,7 @@ export type WritePostOrCommentTemplateProps = {
               postId: number;
           }
         | undefined;
-    moveToScreen: (state: string, postId: number | null) => void;
+    moveToScreen: (state: string, postId: number | null, freshRePostCount?: number) => void;
 };
 export type EditNicknameTemplateProps = {
     moveToMyProfileScreen: (state: string) => void;
@@ -440,6 +512,7 @@ export type MyProfileTemplateProps = {
 };
 export type ThreadItemTemplateProps = {
     postId: number;
+    freshRePostCount?: number;
     movetoCommunityScreen: () => void;
     moveToWriteScreen: (title: string, rePostCount: number, time: string) => void;
 };
@@ -456,8 +529,12 @@ export type ChangePasswordTemplateProps = {
     moveToBackScreenHandler: () => void;
 };
 export type LikeKeywordSettingTemplateProps = {
+    isFromCommunity: boolean | undefined;
     moveToBackScreenHandler: () => void;
 };
 export type PoliciesTemplateProps = {
     moveToBackScreenHandler: () => void;
+};
+export type CommunityTemplateProps = {
+    moveToKeywordSettingScreen: () => void;
 };

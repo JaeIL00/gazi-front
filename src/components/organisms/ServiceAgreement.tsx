@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Animated, ScrollView, View, useWindowDimensions } from 'react-native';
+import { Animated, Modal, ScrollView, View, useWindowDimensions } from 'react-native';
 
 import Icons from '../smallest/Icons';
 import Colors from '../../styles/Colors';
@@ -141,11 +141,10 @@ const ServiceAgreement = ({ finishSlideComponentHandler }: ServiceAgreementProps
                     </View>
                 </Animated.View>
             </ModalBackground>
-            {uri && (
-                <View style={serviceAgreementStyles.webviewBox}>
-                    <WebViewComponent uri={uri} closeHandler={seturi} />
-                </View>
-            )}
+
+            <Modal visible={uri.length > 0}>
+                <WebViewComponent uri={uri} closeHandler={seturi} />
+            </Modal>
         </>
     );
 };

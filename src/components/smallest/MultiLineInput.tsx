@@ -16,11 +16,14 @@ const MultiLineInput = ({
     height,
     fontFamily = 'Pretendard-Medium',
     placeFontFamily = 'Pretendard-Regular',
+    inputFocusBlur,
+    inputFocusBlurHandler,
 }: MultiLineInputProps) => {
     // When keyboard hide, input is blur
     const textInputRef = useRef() as RefObject<TextInput>;
     const blurTextInput = () => {
         textInputRef.current?.blur();
+        inputFocusBlurHandler('BLUR');
     };
     useEffect(() => {
         const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', blurTextInput);
@@ -28,6 +31,12 @@ const MultiLineInput = ({
             keyboardDidHideListener.remove();
         };
     }, []);
+    useEffect(() => {
+        if (inputFocusBlur) {
+            textInputRef.current?.focus();
+        }
+    }, [inputFocusBlur]);
+
     return (
         <TextInput
             ref={textInputRef}

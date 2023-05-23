@@ -1,18 +1,25 @@
 import React from 'react';
-import { View } from 'react-native';
+
+import ScreenWrapper from '../../components/organisms/ScreenWrapper';
 import MyPostCommentTemplate from '../../components/templates/myProfile/MyPostCommentTemplate';
-import { globalBackWhiteStyles } from '../../styles/styles';
 import { useRootNavigation } from '../../navigations/RootStackNavigation';
+import { useIsFocused } from '@react-navigation/native';
 
 const MyPostCommentScreen = () => {
     const rootNavigation = useRootNavigation();
+    const isFocus = useIsFocused();
+
     const moveToBackScreenHandler = () => {
         rootNavigation.goBack();
     };
     return (
-        <View style={globalBackWhiteStyles.container}>
-            <MyPostCommentTemplate moveToBackScreenHandler={moveToBackScreenHandler} />
-        </View>
+        <>
+            {isFocus && (
+                <ScreenWrapper isPaddingHorizontal={false}>
+                    <MyPostCommentTemplate moveToBackScreenHandler={moveToBackScreenHandler} />
+                </ScreenWrapper>
+            )}
+        </>
     );
 };
 

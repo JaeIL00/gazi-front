@@ -11,35 +11,22 @@ import SemiBoldText from '../../smallest/SemiBoldText';
 import { userInfoAtom } from '../../../store/atoms';
 import { myProfileTemplateStyles } from '../../../styles/styles';
 import { myProfileTabList } from '../../../utils/myProfileTabList';
-import { useRootNavigation } from '../../../navigations/RootStackNavigation';
 import { MyProfileTabTypes, MyProfileTemplateProps } from '../../../types/types';
 import { screenFont, screenHeight, screenWidth } from '../../../utils/changeStyleSize';
+import { useNavigation } from '@react-navigation/native';
 
 const MyProfileTemplate = ({ moveToScreen }: MyProfileTemplateProps) => {
+    const rootNavigation = useNavigation<any>();
+
     // Get user nickname
-    const { nickname } = useRecoilValue(userInfoAtom);
+    const { nickname, email } = useRecoilValue(userInfoAtom);
 
     const scrollViewRender = useCallback((item: MyProfileTabTypes) => {
-        const screenValue = () => {
-            switch (item.screen) {
-                case 'MyPostComment':
-                    return 'MyPostComment';
-                case 'AccountManagement':
-                    return 'AccountManagement';
-                case 'LikeKeywordSetting':
-                    return 'LikeKeywordSetting';
-                case 'Policies':
-                    return 'Policies';
-                default:
-                    return 'None';
-            }
-        };
-        const rootNavigation = useRootNavigation();
         return (
             <View key={item.text}>
                 {item.tab ? (
                     <TouchButton
-                        onPress={() => item.screen && rootNavigation.navigate(screenValue())}
+                        onPress={() => item.screen && rootNavigation.navigate(item.screen)}
                         paddingHorizontal={16}
                         paddingVertical={16}
                         borderBottomWidth={item.borderLine ? 1 * screenFont : undefined}
@@ -85,7 +72,7 @@ const MyProfileTemplate = ({ moveToScreen }: MyProfileTemplateProps) => {
                             />
                         </TouchButton>
                     </View>
-                    <NormalText text="asfda@naver.com" size={12} color={Colors.TXT_GRAY} />
+                    <NormalText text={email} size={12} color={Colors.TXT_GRAY} />
                 </View>
             </View>
 

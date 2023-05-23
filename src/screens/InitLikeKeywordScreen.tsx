@@ -1,8 +1,7 @@
 import React from 'react';
-import { View } from 'react-native';
 
+import ScreenWrapper from '../components/organisms/ScreenWrapper';
 import InitLikeKeywordTemplate from '../components/templates/joinMember/InitLikeKeywordTemplate';
-import { globalDefaultStyles } from '../styles/styles';
 import { useRootNavigation } from '../navigations/RootStackNavigation';
 
 const InitLikeKeywordScreen = () => {
@@ -24,9 +23,9 @@ const InitLikeKeywordScreen = () => {
     };
 
     return (
-        <View style={globalDefaultStyles.container}>
+        <ScreenWrapper isPaddingHorizontal={true}>
             <InitLikeKeywordTemplate moveToScreen={moveToScreen} />
-        </View>
+        </ScreenWrapper>
     );
 };
 

@@ -1,10 +1,22 @@
-import React, { RefObject, useCallback, useRef, useState } from 'react';
-import { ActivityIndicator, Image, ImageSourcePropType, Linking, View } from 'react-native';
+import React, { RefObject, useCallback, useEffect, useRef, useState } from 'react';
+import {
+    ActivityIndicator,
+    Image,
+    ImageSourcePropType,
+    Linking,
+    Modal,
+    ScrollView,
+    StatusBar,
+    TouchableOpacity,
+    View,
+} from 'react-native';
 import { useMutation } from 'react-query';
 import { useRecoilValue } from 'recoil';
 import { debounce } from 'lodash';
 import { Asset } from 'react-native-image-picker';
 import MapView, { Marker } from 'react-native-maps';
+import FastImage from 'react-native-fast-image';
+import { PERMISSIONS, RESULTS, checkMultiple } from 'react-native-permissions';
 
 import Icons from '../../smallest/Icons';
 import Spacer from '../../smallest/Spacer';
@@ -15,22 +27,49 @@ import MediumText from '../../smallest/MediumText';
 import TextButton from '../../molecules/TextButton';
 import TouchButton from '../../smallest/TouchButton';
 import SemiBoldText from '../../smallest/SemiBoldText';
+import PhotoGallery from '../../organisms/PhotoGallery';
 import MultiLineInput from '../../smallest/MultiLineInput';
 import HeaderMolecule from '../../molecules/HeaderMolecule';
 import SearchLocation from '../../organisms/SearchLocation';
+import ModalBackground from '../../smallest/ModalBackground';
 import WritePhoto from '../../organisms/cummunity/WritePhoto';
 import FailPermissionModal from '../../organisms/FailPermissionModal';
 import WritePostAddKeyword from '../../organisms/cummunity/WritePostAddKeyword';
 import { userTokenAtom } from '../../../store/atoms';
-import { issueKeywords } from '../../../utils/allKeywords';
-import { screenWidth } from '../../../utils/changeStyleSize';
+import { screenFont, screenHeight, screenWidth } from '../../../utils/changeStyleSize';
 import { SingleLineInput } from '../../smallest/SingleLineInput';
 import { writePostOrCommentTemplateStyles } from '../../../styles/styles';
-import { WritePostOrCommentTemplateProps, WritePostTypes } from '../../../types/types';
+import { useRootNavigation, useRootRoute } from '../../../navigations/RootStackNavigation';
+import { issueKeywords, subwayKeywords, trafficKeywords } from '../../../utils/allKeywords';
+import {
+    KeywordListTypes,
+    WritePostOrCommentTemplateProps,
+    WritePostTypes,
+    uploadImageFileTypes,
+} from '../../../types/types';
 import { writeCommentAPI, writeCommentFilesAPI, writePostAPI, writePostFilesAPI } from '../../../queries/api';
 
 const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostOrCommentTemplateProps) => {
-    // Write post data for API request
+    const rootNavigation = useRootNavigation();
+    const rootRoute = useRootRoute();
+
+    const { accessToken } = useRecoilValue(userTokenAtom);
+
+    const mapRef = useRef() as RefObject<MapView>;
+
+    const [title, setTitle] = useState<string>('');
+    const [postId, setPostId] = useState<number>(0);
+    const [content, setcontent] = useState<string>('');
+    const [onErrorText, setOnErrorText] = useState<string>('');
+    const [keywordModal, setKeywordModal] = useState<boolean>(false);
+    const [onErrorModal, setOnErrorModal] = useState<boolean>(false);
+    const [loactionModal, setLoactionModal] = useState<boolean>(false);
+    const [inputFocusBlur, setInputFocusBlur] = useState<boolean>(false);
+    const [markerType, setMarkerType] = useState<ImageSourcePropType>();
+    const [imagePermission, setImagePermission] = useState<boolean>(false);
+    const [chooseKeywords, setChooseKeywords] = useState<KeywordListTypes[]>([]);
+    const [isCamAllowPermission, setIsCamAllowPermission] = useState<boolean>(false);
+    const [checkImageFileList, setCheckImageFileList] = useState<uploadImageFileTypes[]>([]);
     const [writePostData, setWritePostData] = useState<WritePostTypes>({
         dto: {
             title: '',
@@ -45,34 +84,8 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
         thumbnail: null,
         backgroundMap: '',
     });
-    const getLocationHandler = (location: { lat: number; lng: number }, placeName: string) => {
-        setWritePostData({
-            ...writePostData,
-            dto: { ...writePostData.dto, latitude: location.lat, longitude: location.lng, placeName },
-        });
-    };
-    const getKeywordHandler = (state: string, keyword: number[]) => {
-        switch (state) {
-            case 'LIST':
-                setWritePostData({ ...writePostData, dto: { ...writePostData.dto, keywordIdList: keyword } });
-                break;
-            case 'HEAD':
-                setWritePostData({ ...writePostData, dto: { ...writePostData.dto, headKeywordId: keyword[0] } });
-                break;
-            default:
-                // For Debug
-                console.log('(ERROR) Get keyword function of keyword modal.', state);
-        }
-    };
-    const getImageHandler = (files: Asset[]) => {
-        setWritePostData({ ...writePostData, files });
-    };
 
-    // Write post API and check essential value
-    const { accessToken } = useRecoilValue(userTokenAtom);
-    const [postId, setPostId] = useState<number>(0);
-    const [onErrorModal, setOnErrorModal] = useState(false);
-    const [onErrorText, setOnErrorText] = useState('');
+    // Write post API and
     const { mutate: postMutate, isLoading: isPostLoading } = useMutation(writePostAPI, {
         onSuccess: ({ data }) => {
             const responsePostId: number = data.data;
@@ -83,7 +96,125 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
             console.log('(ERROR) Write post API.', error);
         },
     });
-    const mapRef = useRef() as RefObject<MapView>;
+    // Post upload files API
+    const { mutate: postFileMutate, isLoading: isPostFileLoading } = useMutation(writePostFilesAPI, {
+        onSuccess: () => {
+            moveToScreen('GO', postId);
+        },
+        onError: error => {
+            // For Debug
+            console.log('(ERROR) Upload files API.', error);
+        },
+    });
+    // Write comment API
+    const { mutate: commentMutate, isLoading: iscommentLoading } = useMutation(writeCommentAPI, {
+        onSuccess: ({ data }) => {
+            const responseRepostId = data.data;
+            commentUploadFilesHandler(responseRepostId);
+        },
+        onError: error => {
+            // For Debug
+            console.log('(ERROR) Write comment API.', error);
+        },
+    });
+
+    // Comment upload files API
+    const { mutate: commentFileMutate, isLoading: iscommentFileLoading } = useMutation(writeCommentFilesAPI, {
+        onSuccess: ({ data }) => {
+            if (postThreadInfo) {
+                moveToScreen('GO', postThreadInfo.postId, postThreadInfo.rePostCount);
+            }
+        },
+        onError: error => {
+            // For Debug
+            console.log('(ERROR) Comment upload files.', error);
+        },
+    });
+
+    // Write post data for request API
+    const getLocationHandler = (location: { lat: number; lng: number }, placeName: string) => {
+        setWritePostData({
+            ...writePostData,
+            dto: { ...writePostData.dto, latitude: location.lat, longitude: location.lng, placeName },
+        });
+    };
+    const getKeywordHandler = (keyword: number[]) => {
+        const allKeywords = [...issueKeywords, ...trafficKeywords, ...subwayKeywords];
+        let newlist = allKeywords.filter((item, index) => keyword.includes(item.id));
+        if (newlist[0].id !== keyword[0]) {
+            const headIndex = newlist.findIndex(item => item.id === keyword[0]);
+            newlist.unshift(newlist[headIndex]);
+            newlist.splice(headIndex + 1, 1);
+        }
+        setChooseKeywords(newlist);
+        setWritePostData({
+            ...writePostData,
+            dto: { ...writePostData.dto, keywordIdList: keyword, headKeywordId: keyword[0] },
+        });
+    };
+
+    // Get image from gallery
+    const getImageHandler = (file: uploadImageFileTypes, state: string) => {
+        switch (state) {
+            case 'ADD':
+                setWritePostData({ ...writePostData, files: [...writePostData.files, file] });
+                break;
+            case 'DEL':
+                const freshFiles = writePostData.files.filter(item => item.uri !== file.uri);
+                setWritePostData({ ...writePostData, files: freshFiles });
+                break;
+            default:
+                // For Debug
+                console.log('(ERROR) Get image from gallery.', state, file);
+        }
+    };
+
+    // Content input focue blur handler
+    const inputFocusBlurHandler = (state: string) => {
+        switch (state) {
+            case 'FOCUS':
+                setInputFocusBlur(true);
+                break;
+            case 'BLUR':
+                setInputFocusBlur(false);
+                break;
+            default:
+                // For Debug
+                console.log('(ERROR) Content input focue blur handler.', state);
+        }
+    };
+
+    // Check image library permission
+    const checkImagePermission = async (): Promise<boolean> => {
+        try {
+            const check = await checkMultiple([PERMISSIONS.ANDROID.READ_MEDIA_IMAGES, PERMISSIONS.ANDROID.CAMERA]);
+            const isAllow =
+                check['android.permission.CAMERA'] === RESULTS.GRANTED &&
+                check['android.permission.READ_MEDIA_IMAGES'] === RESULTS.GRANTED;
+            return isAllow;
+        } catch (error) {
+            // For Debug
+            console.log('(ERROR) Check image library permission');
+            return false;
+        }
+    };
+
+    // Get image in library
+    const openGalleryHandler = async () => {
+        const isAllow = await checkImagePermission();
+        if (isAllow) {
+            setIsCamAllowPermission(true);
+        } else {
+            notAllowPermission();
+        }
+    };
+
+    // Close gallery button
+    const closeGalleryHandling = () => {
+        setIsCamAllowPermission(false);
+    };
+
+    // Check essential value of write post
     const finishWritingHandler = () => {
         const isNotEnoughLocation = !writePostData.dto.latitude || !writePostData.dto.longitude;
         const isNotEnoughKeyword = !writePostData.dto.keywordIdList || !writePostData.dto.headKeywordId;
@@ -131,16 +262,7 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
         setOnErrorModal(false);
     };
 
-    // Post upload files
-    const { mutate: postFileMutate, isLoading: isPostFileLoading } = useMutation(writePostFilesAPI, {
-        onSuccess: () => {
-            moveToScreen('GO', postId);
-        },
-        onError: error => {
-            // For Debug
-            console.log('(ERROR) Upload files API.', error);
-        },
-    });
+    // Upload post formdata
     const postUploadFilesHandler = (id: number) => {
         setPostId(id);
         const formdata = new FormData();
@@ -178,30 +300,7 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
         });
     };
 
-    // Write comment API
-    const { mutate: commentMutate, isLoading: iscommentLoading } = useMutation(writeCommentAPI, {
-        onSuccess: ({ data }) => {
-            const responseRepostId = data.data;
-            commentUploadFilesHandler(responseRepostId);
-        },
-        onError: error => {
-            // For Debug
-            console.log('(ERROR) Write comment API.', error);
-        },
-    });
-
     // Comment upload files
-    const { mutate: commentFileMutate, isLoading: iscommentFileLoading } = useMutation(writeCommentFilesAPI, {
-        onSuccess: ({ data }) => {
-            if (postThreadInfo) {
-                moveToScreen('GO', postThreadInfo?.postId);
-            }
-        },
-        onError: error => {
-            // For Debug
-            console.log('(ERROR) Comment upload files.', error);
-        },
-    });
     const commentUploadFilesHandler = (rePostId: number) => {
         if (writePostData.files[0]) {
             const formdata = new FormData();
@@ -217,12 +316,13 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
                 rePostId,
             });
         } else {
-            moveToScreen('GO', postId);
+            if (postThreadInfo) {
+                moveToScreen('GO', postThreadInfo.postId, postThreadInfo.rePostCount + 1);
+            }
         }
     };
 
     // Guide image library permission
-    const [imagePermission, setImagePermission] = useState(false);
     const notAllowPermission = () => {
         setImagePermission(true);
     };
@@ -242,7 +342,7 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
     };
 
     // Search location modal
-    const [loactionModal, setLoactionModal] = useState<boolean>(false);
+
     const locationModalHandler = (state: string) => {
         switch (state) {
             case 'OPEN':
@@ -258,7 +358,6 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
     };
 
     // Set post keyword modal
-    const [keywordModal, setKeywordModal] = useState<boolean>(false);
     const keywordModalHandler = (state: string) => {
         switch (state) {
             case 'OPEN':
@@ -274,8 +373,7 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
     };
 
     // Input text title and content
-    const [title, setTitle] = useState('');
-    const [content, setcontent] = useState('');
+
     const onChangeTitleText = (text: string) => {
         setTitle(text);
         inputTitleDate(text);
@@ -298,7 +396,6 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
     );
 
     // Map snapshot handler for post. map and marker
-    const [markerType, setMarkerType] = useState<ImageSourcePropType>();
     const mapSnapshotWithWritePostHandler = () => {
         mapRef.current?.render();
         mapRef.current?.animateToRegion(
@@ -365,6 +462,7 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
 
     return (
         <>
+            <StatusBar backgroundColor={Colors.WHITE} barStyle="dark-content" />
             <MapView
                 ref={mapRef}
                 style={writePostOrCommentTemplateStyles.mapSize}
@@ -386,149 +484,223 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
                 )}
             </MapView>
             <View style={writePostOrCommentTemplateStyles.container}>
-                <View style={writePostOrCommentTemplateStyles.headerBox}>
-                    <View style={writePostOrCommentTemplateStyles.headerNavigateBox}>
-                        <TouchButton onPress={() => moveToScreen('BACK', null)}>
-                            <Icons type="ionicons" name="close-sharp" size={20} color={Colors.BLACK} />
-                        </TouchButton>
-                        <TouchButton
-                            onPress={() => {
-                                finishWritingHandler();
-                                // moveToScreen('GO')
-                            }}>
-                            <SemiBoldText text="다음" size={16} color={Colors.TXT_GRAY} />
-                        </TouchButton>
+                <View style={writePostOrCommentTemplateStyles.headerNavigateBox}>
+                    <TouchButton onPress={() => moveToScreen('BACK', null)}>
+                        <Icons type="ionicons" name="close-sharp" size={20} color={Colors.BLACK} />
+                    </TouchButton>
+                    <TouchButton onPress={finishWritingHandler}>
+                        <SemiBoldText text="다음" size={16} color={Colors.TXT_GRAY} />
+                    </TouchButton>
+                </View>
+                <ScrollView style={writePostOrCommentTemplateStyles.contentBox}>
+                    <View style={writePostOrCommentTemplateStyles.settingContainer}>
+                        {postThreadInfo ? (
+                            <View>
+                                <SemiBoldText text={postThreadInfo.title} size={20} color={Colors.BLACK} />
+                                <Spacer height={4} />
+                                <NormalText
+                                    text={`${postThreadInfo.rePostCount} post • updated ${postThreadInfo.time}`}
+                                    size={12}
+                                    color={Colors.BLACK}
+                                />
+                            </View>
+                        ) : (
+                            <View style={writePostOrCommentTemplateStyles.settingBox}>
+                                <TouchButton onPress={() => locationModalHandler('OPEN')}>
+                                    <View style={writePostOrCommentTemplateStyles.settingButton}>
+                                        {writePostData.dto.latitude && writePostData.dto.placeName ? (
+                                            <>
+                                                <Image
+                                                    source={require('../../../assets/icons/location-pin-outline-black.png')}
+                                                    style={writePostOrCommentTemplateStyles.locationIcon}
+                                                />
+                                                <Spacer width={5} />
+                                                <MediumText
+                                                    text={writePostData.dto.placeName}
+                                                    size={13}
+                                                    color={Colors.BLACK}
+                                                />
+                                            </>
+                                        ) : (
+                                            <MediumText text="위치설정" size={13} color={Colors.BLACK} />
+                                        )}
+                                        <Spacer width={4} />
+                                        <Image
+                                            source={require('../../../assets/icons/triangle-down.png')}
+                                            style={writePostOrCommentTemplateStyles.searchToggleIcon}
+                                        />
+                                    </View>
+                                </TouchButton>
+                                <Spacer width={13} />
+                                <TouchButton onPress={() => keywordModalHandler('OPEN')}>
+                                    <View style={writePostOrCommentTemplateStyles.settingBox}>
+                                        {writePostData.dto.headKeywordId ? (
+                                            <MediumText
+                                                text={issueKeywords[writePostData.dto.headKeywordId! - 1].keywordName}
+                                                size={13}
+                                                color={Colors.BLACK}
+                                            />
+                                        ) : (
+                                            <MediumText text="키워드설정" size={13} color={Colors.BLACK} />
+                                        )}
+                                        <Spacer width={4} />
+                                        <Image
+                                            source={require('../../../assets/icons/triangle-down.png')}
+                                            style={writePostOrCommentTemplateStyles.searchToggleIcon}
+                                        />
+                                    </View>
+                                </TouchButton>
+                            </View>
+                        )}
+                        {postThreadInfo && (
+                            <View style={writePostOrCommentTemplateStyles.conditionSettingBox}>
+                                <View style={writePostOrCommentTemplateStyles.settingBox}>
+                                    <TouchButton onPress={() => locationModalHandler('OPEN')}>
+                                        <View style={writePostOrCommentTemplateStyles.settingButton}>
+                                            {writePostData.dto.latitude && writePostData.dto.placeName ? (
+                                                <>
+                                                    <Image
+                                                        source={require('../../../assets/icons/location-pin-outline-black.png')}
+                                                        style={writePostOrCommentTemplateStyles.locationIcon}
+                                                    />
+                                                    <Spacer width={5} />
+                                                    <MediumText
+                                                        text={writePostData.dto.placeName}
+                                                        size={13}
+                                                        color={Colors.BLACK}
+                                                    />
+                                                </>
+                                            ) : (
+                                                <MediumText text="위치설정" size={13} color={Colors.BLACK} />
+                                            )}
+                                            <Spacer width={4} />
+                                            <Image
+                                                source={require('../../../assets/icons/triangle-down.png')}
+                                                style={writePostOrCommentTemplateStyles.searchToggleIcon}
+                                            />
+                                        </View>
+                                    </TouchButton>
+                                    <Spacer width={13} />
+                                    <TouchButton onPress={() => keywordModalHandler('OPEN')}>
+                                        <View style={writePostOrCommentTemplateStyles.settingBox}>
+                                            {writePostData.dto.headKeywordId ? (
+                                                <MediumText
+                                                    text={
+                                                        issueKeywords[writePostData.dto.headKeywordId! - 1].keywordName
+                                                    }
+                                                    size={13}
+                                                    color={Colors.BLACK}
+                                                />
+                                            ) : (
+                                                <MediumText text="키워드설정" size={13} color={Colors.BLACK} />
+                                            )}
+                                            <Spacer width={4} />
+                                            <Image
+                                                source={require('../../../assets/icons/triangle-down.png')}
+                                                style={writePostOrCommentTemplateStyles.searchToggleIcon}
+                                            />
+                                        </View>
+                                    </TouchButton>
+                                </View>
+                            </View>
+                        )}
                     </View>
-                    {postThreadInfo ? (
+                    <View style={writePostOrCommentTemplateStyles.inputBox}>
+                        {!postThreadInfo && (
+                            <SingleLineInput
+                                value={title}
+                                onChangeText={text => onChangeTitleText(text)}
+                                placeFontFamily="Pretendard-SemiBold"
+                                fontFamily="Pretendard-SemiBold"
+                                placeholder="제목을 입력해주세요"
+                                fontSize={24}
+                            />
+                        )}
                         <View>
-                            <SemiBoldText text={postThreadInfo.title} size={20} color={Colors.BLACK} />
-                            <Spacer height={4} />
-                            <NormalText
-                                text={`${postThreadInfo.rePostCount} post • updated ${postThreadInfo.time}`}
-                                size={12}
-                                color={Colors.BLACK}
+                            <MultiLineInput
+                                value={content}
+                                onChangeText={text => onChangeContentText(text)}
+                                placeholder="무슨일이 일어나고 있나요?"
+                                maxLength={300}
+                                inputFocusBlur={inputFocusBlur}
+                                inputFocusBlurHandler={inputFocusBlurHandler}
                             />
                         </View>
-                    ) : (
-                        <View style={writePostOrCommentTemplateStyles.settingBox}>
-                            <TouchButton onPress={() => locationModalHandler('OPEN')}>
-                                <View style={writePostOrCommentTemplateStyles.settingButton}>
-                                    {writePostData.dto.latitude && writePostData.dto.placeName ? (
-                                        <>
-                                            <Image
-                                                source={require('../../../assets/icons/location-pin-outline.png')}
-                                                style={writePostOrCommentTemplateStyles.locationIcon}
-                                            />
-                                            <Spacer width={5} />
-                                            <MediumText
-                                                text={writePostData.dto.placeName}
-                                                size={13}
-                                                color={Colors.BLACK}
-                                            />
-                                        </>
-                                    ) : (
-                                        <MediumText text="위치설정" size={13} color={Colors.BLACK} />
-                                    )}
-                                    <Spacer width={4} />
-                                    <Image
-                                        source={require('../../../assets/icons/triangle-down.png')}
-                                        style={writePostOrCommentTemplateStyles.searchToggleIcon}
-                                    />
-                                </View>
-                            </TouchButton>
-                            <Spacer width={13} />
-                            <TouchButton onPress={() => keywordModalHandler('OPEN')}>
-                                <View style={writePostOrCommentTemplateStyles.settingBox}>
-                                    {writePostData.dto.headKeywordId ? (
-                                        <MediumText
-                                            text={issueKeywords[writePostData.dto.headKeywordId! - 1].keywordName}
-                                            size={13}
-                                            color={Colors.BLACK}
-                                        />
-                                    ) : (
-                                        <MediumText text="키워드설정" size={13} color={Colors.BLACK} />
-                                    )}
-                                    <Spacer width={4} />
-                                    <Image
-                                        source={require('../../../assets/icons/triangle-down.png')}
-                                        style={writePostOrCommentTemplateStyles.searchToggleIcon}
-                                    />
-                                </View>
-                            </TouchButton>
-                        </View>
-                    )}
-                </View>
-                {postThreadInfo && (
-                    <View style={writePostOrCommentTemplateStyles.conditionSettingBox}>
-                        <View style={writePostOrCommentTemplateStyles.settingBox}>
-                            <TouchButton onPress={() => locationModalHandler('OPEN')}>
-                                <View style={writePostOrCommentTemplateStyles.settingButton}>
-                                    {writePostData.dto.latitude && writePostData.dto.placeName ? (
-                                        <>
-                                            <Image
-                                                source={require('../../../assets/icons/location-pin-outline.png')}
-                                                style={writePostOrCommentTemplateStyles.locationIcon}
-                                            />
-                                            <Spacer width={5} />
-                                            <MediumText
-                                                text={writePostData.dto.placeName}
-                                                size={13}
-                                                color={Colors.BLACK}
-                                            />
-                                        </>
-                                    ) : (
-                                        <MediumText text="위치설정" size={13} color={Colors.BLACK} />
-                                    )}
-                                    <Spacer width={4} />
-                                    <Image
-                                        source={require('../../../assets/icons/triangle-down.png')}
-                                        style={writePostOrCommentTemplateStyles.searchToggleIcon}
-                                    />
-                                </View>
-                            </TouchButton>
-                            <Spacer width={13} />
-                            <TouchButton onPress={() => keywordModalHandler('OPEN')}>
-                                <View style={writePostOrCommentTemplateStyles.settingBox}>
-                                    {writePostData.dto.headKeywordId ? (
-                                        <MediumText
-                                            text={issueKeywords[writePostData.dto.headKeywordId! - 1].keywordName}
-                                            size={13}
-                                            color={Colors.BLACK}
-                                        />
-                                    ) : (
-                                        <MediumText text="키워드설정" size={13} color={Colors.BLACK} />
-                                    )}
-                                    <Spacer width={4} />
-                                    <Image
-                                        source={require('../../../assets/icons/triangle-down.png')}
-                                        style={writePostOrCommentTemplateStyles.searchToggleIcon}
-                                    />
-                                </View>
-                            </TouchButton>
-                        </View>
                     </View>
-                )}
-                <View style={writePostOrCommentTemplateStyles.inputBox}>
-                    {!postThreadInfo && (
-                        <SingleLineInput
-                            value={title}
-                            onChangeText={text => onChangeTitleText(text)}
-                            placeFontFamily="Pretendard-SemiBold"
-                            fontFamily="Pretendard-SemiBold"
-                            placeholder="제목을 입력해주세요"
-                            fontSize={24}
+                    {!inputFocusBlur && (
+                        <TouchableOpacity
+                            style={writePostOrCommentTemplateStyles.contentInputFocus}
+                            onPress={() => inputFocusBlurHandler('FOCUS')}
                         />
                     )}
-                    <MultiLineInput
-                        value={content}
-                        onChangeText={text => onChangeContentText(text)}
-                        placeholder="무슨일이 일어나고 있나요?"
-                        maxLength={300}
-                        height={213}
-                    />
-                </View>
+                </ScrollView>
 
-                <WritePhoto getImageHandler={getImageHandler} notAllowPermission={notAllowPermission} />
+                <Modal visible={isCamAllowPermission} onRequestClose={() => setIsCamAllowPermission(false)}>
+                    <PhotoGallery closeGalleryHandling={closeGalleryHandling} getImageHandler={getImageHandler} />
+                </Modal>
+                <View style={writePostOrCommentTemplateStyles.bottomBox}>
+                    <View style={writePostOrCommentTemplateStyles.bottomKeyword}>
+                        {chooseKeywords.length > 0 && (
+                            <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+                                <>
+                                    {chooseKeywords.map(item => (
+                                        <View key={item.id} style={writePostOrCommentTemplateStyles.bottomKeywordItem}>
+                                            <MediumText
+                                                text={item.keywordName}
+                                                size={12}
+                                                color={Colors.TXT_LIGHTGRAY}
+                                            />
+                                        </View>
+                                    ))}
+                                </>
+                            </ScrollView>
+                        )}
+                        {writePostData.files.length > 0 && (
+                            <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+                                <>
+                                    {writePostData.files.map(item => (
+                                        <View style={writePostOrCommentTemplateStyles.bottomImageBox}>
+                                            <View style={writePostOrCommentTemplateStyles.bottomImageInnerBox}>
+                                                <Image
+                                                    source={{ uri: item.uri }}
+                                                    style={writePostOrCommentTemplateStyles.bottomImageSize}
+                                                />
+                                            </View>
+                                            <TouchableOpacity
+                                                onPress={() => getImageHandler(item, 'DEL')}
+                                                activeOpacity={1}
+                                                style={writePostOrCommentTemplateStyles.bottomImageDelButton}>
+                                                <View style={writePostOrCommentTemplateStyles.bottomImageDelIconBack} />
+                                                <Icons type="ionicons" name="close-circle" size={20} color="#000000" />
+                                            </TouchableOpacity>
+                                        </View>
+                                    ))}
+                                </>
+                            </ScrollView>
+                        )}
+                    </View>
+
+                    <TouchButton
+                        onPress={openGalleryHandler}
+                        alignSelf="flex-start"
+                        paddingHorizontal={16}
+                        paddingVertical={11}>
+                        <View style={writePostOrCommentTemplateStyles.bottomBarBotton}>
+                            <View style={writePostOrCommentTemplateStyles.addPhotoBox}>
+                                <FastImage
+                                    source={require('../../../assets/icons/camera-outline.png')}
+                                    style={writePostOrCommentTemplateStyles.cameraIcon}
+                                />
+                                <Spacer width={4} />
+                                <MediumText text="사진추가" size={14} color="#706C76" />
+                            </View>
+
+                            <View>
+                                <NormalText text={`${content.length}/300`} size={12} color="#706C76" />
+                            </View>
+                        </View>
+                    </TouchButton>
+                </View>
 
                 {loactionModal && (
                     <View style={writePostOrCommentTemplateStyles.searchContainer}>
@@ -544,9 +716,13 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
                             finishFunction={() => locationModalHandler('CLOSE')}
                         />
 
-                        <Spacer height={28} />
+                        <Spacer height={12} />
 
-                        <SearchLocation getLocationHandler={getLocationHandler} />
+                        <SearchLocation
+                            getLocationHandler={getLocationHandler}
+                            placeholder="어디에서 일어난 일인가요?"
+                            isHome={false}
+                        />
                     </View>
                 )}
 
@@ -556,7 +732,6 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
                         getKeywordHandler={getKeywordHandler}
                     />
                 )}
-
                 {onErrorModal && (
                     <View style={writePostOrCommentTemplateStyles.errorModalBack}>
                         <View style={writePostOrCommentTemplateStyles.errorModalBox}>
@@ -575,14 +750,14 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
                     </View>
                 )}
 
-                {imagePermission && (
+                <ModalBackground visible={imagePermission} onRequestClose={() => setImagePermission(false)}>
                     <FailPermissionModal
                         permissionName="사진 접근 권한 허용하기"
                         contentOne="사진 업로드를 하시려면"
                         contentTwo=" 사진/카메라 권한 설정이 필요합니다"
                         onPressModalButton={onPressModalButton}
                     />
-                )}
+                </ModalBackground>
 
                 {(isPostLoading || isPostFileLoading || iscommentLoading || iscommentFileLoading) && (
                     <ActivityIndicator size="large" />

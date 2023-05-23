@@ -14,15 +14,24 @@ import EmailWithPasswordTemplate from '../components/templates/joinMember/EmailW
 import { JoinMemberScreenStyles } from '../styles/styles';
 import { emailAuthAtom, joinMemberAtom } from '../store/atoms';
 import { useRootNavigation } from '../navigations/RootStackNavigation';
+import ModalBackground from '../components/smallest/ModalBackground';
+import ScreenWrapper from '../components/organisms/ScreenWrapper';
 
 const JoinMemberScreen = () => {
     const rootNavigation = useRootNavigation();
+
     const [joinData, setJoinData] = useRecoilState(joinMemberAtom);
     const [authData, setAuthData] = useRecoilState(emailAuthAtom);
 
-    // Move to screen handling
+    const [min, setMin] = useState<number>(5);
+    const [sec, setSec] = useState<number>(0);
     const [step, setStep] = useState<number>(1);
+    const [twoTitle, setTwoTitle] = useState<string>('');
+    const [oneTitle, setOneTitle] = useState<string>('회원가입');
     const [isSlideComponent, setIsSlideComponent] = useState<boolean>(false);
+    const [explain, setExplain] = useState<string>('본인인증을 위한 이메일을 입력해주세요');
+
+    // Move to screen handling
     const onPressNextStep = () => {
         Keyboard.dismiss();
         if (step < 3) {
@@ -52,9 +61,6 @@ const JoinMemberScreen = () => {
     };
 
     // Change screen header title
-    const [oneTitle, setOneTitle] = useState<string>('회원가입');
-    const [twoTitle, setTwoTitle] = useState<string>('');
-    const [explain, setExplain] = useState<string>('본인인증을 위한 이메일을 입력해주세요');
     const headerTextHandler = () => {
         switch (step) {
             case 1:
@@ -84,8 +90,6 @@ const JoinMemberScreen = () => {
     };
 
     // Timer for email authorization
-    const [min, setMin] = useState<number>(5);
-    const [sec, setSec] = useState<number>(0);
     const timerHandler = () => {
         if (sec > 0) {
             setSec(sec - 1);
@@ -100,13 +104,6 @@ const JoinMemberScreen = () => {
     };
     useBackgroundInterval(timerHandler, min === 0 && sec === 0 ? null : 1000);
 
-    // Reset auth number by full time
-    useEffect(() => {
-        if (min === 0 && sec === 0) {
-            setAuthData({ ...authData, number: 0 });
-        }
-    }, [min]);
-
     // Android back button & Header Back Button Handling
     const handleBackButton = (): boolean => {
         if (step === 4) {
@@ -114,8 +111,6 @@ const JoinMemberScreen = () => {
             rootNavigation.navigate('NotLoginHome');
         } else if (step > 1 && !isSlideComponent) {
             setStep(step - 1);
-        } else if (isSlideComponent) {
-            setIsSlideComponent(false);
         } else {
             setJoinData({
                 email: '',
@@ -126,6 +121,14 @@ const JoinMemberScreen = () => {
         }
         return true;
     };
+
+    // Reset auth number by full time
+    useEffect(() => {
+        if (min === 0 && sec === 0) {
+            setAuthData({ ...authData, number: 0 });
+        }
+    }, [min]);
+
     useEffect(() => {
         headerTextHandler();
         if (Platform.OS === 'android') {
@@ -135,42 +138,48 @@ const JoinMemberScreen = () => {
     }, [step, isSlideComponent]);
 
     return (
-        <View style={JoinMemberScreenStyles.container}>
-            <View style={JoinMemberScreenStyles.inner}>
-                <MoveBackWithPageTitle
-                    oneTitle={oneTitle}
-                    twoTitle={twoTitle}
-                    explainText={explain && explain}
-                    explainSize={explain ? 13 : undefined}
-                    onPress={handleBackButton}
-                />
-
-                <Spacer height={51} />
-
-                {step === 1 && (
-                    <InputEmailTemplate
-                        resetTimeHandler={resetTimeHandler}
-                        onPressNextStep={onPressNextStep}
-                        didAuthEmail={didAuthEmail}
+        <ScreenWrapper isPaddingHorizontal={false}>
+            <>
+                <View style={JoinMemberScreenStyles.inner}>
+                    <MoveBackWithPageTitle
+                        oneTitle={oneTitle}
+                        twoTitle={twoTitle}
+                        explainText={explain && explain}
+                        explainSize={explain ? 13 : undefined}
+                        onPress={handleBackButton}
                     />
-                )}
-                {step === 2 && <EmailWithPasswordTemplate onPressNextStep={onPressNextStep} />}
-                {step === 3 && <NicknameTemplate onPressNextStep={onPressNextStep} />}
-                {step === 4 && <CompletedJoinTemplate onPressNextStep={onPressNextStep} />}
 
-                {isSlideComponent && step === 1 && (
-                    <AuthEmail
-                        min={min}
-                        sec={sec}
-                        resetTimeHandler={resetTimeHandler}
-                        finishSlideComponentHandler={finishSlideComponentHandler}
-                    />
+                    <Spacer height={51} />
+
+                    {step === 1 && (
+                        <InputEmailTemplate
+                            minutes={min}
+                            seconds={sec}
+                            resetTimeHandler={resetTimeHandler}
+                            onPressNextStep={onPressNextStep}
+                            didAuthEmail={didAuthEmail}
+                        />
+                    )}
+                    {step === 2 && <EmailWithPasswordTemplate onPressNextStep={onPressNextStep} />}
+                    {step === 3 && <NicknameTemplate onPressNextStep={onPressNextStep} />}
+                    {step === 4 && <CompletedJoinTemplate onPressNextStep={onPressNextStep} />}
+
+                    <ModalBackground
+                        visible={isSlideComponent && step === 1}
+                        onRequestClose={() => setIsSlideComponent(false)}>
+                        <AuthEmail
+                            min={min}
+                            sec={sec}
+                            resetTimeHandler={resetTimeHandler}
+                            finishSlideComponentHandler={finishSlideComponentHandler}
+                        />
+                    </ModalBackground>
+                </View>
+                {isSlideComponent && step === 2 && (
+                    <ServiceAgreement finishSlideComponentHandler={finishSlideComponentHandler} />
                 )}
-            </View>
-            {isSlideComponent && step === 2 && (
-                <ServiceAgreement finishSlideComponentHandler={finishSlideComponentHandler} />
-            )}
-        </View>
+            </>
+        </ScreenWrapper>
     );
 };
 

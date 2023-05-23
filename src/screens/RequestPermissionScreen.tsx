@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
-import { BackHandler, Platform, View } from 'react-native';
+import { BackHandler, Platform } from 'react-native';
 
+import ScreenWrapper from '../components/organisms/ScreenWrapper';
 import RequestPemissionTemplate from '../components/templates/joinMember/RequestPemissionTemplate';
-import { globalDefaultStyles } from '../styles/styles';
 import { useRootNavigation } from '../navigations/RootStackNavigation';
 
 const RequestPermissionScreen = () => {
@@ -36,9 +36,9 @@ const RequestPermissionScreen = () => {
     }, []);
 
     return (
-        <View style={globalDefaultStyles.container}>
+        <ScreenWrapper isPaddingHorizontal={true}>
             <RequestPemissionTemplate moveToScreen={moveToScreen} />
-        </View>
+        </ScreenWrapper>
     );
 };
 
