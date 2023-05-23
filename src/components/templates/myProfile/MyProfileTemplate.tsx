@@ -19,7 +19,7 @@ const MyProfileTemplate = ({ moveToScreen }: MyProfileTemplateProps) => {
     const rootNavigation = useNavigation<any>();
 
     // Get user nickname
-    const { nickname } = useRecoilValue(userInfoAtom);
+    const { nickname, email } = useRecoilValue(userInfoAtom);
 
     const scrollViewRender = useCallback((item: MyProfileTabTypes) => {
         return (
@@ -72,7 +72,7 @@ const MyProfileTemplate = ({ moveToScreen }: MyProfileTemplateProps) => {
                             />
                         </TouchButton>
                     </View>
-                    <NormalText text="asfda@naver.com" size={12} color={Colors.TXT_GRAY} />
+                    <NormalText text={email} size={12} color={Colors.TXT_GRAY} />
                 </View>
             </View>
 
