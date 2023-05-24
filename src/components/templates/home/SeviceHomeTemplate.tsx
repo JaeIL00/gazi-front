@@ -380,7 +380,7 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritePost }:
                 </View>
             )}
 
-            <ModalBackground visible={onLocationPermissionModal}>
+            <ModalBackground visible={onLocationPermissionModal} onRequestClose={() => onPressModalButton('CLOSE')}>
                 <FailPermissionModal
                     permissionName="필수 권한 허용 안내"
                     contentOne="위치 권한에 대한 사용을 거부하였습니다. 서비스 사용을 원하실 경우 해당 앱의 권한을 허용해주세요"

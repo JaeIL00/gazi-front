@@ -67,6 +67,8 @@ export const RootStackNavigation = () => {
                 memberId: data.memberId,
                 nickname: data.nickName,
             });
+            console.log('저장 엑세스', data.accessToken);
+            console.log('저장 리프레시', data.refreshToken);
             rootNavigation.navigate('BottomTab');
             SplashScreen.hide();
         } catch (error) {
@@ -79,6 +81,8 @@ export const RootStackNavigation = () => {
             const accessToken = await AsyncStorage.getItem('GAZI_ac_tk');
             const refreshToken = await AsyncStorage.getItem('GAZI_re_tk');
             if (accessToken && refreshToken) {
+                console.log('겟 엑세스', accessToken);
+                console.log('겟 리프레시', refreshToken);
                 mutate({
                     accessToken,
                     refreshToken,
