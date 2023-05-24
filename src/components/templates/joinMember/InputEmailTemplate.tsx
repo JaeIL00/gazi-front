@@ -17,6 +17,7 @@ import { emailAuthAPI } from '../../../queries/api';
 import { InputEmailTemplateProps } from '../../../types/types';
 import { inputEmailTemplateStyles } from '../../../styles/styles';
 import { emailAuthAtom, joinMemberAtom } from '../../../store/atoms';
+import { screenHeight } from '../../../utils/changeStyleSize';
 
 const InputEmailTemplate = ({
     minutes,
@@ -31,6 +32,7 @@ const InputEmailTemplate = ({
     const [isEmail, setIsEmail] = useState<boolean>(false);
     const [email, setEmail] = useState<string>(joinData.email);
     const [duplicatedError, setDuplicatedError] = useState<string>('');
+    const [buttonPaddingStyle, setButtonPaddingStyle] = useState<number>(36);
 
     // Request email authorization number API
     const { isLoading, mutate } = useMutation(emailAuthAPI, {
@@ -66,6 +68,17 @@ const InputEmailTemplate = ({
             mutate(email);
         }
     }, 300);
+
+    // Change button position style by keyboard activity
+    useEffect(() => {
+        const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => setButtonPaddingStyle(0));
+        const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => setButtonPaddingStyle(36));
+
+        return () => {
+            keyboardDidShowListener.remove();
+            keyboardDidHideListener.remove();
+        };
+    }, []);
 
     return (
         <View style={inputEmailTemplateStyles.container}>
@@ -105,26 +118,23 @@ const InputEmailTemplate = ({
                 )}
             </View>
 
-            <KeyboardAvoidingView behavior="height" contentContainerStyle={inputEmailTemplateStyles.bottomBox}>
-                <TextButton
+            <TextButton
+                onPress={onPressEmailAuth}
+                text={authData.isOk ? '완료' : '인증메일 전송'}
+                height={48}
+                backgroundColor={isEmail && !duplicatedError ? Colors.BLACK : Colors.BTN_GRAY}
+                textColor={Colors.WHITE}
+                fontSize={17}
+            />
+            <View style={inputEmailTemplateStyles.resendMailButtonBox}>
+                <NormalText text="메일을 받지 못하셨나요?" size={13} color={Colors.TXT_GRAY} />
+                <TouchableOpacity
                     onPress={onPressEmailAuth}
-                    text={authData.isOk ? '완료' : '인증메일 전송'}
-                    height={48}
-                    backgroundColor={isEmail && !duplicatedError ? Colors.BLACK : Colors.BTN_GRAY}
-                    textColor={Colors.WHITE}
-                    fontSize={17}
-                />
-                <View style={inputEmailTemplateStyles.resendMailButtonBox}>
-                    <NormalText text="메일을 받지 못하셨나요?" size={13} color={Colors.TXT_GRAY} />
-                    <TouchableOpacity
-                        onPress={onPressEmailAuth}
-                        activeOpacity={1}
-                        style={inputEmailTemplateStyles.resendButton}>
-                        <BoldText text="재전송" size={13} color={Colors.TXT_GRAY} />
-                    </TouchableOpacity>
-                </View>
-            </KeyboardAvoidingView>
-
+                    activeOpacity={1}
+                    style={inputEmailTemplateStyles.resendButton}>
+                    <BoldText text="재전송" size={13} color={Colors.TXT_GRAY} />
+                </TouchableOpacity>
+            </View>
             {isLoading && <ActivityIndicator size="large" />}
         </View>
     );

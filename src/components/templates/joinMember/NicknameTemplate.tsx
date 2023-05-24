@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, Animated, Keyboard, ToastAndroid, View } from 'react-native';
+import { ActivityIndicator, Animated, Keyboard, KeyboardAvoidingView, ToastAndroid, View } from 'react-native';
 import { useRecoilState } from 'recoil';
 import { useMutation, useQuery } from 'react-query';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -10,12 +10,12 @@ import Spacer from '../../smallest/Spacer';
 import Colors from '../../../styles/Colors';
 import MediumText from '../../smallest/MediumText';
 import TextButton from '../../molecules/TextButton';
-import useKeyboardMotion from '../../../utils/hooks/useKeyboardMotion';
 import { NicknameTemplateProps } from '../../../types/types';
 import { SingleLineInput } from '../../smallest/SingleLineInput';
 import { joinMemberAtom, userTokenAtom } from '../../../store/atoms';
 import { joinMemberAPI, checkNicknameAPI } from '../../../queries/api';
-import { nextStepButtonPosition, nicknameTemplateStyles } from '../../../styles/styles';
+import { nicknameTemplateStyles } from '../../../styles/styles';
+import { screenHeight } from '../../../utils/changeStyleSize';
 
 const NicknameTemplate = ({ onPressNextStep }: NicknameTemplateProps) => {
     // Nickname Text Handling
@@ -92,70 +92,63 @@ const NicknameTemplate = ({ onPressNextStep }: NicknameTemplateProps) => {
         }
     }, 300);
 
-    // Change button Position by keyboard activity
-    const { bottomValue, buttonUpAnimationHandler, buttonDownAnimationHandler } = useKeyboardMotion(180, 400);
-    useEffect(() => {
-        const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', buttonUpAnimationHandler);
-        const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', buttonDownAnimationHandler);
-
-        return () => {
-            keyboardDidShowListener.remove();
-            keyboardDidHideListener.remove();
-        };
-    }, []);
-
     return (
         <View style={nicknameTemplateStyles.container}>
-            <View style={nicknameTemplateStyles.inputBox}>
-                <SingleLineInput
-                    value={inputNickname}
-                    onChangeText={onChangeNickname}
-                    maxLength={7}
-                    placeholder="닉네임을 입력해주세요."
-                    fontSize={16}
-                />
-                <TextButton
-                    text="중복 확인"
-                    textColor={Colors.WHITE}
-                    width={69}
-                    height={31}
-                    backgroundColor={Colors.BLACK}
-                    onPress={onPressCheckDuplicate}
-                    fontSize={13}
-                    paddingHorizontal={10}
-                    paddingVertical={6}
-                />
-            </View>
-
-            <Spacer height={8} />
-
-            {resultText && (
-                <View style={nicknameTemplateStyles.emailErrorTextBox}>
-                    <Icons
-                        type={isDuplicate ? 'octicons' : 'fontisto'}
-                        name={isDuplicate ? 'check' : 'close'}
-                        size={14}
-                        color={isDuplicate ? Colors.STATUS_GREEN : Colors.STATUS_RED}
+            <View style={{ flex: 1 }}>
+                <View style={nicknameTemplateStyles.inputBox}>
+                    <SingleLineInput
+                        value={inputNickname}
+                        onChangeText={onChangeNickname}
+                        maxLength={7}
+                        placeholder="닉네임을 입력해주세요."
+                        fontSize={16}
                     />
-                    <Spacer width={4} />
-                    <MediumText
-                        text={resultText}
-                        size={12}
-                        color={isDuplicate ? Colors.STATUS_GREEN : Colors.STATUS_RED}
+                    <TextButton
+                        text="중복 확인"
+                        textColor={Colors.WHITE}
+                        width={69}
+                        height={31}
+                        backgroundColor={Colors.BLACK}
+                        onPress={onPressCheckDuplicate}
+                        fontSize={13}
+                        paddingHorizontal={10}
+                        paddingVertical={6}
                     />
                 </View>
-            )}
+
+                <Spacer height={8} />
+
+                {resultText && (
+                    <View style={nicknameTemplateStyles.emailErrorTextBox}>
+                        <Icons
+                            type={isDuplicate ? 'octicons' : 'fontisto'}
+                            name={isDuplicate ? 'check' : 'close'}
+                            size={14}
+                            color={isDuplicate ? Colors.STATUS_GREEN : Colors.STATUS_RED}
+                        />
+                        <Spacer width={4} />
+                        <MediumText
+                            text={resultText}
+                            size={12}
+                            color={isDuplicate ? Colors.STATUS_GREEN : Colors.STATUS_RED}
+                        />
+                    </View>
+                )}
+            </View>
+            <KeyboardAvoidingView behavior="height">
+                <View style={nicknameTemplateStyles.bottomButton}>
+                    <TextButton
+                        text="확인"
+                        textColor={Colors.WHITE}
+                        backgroundColor={isDuplicate && resultText ? Colors.BLACK : Colors.BTN_GRAY}
+                        onPress={onPressJoinMember}
+                        height={48}
+                        fontSize={17}
+                    />
+                </View>
+            </KeyboardAvoidingView>
+
             {(isFetching || isLoading) && <ActivityIndicator size="large" />}
-            <Animated.View style={[nextStepButtonPosition.button, { transform: [{ translateY: bottomValue }] }]}>
-                <TextButton
-                    text="확인"
-                    textColor={Colors.WHITE}
-                    backgroundColor={isDuplicate && resultText ? Colors.BLACK : Colors.BTN_GRAY}
-                    onPress={onPressJoinMember}
-                    height={48}
-                    fontSize={17}
-                />
-            </Animated.View>
         </View>
     );
 };
