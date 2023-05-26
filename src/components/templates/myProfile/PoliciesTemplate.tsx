@@ -62,7 +62,7 @@ const PoliciesTemplate = ({ moveToBackScreenHandler }: PoliciesTemplateProps) =>
                 </TouchButton>
             </View>
 
-            <Modal visible={uri.length > 0}>
+            <Modal visible={uri.length > 0} onRequestClose={() => seturi('')}>
                 <WebViewComponent uri={uri} closeHandler={seturi} />
             </Modal>
         </View>
