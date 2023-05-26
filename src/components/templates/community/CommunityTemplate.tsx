@@ -23,23 +23,25 @@ const CommunityTemplate = ({ moveToKeywordSettingScreen }: CommunityTemplateProp
 
     const { accessToken } = useRecoilValue(userTokenAtom);
 
+    const postsResponseIndexRef = useRef<number>(0);
+    const getKeywordPostParamRef = useRef<string>('');
+    const tooltipAnimRef = useRef<Animated.Value>(new Animated.Value(0)).current;
+
     const [allPostList, setAllPostList] = useState<PostTypes[]>([]);
     const [isLikePostTab, setIsLikePostTab] = useState<boolean>(false);
     const [chooseKeywordFilter, setChooseKeywordFilter] = useState<number[]>([]);
     const [likeKeywordPostList, setLikeKeywordPostList] = useState<PostTypes[]>([]);
     const [myKeywordList, setMyKeywordList] = useState<KeywordListTypes[] | null>(null);
 
-    const postsResponseIndexref = useRef<number>(0);
-    const tooltipAnimRef = useRef<Animated.Value>(new Animated.Value(0)).current;
-
     // Get all post API
     const { hasNextPage, isFetching, isFetchingNextPage, fetchNextPage, refetch, remove } = useInfiniteQuery(
-        ['getAllPosts'],
+        'getAllPosts',
         ({ pageParam = 0 }) =>
             getAllPostAPI({
                 curLat: 37.49795103144074,
                 curLon: 127.02760985223079,
                 accessToken,
+                keywords: getKeywordPostParamRef.current,
                 page: pageParam,
             }),
         {
@@ -49,11 +51,14 @@ const CommunityTemplate = ({ moveToKeywordSettingScreen }: CommunityTemplateProp
                 return nextPage === total ? undefined : nextPage;
             },
             onSuccess: data => {
-                const pageNumber = data.pages[postsResponseIndexref.current].data.data.pageable.pageNumber;
-                const content = data.pages[postsResponseIndexref.current].data.data.content;
-                const isLast = data.pages[postsResponseIndexref.current].data.data.last;
+                const pageNumber = data.pages[postsResponseIndexRef.current].data.data.pageable.pageNumber;
+                const content = data.pages[postsResponseIndexRef.current].data.data.content;
+                const isLast = data.pages[postsResponseIndexRef.current].data.data.last;
                 if (!isLikePostTab) {
+                    // getKeywordPostParamRef is empty
                     getAllPostHandler(pageNumber, content, isLast);
+                } else {
+                    getKeywordPostHandler(pageNumber, content, isLast);
                 }
             },
             onError: ({ response }) => {
@@ -71,7 +76,6 @@ const CommunityTemplate = ({ moveToKeywordSettingScreen }: CommunityTemplateProp
                 setLikeKeywordPostList([]);
             } else {
                 setMyKeywordList(data.data);
-                // getLikeKeywordAllPostHandler(data.data);
             }
         },
         onError: error => {
@@ -96,7 +100,6 @@ const CommunityTemplate = ({ moveToKeywordSettingScreen }: CommunityTemplateProp
                         }).start();
                     }, 5000);
                 } else {
-                    // getLikeKeywordAllPostHandler(null);
                 }
                 setIsLikePostTab(true);
                 break;
@@ -114,52 +117,34 @@ const CommunityTemplate = ({ moveToKeywordSettingScreen }: CommunityTemplateProp
             setAllPostList([...allPostList, ...content]);
         }
         if (!isLast) {
-            postsResponseIndexref.current = postsResponseIndexref.current + 1;
+            postsResponseIndexRef.current = postsResponseIndexRef.current + 1;
         }
     };
 
-    // Get all post by my like keyword
-    // const getLikeKeywordAllPostHandler = (keywords: KeywordListTypes[] | null) => {
-    //     let allKeywordFilter: PostTypes[] = [];
-    //     if (myKeywordList && !keywords) {
-    //         const myKeywordId = myKeywordList.map(item => item.id);
-    //         allKeywordFilter = dummy.filter((item, index) => {
-    //             const keywordsId = [...item.keywordIdList, ...myKeywordId];
-    //             return keywordsId.filter((item, index) => keywordsId.indexOf(item) !== index).length > 0;
-    //         });
-    //     } else if (keywords) {
-    //         const myKeywordId = keywords.map(item => item.id);
-    //         allKeywordFilter = dummy.filter((item, index) => {
-    //             const keywordsId = [...item.keywordIdList, ...myKeywordId];
-    //             return keywordsId.filter((item, index) => keywordsId.indexOf(item) !== index).length > 0;
-    //         });
-    //     }
-    //     setLikeKeywordPostList(allKeywordFilter);
-    // };
+    // Get keyword post list handler
+    const getKeywordPostHandler = (pageNumber: number, content: PostTypes[], isLast: boolean) => {
+        if (pageNumber === 0) {
+            setLikeKeywordPostList(content);
+        } else {
+            setLikeKeywordPostList([...allPostList, ...content]);
+        }
+        if (!isLast) {
+            postsResponseIndexRef.current = postsResponseIndexRef.current + 1;
+        }
+    };
 
     // My like keyword posts filtering by my like keyword
     const myLikeKeywordFilterHandler = (keywordId: number) => {
         const isExist = chooseKeywordFilter.includes(keywordId);
         if (!isExist) {
-            // const keywordFilter = dummy.filter((item, index) => {
-            //     const keywordsId = [...item.keywordIdList, ...chooseKeywordFilter, keywordId];
-            //     return keywordsId.filter((item, index) => keywordsId.indexOf(item) !== index).length > 0;
-            // });
-            // setLikeKeywordPostList(keywordFilter);
             setChooseKeywordFilter([...chooseKeywordFilter, keywordId]);
+            getKeywordPostParamRef.current = getKeywordPostParamRef.current + `&keywordId=${keywordId}`;
+            // console.log(getKeywordPostParamRef.current);
+            remove();
+            refetch();
         } else {
             const refreshKeyword = chooseKeywordFilter.filter(item => item !== keywordId);
-            if (refreshKeyword.length < 1) {
-                // getLikeKeywordAllPostHandler(null);
-                setChooseKeywordFilter([]);
-            } else {
-                // const keywordFilter = dummy.filter((item, index) => {
-                //     const keywordsId = [...item.keywordIdList, ...refreshKeyword];
-                //     return keywordsId.filter((item, index) => keywordsId.indexOf(item) !== index).length > 0;
-                // });
-                // setLikeKeywordPostList(keywordFilter);
-                setChooseKeywordFilter(refreshKeyword);
-            }
+            setChooseKeywordFilter(refreshKeyword);
         }
     };
 
@@ -256,7 +241,7 @@ const CommunityTemplate = ({ moveToKeywordSettingScreen }: CommunityTemplateProp
                             width: '100%',
                             height: 47 * screenHeight,
                             marginBottom: 24 * screenHeight,
-                            paddingHorizontal: 16 * screenWidth,
+                            paddingLeft: 16 * screenWidth,
                             paddingTop: 17 * screenHeight,
                         }}>
                         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
@@ -303,7 +288,7 @@ const CommunityTemplate = ({ moveToKeywordSettingScreen }: CommunityTemplateProp
                         showsVerticalScrollIndicator={false}
                     />
                 )}
-                {isFetching && <ActivityIndicator size="large" />}
+                {/* {isFetching && <ActivityIndicator size="large" />} */}
             </View>
         </View>
     );
