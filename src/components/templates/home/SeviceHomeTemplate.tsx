@@ -390,7 +390,7 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritePost }:
 
             {isFarMapLevel && (
                 <View style={serviceHomeTemplateStyles.zoomWarning}>
-                    <MediumText text="사건 확인을 위해 지도를 확인해 주세요" size={14} color={Colors.WHITE} />
+                    <MediumText text="지도를 확대해 지금 일어나는 일을 확인해보세요!" size={14} color={Colors.WHITE} />
                 </View>
             )}
 
