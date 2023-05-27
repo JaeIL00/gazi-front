@@ -208,9 +208,16 @@ export const nearByUserPostsAPI = async (param: {
 };
 
 // COMMUNITY
-export const getAllPostAPI = async (param: { accessToken: string; curLat: number; curLon: number; page: number }) => {
+export const getAllPostAPI = async (param: {
+    accessToken: string;
+    curLat: number;
+    curLon: number;
+    keywords: string;
+    page: number;
+}) => {
+    console.log(`&curLon=${param.curLon}${param.keywords}&page=${param.page}`);
     const response = await Axios({
-        url: `/api/v1/post/top-post-list?curLat=${param.curLat}&curLon=${param.curLon}&page=${param.page}`,
+        url: `/api/v1/post/top-post-list?curLat=${param.curLat}&curLon=${param.curLon}${param.keywords}&page=${param.page}`,
         method: 'get',
         headers: {
             'Content-Type': 'application/json',

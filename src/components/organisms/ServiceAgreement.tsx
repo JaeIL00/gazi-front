@@ -103,46 +103,42 @@ const ServiceAgreement = ({ finishSlideComponentHandler }: ServiceAgreementProps
 
     return (
         <>
-            <ModalBackground>
-                <Animated.View style={[serviceAgreementStyles.animateInner, { transform: [{ translateY: topValue }] }]}>
-                    <View>
-                        <TouchButton backgroundColor="#f9f9f9" onPress={onPressAllCheck}>
-                            <View style={serviceAgreementStyles.allAgreeBox}>
-                                <View style={[serviceAgreementStyles.checkBox, checkBoxBackground(isAllCheck).color]}>
-                                    {isAllCheck && <Icons type="feather" name="check" size={20} color={Colors.WHITE} />}
-                                </View>
-                                <SemiBoldText size={14} color={Colors.BLACK} text="약관 전체 동의" />
+            <Animated.View style={[serviceAgreementStyles.animateInner, { transform: [{ translateY: topValue }] }]}>
+                <View>
+                    <TouchButton backgroundColor="#f9f9f9" onPress={onPressAllCheck}>
+                        <View style={serviceAgreementStyles.allAgreeBox}>
+                            <View style={[serviceAgreementStyles.checkBox, checkBoxBackground(isAllCheck).color]}>
+                                {isAllCheck && <Icons type="feather" name="check" size={20} color={Colors.WHITE} />}
                             </View>
-                        </TouchButton>
+                            <SemiBoldText size={14} color={Colors.BLACK} text="약관 전체 동의" />
+                        </View>
+                    </TouchButton>
 
-                        <ScrollView contentContainerStyle={serviceAgreementStyles.listBox}>
-                            {listData.map((text, index) => (
-                                <AgreementCheckListItem
-                                    text={text}
-                                    key={index}
-                                    check={
-                                        index === 0 ? isServiceCheck : index === 1 ? isPersonalCheck : isLocationCheck
-                                    }
-                                    onPressCheckList={onPressCheckList}
-                                    index={index}
-                                    webViewHandler={webViewHandler}
-                                />
-                            ))}
-                        </ScrollView>
+                    <ScrollView contentContainerStyle={serviceAgreementStyles.listBox}>
+                        {listData.map((text, index) => (
+                            <AgreementCheckListItem
+                                text={text}
+                                key={index}
+                                check={index === 0 ? isServiceCheck : index === 1 ? isPersonalCheck : isLocationCheck}
+                                onPressCheckList={onPressCheckList}
+                                index={index}
+                                webViewHandler={webViewHandler}
+                            />
+                        ))}
+                    </ScrollView>
 
-                        <TextButton
-                            height={48}
-                            backgroundColor={isAllCheck ? Colors.BLACK : Colors.BTN_GRAY}
-                            onPress={onPressFinishAnimation}
-                            fontSize={17}
-                            textColor={Colors.WHITE}
-                            text="완료"
-                        />
-                    </View>
-                </Animated.View>
-            </ModalBackground>
+                    <TextButton
+                        height={48}
+                        backgroundColor={isAllCheck ? Colors.BLACK : Colors.BTN_GRAY}
+                        onPress={onPressFinishAnimation}
+                        fontSize={17}
+                        textColor={Colors.WHITE}
+                        text="완료"
+                    />
+                </View>
+            </Animated.View>
 
-            <Modal visible={uri.length > 0}>
+            <Modal visible={uri.length > 0} onRequestClose={() => seturi('')}>
                 <WebViewComponent uri={uri} closeHandler={seturi} />
             </Modal>
         </>

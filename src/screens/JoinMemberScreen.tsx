@@ -166,7 +166,7 @@ const JoinMemberScreen = () => {
 
                     <ModalBackground
                         visible={isSlideComponent && step === 1}
-                        onRequestClose={() => setIsSlideComponent(false)}>
+                        onRequestClose={() => finishSlideComponentHandler('BACK')}>
                         <AuthEmail
                             min={min}
                             sec={sec}
@@ -175,9 +175,11 @@ const JoinMemberScreen = () => {
                         />
                     </ModalBackground>
                 </View>
-                {isSlideComponent && step === 2 && (
+                <ModalBackground
+                    visible={isSlideComponent && step === 2}
+                    onRequestClose={() => finishSlideComponentHandler('BACK')}>
                     <ServiceAgreement finishSlideComponentHandler={finishSlideComponentHandler} />
-                )}
+                </ModalBackground>
             </>
         </ScreenWrapper>
     );
