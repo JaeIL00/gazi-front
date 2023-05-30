@@ -17,6 +17,7 @@ import Icons from '../../smallest/Icons';
 import MediumText from '../../smallest/MediumText';
 import { KeywordListTypes } from '../../../types/types';
 import { useIsFocused } from '@react-navigation/native';
+import { debounce } from 'lodash';
 
 const CommunityTemplate = ({ moveToKeywordSettingScreen }: CommunityTemplateProps) => {
     const isFocusScreen = useIsFocused();
@@ -27,6 +28,7 @@ const CommunityTemplate = ({ moveToKeywordSettingScreen }: CommunityTemplateProp
     const getKeywordPostParamRef = useRef<string>('');
     const tooltipAnimRef = useRef<Animated.Value>(new Animated.Value(0)).current;
 
+    const [postList, setPostList] = useState<PostTypes[]>([]);
     const [allPostList, setAllPostList] = useState<PostTypes[]>([]);
     const [isLikePostTab, setIsLikePostTab] = useState<boolean>(false);
     const [chooseKeywordFilter, setChooseKeywordFilter] = useState<number[]>([]);
@@ -54,12 +56,7 @@ const CommunityTemplate = ({ moveToKeywordSettingScreen }: CommunityTemplateProp
                 const pageNumber = data.pages[postsResponseIndexRef.current].data.data.pageable.pageNumber;
                 const content = data.pages[postsResponseIndexRef.current].data.data.content;
                 const isLast = data.pages[postsResponseIndexRef.current].data.data.last;
-                if (!isLikePostTab) {
-                    // getKeywordPostParamRef is empty
-                    getAllPostHandler(pageNumber, content, isLast);
-                } else {
-                    getKeywordPostHandler(pageNumber, content, isLast);
-                }
+                getPostHandler(pageNumber, content, isLast);
             },
             onError: ({ response }) => {
                 // For Debug
@@ -86,8 +83,13 @@ const CommunityTemplate = ({ moveToKeywordSettingScreen }: CommunityTemplateProp
 
     // All posts or like keyword posts choose handler
     const tabHandler = (state: string) => {
+        postsResponseIndexRef.current = 0;
+        setPostList([]);
         switch (state) {
             case 'ALL':
+                getKeywordPostParamRef.current = '';
+                remove();
+                refetch();
                 setIsLikePostTab(false);
                 break;
             case 'LIKE':
@@ -100,6 +102,13 @@ const CommunityTemplate = ({ moveToKeywordSettingScreen }: CommunityTemplateProp
                         }).start();
                     }, 5000);
                 } else {
+                    setChooseKeywordFilter([]);
+                    for (const index in myKeywordList) {
+                        getKeywordPostParamRef.current =
+                            getKeywordPostParamRef.current + `&keywordId=${myKeywordList[Number(index)].id}`;
+                    }
+                    remove();
+                    refetch();
                 }
                 setIsLikePostTab(true);
                 break;
@@ -109,24 +118,12 @@ const CommunityTemplate = ({ moveToKeywordSettingScreen }: CommunityTemplateProp
         }
     };
 
-    // Get all post list handler
-    const getAllPostHandler = (pageNumber: number, content: PostTypes[], isLast: boolean) => {
+    // Get post list handler
+    const getPostHandler = (pageNumber: number, content: PostTypes[], isLast: boolean) => {
         if (pageNumber === 0) {
-            setAllPostList(content);
+            setPostList(content);
         } else {
-            setAllPostList([...allPostList, ...content]);
-        }
-        if (!isLast) {
-            postsResponseIndexRef.current = postsResponseIndexRef.current + 1;
-        }
-    };
-
-    // Get keyword post list handler
-    const getKeywordPostHandler = (pageNumber: number, content: PostTypes[], isLast: boolean) => {
-        if (pageNumber === 0) {
-            setLikeKeywordPostList(content);
-        } else {
-            setLikeKeywordPostList([...allPostList, ...content]);
+            setPostList([...postList, ...content]);
         }
         if (!isLast) {
             postsResponseIndexRef.current = postsResponseIndexRef.current + 1;
@@ -134,24 +131,48 @@ const CommunityTemplate = ({ moveToKeywordSettingScreen }: CommunityTemplateProp
     };
 
     // My like keyword posts filtering by my like keyword
-    const myLikeKeywordFilterHandler = (keywordId: number) => {
-        const isExist = chooseKeywordFilter.includes(keywordId);
-        if (!isExist) {
-            setChooseKeywordFilter([...chooseKeywordFilter, keywordId]);
-            getKeywordPostParamRef.current = getKeywordPostParamRef.current + `&keywordId=${keywordId}`;
-            // console.log(getKeywordPostParamRef.current);
+    const myLikeKeywordFilterHandler = useCallback(
+        (keywordId: number) => {
+            postsResponseIndexRef.current = 0;
+            const isExist = chooseKeywordFilter.includes(keywordId);
+            if (!isExist) {
+                if (chooseKeywordFilter.length > 0) {
+                    getKeywordPostParamRef.current = getKeywordPostParamRef.current + `&keywordId=${keywordId}`;
+                } else {
+                    getKeywordPostParamRef.current = `&keywordId=${keywordId}`;
+                }
+                setChooseKeywordFilter([...chooseKeywordFilter, keywordId]);
+            } else {
+                const refreshKeyword = chooseKeywordFilter.filter(item => item !== keywordId);
+                setChooseKeywordFilter(refreshKeyword);
+                getKeywordPostParamRef.current = '';
+                if (refreshKeyword.length > 0) {
+                    for (const index in refreshKeyword) {
+                        getKeywordPostParamRef.current =
+                            getKeywordPostParamRef.current + `&keywordId=${refreshKeyword[Number(index)]}`;
+                    }
+                } else {
+                    for (const index in myKeywordList) {
+                        getKeywordPostParamRef.current =
+                            getKeywordPostParamRef.current + `&keywordId=${myKeywordList[Number(index)].id}`;
+                    }
+                }
+            }
+            keywordPostListRefetch();
+        },
+        [getKeywordPostParamRef.current, myKeywordList, chooseKeywordFilter, postsResponseIndexRef.current],
+    );
+    const keywordPostListRefetch = useCallback(
+        debounce(() => {
             remove();
             refetch();
-        } else {
-            const refreshKeyword = chooseKeywordFilter.filter(item => item !== keywordId);
-            setChooseKeywordFilter(refreshKeyword);
-        }
-    };
+        }, 600),
+        [],
+    );
 
     // Flst list props callback
     const keyExtractor = useCallback((item: PostTypes) => item.postId + '', []);
-    const renderItem = useCallback(({ item }: { item: PostTypes }) => <PostListItem post={item} isBorder={true} />, []);
-    const ListFooterComponent = useCallback(() => <Spacer height={260} />, []);
+    const renderItem = ({ item }: { item: PostTypes }) => <PostListItem post={item} isBorder={true} />;
 
     // Refresh my keyword setting
     useLayoutEffect(() => {
@@ -236,14 +257,7 @@ const CommunityTemplate = ({ moveToKeywordSettingScreen }: CommunityTemplateProp
                     </View>
                 )}
                 {isLikePostTab && myKeywordList && (
-                    <View
-                        style={{
-                            width: '100%',
-                            height: 47 * screenHeight,
-                            marginBottom: 24 * screenHeight,
-                            paddingLeft: 16 * screenWidth,
-                            paddingTop: 17 * screenHeight,
-                        }}>
+                    <View style={communityTemplateStyles.myKeywordScrollBox}>
                         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                             <TouchButton
                                 onPress={moveToKeywordSettingScreen}
@@ -273,12 +287,11 @@ const CommunityTemplate = ({ moveToKeywordSettingScreen }: CommunityTemplateProp
                         </ScrollView>
                     </View>
                 )}
-                {isLikePostTab && !myKeywordList ? null : (
+                {myKeywordList && (
                     <FlatList
                         keyExtractor={keyExtractor}
-                        data={isLikePostTab ? likeKeywordPostList : allPostList}
-                        renderItem={renderItem}
-                        ListFooterComponent={ListFooterComponent}
+                        data={postList}
+                        renderItem={({ item }) => <PostListItem post={item} isBorder={true} />}
                         onEndReachedThreshold={1.8}
                         onEndReached={() => {
                             if (hasNextPage) {
@@ -288,7 +301,7 @@ const CommunityTemplate = ({ moveToKeywordSettingScreen }: CommunityTemplateProp
                         showsVerticalScrollIndicator={false}
                     />
                 )}
-                {/* {isFetching && <ActivityIndicator size="large" />} */}
+                {isFetching && <ActivityIndicator size="large" />}
             </View>
         </View>
     );

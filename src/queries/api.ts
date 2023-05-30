@@ -215,7 +215,6 @@ export const getAllPostAPI = async (param: {
     keywords: string;
     page: number;
 }) => {
-    console.log(`&curLon=${param.curLon}${param.keywords}&page=${param.page}`);
     const response = await Axios({
         url: `/api/v1/post/top-post-list?curLat=${param.curLat}&curLon=${param.curLon}${param.keywords}&page=${param.page}`,
         method: 'get',
