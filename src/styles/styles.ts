@@ -1431,6 +1431,12 @@ export const communityTemplateStyles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
+    myKeywordScrollBox: {
+        width: '100%',
+        height: 47 * screenHeight,
+        paddingLeft: 16 * screenWidth,
+        paddingTop: 17 * screenHeight,
+    },
 });
 export const DeleteMemberTemplateStyles = StyleSheet.create({
     container: {
