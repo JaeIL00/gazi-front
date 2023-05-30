@@ -1,6 +1,8 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useLayoutEffect, useState } from 'react';
 import { Image, ScrollView, View } from 'react-native';
 import { useRecoilValue } from 'recoil';
+import { useNavigation } from '@react-navigation/native';
+import VersionCheck from 'react-native-version-check';
 
 import Icons from '../../smallest/Icons';
 import Colors from '../../../styles/Colors';
@@ -13,10 +15,21 @@ import { myProfileTemplateStyles } from '../../../styles/styles';
 import { myProfileTabList } from '../../../utils/myProfileTabList';
 import { MyProfileTabTypes, MyProfileTemplateProps } from '../../../types/types';
 import { screenFont, screenHeight, screenWidth } from '../../../utils/changeStyleSize';
-import { useNavigation } from '@react-navigation/native';
 
 const MyProfileTemplate = ({ moveToScreen }: MyProfileTemplateProps) => {
     const rootNavigation = useNavigation<any>();
+
+    const [appVersionText, setAppVersionText] = useState<string>('');
+
+    const checkAppVersion = async () => {
+        const currentVersion = VersionCheck.getCurrentVersion();
+        const latestVersion = await VersionCheck.getLatestVersion();
+        if (currentVersion === latestVersion) {
+            setAppVersionText(`v${currentVersion} 최신버전 입니다`);
+        } else {
+            setAppVersionText(`v${currentVersion}`);
+        }
+    };
 
     // Get user nickname
     const { nickname, email } = useRecoilValue(userInfoAtom);
@@ -46,6 +59,10 @@ const MyProfileTemplate = ({ moveToScreen }: MyProfileTemplateProps) => {
                 )}
             </View>
         );
+    }, []);
+
+    useLayoutEffect(() => {
+        checkAppVersion();
     }, []);
 
     return (
@@ -80,7 +97,7 @@ const MyProfileTemplate = ({ moveToScreen }: MyProfileTemplateProps) => {
                 {myProfileTabList.map(scrollViewRender)}
                 <View style={myProfileTemplateStyles.versionBox}>
                     <NormalText text="버전" size={16} color={Colors.BLACK} />
-                    <NormalText text="v.1.0.0 최신버전 입니다" size={12} color="#00000099" />
+                    <NormalText text={appVersionText} size={12} color="#00000099" />
                 </View>
             </ScrollView>
         </View>
