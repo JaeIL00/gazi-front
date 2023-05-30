@@ -98,8 +98,8 @@ android {
         applicationId "com.gazi"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 4
-        versionName "1.1.0"
+        versionCode 5
+        versionName "1.2.0"
 		resValue "string", "build_config_package", "com.gazi"
 		resValue 'string', "CODE_PUSH_APK_BUILD_TIME", String.format("\"%d\"", System.currentTimeMillis())
     }
