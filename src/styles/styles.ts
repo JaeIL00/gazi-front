@@ -767,6 +767,9 @@ export const nicknameTemplateStyles = StyleSheet.create({
         justifyContent: 'flex-start',
         alignItems: 'center',
     },
+    bottomButton: {
+        paddingBottom: 41 * screenHeight,
+    },
 });
 export const inputEmailTemplateStyles = StyleSheet.create({
     container: {
@@ -780,9 +783,6 @@ export const inputEmailTemplateStyles = StyleSheet.create({
         paddingLeft: 10 * screenWidth,
         justifyContent: 'flex-start',
         alignItems: 'center',
-    },
-    bottomBox: {
-        flexShrink: 1,
     },
     resendMailButtonBox: {
         flexDirection: 'row',
@@ -812,6 +812,9 @@ export const emailWithPasswordTemplateStyles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         paddingLeft: 10 * screenWidth,
+    },
+    bottomButton: {
+        paddingBottom: 41 * screenHeight,
     },
 });
 export const notLoginTemplateStyles = StyleSheet.create({
@@ -1427,6 +1430,12 @@ export const communityTemplateStyles = StyleSheet.create({
         bottom: 0,
         alignItems: 'center',
         justifyContent: 'center',
+    },
+    myKeywordScrollBox: {
+        width: '100%',
+        height: 47 * screenHeight,
+        paddingLeft: 16 * screenWidth,
+        paddingTop: 17 * screenHeight,
     },
 });
 export const DeleteMemberTemplateStyles = StyleSheet.create({

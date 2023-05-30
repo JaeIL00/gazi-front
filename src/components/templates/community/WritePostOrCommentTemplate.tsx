@@ -486,7 +486,7 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
             <View style={writePostOrCommentTemplateStyles.container}>
                 <View style={writePostOrCommentTemplateStyles.headerNavigateBox}>
                     <TouchButton onPress={() => moveToScreen('BACK', null)}>
-                        <Icons type="ionicons" name="close-sharp" size={20} color={Colors.BLACK} />
+                        <Icons type="ionicons" name="close-sharp" size={24} color={Colors.BLACK} />
                     </TouchButton>
                     <TouchButton onPress={finishWritingHandler}>
                         <SemiBoldText text="다음" size={16} color={Colors.TXT_GRAY} />

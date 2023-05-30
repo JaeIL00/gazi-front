@@ -69,6 +69,8 @@ export const RootStackNavigation = () => {
                 nickname: data.nickName,
                 email: data.email,
             });
+            console.log('저장 엑세스', data.accessToken);
+            console.log('저장 리프레시', data.refreshToken);
             rootNavigation.navigate('BottomTab');
             SplashScreen.hide();
         } catch (error) {
@@ -81,6 +83,8 @@ export const RootStackNavigation = () => {
             const accessToken = await AsyncStorage.getItem('GAZI_ac_tk');
             const refreshToken = await AsyncStorage.getItem('GAZI_re_tk');
             if (accessToken && refreshToken) {
+                console.log('겟 엑세스', accessToken);
+                console.log('겟 리프레시', refreshToken);
                 mutate({
                     accessToken,
                     refreshToken,
@@ -105,6 +109,7 @@ export const RootStackNavigation = () => {
                 presentation: 'containedModal',
             }}>
             <Stack.Screen name="NotLoginHome" component={NotLoginHomeScreen} />
+            <Stack.Screen name="InitKeyword" component={InitLikeKeywordScreen} />
             <Stack.Screen name="Policies" component={PoliciesScreen} />
             <Stack.Screen name="JoinMember" component={JoinMemberScreen} />
             <Stack.Screen name="RequestPermission" component={RequestPermissionScreen} />
@@ -117,7 +122,6 @@ export const RootStackNavigation = () => {
             <Stack.Screen name="MyPostComment" component={MyPostCommentScreen} />
             <Stack.Screen name="ThreadItem" component={ThreadItemScreen} />
             <Stack.Screen name="EditNickname" component={EditNicknameScreen} />
-            <Stack.Screen name="InitKeyword" component={InitLikeKeywordScreen} />
             <Stack.Screen name="Login" component={LoginScreen} />
             <Stack.Screen name="ImageView" component={ImageViewScreen} />
         </Stack.Navigator>

@@ -12,16 +12,10 @@ function App(): JSX.Element {
     );
 }
 
-// const codePushOptions = {
-//     checkFrequency: CodePush.CheckFrequency.ON_APP_START,
-//     updateDialog: {
-//         title: '...',
-//         optionalUpdateMessage: '...',
-//         optionalInstallButtonLabel: '업데이트',
-//         optionalIgnoreButtonLabel: '아니요.',
-//     },
-//     installMode: CodePush.InstallMode.IMMEDIATE,
-// };
+const codePushOptions = {
+    checkFrequency: CodePush.CheckFrequency.ON_APP_START,
+    installMode: CodePush.InstallMode.IMMEDIATE,
+};
 
-export default App;
-// export default CodePush(codePushOptions)(App);
+// export default App;
+export default CodePush(codePushOptions)(App);

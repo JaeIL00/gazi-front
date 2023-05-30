@@ -12,8 +12,9 @@ const SeviceHomeScreen = () => {
     const rootNavigation = useRootNavigation();
 
     const isModalRef = useRef<boolean>(false);
+    const isAppExit = useRef<boolean>(false);
 
-    const [isAppExit, setIsAppExit] = useState<boolean>(false);
+    // const [isAppExit, setIsAppExit] = useState<boolean>(false);
     const [handleModalTrigger, setHandleModalTrigger] = useState<boolean>(false);
     const moveToWritePost = () => {
         rootNavigation.navigate('WritePostOrComment');
@@ -29,14 +30,14 @@ const SeviceHomeScreen = () => {
             }, 2000);
         } else {
             // Android back button touch twice
-            if (Platform.OS === 'android' && !isAppExit) {
-                ToastAndroid.show('한번 더 눌러주세요', 1000);
-                setIsAppExit(true);
+            if (Platform.OS === 'android' && !isAppExit.current) {
+                ToastAndroid.show('한번 더 눌러 종료', 1000);
+                isAppExit.current = true;
                 setTimeout(() => {
-                    setIsAppExit(false);
+                    isAppExit.current = false;
                 }, 1000);
             } else {
-                setIsAppExit(false);
+                isAppExit.current = false;
                 BackHandler.exitApp();
             }
         }
