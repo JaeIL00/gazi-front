@@ -478,7 +478,7 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
                         }}
                         anchor={{ x: 0.5, y: 0.5 }}
                         style={writePostOrCommentTemplateStyles.mapMarkerPosition}>
-                        <Image
+                        <FastImage
                             source={markerType ? markerType : require('../../../assets/icons/marker-protest.png')}
                             style={{ width: 25 * screenWidth, height: 25 * screenWidth }}
                         />
