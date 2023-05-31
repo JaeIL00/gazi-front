@@ -1,5 +1,5 @@
 import React, { useCallback, useLayoutEffect, useState } from 'react';
-import { ActivityIndicator, FlatList, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, FlatList, StatusBar, TouchableOpacity, View } from 'react-native';
 import { debounce } from 'lodash';
 import { useQuery } from 'react-query';
 import FastImage from 'react-native-fast-image';
@@ -182,6 +182,7 @@ const SearchLocation = ({ getLocationHandler, placeholder, isHome, searchModalHa
 
     return (
         <View>
+            <StatusBar backgroundColor={Colors.BACKGROUND_DEFAULT} />
             <View style={searchLocationStyles.inputContainer}>
                 <View style={searchLocationStyles.inputBox}>
                     {isHome && searchModalHandler && (
