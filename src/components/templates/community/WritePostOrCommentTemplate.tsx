@@ -429,28 +429,31 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
 
         switch (writePostData.dto.headKeywordId) {
             case 1:
-                setMarkerType(require('../../../assets/icons/protest-marker.png'));
+                setMarkerType(require('../../../assets/icons/marker-protest.png'));
                 break;
             case 2:
-                setMarkerType(require('../../../assets/icons/delay-marker.png'));
+                setMarkerType(require('../../../assets/icons/marker-delay.png'));
                 break;
             case 3:
-                setMarkerType(require('../../../assets/icons/disaster-marker.png'));
+                setMarkerType(require('../../../assets/icons/marker-disaster.png'));
                 break;
             case 4:
-                setMarkerType(require('../../../assets/icons/construction-marker.png'));
+                setMarkerType(require('../../../assets/icons/marker-construction.png'));
                 break;
             case 5:
-                setMarkerType(require('../../../assets/icons/congestion-marker.png'));
+                setMarkerType(require('../../../assets/icons/marker-congestion.png'));
                 break;
             case 6:
-                setMarkerType(require('../../../assets/icons/traffic-jam-marker.png'));
+                setMarkerType(require('../../../assets/icons/marker-accident.png'));
                 break;
             case 7:
-                setMarkerType(require('../../../assets/icons/festival-marker.png'));
+                setMarkerType(require('../../../assets/icons/marker-traffic-jam.png'));
                 break;
             case 8:
-                setMarkerType(require('../../../assets/icons/etc-marker.png'));
+                setMarkerType(require('../../../assets/icons/marker-festival.png'));
+                break;
+            case 9:
+                setMarkerType(require('../../../assets/icons/marker-etc.png'));
                 break;
             default:
                 // For Debug
@@ -476,7 +479,7 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
                         anchor={{ x: 0.5, y: 0.5 }}
                         style={writePostOrCommentTemplateStyles.mapMarkerPosition}>
                         <Image
-                            source={markerType ? markerType : require('../../../assets/icons/protest-marker.png')}
+                            source={markerType ? markerType : require('../../../assets/icons/marker-protest.png')}
                             style={{ width: 25 * screenWidth, height: 25 * screenWidth }}
                         />
                     </Marker>
