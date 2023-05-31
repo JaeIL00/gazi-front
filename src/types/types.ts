@@ -455,10 +455,6 @@ export type WritePostAddKeywordProps = {
     keywordModalHandler: (state: string) => void;
     getKeywordHandler: (keyword: number[]) => void;
 };
-export type WritePhotoProps = {
-    getImageHandler: (files: Asset[]) => void;
-    notAllowPermission: () => void;
-};
 export type EditMyKeywordProps = {
     myKeywordList: MyLikeKeywordTypes[];
     isFromCommunity: boolean;

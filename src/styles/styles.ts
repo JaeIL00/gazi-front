@@ -638,29 +638,6 @@ export const writePostAddKeywordStyles = StyleSheet.create({
         borderColor: Colors.TXT_GRAY,
     },
 });
-export const writePhotoStyles = StyleSheet.create({
-    container: {
-        flexDirection: 'row',
-
-        position: 'absolute',
-        bottom: 0,
-    },
-
-    previewBox: {
-        width: 71 * screenWidth,
-        height: 71 * screenWidth,
-        marginLeft: 6.5 * screenWidth,
-        borderWidth: 1 * screenFont,
-        borderRadius: 10.9 * screenFont,
-        borderColor: '#E3E3E3',
-        overflow: 'hidden',
-        backgroundColor: '#F6F5F5',
-    },
-    imageSize: {
-        width: '100%',
-        height: '100%',
-    },
-});
 export const commentListItemStyles = StyleSheet.create({
     container: {
         flexDirection: 'row',
