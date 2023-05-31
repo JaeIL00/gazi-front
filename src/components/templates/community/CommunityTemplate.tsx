@@ -1,23 +1,23 @@
-import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { ActivityIndicator, Animated, FlatList, Image, ScrollView, View } from 'react-native';
+import React, { useCallback, useLayoutEffect, useRef, useState } from 'react';
+import { ActivityIndicator, Animated, FlatList, ScrollView, View } from 'react-native';
 import { useRecoilValue } from 'recoil';
 import { useInfiniteQuery, useQuery } from 'react-query';
+import { useIsFocused } from '@react-navigation/native';
+import { debounce } from 'lodash';
+import FastImage from 'react-native-fast-image';
 
+import Icons from '../../smallest/Icons';
 import Spacer from '../../smallest/Spacer';
 import Colors from '../../../styles/Colors';
+import MediumText from '../../smallest/MediumText';
 import TouchButton from '../../smallest/TouchButton';
 import SemiBoldText from '../../smallest/SemiBoldText';
 import PostListItem from '../../organisms/PostListItem';
-import { CommunityTemplateProps, PostTypes } from '../../../types/types';
 import { userTokenAtom } from '../../../store/atoms';
-import { getAllPostAPI, geyMyLikeKeywordsAPI } from '../../../queries/api';
-import { communityTemplateStyles } from '../../../styles/styles';
-import { screenFont, screenHeight, screenWidth } from '../../../utils/changeStyleSize';
-import Icons from '../../smallest/Icons';
-import MediumText from '../../smallest/MediumText';
 import { KeywordListTypes } from '../../../types/types';
-import { useIsFocused } from '@react-navigation/native';
-import { debounce } from 'lodash';
+import { communityTemplateStyles } from '../../../styles/styles';
+import { CommunityTemplateProps, PostTypes } from '../../../types/types';
+import { getAllPostAPI, geyMyLikeKeywordsAPI } from '../../../queries/api';
 
 const CommunityTemplate = ({ moveToKeywordSettingScreen }: CommunityTemplateProps) => {
     const isFocusScreen = useIsFocused();
@@ -233,7 +233,7 @@ const CommunityTemplate = ({ moveToKeywordSettingScreen }: CommunityTemplateProp
                                         }),
                                     },
                                 ]}>
-                                <Image
+                                <FastImage
                                     source={require('../../../assets/icons/text-balloon.png')}
                                     style={communityTemplateStyles.tooltipImg}
                                 />
@@ -247,7 +247,7 @@ const CommunityTemplate = ({ moveToKeywordSettingScreen }: CommunityTemplateProp
                             </Animated.View>
                         </View>
                         <View style={communityTemplateStyles.nothingBox}>
-                            <Image
+                            <FastImage
                                 source={require('../../../assets/icons/warning.png')}
                                 style={communityTemplateStyles.nothingIcon}
                             />

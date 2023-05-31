@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { Image, View } from 'react-native';
+import { View } from 'react-native';
 import { useQuery } from 'react-query';
 import { useRecoilValue } from 'recoil';
+import FastImage from 'react-native-fast-image';
 
 import Spacer from '../../smallest/Spacer';
 import Colors from '../../../styles/Colors';
@@ -55,7 +56,7 @@ const LikeKeywordSettingTemplate = ({
             <View style={likeKeywordSettingTemplateStyles.headerBox}>
                 <View style={likeKeywordSettingTemplateStyles.headerTextBox}>
                     <TouchButton onPress={moveToBackScreenHandler} hitSlop={20}>
-                        <Image
+                        <FastImage
                             source={require('../../../assets/icons/to-left-black.png')}
                             style={likeKeywordSettingTemplateStyles.headerIcon}
                         />
@@ -98,7 +99,7 @@ const LikeKeywordSettingTemplate = ({
                             </View>
                         ) : (
                             <View style={likeKeywordSettingTemplateStyles.nothingBox}>
-                                <Image
+                                <FastImage
                                     source={require('../../../assets/icons/warning.png')}
                                     style={likeKeywordSettingTemplateStyles.nothingIcon}
                                 />

@@ -1,4 +1,4 @@
-import React, { RefObject, useCallback, useEffect, useRef, useState } from 'react';
+import React, { RefObject, useCallback, useRef, useState } from 'react';
 import {
     ActivityIndicator,
     Image,
@@ -13,7 +13,6 @@ import {
 import { useMutation } from 'react-query';
 import { useRecoilValue } from 'recoil';
 import { debounce } from 'lodash';
-import { Asset } from 'react-native-image-picker';
 import MapView, { Marker } from 'react-native-maps';
 import FastImage from 'react-native-fast-image';
 import { PERMISSIONS, RESULTS, checkMultiple } from 'react-native-permissions';
@@ -36,7 +35,7 @@ import WritePhoto from '../../organisms/cummunity/WritePhoto';
 import FailPermissionModal from '../../organisms/FailPermissionModal';
 import WritePostAddKeyword from '../../organisms/cummunity/WritePostAddKeyword';
 import { userTokenAtom } from '../../../store/atoms';
-import { screenFont, screenHeight, screenWidth } from '../../../utils/changeStyleSize';
+import { screenWidth } from '../../../utils/changeStyleSize';
 import { SingleLineInput } from '../../smallest/SingleLineInput';
 import { writePostOrCommentTemplateStyles } from '../../../styles/styles';
 import { useRootNavigation, useRootRoute } from '../../../navigations/RootStackNavigation';
@@ -510,7 +509,7 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
                                     <View style={writePostOrCommentTemplateStyles.settingButton}>
                                         {writePostData.dto.latitude && writePostData.dto.placeName ? (
                                             <>
-                                                <Image
+                                                <FastImage
                                                     source={require('../../../assets/icons/location-pin-outline-black.png')}
                                                     style={writePostOrCommentTemplateStyles.locationIcon}
                                                 />
@@ -525,7 +524,7 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
                                             <MediumText text="위치설정" size={13} color={Colors.BLACK} />
                                         )}
                                         <Spacer width={4} />
-                                        <Image
+                                        <FastImage
                                             source={require('../../../assets/icons/triangle-down.png')}
                                             style={writePostOrCommentTemplateStyles.searchToggleIcon}
                                         />
@@ -544,7 +543,7 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
                                             <MediumText text="키워드설정" size={13} color={Colors.BLACK} />
                                         )}
                                         <Spacer width={4} />
-                                        <Image
+                                        <FastImage
                                             source={require('../../../assets/icons/triangle-down.png')}
                                             style={writePostOrCommentTemplateStyles.searchToggleIcon}
                                         />
@@ -559,7 +558,7 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
                                         <View style={writePostOrCommentTemplateStyles.settingButton}>
                                             {writePostData.dto.latitude && writePostData.dto.placeName ? (
                                                 <>
-                                                    <Image
+                                                    <FastImage
                                                         source={require('../../../assets/icons/location-pin-outline-black.png')}
                                                         style={writePostOrCommentTemplateStyles.locationIcon}
                                                     />
@@ -574,7 +573,7 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
                                                 <MediumText text="위치설정" size={13} color={Colors.BLACK} />
                                             )}
                                             <Spacer width={4} />
-                                            <Image
+                                            <FastImage
                                                 source={require('../../../assets/icons/triangle-down.png')}
                                                 style={writePostOrCommentTemplateStyles.searchToggleIcon}
                                             />
@@ -595,7 +594,7 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
                                                 <MediumText text="키워드설정" size={13} color={Colors.BLACK} />
                                             )}
                                             <Spacer width={4} />
-                                            <Image
+                                            <FastImage
                                                 source={require('../../../assets/icons/triangle-down.png')}
                                                 style={writePostOrCommentTemplateStyles.searchToggleIcon}
                                             />
