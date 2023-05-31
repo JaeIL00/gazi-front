@@ -517,12 +517,12 @@ export const mapWithMarkerStyles = StyleSheet.create({
     markerBox: {
         justifyContent: 'center',
         alignItems: 'center',
+        width: 103 * screenWidth,
+        height: 103 * screenWidth,
     },
     markerBoxInner: {
         justifyContent: 'center',
         alignItems: 'center',
-        width: 103 * screenWidth,
-        height: 103 * screenWidth,
     },
     markerRange: {
         position: 'absolute',
