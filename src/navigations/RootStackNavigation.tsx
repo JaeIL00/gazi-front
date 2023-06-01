@@ -99,8 +99,7 @@ export const RootStackNavigation = () => {
         }
     };
     useLayoutEffect(() => {
-        // checkAsyncStorage();
-        SplashScreen.hide();
+        checkAsyncStorage();
     }, []);
 
     return (
@@ -109,8 +108,8 @@ export const RootStackNavigation = () => {
                 headerShown: false,
                 presentation: 'containedModal',
             }}>
-            <Stack.Screen name="BottomTab" component={BottomTabNavigation} />
             <Stack.Screen name="NotLoginHome" component={NotLoginHomeScreen} />
+            <Stack.Screen name="BottomTab" component={BottomTabNavigation} />
             <Stack.Screen name="InitKeyword" component={InitLikeKeywordScreen} />
             <Stack.Screen name="Policies" component={PoliciesScreen} />
             <Stack.Screen name="JoinMember" component={JoinMemberScreen} />
