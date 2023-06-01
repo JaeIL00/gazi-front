@@ -1,8 +1,9 @@
 import React from 'react';
-import { Image, View } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
+import FastImage from 'react-native-fast-image';
 
 import mapStyle from '../../styles/mapStyle';
+import MapCurrentMarker from '../molecules/MapCurrentMarker';
 import { MapWithMarkerProps } from '../../types/types';
 import { mapWithMarkerStyles } from '../../styles/styles';
 
@@ -16,9 +17,6 @@ const MapWithMarker = ({
     checkMapGesture,
     findMarkerPost,
 }: MapWithMarkerProps) => {
-    const MARKER_RANGE_IMAGE = require('../../assets/icons/map-marker-range.png');
-    const MARKER_IMAGE = require('../../assets/icons/map-marker.png');
-
     return (
         <MapView
             ref={mapRef}
@@ -37,42 +35,29 @@ const MapWithMarker = ({
             onRegionChange={checkMapGesture}
             onMapReady={mapRenderCompleteHandler}>
             {isAllowLocation && (
-                <Marker
-                    coordinate={{
-                        latitude: currentPosition.latitude,
-                        longitude: currentPosition.longitude,
-                    }}
-                    anchor={{ x: 0.5, y: 0.5 }}
-                    style={mapWithMarkerStyles.markerBox}>
-                    <View style={mapWithMarkerStyles.markerBoxInner}>
-                        <Image
-                            source={MARKER_RANGE_IMAGE}
-                            style={mapWithMarkerStyles.markerRange}
-                            resizeMode="contain"
-                        />
-                        <Image source={MARKER_IMAGE} style={mapWithMarkerStyles.marker} />
-                    </View>
-                </Marker>
+                <MapCurrentMarker latitude={currentPosition.latitude} longitude={currentPosition.longitude} />
             )}
-            {nearPostList.map((item, index) => {
+            {nearPostList.map(item => {
                 const markertypeIcon = () => {
                     switch (item.headKeyword) {
                         case 1:
-                            return require('../../assets/icons/protest-marker.png');
+                            return require('../../assets/icons/marker-protest.png');
                         case 2:
-                            return require('../../assets/icons/delay-marker.png');
+                            return require('../../assets/icons/marker-delay.png');
                         case 3:
-                            return require('../../assets/icons/disaster-marker.png');
+                            return require('../../assets/icons/marker-disaster.png');
                         case 4:
-                            return require('../../assets/icons/construction-marker.png');
+                            return require('../../assets/icons/marker-construction.png');
                         case 5:
-                            return require('../../assets/icons/congestion-marker.png');
+                            return require('../../assets/icons/marker-congestion.png');
                         case 6:
-                            return require('../../assets/icons/traffic-jam-marker.png');
+                            return require('../../assets/icons/marker-accident.png');
                         case 7:
-                            return require('../../assets/icons/festival-marker.png');
+                            return require('../../assets/icons/marker-traffic-jam.png');
                         case 8:
-                            return require('../../assets/icons/etc-marker.png');
+                            return require('../../assets/icons/marker-festival.png');
+                        case 9:
+                            return require('../../assets/icons/marker-etc.png');
                         default:
                             // For Debug
                             console.log('(ERROR) Near post marker image');
@@ -81,7 +66,7 @@ const MapWithMarker = ({
                 };
                 return (
                     <Marker
-                        key={item.postId + 'marker' + index}
+                        key={item.postId}
                         coordinate={{
                             latitude: item.latitude,
                             longitude: item.longitude,
@@ -89,7 +74,7 @@ const MapWithMarker = ({
                         anchor={{ x: 0.5, y: 0.5 }}
                         style={mapWithMarkerStyles.markerBox}
                         onPress={() => findMarkerPost(item.postId)}>
-                        <Image source={markertypeIcon()} style={mapWithMarkerStyles.issueMarker} />
+                        <FastImage source={markertypeIcon()} style={mapWithMarkerStyles.issueMarker} />
                     </Marker>
                 );
             })}

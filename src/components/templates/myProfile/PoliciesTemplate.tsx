@@ -9,6 +9,7 @@ import TouchButton from '../../smallest/TouchButton';
 import WebViewComponent from '../../organisms/WebViewComponent';
 import { PoliciesTemplateProps } from '../../../types/types';
 import { PoliciesTemplateStyles } from '../../../styles/styles';
+import FastImage from 'react-native-fast-image';
 
 const PoliciesTemplate = ({ moveToBackScreenHandler }: PoliciesTemplateProps) => {
     const [uri, seturi] = useState<string>('');
@@ -32,7 +33,7 @@ const PoliciesTemplate = ({ moveToBackScreenHandler }: PoliciesTemplateProps) =>
         <View style={PoliciesTemplateStyles.container}>
             <View style={PoliciesTemplateStyles.headerBox}>
                 <TouchButton onPress={moveToBackScreenHandler} hitSlop={20}>
-                    <Image
+                    <FastImage
                         source={require('../../../assets/icons/to-left-black.png')}
                         style={PoliciesTemplateStyles.headerIcon}
                     />

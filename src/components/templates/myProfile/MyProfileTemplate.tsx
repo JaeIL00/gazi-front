@@ -3,6 +3,7 @@ import { Image, ScrollView, View } from 'react-native';
 import { useRecoilValue } from 'recoil';
 import { useNavigation } from '@react-navigation/native';
 import VersionCheck from 'react-native-version-check';
+import FastImage from 'react-native-fast-image';
 
 import Icons from '../../smallest/Icons';
 import Colors from '../../../styles/Colors';
@@ -46,7 +47,7 @@ const MyProfileTemplate = ({ moveToScreen }: MyProfileTemplateProps) => {
                         borderColor="#EBEBEB">
                         <View style={myProfileTemplateStyles.tabListBox}>
                             <NormalText text={item.text} size={16} color={Colors.BLACK} />
-                            <Image
+                            <FastImage
                                 source={require('../../../assets/icons/to-right-white.png')}
                                 style={myProfileTemplateStyles.tabRightIcon}
                             />
@@ -74,7 +75,8 @@ const MyProfileTemplate = ({ moveToScreen }: MyProfileTemplateProps) => {
                     height={(63 / screenHeight) * screenWidth}
                     backgroundColor="#D9D9D9"
                     borderRadius={63}>
-                    {/* <Image /> */}
+                    {/* profile image empty
+                    <Image /> */}
                     <View style={myProfileTemplateStyles.profileCameraBox}>
                         <Icons type="feather" name="camera" color="#D9D9D9" size={12} />
                     </View>
@@ -83,7 +85,7 @@ const MyProfileTemplate = ({ moveToScreen }: MyProfileTemplateProps) => {
                     <View style={myProfileTemplateStyles.profileNameBox}>
                         <SemiBoldText text={nickname} size={16} color={Colors.WHITE} />
                         <TouchButton onPress={() => moveToScreen('EDIT_NICK')}>
-                            <Image
+                            <FastImage
                                 source={require('../../../assets/icons/pencil.png')}
                                 style={myProfileTemplateStyles.penIcon}
                             />

@@ -1,8 +1,9 @@
 import React from 'react';
-import { ActivityIndicator, Image, View } from 'react-native';
+import { ActivityIndicator, View } from 'react-native';
 import { useRecoilValue } from 'recoil';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useMutation } from 'react-query';
+import FastImage from 'react-native-fast-image';
 
 import Spacer from '../../smallest/Spacer';
 import Colors from '../../../styles/Colors';
@@ -40,7 +41,7 @@ const AccountManagementTemplate = ({ moveToScreenHandler }: AccountManagementTem
         <View>
             <View style={AccountManagementTemplateStyles.headerBox}>
                 <TouchButton onPress={() => moveToScreenHandler('BACK')} hitSlop={20}>
-                    <Image
+                    <FastImage
                         source={require('../../../assets/icons/to-left-black.png')}
                         style={AccountManagementTemplateStyles.headerIcon}
                     />
