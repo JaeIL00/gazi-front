@@ -1,8 +1,9 @@
 import React from 'react';
-import { ActivityIndicator, Image, View } from 'react-native';
+import { ActivityIndicator, View } from 'react-native';
 import { useRecoilValue } from 'recoil';
 import { userInfoAtom, userTokenAtom } from '../../../store/atoms';
 import { useMutation } from 'react-query';
+import FastImage from 'react-native-fast-image';
 
 import Spacer from '../../smallest/Spacer';
 import Colors from '../../../styles/Colors';
@@ -36,7 +37,7 @@ const DeleteMemberTemplate = ({ moveToScreenHandler }: DeleteMemberTemplateProps
         <View style={DeleteMemberTemplateStyles.container}>
             <View style={DeleteMemberTemplateStyles.headerBox}>
                 <TouchButton onPress={() => moveToScreenHandler('BACK')} alignSelf="flex-start" hitSlop={10}>
-                    <Image
+                    <FastImage
                         source={require('../../../assets/icons/to-left-black.png')}
                         style={DeleteMemberTemplateStyles.headerIcon}
                     />

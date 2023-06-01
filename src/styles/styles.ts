@@ -517,12 +517,12 @@ export const mapWithMarkerStyles = StyleSheet.create({
     markerBox: {
         justifyContent: 'center',
         alignItems: 'center',
+        width: 103 * screenWidth,
+        height: 103 * screenWidth,
     },
     markerBoxInner: {
         justifyContent: 'center',
         alignItems: 'center',
-        width: 103 * screenWidth,
-        height: 103 * screenWidth,
     },
     markerRange: {
         position: 'absolute',
@@ -571,12 +571,28 @@ export const searchLocationStyles = StyleSheet.create({
     },
     listItemBox: {
         flexDirection: 'row',
-        width: '100%',
+    },
+    resultButton: {
+        paddingVertical: 12 * screenHeight,
+        borderColor: '#EBEBEB',
+        borderBottomWidth: 1 * screenFont,
+        paddingHorizontal: 16 * screenWidth,
     },
     resultIcon: {
         width: 25 * screenWidth,
         height: 25 * screenWidth,
         marginRight: 9.5 * screenWidth,
+    },
+    historyIcons: {
+        marginRight: 9.5 * screenWidth,
+        paddingTop: 1.5 * screenHeight,
+    },
+    resultTextBox: {
+        flex: 1,
+    },
+    resultAddress: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
     },
 });
 export const writePostAddKeywordStyles = StyleSheet.create({
@@ -620,29 +636,6 @@ export const writePostAddKeywordStyles = StyleSheet.create({
     borderLine: {
         borderBottomWidth: 1.5 * screenFont,
         borderColor: Colors.TXT_GRAY,
-    },
-});
-export const writePhotoStyles = StyleSheet.create({
-    container: {
-        flexDirection: 'row',
-
-        position: 'absolute',
-        bottom: 0,
-    },
-
-    previewBox: {
-        width: 71 * screenWidth,
-        height: 71 * screenWidth,
-        marginLeft: 6.5 * screenWidth,
-        borderWidth: 1 * screenFont,
-        borderRadius: 10.9 * screenFont,
-        borderColor: '#E3E3E3',
-        overflow: 'hidden',
-        backgroundColor: '#F6F5F5',
-    },
-    imageSize: {
-        width: '100%',
-        height: '100%',
     },
 });
 export const commentListItemStyles = StyleSheet.create({

@@ -26,7 +26,7 @@ const NotLoginTemplate = () => {
 
             <Spacer height={46} />
             {/* 임시 */}
-            <View style={{ backgroundColor: '#333', height: 300 }} />
+            <View style={{ backgroundColor: '#F2F2F2', height: 300 }} />
 
             <View style={notLoginTemplateStyles.buttonBox}>
                 <TextButton

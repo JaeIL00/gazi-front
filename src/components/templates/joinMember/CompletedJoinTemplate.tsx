@@ -9,7 +9,7 @@ import { completedJoinTemplateStyles } from '../../../styles/styles';
 const CompletedJoinTemplate = ({ onPressNextStep }: CompletedJoinTemplateProps) => {
     return (
         <View style={completedJoinTemplateStyles.container}>
-            <View style={{ height: 300, backgroundColor: '#333' }}></View>
+            <View style={{ height: 300, backgroundColor: '#F2F2F2' }} />
             <View style={completedJoinTemplateStyles.button}>
                 <TextButton
                     onPress={onPressNextStep}

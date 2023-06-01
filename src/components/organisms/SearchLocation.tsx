@@ -1,5 +1,5 @@
 import React, { useCallback, useLayoutEffect, useState } from 'react';
-import { ActivityIndicator, FlatList, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, FlatList, StatusBar, TouchableOpacity, View } from 'react-native';
 import { debounce } from 'lodash';
 import { useQuery } from 'react-query';
 import FastImage from 'react-native-fast-image';
@@ -118,21 +118,20 @@ const SearchLocation = ({ getLocationHandler, placeholder, isHome, searchModalHa
                         getLocationHandler(item.geometry.location, item.name);
                     }}
                     activeOpacity={1}
-                    style={{
-                        paddingVertical: 12 * screenHeight,
-                        borderColor: '#EBEBEB',
-                        borderBottomWidth: 1 * screenFont,
-                        paddingHorizontal: 16 * screenWidth,
-                    }}>
+                    style={searchLocationStyles.resultButton}>
                     <View style={searchLocationStyles.listItemBox}>
                         <FastImage
                             source={require('../../assets/icons/location-pin-fill.png')}
                             style={searchLocationStyles.resultIcon}
                         />
-                        <View>
+                        <View style={searchLocationStyles.resultTextBox}>
                             <MediumText text={item.name} size={16} color="#000000" />
                             <Spacer height={3} />
-                            <NormalText text={freshAddress} size={14} color={Colors.TXT_GRAY} />
+                            <View style={searchLocationStyles.resultAddress}>
+                                {freshAddress.split(' ').map(item => (
+                                    <NormalText text={`${item} `} size={14} color={Colors.TXT_GRAY} />
+                                ))}
+                            </View>
                         </View>
                     </View>
                 </TouchableOpacity>
@@ -150,24 +149,19 @@ const SearchLocation = ({ getLocationHandler, placeholder, isHome, searchModalHa
                         getLocationHandler(item.location, item.name);
                     }}
                     activeOpacity={1}
-                    style={{
-                        paddingVertical: 12 * screenHeight,
-                        borderColor: '#EBEBEB',
-                        borderBottomWidth: 1 * screenFont,
-                        paddingHorizontal: 16 * screenWidth,
-                    }}>
+                    style={searchLocationStyles.resultButton}>
                     <View style={searchLocationStyles.listItemBox}>
-                        <View
-                            style={{
-                                marginRight: 9.5 * screenWidth,
-                                paddingTop: 1.5 * screenHeight,
-                            }}>
+                        <View style={searchLocationStyles.historyIcons}>
                             <Icons type="feather" name="clock" size={21} color={Colors.TXT_LIGHTGRAY} />
                         </View>
-                        <View>
+                        <View style={searchLocationStyles.resultTextBox}>
                             <MediumText text={item.name} size={16} color="#000000" />
                             <Spacer height={3} />
-                            <NormalText text={freshAddress} size={14} color={Colors.TXT_GRAY} />
+                            <View style={searchLocationStyles.resultAddress}>
+                                {freshAddress.split(' ').map(item => (
+                                    <NormalText text={`${item} `} size={14} color={Colors.TXT_GRAY} />
+                                ))}
+                            </View>
                         </View>
                     </View>
                 </TouchableOpacity>
@@ -182,6 +176,7 @@ const SearchLocation = ({ getLocationHandler, placeholder, isHome, searchModalHa
 
     return (
         <View>
+            <StatusBar backgroundColor={Colors.BACKGROUND_DEFAULT} />
             <View style={searchLocationStyles.inputContainer}>
                 <View style={searchLocationStyles.inputBox}>
                     {isHome && searchModalHandler && (

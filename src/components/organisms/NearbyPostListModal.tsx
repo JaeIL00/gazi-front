@@ -1,17 +1,18 @@
 import React, { useCallback, useEffect, useRef } from 'react';
-import { Animated, FlatList, Image, PanResponder, PanResponderInstance, Platform, View } from 'react-native';
+import { Animated, FlatList, PanResponder, PanResponderInstance, Platform, View } from 'react-native';
 import DropShadow from 'react-native-drop-shadow';
+import { useRecoilValue } from 'recoil';
+import FastImage from 'react-native-fast-image';
 
 import Spacer from '../smallest/Spacer';
 import Colors from '../../styles/Colors';
 import PostListItem from './PostListItem';
 import TouchButton from '../smallest/TouchButton';
 import SemiBoldText from '../smallest/SemiBoldText';
+import { userInfoAtom } from '../../store/atoms';
 import { screenHeight } from '../../utils/changeStyleSize';
 import { nearbyPostListModalStyles } from '../../styles/styles';
 import { NearbyPostListModalProps, PostTypes } from '../../types/types';
-import { useRecoilValue } from 'recoil';
-import { userInfoAtom } from '../../store/atoms';
 
 const FULL_ANIM_VALUE = -415 * screenHeight;
 const MIDDLE_ANIM_VALUE = 0;
@@ -292,7 +293,7 @@ const NearbyPostListModal = ({
                         backgroundColor={Colors.WHITE}
                         borderWidth={1}
                         borderColor="#E3E3E3">
-                        <Image
+                        <FastImage
                             source={require('../../assets/icons/location.png')}
                             style={nearbyPostListModalStyles.locationIcon}
                         />
@@ -306,7 +307,7 @@ const NearbyPostListModal = ({
                                 height={52}
                                 borderRadius={52}
                                 backgroundColor={Colors.VIOLET}>
-                                <Image
+                                <FastImage
                                     source={require('../../assets/icons/write.png')}
                                     style={nearbyPostListModalStyles.writeIcon}
                                 />

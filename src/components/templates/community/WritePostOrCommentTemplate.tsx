@@ -1,4 +1,4 @@
-import React, { RefObject, useCallback, useEffect, useRef, useState } from 'react';
+import React, { RefObject, useCallback, useRef, useState } from 'react';
 import {
     ActivityIndicator,
     Image,
@@ -13,7 +13,6 @@ import {
 import { useMutation } from 'react-query';
 import { useRecoilValue } from 'recoil';
 import { debounce } from 'lodash';
-import { Asset } from 'react-native-image-picker';
 import MapView, { Marker } from 'react-native-maps';
 import FastImage from 'react-native-fast-image';
 import { PERMISSIONS, RESULTS, checkMultiple } from 'react-native-permissions';
@@ -32,11 +31,10 @@ import MultiLineInput from '../../smallest/MultiLineInput';
 import HeaderMolecule from '../../molecules/HeaderMolecule';
 import SearchLocation from '../../organisms/SearchLocation';
 import ModalBackground from '../../smallest/ModalBackground';
-import WritePhoto from '../../organisms/cummunity/WritePhoto';
 import FailPermissionModal from '../../organisms/FailPermissionModal';
 import WritePostAddKeyword from '../../organisms/cummunity/WritePostAddKeyword';
 import { userTokenAtom } from '../../../store/atoms';
-import { screenFont, screenHeight, screenWidth } from '../../../utils/changeStyleSize';
+import { screenWidth } from '../../../utils/changeStyleSize';
 import { SingleLineInput } from '../../smallest/SingleLineInput';
 import { writePostOrCommentTemplateStyles } from '../../../styles/styles';
 import { useRootNavigation, useRootRoute } from '../../../navigations/RootStackNavigation';
@@ -430,28 +428,31 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
 
         switch (writePostData.dto.headKeywordId) {
             case 1:
-                setMarkerType(require('../../../assets/icons/protest-marker.png'));
+                setMarkerType(require('../../../assets/icons/marker-protest.png'));
                 break;
             case 2:
-                setMarkerType(require('../../../assets/icons/delay-marker.png'));
+                setMarkerType(require('../../../assets/icons/marker-delay.png'));
                 break;
             case 3:
-                setMarkerType(require('../../../assets/icons/disaster-marker.png'));
+                setMarkerType(require('../../../assets/icons/marker-disaster.png'));
                 break;
             case 4:
-                setMarkerType(require('../../../assets/icons/construction-marker.png'));
+                setMarkerType(require('../../../assets/icons/marker-construction.png'));
                 break;
             case 5:
-                setMarkerType(require('../../../assets/icons/congestion-marker.png'));
+                setMarkerType(require('../../../assets/icons/marker-congestion.png'));
                 break;
             case 6:
-                setMarkerType(require('../../../assets/icons/traffic-jam-marker.png'));
+                setMarkerType(require('../../../assets/icons/marker-accident.png'));
                 break;
             case 7:
-                setMarkerType(require('../../../assets/icons/festival-marker.png'));
+                setMarkerType(require('../../../assets/icons/marker-traffic-jam.png'));
                 break;
             case 8:
-                setMarkerType(require('../../../assets/icons/etc-marker.png'));
+                setMarkerType(require('../../../assets/icons/marker-festival.png'));
+                break;
+            case 9:
+                setMarkerType(require('../../../assets/icons/marker-etc.png'));
                 break;
             default:
                 // For Debug
@@ -476,8 +477,8 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
                         }}
                         anchor={{ x: 0.5, y: 0.5 }}
                         style={writePostOrCommentTemplateStyles.mapMarkerPosition}>
-                        <Image
-                            source={markerType ? markerType : require('../../../assets/icons/protest-marker.png')}
+                        <FastImage
+                            source={markerType ? markerType : require('../../../assets/icons/marker-protest.png')}
                             style={{ width: 25 * screenWidth, height: 25 * screenWidth }}
                         />
                     </Marker>
@@ -510,7 +511,7 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
                                     <View style={writePostOrCommentTemplateStyles.settingButton}>
                                         {writePostData.dto.latitude && writePostData.dto.placeName ? (
                                             <>
-                                                <Image
+                                                <FastImage
                                                     source={require('../../../assets/icons/location-pin-outline-black.png')}
                                                     style={writePostOrCommentTemplateStyles.locationIcon}
                                                 />
@@ -525,7 +526,7 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
                                             <MediumText text="위치설정" size={13} color={Colors.BLACK} />
                                         )}
                                         <Spacer width={4} />
-                                        <Image
+                                        <FastImage
                                             source={require('../../../assets/icons/triangle-down.png')}
                                             style={writePostOrCommentTemplateStyles.searchToggleIcon}
                                         />
@@ -544,7 +545,7 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
                                             <MediumText text="키워드설정" size={13} color={Colors.BLACK} />
                                         )}
                                         <Spacer width={4} />
-                                        <Image
+                                        <FastImage
                                             source={require('../../../assets/icons/triangle-down.png')}
                                             style={writePostOrCommentTemplateStyles.searchToggleIcon}
                                         />
@@ -559,7 +560,7 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
                                         <View style={writePostOrCommentTemplateStyles.settingButton}>
                                             {writePostData.dto.latitude && writePostData.dto.placeName ? (
                                                 <>
-                                                    <Image
+                                                    <FastImage
                                                         source={require('../../../assets/icons/location-pin-outline-black.png')}
                                                         style={writePostOrCommentTemplateStyles.locationIcon}
                                                     />
@@ -574,7 +575,7 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
                                                 <MediumText text="위치설정" size={13} color={Colors.BLACK} />
                                             )}
                                             <Spacer width={4} />
-                                            <Image
+                                            <FastImage
                                                 source={require('../../../assets/icons/triangle-down.png')}
                                                 style={writePostOrCommentTemplateStyles.searchToggleIcon}
                                             />
@@ -595,7 +596,7 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
                                                 <MediumText text="키워드설정" size={13} color={Colors.BLACK} />
                                             )}
                                             <Spacer width={4} />
-                                            <Image
+                                            <FastImage
                                                 source={require('../../../assets/icons/triangle-down.png')}
                                                 style={writePostOrCommentTemplateStyles.searchToggleIcon}
                                             />

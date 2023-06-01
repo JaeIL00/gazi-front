@@ -1,5 +1,5 @@
 import React, { RefObject, useCallback, useLayoutEffect, useRef, useState } from 'react';
-import { ActivityIndicator, Image, Linking, Modal, Platform, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, Linking, Modal, Platform, TouchableOpacity, View } from 'react-native';
 import Geolocation from '@react-native-community/geolocation';
 import DropShadow from 'react-native-drop-shadow';
 import { useRecoilValue } from 'recoil';
@@ -8,6 +8,7 @@ import { useInfiniteQuery } from 'react-query';
 import { PERMISSIONS, RESULTS, check } from 'react-native-permissions';
 import { debounce } from 'lodash';
 import SplashScreen from 'react-native-splash-screen';
+import FastImage from 'react-native-fast-image';
 
 import Colors from '../../../styles/Colors';
 import MediumText from '../../smallest/MediumText';
@@ -323,7 +324,7 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritePost }:
                     <DropShadow style={serviceHomeTemplateStyles.dropshadow}>
                         <TouchableOpacity onPress={() => searchModalHandler('OPEN')} activeOpacity={1}>
                             <View style={serviceHomeTemplateStyles.inputBox}>
-                                <Image
+                                <FastImage
                                     source={require('../../../assets/icons/search.png')}
                                     style={serviceHomeTemplateStyles.searchIcon}
                                 />
@@ -334,7 +335,7 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritePost }:
                 )}
                 {/* Temporary planning*/}
                 {/* <View>
-                    <Image
+                    <FastImage
                         source={require('../../../assets/icons/bell-fill.png')}
                         style={serviceHomeTemplateStyles.bellIcon}
                     />

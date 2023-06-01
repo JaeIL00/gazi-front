@@ -109,12 +109,12 @@ export const RootStackNavigation = () => {
                 presentation: 'containedModal',
             }}>
             <Stack.Screen name="NotLoginHome" component={NotLoginHomeScreen} />
+            <Stack.Screen name="BottomTab" component={BottomTabNavigation} />
             <Stack.Screen name="InitKeyword" component={InitLikeKeywordScreen} />
             <Stack.Screen name="Policies" component={PoliciesScreen} />
             <Stack.Screen name="JoinMember" component={JoinMemberScreen} />
             <Stack.Screen name="RequestPermission" component={RequestPermissionScreen} />
             <Stack.Screen name="WritePostOrComment" component={WritePostOrCommentScreen} />
-            <Stack.Screen name="BottomTab" component={BottomTabNavigation} />
             <Stack.Screen name="LikeKeywordSetting" component={LikeKeywordSettingScreen} />
             <Stack.Screen name="ChangePassword" component={ChangePasswordScreen} />
             <Stack.Screen name="AccountManagement" component={AccountManagementScreen} />

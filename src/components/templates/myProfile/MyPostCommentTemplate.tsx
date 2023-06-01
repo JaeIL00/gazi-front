@@ -1,21 +1,22 @@
-import React, { useCallback, useLayoutEffect, useRef, useState } from 'react';
-import { FlatList, Image, View } from 'react-native';
+import React, { useCallback, useRef, useState } from 'react';
+import { FlatList, View } from 'react-native';
+import { useInfiniteQuery } from 'react-query';
+import { useRecoilValue } from 'recoil';
+import FastImage from 'react-native-fast-image';
+import NormalText from '../../smallest/NormalText';
+import PostListItem from '../../organisms/PostListItem';
 
 import Spacer from '../../smallest/Spacer';
 import Colors from '../../../styles/Colors';
 import MediumText from '../../smallest/MediumText';
 import TouchButton from '../../smallest/TouchButton';
 import SemiBoldText from '../../smallest/SemiBoldText';
-import { screenFont, screenHeight, screenWidth } from '../../../utils/changeStyleSize';
-import { MyCommentTypes, MyPostCommentTemplateProps } from '../../../types/types';
-import { myPostCommentTemplateStyles } from '../../../styles/styles';
-import { useInfiniteQuery } from 'react-query';
-import { getMyPostCommentAPI } from '../../../queries/api';
-import { useRecoilValue } from 'recoil';
-import { userTokenAtom } from '../../../store/atoms';
 import { PostTypes } from '../../../types/types';
-import PostListItem from '../../organisms/PostListItem';
-import NormalText from '../../smallest/NormalText';
+import { userTokenAtom } from '../../../store/atoms';
+import { getMyPostCommentAPI } from '../../../queries/api';
+import { myPostCommentTemplateStyles } from '../../../styles/styles';
+import { MyCommentTypes, MyPostCommentTemplateProps } from '../../../types/types';
+import { screenFont, screenHeight, screenWidth } from '../../../utils/changeStyleSize';
 
 const MyPostCommentTemplate = ({ moveToBackScreenHandler }: MyPostCommentTemplateProps) => {
     const { accessToken } = useRecoilValue(userTokenAtom);
@@ -146,7 +147,7 @@ const MyPostCommentTemplate = ({ moveToBackScreenHandler }: MyPostCommentTemplat
         <View>
             <View style={myPostCommentTemplateStyles.headerBox}>
                 <TouchButton onPress={moveToBackScreenHandler} hitSlop={20}>
-                    <Image
+                    <FastImage
                         source={require('../../../assets/icons/to-left-black.png')}
                         style={myPostCommentTemplateStyles.headerIcon}
                     />
