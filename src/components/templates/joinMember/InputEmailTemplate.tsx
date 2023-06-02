@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, Animated, Keyboard, KeyboardAvoidingView, TouchableOpacity, View } from 'react-native';
+import React, { useState } from 'react';
+import { ActivityIndicator, TouchableOpacity, View } from 'react-native';
 import { useRecoilState } from 'recoil';
 import validator from 'validator';
 import { useMutation } from 'react-query';
@@ -17,7 +17,7 @@ import { emailAuthAPI } from '../../../queries/api';
 import { InputEmailTemplateProps } from '../../../types/types';
 import { inputEmailTemplateStyles } from '../../../styles/styles';
 import { emailAuthAtom, joinMemberAtom } from '../../../store/atoms';
-import { screenHeight } from '../../../utils/changeStyleSize';
+import useTextInputValidation from '../../../utils/hooks/useTextInputValidation';
 
 const InputEmailTemplate = ({
     minutes,
@@ -29,10 +29,13 @@ const InputEmailTemplate = ({
     const [authData, setAuthData] = useRecoilState(emailAuthAtom);
     const [joinData, setJoinData] = useRecoilState(joinMemberAtom);
 
+    const {
+        text: email,
+        onChangeText: setEmail,
+        validationResult: duplicatedError,
+        changeValidationResult: setDuplicatedError,
+    } = useTextInputValidation();
     const [isEmail, setIsEmail] = useState<boolean>(false);
-    const [email, setEmail] = useState<string>(joinData.email);
-    const [duplicatedError, setDuplicatedError] = useState<string>('');
-    const [buttonPaddingStyle, setButtonPaddingStyle] = useState<number>(36);
 
     // Request email authorization number API
     const { isLoading, mutate } = useMutation(emailAuthAPI, {
@@ -68,17 +71,6 @@ const InputEmailTemplate = ({
             mutate(email);
         }
     }, 300);
-
-    // Change button position style by keyboard activity
-    useEffect(() => {
-        const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => setButtonPaddingStyle(0));
-        const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => setButtonPaddingStyle(36));
-
-        return () => {
-            keyboardDidShowListener.remove();
-            keyboardDidHideListener.remove();
-        };
-    }, []);
 
     return (
         <View style={inputEmailTemplateStyles.container}>

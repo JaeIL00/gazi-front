@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { BackHandler, Keyboard, Platform, View } from 'react-native';
 import { useRecoilState } from 'recoil';
 
-import Spacer from '../components/smallest/Spacer';
 import AuthEmail from '../components/organisms/AuthEmail';
+import ScreenWrapper from '../components/organisms/ScreenWrapper';
+import ModalBackground from '../components/smallest/ModalBackground';
 import ServiceAgreement from '../components/organisms/ServiceAgreement';
 import useBackgroundInterval from '../utils/hooks/useBackgroundInterval';
 import MoveBackWithPageTitle from '../components/organisms/MoveBackWithPageTitle';
@@ -14,8 +15,6 @@ import EmailWithPasswordTemplate from '../components/templates/joinMember/EmailW
 import { JoinMemberScreenStyles } from '../styles/styles';
 import { emailAuthAtom, joinMemberAtom } from '../store/atoms';
 import { useRootNavigation } from '../navigations/RootStackNavigation';
-import ModalBackground from '../components/smallest/ModalBackground';
-import ScreenWrapper from '../components/organisms/ScreenWrapper';
 
 const JoinMemberScreen = () => {
     const rootNavigation = useRootNavigation();
@@ -148,8 +147,6 @@ const JoinMemberScreen = () => {
                         explainSize={explain ? 13 : undefined}
                         onPress={handleBackButton}
                     />
-
-                    <Spacer height={51} />
 
                     {step === 1 && (
                         <InputEmailTemplate

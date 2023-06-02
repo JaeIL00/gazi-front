@@ -1,5 +1,5 @@
 import React from 'react';
-import { View } from 'react-native';
+import { Image, View } from 'react-native';
 
 import Colors from '../../../styles/Colors';
 import TextButton from '../../molecules/TextButton';
@@ -9,7 +9,12 @@ import { completedJoinTemplateStyles } from '../../../styles/styles';
 const CompletedJoinTemplate = ({ onPressNextStep }: CompletedJoinTemplateProps) => {
     return (
         <View style={completedJoinTemplateStyles.container}>
-            <View style={{ height: 300, backgroundColor: '#F2F2F2' }} />
+            <View style={completedJoinTemplateStyles.imageBox}>
+                <Image
+                    source={require('../../../assets/join-member-complete-image.png')}
+                    style={completedJoinTemplateStyles.imageSize}
+                />
+            </View>
             <View style={completedJoinTemplateStyles.button}>
                 <TextButton
                     onPress={onPressNextStep}

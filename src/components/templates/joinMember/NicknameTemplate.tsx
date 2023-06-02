@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { ActivityIndicator, Animated, Keyboard, KeyboardAvoidingView, ToastAndroid, View } from 'react-native';
 import { useRecoilState } from 'recoil';
 import { useMutation, useQuery } from 'react-query';
@@ -23,6 +23,7 @@ const NicknameTemplate = ({ onPressNextStep }: NicknameTemplateProps) => {
     const onChangeNickname = (text: string) => {
         setInputNickname(text);
         setIsDuplicate(false);
+        checkDuplicate(text);
         if (text.length === 1) {
             setResultText('2글자 이상 입력해주세요');
         } else {
@@ -37,9 +38,11 @@ const NicknameTemplate = ({ onPressNextStep }: NicknameTemplateProps) => {
     const { refetch, isFetching } = useQuery('duplicateNickname', () => checkNicknameAPI(inputNickname), {
         enabled: false,
         onSuccess: ({ data }) => {
-            setResultText(data.message);
-            setIsDuplicate(true);
-            setJoinData({ ...joinData, nickName: inputNickname });
+            if (inputNickname.length > 1) {
+                setResultText(data.message);
+                setIsDuplicate(true);
+                setJoinData({ ...joinData, nickName: inputNickname });
+            }
         },
         onError: ({ response }) => {
             if (response.data.state === 409) {
@@ -50,11 +53,14 @@ const NicknameTemplate = ({ onPressNextStep }: NicknameTemplateProps) => {
             console.log('(ERROR) Check nickname duplicate API. respense: ', response);
         },
     });
-    const onPressCheckDuplicate = debounce(() => {
-        if (inputNickname.length > 1) {
-            refetch();
-        }
-    }, 300);
+    const checkDuplicate = useCallback(
+        debounce((text: string) => {
+            if (text.length > 1) {
+                refetch();
+            }
+        }, 600),
+        [],
+    );
 
     // Join member API
     const [tokenAtom, setTokenAtom] = useRecoilState(userTokenAtom);
@@ -106,7 +112,7 @@ const NicknameTemplate = ({ onPressNextStep }: NicknameTemplateProps) => {
 
     return (
         <View style={nicknameTemplateStyles.container}>
-            <View style={{ flex: 1 }}>
+            <View style={nicknameTemplateStyles.mainContentBox}>
                 <View style={nicknameTemplateStyles.inputBox}>
                     <SingleLineInput
                         value={inputNickname}
@@ -114,17 +120,6 @@ const NicknameTemplate = ({ onPressNextStep }: NicknameTemplateProps) => {
                         maxLength={7}
                         placeholder="닉네임을 입력해주세요."
                         fontSize={16}
-                    />
-                    <TextButton
-                        text="중복 확인"
-                        textColor={Colors.WHITE}
-                        width={69}
-                        height={31}
-                        backgroundColor={Colors.BLACK}
-                        onPress={onPressCheckDuplicate}
-                        fontSize={13}
-                        paddingHorizontal={10}
-                        paddingVertical={6}
                     />
                 </View>
 
@@ -147,6 +142,7 @@ const NicknameTemplate = ({ onPressNextStep }: NicknameTemplateProps) => {
                     </View>
                 )}
             </View>
+
             <KeyboardAvoidingView behavior="height">
                 <View style={nicknameTemplateStyles.bottomButton}>
                     <TextButton
