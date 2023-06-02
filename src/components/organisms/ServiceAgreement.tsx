@@ -11,6 +11,7 @@ import AgreementCheckListItem from '../molecules/AgreementCheckListItem';
 import { ServiceAgreementProps } from '../../types/types';
 import { checkBoxBackground, serviceAgreementStyles } from '../../styles/styles';
 import WebViewComponent from './WebViewComponent';
+import { screenHeight } from '../../utils/changeStyleSize';
 
 const ServiceAgreement = ({ finishSlideComponentHandler }: ServiceAgreementProps) => {
     // Render list data
@@ -60,7 +61,7 @@ const ServiceAgreement = ({ finishSlideComponentHandler }: ServiceAgreementProps
     const topValue = useRef<Animated.Value>(new Animated.Value(height)).current;
     const startAnimationHandler = () => {
         Animated.timing(topValue, {
-            toValue: 295,
+            toValue: 290 * screenHeight,
             duration: 400,
             useNativeDriver: true,
         }).start();
@@ -114,7 +115,7 @@ const ServiceAgreement = ({ finishSlideComponentHandler }: ServiceAgreementProps
                         </View>
                     </TouchButton>
 
-                    <ScrollView contentContainerStyle={serviceAgreementStyles.listBox}>
+                    <View style={serviceAgreementStyles.listBox}>
                         {listData.map((text, index) => (
                             <AgreementCheckListItem
                                 text={text}
@@ -125,7 +126,7 @@ const ServiceAgreement = ({ finishSlideComponentHandler }: ServiceAgreementProps
                                 webViewHandler={webViewHandler}
                             />
                         ))}
-                    </ScrollView>
+                    </View>
 
                     <TextButton
                         height={48}
