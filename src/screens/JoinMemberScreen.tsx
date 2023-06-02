@@ -149,7 +149,7 @@ const JoinMemberScreen = () => {
                         onPress={handleBackButton}
                     />
 
-                    <Spacer height={51} />
+                    {/* <Spacer height={51} /> */}
 
                     {step === 1 && (
                         <InputEmailTemplate
