@@ -816,9 +816,16 @@ export const notLoginTemplateStyles = StyleSheet.create({
         paddingTop: 99 * screenHeight,
     },
     buttonBox: {
-        width: '100%',
-        position: 'absolute',
-        bottom: 70 * screenHeight,
+        paddingBottom: 70 * screenHeight,
+    },
+    imageBox: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    imageSize: {
+        width: 244 * screenWidth,
+        height: 222 * screenHeight,
     },
 });
 export const requestPemissionTemplateStyles = StyleSheet.create({

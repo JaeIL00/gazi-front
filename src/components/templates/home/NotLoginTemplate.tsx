@@ -1,5 +1,5 @@
 import React from 'react';
-import { View } from 'react-native';
+import { Image, View } from 'react-native';
 
 import Spacer from '../../smallest/Spacer';
 import Colors from '../../../styles/Colors';
@@ -7,6 +7,8 @@ import BoldText from '../../smallest/BoldText';
 import TextButton from '../../molecules/TextButton';
 import { notLoginTemplateStyles } from '../../../styles/styles';
 import { useRootNavigation } from '../../../navigations/RootStackNavigation';
+import { screenHeight, screenWidth } from '../../../utils/changeStyleSize';
+import FastImage from 'react-native-fast-image';
 
 const NotLoginTemplate = () => {
     // Move screens handling
@@ -21,12 +23,17 @@ const NotLoginTemplate = () => {
 
     return (
         <View style={notLoginTemplateStyles.container}>
-            <BoldText text="가는길에 지금 어떤 일이" size={24} color={Colors.BLACK} />
-            <BoldText text="일어나고 있는지 알아볼까요?" size={24} color={Colors.BLACK} />
+            <View>
+                <BoldText text="가는길에 지금 어떤 일이" size={24} color={Colors.BLACK} />
+                <BoldText text="일어나고 있는지 알아볼까요?" size={24} color={Colors.BLACK} />
+            </View>
 
-            <Spacer height={46} />
-            {/* 임시 */}
-            <View style={{ backgroundColor: '#F2F2F2', height: 300 }} />
+            <View style={notLoginTemplateStyles.imageBox}>
+                <FastImage
+                    source={require('../../../assets/not-login-image.png')}
+                    style={notLoginTemplateStyles.imageSize}
+                />
+            </View>
 
             <View style={notLoginTemplateStyles.buttonBox}>
                 <TextButton
@@ -48,7 +55,6 @@ const NotLoginTemplate = () => {
                     borderColor={Colors.BLACK}
                     borderWidth={1}
                 />
-                <Spacer height={12} />
             </View>
         </View>
     );
