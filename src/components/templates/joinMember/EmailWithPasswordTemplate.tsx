@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { Animated, Keyboard, KeyboardAvoidingView, View } from 'react-native';
+import React, { useState } from 'react';
+import { KeyboardAvoidingView, View } from 'react-native';
 import { useRecoilState } from 'recoil';
 
 import Spacer from '../../smallest/Spacer';
@@ -9,18 +9,18 @@ import MediumText from '../../smallest/MediumText';
 import TextButton from '../../molecules/TextButton';
 import LoginTextInput from '../../molecules/LoginTextInput';
 import IconWithMediumText from '../../molecules/IconWithMediumText';
-import useKeyboardMotion from '../../../utils/hooks/useKeyboardMotion';
 import { joinMemberAtom } from '../../../store/atoms';
 import { EmailWithPasswordProps } from '../../../types/types';
-import { emailWithPasswordTemplateStyles, nextStepButtonPosition } from '../../../styles/styles';
-import { screenHeight } from '../../../utils/changeStyleSize';
+import { emailWithPasswordTemplateStyles } from '../../../styles/styles';
 
 const EmailWithPasswordTemplate = ({ onPressNextStep }: EmailWithPasswordProps) => {
-    // Password validation handling
+    const [joinData, setJoinData] = useRecoilState(joinMemberAtom);
+
     const [password, setpassword] = useState<string>('');
-    // const [buttonPaddingStyle, setButtonPaddingStyle] = useState<number>(41);
-    const [isPasswordLeng, setIsPasswordLeng] = useState<boolean>(false);
     const [isPasswordReg, setIsPasswordReg] = useState<boolean>(false);
+    const [isPasswordLeng, setIsPasswordLeng] = useState<boolean>(false);
+
+    // Password validation handling
     const onChangePasswordText = (text: string) => {
         setpassword(text);
         passwordErrorTextStyle(text);
@@ -32,7 +32,6 @@ const EmailWithPasswordTemplate = ({ onPressNextStep }: EmailWithPasswordProps) 
     };
 
     // Checking validation for next step
-    const [joinData, setJoinData] = useRecoilState(joinMemberAtom);
     const canMoveNextStepHandler = () => {
         if (isPasswordLeng && isPasswordReg) {
             setJoinData({ ...joinData, password });
