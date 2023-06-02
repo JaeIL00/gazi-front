@@ -744,6 +744,10 @@ export const nicknameTemplateStyles = StyleSheet.create({
     container: {
         position: 'relative',
         flex: 1,
+        paddingTop: 51 * screenHeight,
+    },
+    mainContentBox: {
+        flex: 1,
     },
     inputBox: {
         flexDirection: 'row',
@@ -767,6 +771,7 @@ export const nicknameTemplateStyles = StyleSheet.create({
 export const inputEmailTemplateStyles = StyleSheet.create({
     container: {
         flex: 1,
+        paddingTop: 51 * screenHeight,
     },
     mainContent: {
         flexGrow: 1,
@@ -793,6 +798,7 @@ export const inputEmailTemplateStyles = StyleSheet.create({
 export const emailWithPasswordTemplateStyles = StyleSheet.create({
     container: {
         flex: 1,
+        paddingTop: 51 * screenHeight,
     },
     emainTextBox: {
         height: 48 * screenHeight,
@@ -816,9 +822,16 @@ export const notLoginTemplateStyles = StyleSheet.create({
         paddingTop: 99 * screenHeight,
     },
     buttonBox: {
-        width: '100%',
-        position: 'absolute',
-        bottom: 70 * screenHeight,
+        paddingBottom: 70 * screenHeight,
+    },
+    imageBox: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    imageSize: {
+        width: 244 * screenWidth,
+        height: 222 * screenHeight,
     },
 });
 export const requestPemissionTemplateStyles = StyleSheet.create({
@@ -914,10 +927,17 @@ export const completedJoinTemplateStyles = StyleSheet.create({
     container: {
         flex: 1,
     },
+    imageBox: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    imageSize: {
+        width: 328 * screenWidth,
+        height: 342 * screenHeight,
+    },
     button: {
-        width: '100%',
-        position: 'absolute',
-        bottom: 42 * screenHeight,
+        paddingBottom: 42 * screenHeight,
     },
 });
 export const serviceHomeTemplateStyles = StyleSheet.create({

@@ -72,7 +72,6 @@ export const RootStackNavigation = () => {
             console.log('저장 엑세스', data.accessToken);
             console.log('저장 리프레시', data.refreshToken);
             rootNavigation.navigate('BottomTab');
-            SplashScreen.hide();
         } catch (error) {
             // For Debug
             console.log('(ERROR) User authorization token set storage.', error);
