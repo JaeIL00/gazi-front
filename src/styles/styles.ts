@@ -746,6 +746,9 @@ export const nicknameTemplateStyles = StyleSheet.create({
         flex: 1,
         paddingTop: 51 * screenHeight,
     },
+    mainContentBox: {
+        flex: 1,
+    },
     inputBox: {
         flexDirection: 'row',
         borderRadius: 5 * screenWidth,

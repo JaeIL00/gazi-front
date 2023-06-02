@@ -23,7 +23,6 @@ const ThreadItemScreen = () => {
         });
     };
 
-    const isFocus = useIsFocused();
     return (
         <ScreenWrapper isPaddingHorizontal={false}>
             <ThreadItemTemplate
