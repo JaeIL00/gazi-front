@@ -82,8 +82,8 @@ const EmailWithPasswordTemplate = ({ onPressNextStep }: EmailWithPasswordProps) 
                 </View>
             </View>
 
-            <KeyboardAvoidingView behavior="height">
-                <View style={emailWithPasswordTemplateStyles.bottomButton}>
+            <View style={emailWithPasswordTemplateStyles.bottomButton}>
+                <KeyboardAvoidingView behavior="height">
                     <TextButton
                         onPress={canMoveNextStepHandler}
                         text="회원가입"
@@ -92,8 +92,8 @@ const EmailWithPasswordTemplate = ({ onPressNextStep }: EmailWithPasswordProps) 
                         textColor={Colors.WHITE}
                         fontSize={17}
                     />
-                </View>
-            </KeyboardAvoidingView>
+                </KeyboardAvoidingView>
+            </View>
         </View>
     );
 };

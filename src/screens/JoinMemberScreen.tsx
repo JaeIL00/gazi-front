@@ -25,7 +25,7 @@ const JoinMemberScreen = () => {
 
     const [min, setMin] = useState<number>(5);
     const [sec, setSec] = useState<number>(0);
-    const [step, setStep] = useState<number>(1);
+    const [step, setStep] = useState<number>(2);
     const [twoTitle, setTwoTitle] = useState<string>('');
     const [oneTitle, setOneTitle] = useState<string>('회원가입');
     const [isSlideComponent, setIsSlideComponent] = useState<boolean>(false);
@@ -148,8 +148,6 @@ const JoinMemberScreen = () => {
                         explainSize={explain ? 13 : undefined}
                         onPress={handleBackButton}
                     />
-
-                    {/* <Spacer height={51} /> */}
 
                     {step === 1 && (
                         <InputEmailTemplate
