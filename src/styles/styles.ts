@@ -604,6 +604,20 @@ export const writePostAddKeywordStyles = StyleSheet.create({
         paddingHorizontal: 16 * screenWidth,
         zIndex: 9999,
     },
+    upLinear: {
+        width: '100%',
+        height: 32 * screenHeight,
+        position: 'absolute',
+        top: 0 * screenHeight,
+        zIndex: 1,
+    },
+    downLinear: {
+        width: '100%',
+        height: 32 * screenHeight,
+        position: 'absolute',
+        top: -32 * screenHeight,
+        zIndex: 1,
+    },
     headerBox: {
         flexDirection: 'row',
         alignItems: 'center',
@@ -621,9 +635,11 @@ export const writePostAddKeywordStyles = StyleSheet.create({
     },
     nextBottonBox: {
         width: '100%',
+        height: 84,
         position: 'absolute',
-        bottom: 42 * screenHeight,
+        bottom: 0,
         alignSelf: 'center',
+        backgroundColor: Colors.BACKGROUND_DEFAULT,
     },
     bottomBox: {
         position: 'absolute',
