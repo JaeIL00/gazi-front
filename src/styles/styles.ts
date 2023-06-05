@@ -727,6 +727,23 @@ export const commentListItemStyles = StyleSheet.create({
     },
 });
 export const editMyKeywordStyles = StyleSheet.create({
+    mainContainer: {
+        paddingBottom: 90 * screenHeight,
+    },
+    upLinear: {
+        width: '100%',
+        height: 32 * screenHeight,
+        position: 'absolute',
+        top: 0 * screenHeight,
+        zIndex: 1,
+    },
+    downLinear: {
+        width: '100%',
+        height: 32 * screenHeight,
+        position: 'absolute',
+        top: -32 * screenHeight,
+        zIndex: 1,
+    },
     keywordListBox: {
         flexDirection: 'row',
         alignItems: 'center',
@@ -1558,11 +1575,11 @@ export const likeKeywordSettingTemplateStyles = StyleSheet.create({
     },
     contentBox: {
         paddingHorizontal: 16 * screenWidth,
-        paddingTop: 27 * screenHeight,
         flex: 1,
     },
     contentTitleBox: {
         paddingBottom: 12 * screenHeight,
+        paddingTop: 26 * screenHeight,
     },
     nothingBox: {
         alignItems: 'center',

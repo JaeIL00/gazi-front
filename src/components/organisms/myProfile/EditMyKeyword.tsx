@@ -19,6 +19,7 @@ import { screenHeight } from '../../../utils/changeStyleSize';
 import { editMyLikeKeywordsAPI } from '../../../queries/api';
 import { issueKeywordsNotEtc, subwayKeywords, trafficKeywords } from '../../../utils/allKeywords';
 import { useRootNavigation } from '../../../navigations/RootStackNavigation';
+import LinearGradient from 'react-native-linear-gradient';
 
 const EditMyKeyword = ({
     myKeywordList,
@@ -178,8 +179,11 @@ const EditMyKeyword = ({
 
     return (
         <>
-            <View style={{ paddingBottom: 90 * screenHeight }}>
+            <Spacer height={10} />
+            <View style={editMyKeywordStyles.mainContainer}>
+                <LinearGradient colors={['#F9F9F9', '#F9F9F900']} style={editMyKeywordStyles.upLinear} />
                 <ScrollView showsVerticalScrollIndicator={false}>
+                    <Spacer height={16} />
                     <View>
                         <View style={editMyKeywordStyles.keywordListBox}>
                             <SemiBoldText text="이슈" color={Colors.BLACK} size={16} />
@@ -230,6 +234,7 @@ const EditMyKeyword = ({
             </View>
 
             <View style={editMyKeywordStyles.bottomBox}>
+                <LinearGradient colors={['#F9F9F900', '#F9F9F9']} style={editMyKeywordStyles.downLinear} />
                 <TouchButton onPress={resetCheckedHandler} paddingHorizontal={7}>
                     <View style={editMyKeywordStyles.resetText}>
                         <Icons type="feather" name="refresh-cw" size={17} color={Colors.TXT_GRAY} />
