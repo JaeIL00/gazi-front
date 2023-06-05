@@ -1,5 +1,5 @@
 import React, { useEffect, useLayoutEffect, useState } from 'react';
-import { ScrollView, View } from 'react-native';
+import { ScrollView, StatusBar, View } from 'react-native';
 
 import KeywordsList from '../KeywordsList';
 import Spacer from '../../smallest/Spacer';
@@ -102,6 +102,7 @@ const WritePostAddKeyword = ({ keywordModalHandler, getKeywordHandler }: WritePo
 
     return (
         <View style={writePostAddKeywordStyles.container}>
+            <StatusBar backgroundColor={Colors.BACKGROUND_DEFAULT} />
             <HeaderMolecule
                 title="키워드 설정"
                 isPaddingHorizontal={false}
