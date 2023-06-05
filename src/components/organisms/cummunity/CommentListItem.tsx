@@ -135,45 +135,98 @@ const CommentListItem = ({ comment, postTitle, postCount, reportHandler, firstCo
                     <NormalText text={comment.content} size={13} color="#000000" />
                     <Spacer height={8} />
                     {comment.fileList.length === 1 && (
-                        <TouchButton onPress={() => {}} width={308} height={208}>
-                            <Image
-                                source={{ uri: comment.fileList[0].fileUrl }}
-                                style={commentListItemStyles.contentImg}
-                            />
-                        </TouchButton>
+                        <CommentImageItem
+                            moveImageViewScreen={() =>
+                                moveImageViewScreen({
+                                    postTitle,
+                                    postCount,
+                                    fileList: comment.fileList,
+                                    nickName: comment.nickName,
+                                    distance: comment.distance,
+                                    time: comment.time,
+                                    imageIndex: 0,
+                                })
+                            }
+                            width={308}
+                            height={208}
+                            fileUrl={comment.fileList[0].fileUrl}
+                        />
                     )}
                     {comment.fileList.length === 2 && (
                         <View style={commentListItemStyles.contentTwoImgBox}>
-                            {comment.fileList.map(file => (
-                                <TouchButton onPress={() => {}} width={151} height={208}>
-                                    <Image source={{ uri: file.fileUrl }} style={commentListItemStyles.contentImg} />
-                                </TouchButton>
+                            {comment.fileList.map((file, index) => (
+                                <CommentImageItem
+                                    moveImageViewScreen={() =>
+                                        moveImageViewScreen({
+                                            postTitle,
+                                            postCount,
+                                            fileList: comment.fileList,
+                                            nickName: comment.nickName,
+                                            distance: comment.distance,
+                                            time: comment.time,
+                                            imageIndex: index,
+                                        })
+                                    }
+                                    width={151}
+                                    height={208}
+                                    fileUrl={file.fileUrl}
+                                />
                             ))}
                         </View>
                     )}
                     {comment.fileList.length === 3 && (
                         <View style={commentListItemStyles.contentTwoOverImgBox}>
                             <View style={commentListItemStyles.contentThrHalfImg}>
-                                <TouchButton onPress={() => {}} width={151} height={208}>
-                                    <Image
-                                        source={{ uri: comment.fileList[0].fileUrl }}
-                                        style={commentListItemStyles.contentImg}
-                                    />
-                                </TouchButton>
+                                <CommentImageItem
+                                    moveImageViewScreen={() =>
+                                        moveImageViewScreen({
+                                            postTitle,
+                                            postCount,
+                                            fileList: comment.fileList,
+                                            nickName: comment.nickName,
+                                            distance: comment.distance,
+                                            time: comment.time,
+                                            imageIndex: 0,
+                                        })
+                                    }
+                                    width={151}
+                                    height={208}
+                                    fileUrl={comment.fileList[0].fileUrl}
+                                />
                             </View>
                             <View style={commentListItemStyles.contentThrQtImg}>
-                                <TouchButton onPress={() => {}} width={151} height={101}>
-                                    <Image
-                                        source={{ uri: comment.fileList[1].fileUrl }}
-                                        style={commentListItemStyles.contentImg}
-                                    />
-                                </TouchButton>
-                                <TouchButton onPress={() => {}} width={151} height={101}>
-                                    <Image
-                                        source={{ uri: comment.fileList[2].fileUrl }}
-                                        style={commentListItemStyles.contentImg}
-                                    />
-                                </TouchButton>
+                                <CommentImageItem
+                                    moveImageViewScreen={() =>
+                                        moveImageViewScreen({
+                                            postTitle,
+                                            postCount,
+                                            fileList: comment.fileList,
+                                            nickName: comment.nickName,
+                                            distance: comment.distance,
+                                            time: comment.time,
+                                            imageIndex: 1,
+                                        })
+                                    }
+                                    width={151}
+                                    height={101}
+                                    fileUrl={comment.fileList[1].fileUrl}
+                                />
+                                <CommentImageItem
+                                    moveImageViewScreen={() =>
+                                        moveImageViewScreen({
+                                            postTitle,
+                                            postCount,
+                                            fileList: comment.fileList,
+                                            nickName: comment.nickName,
+                                            distance: comment.distance,
+                                            time: comment.time,
+                                            imageIndex: 2,
+                                        })
+                                    }
+                                    width={151}
+                                    height={101}
+                                    fileUrl={comment.fileList[2].fileUrl}
+                                />
                             </View>
                         </View>
                     )}
