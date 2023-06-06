@@ -29,10 +29,8 @@ const CommunityTemplate = ({ moveToKeywordSettingScreen }: CommunityTemplateProp
     const tooltipAnimRef = useRef<Animated.Value>(new Animated.Value(0)).current;
 
     const [postList, setPostList] = useState<PostTypes[]>([]);
-    const [allPostList, setAllPostList] = useState<PostTypes[]>([]);
     const [isLikePostTab, setIsLikePostTab] = useState<boolean>(false);
     const [chooseKeywordFilter, setChooseKeywordFilter] = useState<number[]>([]);
-    const [likeKeywordPostList, setLikeKeywordPostList] = useState<PostTypes[]>([]);
     const [myKeywordList, setMyKeywordList] = useState<KeywordListTypes[] | null>(null);
 
     // Get all post API
@@ -70,7 +68,6 @@ const CommunityTemplate = ({ moveToKeywordSettingScreen }: CommunityTemplateProp
         onSuccess: ({ data }) => {
             if (data.data.length < 1) {
                 setMyKeywordList(null);
-                setLikeKeywordPostList([]);
             } else {
                 setMyKeywordList(data.data);
             }
