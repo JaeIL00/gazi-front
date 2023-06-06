@@ -1263,7 +1263,6 @@ export const editNicknameTemplateStyles = StyleSheet.create({
 export const threadItemTemplateStyles = StyleSheet.create({
     backButtonBox: {
         position: 'absolute',
-        top: 20 * screenHeight,
         left: 16 * screenWidth,
         zIndex: 1,
     },
@@ -1278,12 +1277,10 @@ export const threadItemTemplateStyles = StyleSheet.create({
     },
     mapImgBox: {
         height: 150 * screenHeight,
-        backgroundColor: '#999',
     },
     mapImg: { width: '100%', height: '100%' },
     main: {
         paddingHorizontal: 16 * screenWidth,
-        paddingTop: 19 * screenHeight,
     },
     headerBox: {
         flexDirection: 'row',
