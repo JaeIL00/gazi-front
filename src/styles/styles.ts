@@ -604,6 +604,20 @@ export const writePostAddKeywordStyles = StyleSheet.create({
         paddingHorizontal: 16 * screenWidth,
         zIndex: 9999,
     },
+    upLinear: {
+        width: '100%',
+        height: 32 * screenHeight,
+        position: 'absolute',
+        top: 0 * screenHeight,
+        zIndex: 1,
+    },
+    downLinear: {
+        width: '100%',
+        height: 32 * screenHeight,
+        position: 'absolute',
+        top: -32 * screenHeight,
+        zIndex: 1,
+    },
     headerBox: {
         flexDirection: 'row',
         alignItems: 'center',
@@ -621,9 +635,11 @@ export const writePostAddKeywordStyles = StyleSheet.create({
     },
     nextBottonBox: {
         width: '100%',
+        height: 84,
         position: 'absolute',
-        bottom: 42 * screenHeight,
+        bottom: 0,
         alignSelf: 'center',
+        backgroundColor: Colors.BACKGROUND_DEFAULT,
     },
     bottomBox: {
         position: 'absolute',
@@ -711,6 +727,23 @@ export const commentListItemStyles = StyleSheet.create({
     },
 });
 export const editMyKeywordStyles = StyleSheet.create({
+    mainContainer: {
+        paddingBottom: 90 * screenHeight,
+    },
+    upLinear: {
+        width: '100%',
+        height: 32 * screenHeight,
+        position: 'absolute',
+        top: 0 * screenHeight,
+        zIndex: 1,
+    },
+    downLinear: {
+        width: '100%',
+        height: 32 * screenHeight,
+        position: 'absolute',
+        top: -32 * screenHeight,
+        zIndex: 1,
+    },
     keywordListBox: {
         flexDirection: 'row',
         alignItems: 'center',
@@ -1230,7 +1263,6 @@ export const editNicknameTemplateStyles = StyleSheet.create({
 export const threadItemTemplateStyles = StyleSheet.create({
     backButtonBox: {
         position: 'absolute',
-        top: 20 * screenHeight,
         left: 16 * screenWidth,
         zIndex: 1,
     },
@@ -1245,12 +1277,10 @@ export const threadItemTemplateStyles = StyleSheet.create({
     },
     mapImgBox: {
         height: 150 * screenHeight,
-        backgroundColor: '#999',
     },
     mapImg: { width: '100%', height: '100%' },
     main: {
         paddingHorizontal: 16 * screenWidth,
-        paddingTop: 19 * screenHeight,
     },
     headerBox: {
         flexDirection: 'row',
@@ -1403,7 +1433,7 @@ export const communityTemplateStyles = StyleSheet.create({
     nothingBox: {
         alignItems: 'center',
         justifyContent: 'center',
-        flex: 0.8,
+        flex: 1,
     },
     nothingIcon: {
         width: 88 * screenWidth,
@@ -1542,11 +1572,11 @@ export const likeKeywordSettingTemplateStyles = StyleSheet.create({
     },
     contentBox: {
         paddingHorizontal: 16 * screenWidth,
-        paddingTop: 27 * screenHeight,
         flex: 1,
     },
     contentTitleBox: {
         paddingBottom: 12 * screenHeight,
+        paddingTop: 26 * screenHeight,
     },
     nothingBox: {
         alignItems: 'center',

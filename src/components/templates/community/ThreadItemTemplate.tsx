@@ -154,21 +154,31 @@ const ThreadItemTemplate = ({
 
     return (
         <>
-            <View style={threadItemTemplateStyles.mapImgBox}>
-                {postValue.backgroundMapUrl && (
+            {postValue.backgroundMapUrl && (
+                <View style={threadItemTemplateStyles.mapImgBox}>
                     <Image source={{ uri: postValue.backgroundMapUrl }} style={threadItemTemplateStyles.mapImg} />
-                )}
-            </View>
+                </View>
+            )}
 
-            <View style={threadItemTemplateStyles.main}>
+            <View
+                style={[
+                    threadItemTemplateStyles.main,
+                    {
+                        paddingTop: postValue.backgroundMapUrl ? 19 * screenHeight : 66 * screenHeight,
+                    },
+                ]}>
                 <View style={threadItemTemplateStyles.headerBox}>
                     <View>
-                        <NormalText
-                            text={`${postValue.distance} | ${postValue.placeName}`}
-                            size={12}
-                            color={Colors.TXT_GRAY}
-                        />
-                        <Spacer height={4} />
+                        {postValue.backgroundMapUrl && (
+                            <>
+                                <NormalText
+                                    text={`${postValue.distance} | ${postValue.placeName}`}
+                                    size={12}
+                                    color={Colors.TXT_GRAY}
+                                />
+                                <Spacer height={4} />
+                            </>
+                        )}
                         <SemiBoldText text={postValue.title} size={20} color={Colors.BLACK} />
                         <Spacer height={4} />
                         <NormalText
@@ -201,18 +211,32 @@ const ThreadItemTemplate = ({
                 </View>
             </View>
 
-            <View style={threadItemTemplateStyles.backButtonBox}>
+            <View
+                style={[
+                    threadItemTemplateStyles.backButtonBox,
+                    {
+                        top: postValue.backgroundMapUrl ? 20 * screenHeight : 35 * screenHeight,
+                    },
+                ]}>
                 {Platform.OS === 'android' && (
-                    <DropShadow style={threadItemTemplateStyles.ButtonShadow}>
-                        <TouchButton
-                            onPress={movetoCommunityScreen}
-                            backgroundColor="#FFFFFF80"
-                            width={36}
-                            height={(36 / screenHeight) * screenWidth}
-                            borderRadius={36}>
-                            <Icons type="octicons" name="arrow-left" color={Colors.TXT_BLACK} size={22} />
-                        </TouchButton>
-                    </DropShadow>
+                    <>
+                        {postValue.backgroundMapUrl ? (
+                            <DropShadow style={threadItemTemplateStyles.ButtonShadow}>
+                                <TouchButton
+                                    onPress={movetoCommunityScreen}
+                                    backgroundColor="#FFFFFF80"
+                                    width={36}
+                                    height={(36 / screenHeight) * screenWidth}
+                                    borderRadius={36}>
+                                    <Icons type="octicons" name="arrow-left" color={Colors.TXT_BLACK} size={22} />
+                                </TouchButton>
+                            </DropShadow>
+                        ) : (
+                            <TouchButton onPress={movetoCommunityScreen}>
+                                <Icons type="octicons" name="arrow-left" color={Colors.TXT_BLACK} size={22} />
+                            </TouchButton>
+                        )}
+                    </>
                 )}
             </View>
 

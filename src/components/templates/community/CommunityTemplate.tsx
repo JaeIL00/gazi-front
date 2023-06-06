@@ -1,10 +1,12 @@
-import React, { useCallback, useLayoutEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { ActivityIndicator, Animated, FlatList, ScrollView, View } from 'react-native';
 import { useRecoilValue } from 'recoil';
 import { useInfiniteQuery, useQuery } from 'react-query';
 import { useIsFocused } from '@react-navigation/native';
 import { debounce } from 'lodash';
 import FastImage from 'react-native-fast-image';
+import Geolocation from '@react-native-community/geolocation';
+import { PERMISSIONS, RESULTS, check } from 'react-native-permissions';
 
 import Icons from '../../smallest/Icons';
 import Spacer from '../../smallest/Spacer';
@@ -26,27 +28,33 @@ const CommunityTemplate = ({ moveToKeywordSettingScreen }: CommunityTemplateProp
 
     const postsResponseIndexRef = useRef<number>(0);
     const getKeywordPostParamRef = useRef<string>('');
+    const currentPositionRef = useRef<{ lat: number; lon: number }>({ lat: 0, lon: 0 });
     const tooltipAnimRef = useRef<Animated.Value>(new Animated.Value(0)).current;
 
     const [postList, setPostList] = useState<PostTypes[]>([]);
-    const [allPostList, setAllPostList] = useState<PostTypes[]>([]);
     const [isLikePostTab, setIsLikePostTab] = useState<boolean>(false);
     const [chooseKeywordFilter, setChooseKeywordFilter] = useState<number[]>([]);
-    const [likeKeywordPostList, setLikeKeywordPostList] = useState<PostTypes[]>([]);
     const [myKeywordList, setMyKeywordList] = useState<KeywordListTypes[] | null>(null);
 
-    // Get all post API
-    const { hasNextPage, isFetching, isFetchingNextPage, fetchNextPage, refetch, remove } = useInfiniteQuery(
+    // Get post API
+    const {
+        hasNextPage,
+        isFetching,
+        fetchNextPage,
+        refetch: getPostRefetch,
+        remove,
+    } = useInfiniteQuery(
         'getAllPosts',
         ({ pageParam = 0 }) =>
             getAllPostAPI({
-                curLat: 37.49795103144074,
-                curLon: 127.02760985223079,
+                curLat: currentPositionRef.current.lat,
+                curLon: currentPositionRef.current.lon,
                 accessToken,
                 keywords: getKeywordPostParamRef.current,
                 page: pageParam,
             }),
         {
+            enabled: false,
             getNextPageParam: (lastPage, allPages) => {
                 const total = lastPage.data.data.totalPages;
                 const nextPage = lastPage.data.data.pageable.pageNumber + 1;
@@ -60,7 +68,7 @@ const CommunityTemplate = ({ moveToKeywordSettingScreen }: CommunityTemplateProp
             },
             onError: ({ response }) => {
                 // For Debug
-                console.log('(ERROR) Get all post API. respense: ', response);
+                console.log('(ERROR) Get post API. respense: ', response);
             },
         },
     );
@@ -70,9 +78,11 @@ const CommunityTemplate = ({ moveToKeywordSettingScreen }: CommunityTemplateProp
         onSuccess: ({ data }) => {
             if (data.data.length < 1) {
                 setMyKeywordList(null);
-                setLikeKeywordPostList([]);
-            } else {
+            } else if (data.data !== myKeywordList) {
                 setMyKeywordList(data.data);
+                if (isLikePostTab) {
+                    getKeywordPostInit(data.data);
+                }
             }
         },
         onError: error => {
@@ -89,7 +99,7 @@ const CommunityTemplate = ({ moveToKeywordSettingScreen }: CommunityTemplateProp
             case 'ALL':
                 getKeywordPostParamRef.current = '';
                 remove();
-                refetch();
+                getPostRefetch();
                 setIsLikePostTab(false);
                 break;
             case 'LIKE':
@@ -102,13 +112,7 @@ const CommunityTemplate = ({ moveToKeywordSettingScreen }: CommunityTemplateProp
                         }).start();
                     }, 5000);
                 } else {
-                    setChooseKeywordFilter([]);
-                    for (const index in myKeywordList) {
-                        getKeywordPostParamRef.current =
-                            getKeywordPostParamRef.current + `&keywordId=${myKeywordList[Number(index)].id}`;
-                    }
-                    remove();
-                    refetch();
+                    getKeywordPostInit(myKeywordList);
                 }
                 setIsLikePostTab(true);
                 break;
@@ -116,6 +120,45 @@ const CommunityTemplate = ({ moveToKeywordSettingScreen }: CommunityTemplateProp
                 // For Debug
                 console.log('(ERROR) Tab control handler.', state);
         }
+    };
+
+    // Init get post and check permission
+    const isAllowLocationPermission = async () => {
+        try {
+            const locationPermission = await check(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION);
+            const isAllow = locationPermission === RESULTS.GRANTED;
+            if (isAllow) {
+                Geolocation.getCurrentPosition(info => {
+                    currentPositionRef.current = {
+                        lat: info.coords.latitude,
+                        lon: info.coords.longitude,
+                    };
+                });
+            } else {
+                currentPositionRef.current = {
+                    lat: 0,
+                    lon: 0,
+                };
+            }
+        } catch (err) {
+            // For Debug
+            console.log('(ERROR) Check Location Permission.', err);
+            currentPositionRef.current = {
+                lat: 0,
+                lon: 0,
+            };
+        }
+    };
+
+    // Get my keyword post (init)
+    const getKeywordPostInit = (keywords: KeywordListTypes[]) => {
+        setChooseKeywordFilter([]);
+        for (const index in keywords) {
+            getKeywordPostParamRef.current =
+                getKeywordPostParamRef.current + `&keywordId=${keywords[Number(index)].id}`;
+        }
+        remove();
+        getPostRefetch();
     };
 
     // Get post list handler
@@ -165,21 +208,30 @@ const CommunityTemplate = ({ moveToKeywordSettingScreen }: CommunityTemplateProp
     const keywordPostListRefetch = useCallback(
         debounce(() => {
             remove();
-            refetch();
+            getPostRefetch();
         }, 600),
         [],
     );
 
     // Flst list props callback
     const keyExtractor = useCallback((item: PostTypes) => item.postId + '', []);
-    const renderItem = ({ item }: { item: PostTypes }) => <PostListItem post={item} isBorder={true} />;
+    const renderItem = useCallback(({ item }: { item: PostTypes }) => <PostListItem post={item} isBorder={true} />, []);
 
     // Refresh my keyword setting
     useLayoutEffect(() => {
         if (isLikePostTab) {
+            getKeywordPostParamRef.current = '';
             getMyKeywordRefetch();
         }
     }, [isFocusScreen]);
+
+    useLayoutEffect(() => {
+        isAllowLocationPermission();
+    }, []);
+
+    useLayoutEffect(() => {
+        getPostRefetch();
+    }, [currentPositionRef.current]);
 
     return (
         <View style={communityTemplateStyles.container}>
@@ -287,11 +339,11 @@ const CommunityTemplate = ({ moveToKeywordSettingScreen }: CommunityTemplateProp
                         </ScrollView>
                     </View>
                 )}
-                {myKeywordList && (
+                {isLikePostTab && !myKeywordList ? null : (
                     <FlatList
                         keyExtractor={keyExtractor}
                         data={postList}
-                        renderItem={({ item }) => <PostListItem post={item} isBorder={true} />}
+                        renderItem={renderItem}
                         onEndReachedThreshold={1.8}
                         onEndReached={() => {
                             if (hasNextPage) {
