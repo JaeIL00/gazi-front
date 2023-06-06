@@ -30,11 +30,12 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritePost }:
 
     const indexNumber = useRef<number>(0);
     const mapRef = useRef() as RefObject<MapView>;
-    const currentPosition = useRef<MapLocationTypes>({
+    const locationPermissionRef = useRef<boolean>(false);
+    const currentPositionRef = useRef<MapLocationTypes>({
         latitude: 37.49795103144074,
         longitude: 127.02760985223079,
     });
-    const mapBoundaryState = useRef<MapBoundaryTypes>({
+    const mapBoundaryStateRef = useRef<MapBoundaryTypes>({
         northEast: {
             latitude: 37.45878314300355,
             longitude: 126.8773839622736,
@@ -55,32 +56,21 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritePost }:
     const [isBottomSheetFull, setIsBottomSheetFull] = useState<boolean>(false);
     const [isNearPostSearchTopBar, setIsNearPostSearchTopBar] = useState<boolean>(false);
     const [onLocationPermissionModal, setOnLocationPermissionModal] = useState<boolean>(false);
-    // const [mapBoundaryState, setMapBoundaryState] = useState<MapBoundaryTypes>({
-    //     northEast: {
-    //         latitude: 37.45878314300355,
-    //         longitude: 126.8773839622736,
-    //     },
-    //     southWest: {
-    //         latitude: 37.45878314300355,
-    //         longitude: 126.8773839622736,
-    //     },
-    //     isNearSearch: false,
-    // });
 
     // Get post of near by user API
     const { hasNextPage, isFetching, fetchNextPage, refetch, remove } = useInfiniteQuery(
-        ['getNearPosts'],
+        'getNearPosts',
         ({ pageParam = 0 }) =>
             nearByUserPostsAPI({
-                minLat: mapBoundaryState.current.southWest.latitude,
-                minLon: mapBoundaryState.current.southWest.longitude,
-                maxLat: mapBoundaryState.current.northEast.latitude,
-                maxLon: mapBoundaryState.current.northEast.longitude,
-                curLat: currentPosition.current.latitude,
-                curLon: currentPosition.current.longitude,
+                minLat: mapBoundaryStateRef.current.southWest.latitude,
+                minLon: mapBoundaryStateRef.current.southWest.longitude,
+                maxLat: mapBoundaryStateRef.current.northEast.latitude,
+                maxLon: mapBoundaryStateRef.current.northEast.longitude,
+                curLat: locationPermissionRef ? currentPositionRef.current.latitude : 0,
+                curLon: locationPermissionRef ? currentPositionRef.current.longitude : 0,
                 accessToken,
                 page: pageParam,
-                isNearSearch: mapBoundaryState.current.isNearSearch,
+                isNearSearch: mapBoundaryStateRef.current.isNearSearch,
             }),
         {
             enabled: false,
@@ -125,7 +115,7 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritePost }:
 
     // Seach location to move map
     const getLocationHandler = (location: { lat: number; lng: number }) => {
-        currentPosition.current = {
+        currentPositionRef.current = {
             latitude: location.lat,
             longitude: location.lng,
         };
@@ -153,15 +143,17 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritePost }:
     const isAllowPermissionInit = async () => {
         const isOkPermission = await checkLocationPermission();
         if (isOkPermission) {
+            locationPermissionRef.current = true;
             Geolocation.getCurrentPosition(info => {
-                currentPosition.current = {
+                currentPositionRef.current = {
                     latitude: info.coords.latitude,
                     longitude: info.coords.longitude,
                 };
                 setIsAllowLocation(true);
             });
         } else {
-            currentPosition.current = {
+            locationPermissionRef.current = false;
+            currentPositionRef.current = {
                 latitude: 37.49795103144074,
                 longitude: 127.02760985223079,
             };
@@ -179,22 +171,21 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritePost }:
         if (isOkPermission) {
             Geolocation.getCurrentPosition(info => {
                 if (
-                    info.coords.latitude !== currentPosition.current.latitude &&
-                    info.coords.longitude !== currentPosition.current.longitude
+                    info.coords.latitude !== currentPositionRef.current.latitude &&
+                    info.coords.longitude !== currentPositionRef.current.longitude
                 ) {
-                    currentPosition.current = {
+                    currentPositionRef.current = {
                         latitude: info.coords.latitude,
                         longitude: info.coords.longitude,
                     };
                     setIsAllowLocation(true);
                 } else {
                     mapRef.current?.animateToRegion({
-                        latitude: currentPosition.current.latitude,
-                        longitude: currentPosition.current.longitude,
+                        latitude: currentPositionRef.current.latitude,
+                        longitude: currentPositionRef.current.longitude,
                         latitudeDelta: 0.04,
                         longitudeDelta: 0.027,
                     });
-                    setIsNearPostSearchTopBar(false);
                 }
             });
         } else {
@@ -208,8 +199,8 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritePost }:
         let boundaryValue;
         try {
             boundaryValue = (await mapRef.current?.getMapBoundaries()) as BoundingBox;
-            mapBoundaryState.current = {
-                ...mapBoundaryState.current,
+            mapBoundaryStateRef.current = {
+                ...mapBoundaryStateRef.current,
                 northEast: boundaryValue.northEast,
                 southWest: boundaryValue.southWest,
             };
@@ -303,14 +294,14 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritePost }:
             if (region.latitudeDelta > 0.15) {
                 setIsFarMapLevel(true);
             } else if (region.latitudeDelta < 0.15 && region.latitudeDelta > 0.065) {
-                mapBoundaryState.current = {
-                    ...mapBoundaryState.current,
+                mapBoundaryStateRef.current = {
+                    ...mapBoundaryStateRef.current,
                     isNearSearch: true,
                 };
                 setIsFarMapLevel(false);
             } else {
-                mapBoundaryState.current = {
-                    ...mapBoundaryState.current,
+                mapBoundaryStateRef.current = {
+                    ...mapBoundaryStateRef.current,
                     isNearSearch: false,
                 };
                 setIsFarMapLevel(false);
@@ -327,7 +318,7 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritePost }:
         <>
             <MapWithMarker
                 mapRef={mapRef}
-                currentPosition={currentPosition.current}
+                currentPosition={currentPositionRef.current}
                 nearPostList={nearPostList}
                 isAllowLocation={isAllowLocation}
                 checkMapGesture={checkMapGesture}
@@ -376,8 +367,8 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritePost }:
                 markerPost={markerPost}
                 isBottomSheetMini={isBottomSheetMini}
                 isBottomSheetFull={isBottomSheetFull}
-                currentPosition={currentPosition.current}
-                mapBoundaryState={mapBoundaryState.current}
+                currentPosition={currentPositionRef.current}
+                mapBoundaryState={mapBoundaryStateRef.current}
                 moveToBottomSheetFull={moveToBottomSheetFull}
                 notBottomSheetMini={notBottomSheetMini}
                 onPressGetUserPosition={onPressGetUserPosition}
