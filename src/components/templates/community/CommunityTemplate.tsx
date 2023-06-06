@@ -169,7 +169,7 @@ const CommunityTemplate = ({ moveToKeywordSettingScreen }: CommunityTemplateProp
 
     // Flst list props callback
     const keyExtractor = useCallback((item: PostTypes) => item.postId + '', []);
-    const renderItem = ({ item }: { item: PostTypes }) => <PostListItem post={item} isBorder={true} />;
+    const renderItem = useCallback(({ item }: { item: PostTypes }) => <PostListItem post={item} isBorder={true} />, []);
 
     // Refresh my keyword setting
     useLayoutEffect(() => {
@@ -288,7 +288,7 @@ const CommunityTemplate = ({ moveToKeywordSettingScreen }: CommunityTemplateProp
                     <FlatList
                         keyExtractor={keyExtractor}
                         data={postList}
-                        renderItem={({ item }) => <PostListItem post={item} isBorder={true} />}
+                        renderItem={renderItem}
                         onEndReachedThreshold={1.8}
                         onEndReached={() => {
                             if (hasNextPage) {
