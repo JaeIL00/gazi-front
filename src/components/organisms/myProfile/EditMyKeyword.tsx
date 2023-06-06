@@ -127,10 +127,10 @@ const EditMyKeyword = ({
 
     // My keyword API success
     const successEdit = async () => {
-        await getMyKeywordRefetch();
         if (isFromCommunity) {
             rootNavigation.navigate('BottomTab', { screen: 'Community' });
         } else {
+            await getMyKeywordRefetch();
             controlEditWindowHandler('BACK');
         }
     };
@@ -150,11 +150,15 @@ const EditMyKeyword = ({
                 deleteKeywords = [...deleteKeywords, freshmyKeywordList[index]];
             }
         }
-        mutate({
-            accessToken,
-            addKeywordIdList: addKeywords,
-            deleteKeywordIdList: deleteKeywords,
-        });
+        if (addKeywords.length > 0 || deleteKeywords.length > 0) {
+            mutate({
+                accessToken,
+                addKeywordIdList: addKeywords,
+                deleteKeywordIdList: deleteKeywords,
+            });
+        } else {
+            successEdit();
+        }
     };
 
     // Init checking

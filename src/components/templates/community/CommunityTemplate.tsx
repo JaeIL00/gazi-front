@@ -68,8 +68,11 @@ const CommunityTemplate = ({ moveToKeywordSettingScreen }: CommunityTemplateProp
         onSuccess: ({ data }) => {
             if (data.data.length < 1) {
                 setMyKeywordList(null);
-            } else {
+            } else if (data.data !== myKeywordList) {
                 setMyKeywordList(data.data);
+                if (isLikePostTab) {
+                    getKeywordPostInit(data.data);
+                }
             }
         },
         onError: error => {
@@ -99,13 +102,7 @@ const CommunityTemplate = ({ moveToKeywordSettingScreen }: CommunityTemplateProp
                         }).start();
                     }, 5000);
                 } else {
-                    setChooseKeywordFilter([]);
-                    for (const index in myKeywordList) {
-                        getKeywordPostParamRef.current =
-                            getKeywordPostParamRef.current + `&keywordId=${myKeywordList[Number(index)].id}`;
-                    }
-                    remove();
-                    refetch();
+                    getKeywordPostInit(myKeywordList);
                 }
                 setIsLikePostTab(true);
                 break;
@@ -113,6 +110,17 @@ const CommunityTemplate = ({ moveToKeywordSettingScreen }: CommunityTemplateProp
                 // For Debug
                 console.log('(ERROR) Tab control handler.', state);
         }
+    };
+
+    // Get my keyword post (init)
+    const getKeywordPostInit = (keywords: KeywordListTypes[]) => {
+        setChooseKeywordFilter([]);
+        for (const index in keywords) {
+            getKeywordPostParamRef.current =
+                getKeywordPostParamRef.current + `&keywordId=${keywords[Number(index)].id}`;
+        }
+        remove();
+        refetch();
     };
 
     // Get post list handler
@@ -174,6 +182,7 @@ const CommunityTemplate = ({ moveToKeywordSettingScreen }: CommunityTemplateProp
     // Refresh my keyword setting
     useLayoutEffect(() => {
         if (isLikePostTab) {
+            getKeywordPostParamRef.current = '';
             getMyKeywordRefetch();
         }
     }, [isFocusScreen]);
