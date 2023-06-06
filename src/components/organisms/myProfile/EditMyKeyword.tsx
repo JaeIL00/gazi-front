@@ -2,6 +2,7 @@ import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { ActivityIndicator, ScrollView, View } from 'react-native';
 import { useMutation } from 'react-query';
 import { useRecoilValue } from 'recoil';
+import LinearGradient from 'react-native-linear-gradient';
 
 import Icons from '../../smallest/Icons';
 import Spacer from '../../smallest/Spacer';
@@ -15,11 +16,9 @@ import useCheckKeyword from '../../../utils/hooks/useCheckKeyword';
 import { userTokenAtom } from '../../../store/atoms';
 import { EditMyKeywordProps } from '../../../types/types';
 import { editMyKeywordStyles } from '../../../styles/styles';
-import { screenHeight } from '../../../utils/changeStyleSize';
 import { editMyLikeKeywordsAPI } from '../../../queries/api';
-import { issueKeywordsNotEtc, subwayKeywords, trafficKeywords } from '../../../utils/allKeywords';
 import { useRootNavigation } from '../../../navigations/RootStackNavigation';
-import LinearGradient from 'react-native-linear-gradient';
+import { issueKeywordsNotEtc, subwayKeywords, trafficKeywords } from '../../../utils/allKeywords';
 
 const EditMyKeyword = ({
     myKeywordList,

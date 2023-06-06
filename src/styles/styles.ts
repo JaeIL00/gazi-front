@@ -1436,7 +1436,7 @@ export const communityTemplateStyles = StyleSheet.create({
     nothingBox: {
         alignItems: 'center',
         justifyContent: 'center',
-        flex: 0.8,
+        flex: 1,
     },
     nothingIcon: {
         width: 88 * screenWidth,
