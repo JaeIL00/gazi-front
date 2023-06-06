@@ -2,6 +2,7 @@ import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { ActivityIndicator, ScrollView, View } from 'react-native';
 import { useMutation } from 'react-query';
 import { useRecoilValue } from 'recoil';
+import LinearGradient from 'react-native-linear-gradient';
 
 import Icons from '../../smallest/Icons';
 import Spacer from '../../smallest/Spacer';
@@ -15,10 +16,9 @@ import useCheckKeyword from '../../../utils/hooks/useCheckKeyword';
 import { userTokenAtom } from '../../../store/atoms';
 import { EditMyKeywordProps } from '../../../types/types';
 import { editMyKeywordStyles } from '../../../styles/styles';
-import { screenHeight } from '../../../utils/changeStyleSize';
 import { editMyLikeKeywordsAPI } from '../../../queries/api';
-import { issueKeywordsNotEtc, subwayKeywords, trafficKeywords } from '../../../utils/allKeywords';
 import { useRootNavigation } from '../../../navigations/RootStackNavigation';
+import { issueKeywordsNotEtc, subwayKeywords, trafficKeywords } from '../../../utils/allKeywords';
 
 const EditMyKeyword = ({
     myKeywordList,
@@ -126,10 +126,10 @@ const EditMyKeyword = ({
 
     // My keyword API success
     const successEdit = async () => {
-        await getMyKeywordRefetch();
         if (isFromCommunity) {
             rootNavigation.navigate('BottomTab', { screen: 'Community' });
         } else {
+            await getMyKeywordRefetch();
             controlEditWindowHandler('BACK');
         }
     };
@@ -149,11 +149,15 @@ const EditMyKeyword = ({
                 deleteKeywords = [...deleteKeywords, freshmyKeywordList[index]];
             }
         }
-        mutate({
-            accessToken,
-            addKeywordIdList: addKeywords,
-            deleteKeywordIdList: deleteKeywords,
-        });
+        if (addKeywords.length > 0 || deleteKeywords.length > 0) {
+            mutate({
+                accessToken,
+                addKeywordIdList: addKeywords,
+                deleteKeywordIdList: deleteKeywords,
+            });
+        } else {
+            successEdit();
+        }
     };
 
     // Init checking
@@ -178,8 +182,11 @@ const EditMyKeyword = ({
 
     return (
         <>
-            <View style={{ paddingBottom: 90 * screenHeight }}>
+            <Spacer height={10} />
+            <View style={editMyKeywordStyles.mainContainer}>
+                <LinearGradient colors={['#F9F9F9', '#F9F9F900']} style={editMyKeywordStyles.upLinear} />
                 <ScrollView showsVerticalScrollIndicator={false}>
+                    <Spacer height={16} />
                     <View>
                         <View style={editMyKeywordStyles.keywordListBox}>
                             <SemiBoldText text="이슈" color={Colors.BLACK} size={16} />
@@ -230,6 +237,7 @@ const EditMyKeyword = ({
             </View>
 
             <View style={editMyKeywordStyles.bottomBox}>
+                <LinearGradient colors={['#F9F9F900', '#F9F9F9']} style={editMyKeywordStyles.downLinear} />
                 <TouchButton onPress={resetCheckedHandler} paddingHorizontal={7}>
                     <View style={editMyKeywordStyles.resetText}>
                         <Icons type="feather" name="refresh-cw" size={17} color={Colors.TXT_GRAY} />

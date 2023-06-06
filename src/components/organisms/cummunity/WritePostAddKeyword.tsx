@@ -1,5 +1,5 @@
 import React, { useEffect, useLayoutEffect, useState } from 'react';
-import { ScrollView, View } from 'react-native';
+import { ScrollView, StatusBar, View } from 'react-native';
 
 import KeywordsList from '../KeywordsList';
 import Spacer from '../../smallest/Spacer';
@@ -9,9 +9,10 @@ import TextButton from '../../molecules/TextButton';
 import SemiBoldText from '../../smallest/SemiBoldText';
 import HeaderMolecule from '../../molecules/HeaderMolecule';
 import useCheckKeyword from '../../../utils/hooks/useCheckKeyword';
-import { writePostAddKeywordStyles } from '../../../styles/styles';
+import { initLikeKeywordTemplateStyles, writePostAddKeywordStyles } from '../../../styles/styles';
 import { KeywordListTypes, WritePostAddKeywordProps } from '../../../types/types';
 import { issueKeywords, subwayKeywords, trafficKeywords } from '../../../utils/allKeywords';
+import LinearGradient from 'react-native-linear-gradient';
 
 const WritePostAddKeyword = ({ keywordModalHandler, getKeywordHandler }: WritePostAddKeywordProps) => {
     const [step, setStep] = useState<number>(1);
@@ -102,6 +103,7 @@ const WritePostAddKeyword = ({ keywordModalHandler, getKeywordHandler }: WritePo
 
     return (
         <View style={writePostAddKeywordStyles.container}>
+            <StatusBar backgroundColor={Colors.BACKGROUND_DEFAULT} />
             <HeaderMolecule
                 title="키워드 설정"
                 isPaddingHorizontal={false}
@@ -111,11 +113,13 @@ const WritePostAddKeyword = ({ keywordModalHandler, getKeywordHandler }: WritePo
                 finishText=""
                 background="undefined"
             />
-            <Spacer height={42} />
+            <Spacer height={10} />
             {step === 1 && (
-                <>
+                <View>
+                    <LinearGradient colors={['#F9F9F9', '#F9F9F900']} style={writePostAddKeywordStyles.upLinear} />
                     <ScrollView showsVerticalScrollIndicator={false}>
                         <View>
+                            <Spacer height={16} />
                             <View style={writePostAddKeywordStyles.keywordListBox}>
                                 <SemiBoldText text="이슈" color={Colors.BLACK} size={16} />
                                 <Spacer width={6} />
@@ -163,9 +167,9 @@ const WritePostAddKeyword = ({ keywordModalHandler, getKeywordHandler }: WritePo
                                 />
                             )}
                         </View>
-                        <Spacer height={100} />
+                        <Spacer height={200} />
                     </ScrollView>
-                </>
+                </View>
             )}
 
             {step === 2 && (
@@ -186,6 +190,7 @@ const WritePostAddKeyword = ({ keywordModalHandler, getKeywordHandler }: WritePo
             )}
 
             <View style={writePostAddKeywordStyles.nextBottonBox}>
+                <LinearGradient colors={['#F9F9F900', '#F9F9F9']} style={writePostAddKeywordStyles.downLinear} />
                 <TextButton
                     onPress={stepHandler}
                     text={step === 1 ? '다음' : '완료'}

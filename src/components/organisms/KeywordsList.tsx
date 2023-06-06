@@ -27,7 +27,7 @@ const KeywordsList = ({
             {list.map((item, index) => (
                 <View key={item.id} style={keywordsListStyles.itemBox}>
                     <TouchButton
-                        onPressIn={() => {
+                        onPress={() => {
                             checkKeywordHandler(type, index, item.id);
                         }}
                         borderColor={

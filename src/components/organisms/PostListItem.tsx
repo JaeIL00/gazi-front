@@ -30,7 +30,9 @@ const PostListItem = ({ post, isBorder, isMarkerPost, isNearList }: PostListItem
                                 <SemiBoldText text={post.title} size={isMarkerPost ? 18 : 16} color={Colors.BLACK} />
                                 {isMarkerPost && <Spacer height={5} />}
                                 <MediumText
-                                    text={`${post.distance} | ${post.time} | +${post.rePostCount}posts`}
+                                    text={`${post.distance ? post.distance + ' | ' : ''}${post.time} | +${
+                                        post.rePostCount
+                                    }posts`}
                                     size={11}
                                     color={Colors.TXT_GRAY}
                                 />
