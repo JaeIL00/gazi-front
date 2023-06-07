@@ -1291,6 +1291,10 @@ export const threadItemTemplateStyles = StyleSheet.create({
         borderBottomWidth: 1 * screenFont,
         borderColor: '#EBEBEB',
     },
+    headerTitleBox: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+    },
     shareIcon: {
         width: 24 * screenWidth,
         height: 24 * screenWidth,

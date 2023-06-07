@@ -179,7 +179,11 @@ const ThreadItemTemplate = ({
                                 <Spacer height={4} />
                             </>
                         )}
-                        <SemiBoldText text={postValue.title} size={20} color={Colors.BLACK} />
+                        <View style={threadItemTemplateStyles.headerTitleBox}>
+                            {postValue.title.split(' ').map(item => (
+                                <SemiBoldText text={`${item} `} size={20} color={Colors.BLACK} />
+                            ))}
+                        </View>
                         <Spacer height={4} />
                         <NormalText
                             text={`${postValue.rePostCount} posts • updated ${postValue.time}`}
