@@ -66,8 +66,8 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritePost }:
                 minLon: mapBoundaryStateRef.current.southWest.longitude,
                 maxLat: mapBoundaryStateRef.current.northEast.latitude,
                 maxLon: mapBoundaryStateRef.current.northEast.longitude,
-                curLat: locationPermissionRef ? currentPositionRef.current.latitude : 0,
-                curLon: locationPermissionRef ? currentPositionRef.current.longitude : 0,
+                curLat: locationPermissionRef.current ? currentPositionRef.current.latitude : 0,
+                curLon: locationPermissionRef.current ? currentPositionRef.current.longitude : 0,
                 accessToken,
                 page: pageParam,
                 isNearSearch: mapBoundaryStateRef.current.isNearSearch,
@@ -153,10 +153,6 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritePost }:
             });
         } else {
             locationPermissionRef.current = false;
-            currentPositionRef.current = {
-                latitude: 37.49795103144074,
-                longitude: 127.02760985223079,
-            };
         }
     };
 
@@ -213,7 +209,7 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritePost }:
                 initNearPosts();
             }
         }
-    }, []);
+    }, [locationPermissionRef.current]);
     const initNearPosts = () => {
         indexNumber.current = 0;
         remove();
