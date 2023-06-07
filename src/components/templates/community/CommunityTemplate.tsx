@@ -28,7 +28,11 @@ const CommunityTemplate = ({ moveToKeywordSettingScreen }: CommunityTemplateProp
 
     const postsResponseIndexRef = useRef<number>(0);
     const getKeywordPostParamRef = useRef<string>('');
-    const currentPositionRef = useRef<{ lat: number; lon: number }>({ lat: 0, lon: 0 });
+    const currentPositionRef = useRef<{ lat: number; lon: number; isChecked: boolean }>({
+        lat: 0,
+        lon: 0,
+        isChecked: false,
+    });
     const tooltipAnimRef = useRef<Animated.Value>(new Animated.Value(0)).current;
 
     const [postList, setPostList] = useState<PostTypes[]>([]);
@@ -74,22 +78,26 @@ const CommunityTemplate = ({ moveToKeywordSettingScreen }: CommunityTemplateProp
     );
 
     // Get my Keyword API
-    const { refetch: getMyKeywordRefetch } = useQuery('getMyLikeKeyword', () => geyMyLikeKeywordsAPI(accessToken), {
-        onSuccess: ({ data }) => {
-            if (data.data.length < 1) {
-                setMyKeywordList(null);
-            } else if (data.data !== myKeywordList) {
-                setMyKeywordList(data.data);
-                if (isLikePostTab) {
-                    getKeywordPostInit(data.data);
+    const { refetch: getMyKeywordRefetch, isSuccess: isSuccessGetMyKeywords } = useQuery(
+        'getMyLikeKeyword',
+        () => geyMyLikeKeywordsAPI(accessToken),
+        {
+            onSuccess: ({ data }) => {
+                if (data.data.length < 1) {
+                    setMyKeywordList(null);
+                } else if (data.data !== myKeywordList) {
+                    setMyKeywordList(data.data);
+                    if (isLikePostTab) {
+                        initGetKeywordPost(data.data);
+                    }
                 }
-            }
+            },
+            onError: error => {
+                // For Debug
+                console.log('(ERROR), Get my like keyword list API.', error);
+            },
         },
-        onError: error => {
-            // For Debug
-            console.log('(ERROR), Get my like keyword list API.', error);
-        },
-    });
+    );
 
     // All posts or like keyword posts choose handler
     const tabHandler = (state: string) => {
@@ -112,7 +120,7 @@ const CommunityTemplate = ({ moveToKeywordSettingScreen }: CommunityTemplateProp
                         }).start();
                     }, 5000);
                 } else {
-                    getKeywordPostInit(myKeywordList);
+                    initGetKeywordPost(myKeywordList);
                 }
                 setIsLikePostTab(true);
                 break;
@@ -132,12 +140,14 @@ const CommunityTemplate = ({ moveToKeywordSettingScreen }: CommunityTemplateProp
                     currentPositionRef.current = {
                         lat: info.coords.latitude,
                         lon: info.coords.longitude,
+                        isChecked: true,
                     };
                 });
             } else {
                 currentPositionRef.current = {
                     lat: 0,
                     lon: 0,
+                    isChecked: true,
                 };
             }
         } catch (err) {
@@ -146,19 +156,19 @@ const CommunityTemplate = ({ moveToKeywordSettingScreen }: CommunityTemplateProp
             currentPositionRef.current = {
                 lat: 0,
                 lon: 0,
+                isChecked: true,
             };
         }
     };
 
     // Get my keyword post (init)
-    const getKeywordPostInit = (keywords: KeywordListTypes[]) => {
+    const initGetKeywordPost = (keywords: KeywordListTypes[]) => {
         setChooseKeywordFilter([]);
         for (const index in keywords) {
             getKeywordPostParamRef.current =
                 getKeywordPostParamRef.current + `&keywordId=${keywords[Number(index)].id}`;
         }
         remove();
-        getPostRefetch();
     };
 
     // Get post list handler
@@ -230,7 +240,10 @@ const CommunityTemplate = ({ moveToKeywordSettingScreen }: CommunityTemplateProp
     }, []);
 
     useLayoutEffect(() => {
-        getPostRefetch();
+        if (currentPositionRef.current.isChecked) {
+            remove();
+            getPostRefetch();
+        }
     }, [currentPositionRef.current]);
 
     return (
