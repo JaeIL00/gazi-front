@@ -187,10 +187,11 @@ const ThreadItemTemplate = ({
                             color={Colors.BLACK}
                         />
                     </View>
+                    {/* Temparay planning
                     <Image
                         source={require('../../../assets/icons/share.png')}
                         style={threadItemTemplateStyles.shareIcon}
-                    />
+                    /> */}
                 </View>
 
                 <View style={threadItemTemplateStyles.commentBox}>
