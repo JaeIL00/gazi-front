@@ -1,11 +1,10 @@
 import React from 'react';
-import { Image, View } from 'react-native';
+import { Image, TouchableOpacity, View } from 'react-native';
 
 import Spacer from '../smallest/Spacer';
 import Colors from '../../styles/Colors';
 import NormalText from '../smallest/NormalText';
 import MediumText from '../smallest/MediumText';
-import TouchButton from '../smallest/TouchButton';
 import SemiBoldText from '../smallest/SemiBoldText';
 import { PostListItemProps } from '../../types/types';
 import { postListItemStyles } from '../../styles/styles';
@@ -18,7 +17,9 @@ const PostListItem = ({ post, isBorder, isMarkerPost, isNearList }: PostListItem
         <>
             {post && (
                 <View style={{ borderBottomWidth: isBorder ? 1 * screenFont : undefined, borderColor: '#EBEBEB' }}>
-                    <TouchButton onPress={() => rootNavigation.navigate('ThreadItem', { postId: post.postId })}>
+                    <TouchableOpacity
+                        onPress={() => rootNavigation.navigate('ThreadItem', { postId: post.postId })}
+                        activeOpacity={1}>
                         <View
                             style={[
                                 postListItemStyles.container,
@@ -39,13 +40,14 @@ const PostListItem = ({ post, isBorder, isMarkerPost, isNearList }: PostListItem
                                 <Spacer height={5} />
                                 <NormalText text={post.content} size={12} color="#6A6A6A" numberOfLines={2} />
                             </View>
-                            {post.thumbNail ? (
-                                <Image source={{ uri: post.thumbNail }} style={postListItemStyles.postImage} />
-                            ) : (
-                                <View style={postListItemStyles.postImage} />
+
+                            {post.thumbNail && (
+                                <View style={postListItemStyles.postImageBox}>
+                                    <Image source={{ uri: post.thumbNail }} style={postListItemStyles.postImage} />
+                                </View>
                             )}
                         </View>
-                    </TouchButton>
+                    </TouchableOpacity>
                 </View>
             )}
         </>

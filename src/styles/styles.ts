@@ -540,13 +540,14 @@ export const mapWithMarkerStyles = StyleSheet.create({
 });
 export const postListItemStyles = StyleSheet.create({
     container: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
         paddingHorizontal: 16 * screenWidth,
-        width: '100%',
+        flexDirection: 'row',
     },
     textBox: {
-        width: '68%',
+        flexShrink: 1,
+    },
+    postImageBox: {
+        marginLeft: 22 * screenWidth,
     },
     postImage: {
         width: 77 * screenWidth,
