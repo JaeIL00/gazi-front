@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { ActivityIndicator, Animated, FlatList, ScrollView, View } from 'react-native';
+import { ActivityIndicator, Animated, FlatList, RefreshControl, ScrollView, View } from 'react-native';
 import { useRecoilValue } from 'recoil';
 import { useInfiniteQuery, useQuery } from 'react-query';
 import { useIsFocused } from '@react-navigation/native';
@@ -37,6 +37,7 @@ const CommunityTemplate = ({ moveToKeywordSettingScreen }: CommunityTemplateProp
 
     const [postList, setPostList] = useState<PostTypes[]>([]);
     const [isLikePostTab, setIsLikePostTab] = useState<boolean>(false);
+    const [isPostRefresh, setIsPostRefresh] = useState<boolean>(false);
     const [chooseKeywordFilter, setChooseKeywordFilter] = useState<number[]>([]);
     const [myKeywordList, setMyKeywordList] = useState<KeywordListTypes[] | null>(null);
 
@@ -69,6 +70,7 @@ const CommunityTemplate = ({ moveToKeywordSettingScreen }: CommunityTemplateProp
                 const content = data.pages[postsResponseIndexRef.current].data.data.content;
                 const isLast = data.pages[postsResponseIndexRef.current].data.data.last;
                 getPostHandler(pageNumber, content, isLast);
+                setIsPostRefresh(false);
             },
             onError: ({ response }) => {
                 // For Debug
@@ -163,12 +165,14 @@ const CommunityTemplate = ({ moveToKeywordSettingScreen }: CommunityTemplateProp
 
     // Get my keyword post (init)
     const initGetKeywordPost = (keywords: KeywordListTypes[]) => {
+        postsResponseIndexRef.current = 0;
         setChooseKeywordFilter([]);
         for (const index in keywords) {
             getKeywordPostParamRef.current =
                 getKeywordPostParamRef.current + `&keywordId=${keywords[Number(index)].id}`;
         }
         remove();
+        getPostRefetch();
     };
 
     // Get post list handler
@@ -181,6 +185,13 @@ const CommunityTemplate = ({ moveToKeywordSettingScreen }: CommunityTemplateProp
         if (!isLast) {
             postsResponseIndexRef.current = postsResponseIndexRef.current + 1;
         }
+    };
+
+    const postListRefresh = () => {
+        postsResponseIndexRef.current = 0;
+        setIsPostRefresh(true);
+        remove();
+        getPostRefetch();
     };
 
     // My like keyword posts filtering by my like keyword
@@ -364,9 +375,16 @@ const CommunityTemplate = ({ moveToKeywordSettingScreen }: CommunityTemplateProp
                             }
                         }}
                         showsVerticalScrollIndicator={false}
+                        refreshControl={
+                            <RefreshControl
+                                onRefresh={postListRefresh}
+                                refreshing={isPostRefresh}
+                                progressViewOffset={-10}
+                            />
+                        }
                     />
                 )}
-                {isFetching && <ActivityIndicator size="large" />}
+                {isFetching && !isPostRefresh && <ActivityIndicator size="large" />}
             </View>
         </View>
     );

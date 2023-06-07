@@ -1435,6 +1435,7 @@ export const communityTemplateStyles = StyleSheet.create({
     },
     contentBox: {
         flex: 1,
+        overflow: 'hidden',
     },
     nothingBox: {
         alignItems: 'center',

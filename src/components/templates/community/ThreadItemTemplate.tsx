@@ -28,8 +28,8 @@ const ThreadItemTemplate = ({
     const firstCommentId = useRef<number>();
     const indexNumber = useRef<number>(0);
 
-    const [isCommentRefresh, setIsCommentRefresh] = useState<boolean>(false);
     const [commentList, setCommentList] = useState<CommentTypes[]>([]);
+    const [isCommentRefresh, setIsCommentRefresh] = useState<boolean>(false);
     const [postValue, setPostValue] = useState<CommentTopicTypes>({
         title: '',
         rePostCount: 0,
