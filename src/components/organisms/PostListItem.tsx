@@ -28,7 +28,12 @@ const PostListItem = ({ post, isBorder, isMarkerPost, isNearList }: PostListItem
                                 },
                             ]}>
                             <View style={postListItemStyles.textBox}>
-                                <SemiBoldText text={post.title} size={isMarkerPost ? 18 : 16} color={Colors.BLACK} />
+                                <SemiBoldText
+                                    text={post.title}
+                                    size={isMarkerPost ? 18 : 16}
+                                    color={Colors.BLACK}
+                                    numberOfLines={1}
+                                />
                                 {isMarkerPost && <Spacer height={5} />}
                                 <MediumText
                                     text={`${post.distance ? post.distance + ' | ' : ''}${post.time} | +${
