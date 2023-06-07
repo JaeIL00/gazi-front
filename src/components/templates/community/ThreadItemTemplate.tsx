@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { FlatList, Image, Platform, View } from 'react-native';
+import { FlatList, Image, Platform, RefreshControl, View } from 'react-native';
 import DropShadow from 'react-native-drop-shadow';
 import { useRecoilValue } from 'recoil';
 import { useInfiniteQuery, useMutation } from 'react-query';
@@ -28,6 +28,7 @@ const ThreadItemTemplate = ({
     const firstCommentId = useRef<number>();
     const indexNumber = useRef<number>(0);
 
+    const [isCommentRefresh, setIsCommentRefresh] = useState<boolean>(false);
     const [commentList, setCommentList] = useState<CommentTypes[]>([]);
     const [postValue, setPostValue] = useState<CommentTopicTypes>({
         title: '',
@@ -67,6 +68,7 @@ const ThreadItemTemplate = ({
                 const pageNumber = data.pages[indexNumber.current].data.data.postList.pageable.pageNumber;
                 const responseCommentList: CommentTypes[] = data.pages[indexNumber.current].data.data.postList.content;
                 if (pageNumber === 0) {
+                    setIsCommentRefresh(false);
                     getCommentTopic(data.pages[indexNumber.current].data.data, responseCommentList);
                 } else {
                     const getNotReport = responseCommentList.filter((item: CommentTypes) => !item.report);
@@ -79,6 +81,7 @@ const ThreadItemTemplate = ({
                 }
             },
             onError: ({ response }) => {
+                setIsCommentRefresh(false);
                 // For Debug
                 console.log('(ERROR) Get comment list API. respense: ', response);
             },
@@ -123,6 +126,11 @@ const ThreadItemTemplate = ({
         ),
         [postValue],
     );
+    const commentListRefresh = () => {
+        setIsCommentRefresh(true);
+        commentRemove();
+        commentRefetch();
+    };
     const ItemSeparatorComponent = useCallback(() => <Spacer height={29} />, []);
 
     const reportHandler = (repostId: number) => {
@@ -212,6 +220,8 @@ const ThreadItemTemplate = ({
                                 fetchNextPage();
                             }
                         }}
+                        onRefresh={commentListRefresh}
+                        refreshing={isCommentRefresh}
                     />
                 </View>
             </View>

@@ -1302,6 +1302,7 @@ export const threadItemTemplateStyles = StyleSheet.create({
     commentBox: {
         position: 'relative',
         height: '100%',
+        overflow: 'hidden',
     },
     commentBoxBar: {
         borderLeftWidth: 1 * screenFont,
