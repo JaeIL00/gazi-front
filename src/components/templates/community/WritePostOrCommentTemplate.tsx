@@ -584,7 +584,12 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
                     <View style={writePostOrCommentTemplateStyles.settingContainer}>
                         {postThreadInfo ? (
                             <View>
-                                <SemiBoldText text={postThreadInfo.title} size={20} color={Colors.BLACK} />
+                                <SemiBoldText
+                                    text={postThreadInfo.title}
+                                    size={20}
+                                    color={Colors.BLACK}
+                                    numberOfLines={1}
+                                />
                                 <Spacer height={4} />
                                 <NormalText
                                     text={`${postThreadInfo.rePostCount} post • updated ${postThreadInfo.time}`}
