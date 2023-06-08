@@ -109,6 +109,7 @@ export type LocationResultTypes = {
     reference: string;
     types: [];
     user_ratings_total: number;
+    vicinity: string;
 };
 export type UploadImageTypes =
     | {
@@ -450,6 +451,8 @@ export type NearbyPostListModalProps = {
 export type SearchLocationProps = {
     isHome: boolean;
     placeholder: string;
+    isAllowLocation: boolean;
+    currentPosition: { curLat: number; curLon: number };
     getLocationHandler: (location: { lat: number; lng: number }, placeName: string) => void;
     searchModalHandler?: (state: string) => void;
 };

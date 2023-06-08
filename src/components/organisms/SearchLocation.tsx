@@ -11,20 +11,28 @@ import Colors from '../../styles/Colors';
 import MediumText from '../smallest/MediumText';
 import NormalText from '../smallest/NormalText';
 import TouchButton from '../smallest/TouchButton';
-import { searchGoogleAPI } from '../../queries/api';
+import { nearPlaceGoogleAPI, searchGoogleAPI } from '../../queries/api';
 import { searchLocationStyles } from '../../styles/styles';
 import { SingleLineInput } from '../smallest/SingleLineInput';
 import { screenFont, screenHeight, screenWidth } from '../../utils/changeStyleSize';
 import { LocationResultTypes, SearchHistoryTypes, SearchLocationProps } from '../../types/types';
 
-const SearchLocation = ({ getLocationHandler, placeholder, isHome, searchModalHandler }: SearchLocationProps) => {
+const SearchLocation = ({
+    getLocationHandler,
+    placeholder,
+    isHome,
+    searchModalHandler,
+    isAllowLocation,
+    currentPosition,
+}: SearchLocationProps) => {
     const [searchText, setSearchText] = useState<string>('');
     const [nextPageToken, setNextPageToken] = useState<string>('');
+    const [resultsNearData, setResultsNearData] = useState<LocationResultTypes[]>([]);
     const [resultsData, setResultsData] = useState<LocationResultTypes[]>([]);
     const [searchHistory, setSearchHistory] = useState<SearchHistoryTypes[]>([]);
 
     // Get Google search results API
-    const { refetch, isFetching } = useQuery(['search'], () => searchGoogleAPI(searchText, nextPageToken), {
+    const { refetch: placeSearchRefetch } = useQuery('placeSearch', () => searchGoogleAPI(searchText, nextPageToken), {
         enabled: false,
         onSuccess: ({ data }) => {
             // Save search results for list
@@ -44,6 +52,31 @@ const SearchLocation = ({ getLocationHandler, placeholder, isHome, searchModalHa
         },
     });
 
+    // Get Google near search results API
+    const { refetch: nearPlaceSearchRefetch } = useQuery(
+        'nearPlaceSearch',
+        () => nearPlaceGoogleAPI(currentPosition.curLat, currentPosition.curLon, nextPageToken),
+        {
+            enabled: false,
+            onSuccess: ({ data }) => {
+                // Save near place results for list
+                if (data.next_page_token && !nextPageToken) {
+                    setNextPageToken(data.next_page_token);
+                    setResultsNearData(data.results);
+                } else if (nextPageToken) {
+                    data.next_page_token ? setNextPageToken(data.next_page_token) : setNextPageToken('');
+                    setResultsNearData([...resultsData, ...data.results]);
+                } else {
+                    setResultsNearData(data.results);
+                }
+            },
+            onError: ({ response }) => {
+                // For Debug
+                console.log('(ERROR) Get Google near place results API.', response);
+            },
+        },
+    );
+
     // Input text for searching location
     const onChangeSearchText = (text: string) => {
         setSearchText(text);
@@ -62,14 +95,14 @@ const SearchLocation = ({ getLocationHandler, placeholder, isHome, searchModalHa
 
     const getSearchResult = useCallback(
         debounce(() => {
-            refetch();
+            placeSearchRefetch();
         }, 600),
         [],
     );
 
     const getNextPageResults = () => {
         if (nextPageToken) {
-            refetch();
+            placeSearchRefetch();
         }
     };
 
@@ -110,12 +143,17 @@ const SearchLocation = ({ getLocationHandler, placeholder, isHome, searchModalHa
     );
     const renderItemResult = useCallback(
         ({ item }: { item: LocationResultTypes }) => {
-            const freshAddress = item.formatted_address.replace('대한민국 ', '');
+            let freshAddress: string = '';
+            if (isAllowLocation && !searchText) {
+                freshAddress = item.vicinity;
+            } else {
+                freshAddress = item.formatted_address.replace('대한민국 ', '');
+            }
             return (
                 <TouchableOpacity
                     onPress={() => {
                         saveSearchHistoryStorage(item.formatted_address, item.name, item.geometry.location);
-                        getLocationHandler(item.geometry.location, item.name);
+                        getLocationHandler(item.geometry.location, searchText ? item.name : '디폴트 내 근처 위치');
                     }}
                     activeOpacity={1}
                     style={searchLocationStyles.resultButton}>
@@ -125,7 +163,11 @@ const SearchLocation = ({ getLocationHandler, placeholder, isHome, searchModalHa
                             style={searchLocationStyles.resultIcon}
                         />
                         <View style={searchLocationStyles.resultTextBox}>
-                            <MediumText text={item.name} size={16} color="#000000" />
+                            <MediumText
+                                text={isAllowLocation && !searchText ? '디폴트 내 근처 위치' : item.name}
+                                size={16}
+                                color="#000000"
+                            />
                             <Spacer height={3} />
                             <View style={searchLocationStyles.resultAddress}>
                                 {freshAddress.split(' ').map(item => (
@@ -137,7 +179,7 @@ const SearchLocation = ({ getLocationHandler, placeholder, isHome, searchModalHa
                 </TouchableOpacity>
             );
         },
-        [searchHistory],
+        [resultsData],
     );
     const renderItemHistory = useCallback(
         ({ item }: { item: SearchHistoryTypes }) => {
@@ -172,6 +214,9 @@ const SearchLocation = ({ getLocationHandler, placeholder, isHome, searchModalHa
 
     useLayoutEffect(() => {
         getSearchHistory();
+        if (!isHome) {
+            nearPlaceSearchRefetch();
+        }
     }, []);
 
     return (
@@ -203,7 +248,7 @@ const SearchLocation = ({ getLocationHandler, placeholder, isHome, searchModalHa
 
             <Spacer height={20} />
 
-            {isHome && !isFetching && !searchText ? (
+            {isHome && !searchText ? (
                 <>
                     <View style={{ paddingHorizontal: 16 * screenWidth }}>
                         <NormalText text="최근검색" size={14} color="#757575" />
@@ -213,11 +258,6 @@ const SearchLocation = ({ getLocationHandler, placeholder, isHome, searchModalHa
                         data={searchHistory}
                         renderItem={renderItemHistory}
                         showsVerticalScrollIndicator={false}
-                        getItemLayout={(data, index) => ({
-                            length: resultsData.length,
-                            offset: resultsData.length * index,
-                            index,
-                        })}
                         onEndReachedThreshold={0.7}
                         onEndReached={({ distanceFromEnd }) => {
                             if (distanceFromEnd > 0) {
@@ -231,14 +271,9 @@ const SearchLocation = ({ getLocationHandler, placeholder, isHome, searchModalHa
             ) : (
                 <FlatList
                     keyExtractor={keyExtractor}
-                    data={resultsData}
+                    data={searchText ? resultsData : resultsNearData}
                     renderItem={renderItemResult}
                     showsVerticalScrollIndicator={false}
-                    getItemLayout={(data, index) => ({
-                        length: resultsData.length,
-                        offset: resultsData.length * index,
-                        index,
-                    })}
                     onEndReachedThreshold={1}
                     onEndReached={() => {
                         getNextPageResults();
@@ -247,8 +282,6 @@ const SearchLocation = ({ getLocationHandler, placeholder, isHome, searchModalHa
                     keyboardDismissMode="on-drag"
                 />
             )}
-
-            {isFetching && searchText && <ActivityIndicator size="large" />}
         </View>
     );
 };
