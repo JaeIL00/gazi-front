@@ -28,7 +28,7 @@ import { SeviceHomeTemplateProps, MapLocationTypes, PostTypes, MapBoundaryTypes 
 const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritePost }: SeviceHomeTemplateProps) => {
     const { accessToken } = useRecoilValue(userTokenAtom);
 
-    const indexNumber = useRef<number>(0);
+    const nearPostResponseIndexRef = useRef<number>(0);
     const mapRef = useRef() as RefObject<MapView>;
     const locationPermissionRef = useRef<boolean>(false);
     const currentPositionRef = useRef<MapLocationTypes>({
@@ -52,6 +52,7 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritePost }:
     const [isFarMapLevel, setIsFarMapLevel] = useState<boolean>(false);
     const [markerPost, setMarkerPost] = useState<PostTypes | null>(null);
     const [isAllowLocation, setIsAllowLocation] = useState<boolean>(false);
+    const [isNearPostRefresh, setIsNearPostRefresh] = useState<boolean>(false);
     const [isBottomSheetMini, setIsBottomSheetMini] = useState<boolean>(false);
     const [isBottomSheetFull, setIsBottomSheetFull] = useState<boolean>(false);
     const [isNearPostSearchTopBar, setIsNearPostSearchTopBar] = useState<boolean>(false);
@@ -80,18 +81,25 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritePost }:
                 return nextPage === total ? undefined : nextPage;
             },
             onSuccess: data => {
-                const pageNumber = data.pages[indexNumber.current].data.data.pageable.pageNumber;
+                const pageNumber = data.pages[nearPostResponseIndexRef.current].data.data.pageable.pageNumber;
+                const content = data.pages[nearPostResponseIndexRef.current].data.data.content;
                 if (pageNumber === 0) {
-                    setNearPostList(data.pages[indexNumber.current].data.data.content);
+                    setIsNearPostRefresh(false);
+                    setIsNearPostSearchTopBar(false);
+                    setNearPostList(content);
                     SplashScreen.hide();
                 } else {
-                    setNearPostList([...nearPostList, ...data.pages[indexNumber.current].data.data.content]);
+                    setNearPostList([
+                        ...nearPostList,
+                        ...data.pages[nearPostResponseIndexRef.current].data.data.content,
+                    ]);
                 }
-                if (!data.pages[indexNumber.current].data.data.last) {
-                    indexNumber.current = indexNumber.current + 1;
+                if (!data.pages[nearPostResponseIndexRef.current].data.data.last) {
+                    nearPostResponseIndexRef.current = nearPostResponseIndexRef.current + 1;
                 }
             },
             onError: ({ response }) => {
+                setIsNearPostRefresh(false);
                 // For Debug
                 console.log('(ERROR) Get post of near by user API. respense: ', response);
             },
@@ -211,7 +219,7 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritePost }:
         }
     }, [locationPermissionRef.current]);
     const initNearPosts = () => {
-        indexNumber.current = 0;
+        nearPostResponseIndexRef.current = 0;
         remove();
         refetch();
     };
@@ -220,6 +228,14 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritePost }:
     const findMarkerPost = (id: number) => {
         const findPost = nearPostList.filter(item => item.postId === id);
         setMarkerPost(findPost[0]);
+    };
+
+    // Near post flat list refresh
+    const nearPostListRefresh = () => {
+        nearPostResponseIndexRef.current = 0;
+        setIsNearPostRefresh(true);
+        remove();
+        refetch();
     };
 
     // Again request modal button Handling
@@ -370,6 +386,8 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritePost }:
                 onPressGetUserPosition={onPressGetUserPosition}
                 callNextPageHandler={callNextPageHandler}
                 moveToWritePost={moveToWritePost}
+                nearPostListRefresh={nearPostListRefresh}
+                isNearPostRefresh={isNearPostRefresh}
             />
             {isFetching && (
                 <View

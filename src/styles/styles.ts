@@ -460,7 +460,8 @@ export const nearbyPostListModalStyles = StyleSheet.create({
         borderRadius: 2 * screenFont,
     },
     titleBox: {
-        paddingVertical: 16 * screenHeight,
+        paddingTop: 16 * screenHeight,
+        paddingBottom: 26 * screenHeight,
     },
     grayBackground: {
         width: '100%',
