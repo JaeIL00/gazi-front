@@ -152,7 +152,11 @@ const SearchLocation = ({
             return (
                 <TouchableOpacity
                     onPress={() => {
-                        saveSearchHistoryStorage(item.formatted_address, item.name, item.geometry.location);
+                        saveSearchHistoryStorage(
+                            searchText ? item.formatted_address : item.vicinity,
+                            item.name,
+                            item.geometry.location,
+                        );
                         getLocationHandler(item.geometry.location, searchText ? item.name : '디폴트 내 근처 위치');
                     }}
                     activeOpacity={1}
@@ -214,7 +218,7 @@ const SearchLocation = ({
 
     useLayoutEffect(() => {
         getSearchHistory();
-        if (!isHome) {
+        if (!isHome && isAllowLocation) {
             nearPlaceSearchRefetch();
         }
     }, []);
