@@ -510,7 +510,7 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
                         <Icons type="ionicons" name="close-sharp" size={24} color={Colors.BLACK} />
                     </TouchButton>
                     <TouchButton onPress={finishWritingHandler}>
-                        <SemiBoldText text="다음" size={16} color={Colors.TXT_GRAY} />
+                        <SemiBoldText text="등록" size={16} color={Colors.BLACK} />
                     </TouchButton>
                 </View>
                 <ScrollView style={writePostOrCommentTemplateStyles.contentBox}>
