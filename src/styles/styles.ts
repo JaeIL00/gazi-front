@@ -460,7 +460,8 @@ export const nearbyPostListModalStyles = StyleSheet.create({
         borderRadius: 2 * screenFont,
     },
     titleBox: {
-        paddingVertical: 16 * screenHeight,
+        paddingTop: 16 * screenHeight,
+        paddingBottom: 26 * screenHeight,
     },
     grayBackground: {
         width: '100%',
@@ -540,13 +541,14 @@ export const mapWithMarkerStyles = StyleSheet.create({
 });
 export const postListItemStyles = StyleSheet.create({
     container: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
         paddingHorizontal: 16 * screenWidth,
-        width: '100%',
+        flexDirection: 'row',
     },
     textBox: {
-        width: '68%',
+        flexShrink: 1,
+    },
+    postImageBox: {
+        marginLeft: 22 * screenWidth,
     },
     postImage: {
         width: 77 * screenWidth,
@@ -1290,6 +1292,10 @@ export const threadItemTemplateStyles = StyleSheet.create({
         borderBottomWidth: 1 * screenFont,
         borderColor: '#EBEBEB',
     },
+    headerTitleBox: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+    },
     shareIcon: {
         width: 24 * screenWidth,
         height: 24 * screenWidth,
@@ -1297,6 +1303,7 @@ export const threadItemTemplateStyles = StyleSheet.create({
     commentBox: {
         position: 'relative',
         height: '100%',
+        overflow: 'hidden',
     },
     commentBoxBar: {
         borderLeftWidth: 1 * screenFont,
@@ -1429,6 +1436,7 @@ export const communityTemplateStyles = StyleSheet.create({
     },
     contentBox: {
         flex: 1,
+        overflow: 'hidden',
     },
     nothingBox: {
         alignItems: 'center',

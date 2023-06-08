@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { FlatList, Image, Platform, View } from 'react-native';
+import { FlatList, Image, Platform, RefreshControl, View } from 'react-native';
 import DropShadow from 'react-native-drop-shadow';
 import { useRecoilValue } from 'recoil';
 import { useInfiniteQuery, useMutation } from 'react-query';
@@ -29,6 +29,7 @@ const ThreadItemTemplate = ({
     const indexNumber = useRef<number>(0);
 
     const [commentList, setCommentList] = useState<CommentTypes[]>([]);
+    const [isCommentRefresh, setIsCommentRefresh] = useState<boolean>(false);
     const [postValue, setPostValue] = useState<CommentTopicTypes>({
         title: '',
         rePostCount: 0,
@@ -67,6 +68,7 @@ const ThreadItemTemplate = ({
                 const pageNumber = data.pages[indexNumber.current].data.data.postList.pageable.pageNumber;
                 const responseCommentList: CommentTypes[] = data.pages[indexNumber.current].data.data.postList.content;
                 if (pageNumber === 0) {
+                    setIsCommentRefresh(false);
                     getCommentTopic(data.pages[indexNumber.current].data.data, responseCommentList);
                 } else {
                     const getNotReport = responseCommentList.filter((item: CommentTypes) => !item.report);
@@ -79,6 +81,7 @@ const ThreadItemTemplate = ({
                 }
             },
             onError: ({ response }) => {
+                setIsCommentRefresh(false);
                 // For Debug
                 console.log('(ERROR) Get comment list API. respense: ', response);
             },
@@ -123,6 +126,11 @@ const ThreadItemTemplate = ({
         ),
         [postValue],
     );
+    const commentListRefresh = () => {
+        setIsCommentRefresh(true);
+        commentRemove();
+        commentRefetch();
+    };
     const ItemSeparatorComponent = useCallback(() => <Spacer height={29} />, []);
 
     const reportHandler = (repostId: number) => {
@@ -179,7 +187,11 @@ const ThreadItemTemplate = ({
                                 <Spacer height={4} />
                             </>
                         )}
-                        <SemiBoldText text={postValue.title} size={20} color={Colors.BLACK} />
+                        <View style={threadItemTemplateStyles.headerTitleBox}>
+                            {postValue.title.split(' ').map(item => (
+                                <SemiBoldText text={`${item} `} size={20} color={Colors.BLACK} />
+                            ))}
+                        </View>
                         <Spacer height={4} />
                         <NormalText
                             text={`${postValue.rePostCount} posts • updated ${postValue.time}`}
@@ -187,10 +199,11 @@ const ThreadItemTemplate = ({
                             color={Colors.BLACK}
                         />
                     </View>
+                    {/* Temparay planning
                     <Image
                         source={require('../../../assets/icons/share.png')}
                         style={threadItemTemplateStyles.shareIcon}
-                    />
+                    /> */}
                 </View>
 
                 <View style={threadItemTemplateStyles.commentBox}>
@@ -207,6 +220,8 @@ const ThreadItemTemplate = ({
                                 fetchNextPage();
                             }
                         }}
+                        onRefresh={commentListRefresh}
+                        refreshing={isCommentRefresh}
                     />
                 </View>
             </View>

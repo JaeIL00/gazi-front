@@ -62,7 +62,7 @@ const EditMyKeyword = ({
             } else if (myKeywordList[index].id >= 1 && myKeywordList[index].id <= 8) {
                 const checkIndex = issueKeywordsNotEtc.findIndex(item => item.id === myKeywordList[index].id);
                 checkedIndexIssue = [...checkedIndexIssue, checkIndex];
-            } else if (myKeywordList[index].id >= 13 && myKeywordList[index].id <= 35) {
+            } else if (myKeywordList[index].id >= 12 && myKeywordList[index].id <= 34) {
                 const checkIndex = subwayKeywords.findIndex(item => item.id === myKeywordList[index].id);
                 checkedIndexSubway = [...checkedIndexSubway, checkIndex];
             }

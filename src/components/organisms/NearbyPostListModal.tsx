@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef } from 'react';
-import { Animated, FlatList, PanResponder, PanResponderInstance, Platform, View } from 'react-native';
+import { Animated, FlatList, PanResponder, PanResponderInstance, Platform, RefreshControl, View } from 'react-native';
 import DropShadow from 'react-native-drop-shadow';
 import { useRecoilValue } from 'recoil';
 import FastImage from 'react-native-fast-image';
@@ -30,11 +30,13 @@ const NearbyPostListModal = ({
     currentPosition,
     mapBoundaryState,
     markerPost,
+    isNearPostRefresh,
     moveToBottomSheetFull,
     notBottomSheetMini,
     onPressGetUserPosition,
     callNextPageHandler,
     moveToWritePost,
+    nearPostListRefresh,
 }: NearbyPostListModalProps) => {
     const { nickname } = useRecoilValue(userInfoAtom);
 
@@ -184,25 +186,23 @@ const NearbyPostListModal = ({
 
     // Press hardware back key
     useEffect(() => {
-        if (handleModalTrigger || nearPostList) {
-            Animated.timing(animRef, {
-                toValue: MIDDLE_ANIM_VALUE,
-                duration: 200,
-                useNativeDriver: true,
-            }).start();
-            Animated.timing(opacityRef, {
-                toValue: MIDDLE_ANIM_VALUE,
-                duration: 200,
-                useNativeDriver: true,
-            }).start(({ finished }: { finished: boolean }) => {
-                if (finished) {
-                    moveToBottomSheetFull('NOT');
-                }
-            });
-            notBottomSheetMini();
-            isModalRef.current = false;
-            animType.current = 'middle';
-        }
+        Animated.timing(animRef, {
+            toValue: MIDDLE_ANIM_VALUE,
+            duration: 200,
+            useNativeDriver: true,
+        }).start();
+        Animated.timing(opacityRef, {
+            toValue: MIDDLE_ANIM_VALUE,
+            duration: 200,
+            useNativeDriver: true,
+        }).start(({ finished }: { finished: boolean }) => {
+            if (finished) {
+                moveToBottomSheetFull('NOT');
+            }
+        });
+        notBottomSheetMini();
+        isModalRef.current = false;
+        animType.current = 'middle';
     }, [handleModalTrigger, nearPostList]);
 
     // Move to mini bottom sheet by move map
@@ -344,7 +344,6 @@ const NearbyPostListModal = ({
                                 size={18}
                             />
                         </View>
-                        <Spacer height={10} />
                     </>
                 )}
             </Animated.View>
@@ -373,6 +372,9 @@ const NearbyPostListModal = ({
                         onEndReached={() => {
                             callNextPageHandler();
                         }}
+                        refreshControl={
+                            <RefreshControl onRefresh={nearPostListRefresh} refreshing={isNearPostRefresh} />
+                        }
                         // getItemLayout={(data, index) => ({
                         //     length: nearPostList.length,
                         //     offset: nearPostList.length * index,

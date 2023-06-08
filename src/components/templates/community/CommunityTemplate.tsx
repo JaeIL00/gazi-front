@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { ActivityIndicator, Animated, FlatList, ScrollView, View } from 'react-native';
+import { ActivityIndicator, Animated, FlatList, RefreshControl, ScrollView, View } from 'react-native';
 import { useRecoilValue } from 'recoil';
 import { useInfiniteQuery, useQuery } from 'react-query';
 import { useIsFocused } from '@react-navigation/native';
@@ -28,11 +28,16 @@ const CommunityTemplate = ({ moveToKeywordSettingScreen }: CommunityTemplateProp
 
     const postsResponseIndexRef = useRef<number>(0);
     const getKeywordPostParamRef = useRef<string>('');
-    const currentPositionRef = useRef<{ lat: number; lon: number }>({ lat: 0, lon: 0 });
+    const currentPositionRef = useRef<{ lat: number; lon: number; isChecked: boolean }>({
+        lat: 0,
+        lon: 0,
+        isChecked: false,
+    });
     const tooltipAnimRef = useRef<Animated.Value>(new Animated.Value(0)).current;
 
     const [postList, setPostList] = useState<PostTypes[]>([]);
     const [isLikePostTab, setIsLikePostTab] = useState<boolean>(false);
+    const [isPostRefresh, setIsPostRefresh] = useState<boolean>(false);
     const [chooseKeywordFilter, setChooseKeywordFilter] = useState<number[]>([]);
     const [myKeywordList, setMyKeywordList] = useState<KeywordListTypes[] | null>(null);
 
@@ -65,6 +70,7 @@ const CommunityTemplate = ({ moveToKeywordSettingScreen }: CommunityTemplateProp
                 const content = data.pages[postsResponseIndexRef.current].data.data.content;
                 const isLast = data.pages[postsResponseIndexRef.current].data.data.last;
                 getPostHandler(pageNumber, content, isLast);
+                setIsPostRefresh(false);
             },
             onError: ({ response }) => {
                 // For Debug
@@ -74,22 +80,26 @@ const CommunityTemplate = ({ moveToKeywordSettingScreen }: CommunityTemplateProp
     );
 
     // Get my Keyword API
-    const { refetch: getMyKeywordRefetch } = useQuery('getMyLikeKeyword', () => geyMyLikeKeywordsAPI(accessToken), {
-        onSuccess: ({ data }) => {
-            if (data.data.length < 1) {
-                setMyKeywordList(null);
-            } else if (data.data !== myKeywordList) {
-                setMyKeywordList(data.data);
-                if (isLikePostTab) {
-                    getKeywordPostInit(data.data);
+    const { refetch: getMyKeywordRefetch, isSuccess: isSuccessGetMyKeywords } = useQuery(
+        'getMyLikeKeyword',
+        () => geyMyLikeKeywordsAPI(accessToken),
+        {
+            onSuccess: ({ data }) => {
+                if (data.data.length < 1) {
+                    setMyKeywordList(null);
+                } else if (data.data !== myKeywordList) {
+                    setMyKeywordList(data.data);
+                    if (isLikePostTab) {
+                        initGetKeywordPost(data.data);
+                    }
                 }
-            }
+            },
+            onError: error => {
+                // For Debug
+                console.log('(ERROR), Get my like keyword list API.', error);
+            },
         },
-        onError: error => {
-            // For Debug
-            console.log('(ERROR), Get my like keyword list API.', error);
-        },
-    });
+    );
 
     // All posts or like keyword posts choose handler
     const tabHandler = (state: string) => {
@@ -112,7 +122,7 @@ const CommunityTemplate = ({ moveToKeywordSettingScreen }: CommunityTemplateProp
                         }).start();
                     }, 5000);
                 } else {
-                    getKeywordPostInit(myKeywordList);
+                    initGetKeywordPost(myKeywordList);
                 }
                 setIsLikePostTab(true);
                 break;
@@ -132,12 +142,14 @@ const CommunityTemplate = ({ moveToKeywordSettingScreen }: CommunityTemplateProp
                     currentPositionRef.current = {
                         lat: info.coords.latitude,
                         lon: info.coords.longitude,
+                        isChecked: true,
                     };
                 });
             } else {
                 currentPositionRef.current = {
                     lat: 0,
                     lon: 0,
+                    isChecked: true,
                 };
             }
         } catch (err) {
@@ -146,12 +158,14 @@ const CommunityTemplate = ({ moveToKeywordSettingScreen }: CommunityTemplateProp
             currentPositionRef.current = {
                 lat: 0,
                 lon: 0,
+                isChecked: true,
             };
         }
     };
 
     // Get my keyword post (init)
-    const getKeywordPostInit = (keywords: KeywordListTypes[]) => {
+    const initGetKeywordPost = (keywords: KeywordListTypes[]) => {
+        postsResponseIndexRef.current = 0;
         setChooseKeywordFilter([]);
         for (const index in keywords) {
             getKeywordPostParamRef.current =
@@ -171,6 +185,13 @@ const CommunityTemplate = ({ moveToKeywordSettingScreen }: CommunityTemplateProp
         if (!isLast) {
             postsResponseIndexRef.current = postsResponseIndexRef.current + 1;
         }
+    };
+
+    const postListRefresh = () => {
+        postsResponseIndexRef.current = 0;
+        setIsPostRefresh(true);
+        remove();
+        getPostRefetch();
     };
 
     // My like keyword posts filtering by my like keyword
@@ -230,7 +251,10 @@ const CommunityTemplate = ({ moveToKeywordSettingScreen }: CommunityTemplateProp
     }, []);
 
     useLayoutEffect(() => {
-        getPostRefetch();
+        if (currentPositionRef.current.isChecked) {
+            remove();
+            getPostRefetch();
+        }
     }, [currentPositionRef.current]);
 
     return (
@@ -351,9 +375,16 @@ const CommunityTemplate = ({ moveToKeywordSettingScreen }: CommunityTemplateProp
                             }
                         }}
                         showsVerticalScrollIndicator={false}
+                        refreshControl={
+                            <RefreshControl
+                                onRefresh={postListRefresh}
+                                refreshing={isPostRefresh}
+                                progressViewOffset={-10}
+                            />
+                        }
                     />
                 )}
-                {isFetching && <ActivityIndicator size="large" />}
+                {isFetching && !isPostRefresh && <ActivityIndicator size="large" />}
             </View>
         </View>
     );

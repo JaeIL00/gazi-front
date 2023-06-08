@@ -439,11 +439,13 @@ export type NearbyPostListModalProps = {
     isBottomSheetFull: boolean;
     currentPosition: MapLocationTypes;
     mapBoundaryState: MapBoundaryTypes;
+    isNearPostRefresh: boolean;
     moveToBottomSheetFull: (state: string) => void;
     notBottomSheetMini: () => void;
     onPressGetUserPosition: () => void;
     callNextPageHandler: () => void;
     moveToWritePost: () => void;
+    nearPostListRefresh: () => void;
 };
 export type SearchLocationProps = {
     isHome: boolean;
