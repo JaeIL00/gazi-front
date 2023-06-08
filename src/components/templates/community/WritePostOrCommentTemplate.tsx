@@ -275,9 +275,17 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
 
     // Check essential value of write post
     const finishWritingHandler = () => {
+        const isNotEnoughTitle = !writePostData.dto.title;
+        const isNotEnoughContent = !writePostData.dto.content;
         const isNotEnoughLocation = !writePostData.dto.latitude || !writePostData.dto.longitude;
         const isNotEnoughKeyword = !writePostData.dto.keywordIdList || !writePostData.dto.headKeywordId;
-        if (isNotEnoughLocation && isNotEnoughKeyword) {
+        if (isNotEnoughTitle) {
+            setOnErrorText('제목을 2자 이상 작성해주세요');
+            setOnErrorModal(true);
+        } else if (isNotEnoughContent) {
+            setOnErrorText('본문 내용을 입력해주세요');
+            setOnErrorModal(true);
+        } else if (isNotEnoughLocation && isNotEnoughKeyword) {
             setOnErrorText('위치와 키워드를 설정해주세요');
             setOnErrorModal(true);
         } else if (isNotEnoughLocation) {
