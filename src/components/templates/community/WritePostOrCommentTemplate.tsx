@@ -46,11 +46,13 @@ import {
     uploadImageFileTypes,
 } from '../../../types/types';
 import { writeCommentAPI, writeCommentFilesAPI, writePostAPI, writePostFilesAPI } from '../../../queries/api';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostOrCommentTemplateProps) => {
     const { accessToken } = useRecoilValue(userTokenAtom);
 
     const mapRef = useRef() as RefObject<MapView>;
+
     const isAllowLocation = useRef<boolean>(false);
     const currentPositionRef = useRef<{ curLat: number; curLon: number }>({
         curLat: 0,
@@ -69,7 +71,15 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
     const [imagePermission, setImagePermission] = useState<boolean>(false);
     const [chooseKeywords, setChooseKeywords] = useState<KeywordListTypes[]>([]);
     const [isCamAllowPermission, setIsCamAllowPermission] = useState<boolean>(false);
-    const [checkImageFileList, setCheckImageFileList] = useState<uploadImageFileTypes[]>([]);
+    const [temporaryChooseLocationData, setTemporaryChooseLocationData] = useState<{
+        formatted_address: string;
+        name: string;
+        location: { lat: number | null; lng: number | null };
+    }>({
+        formatted_address: '',
+        name: '',
+        location: { lat: null, lng: null },
+    });
     const [writePostData, setWritePostData] = useState<WritePostTypes>({
         dto: {
             title: '',
@@ -132,10 +142,11 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
     });
 
     // Write post data for request API
-    const getLocationHandler = (location: { lat: number; lng: number }, placeName: string) => {
-        setWritePostData({
-            ...writePostData,
-            dto: { ...writePostData.dto, latitude: location.lat, longitude: location.lng, placeName },
+    const getLocationHandler = (location: { lat: number; lng: number }, placeName: string, address: string) => {
+        setTemporaryChooseLocationData({
+            formatted_address: address,
+            name: placeName,
+            location: { lat: location.lat, lng: location.lng },
         });
     };
     const getKeywordHandler = (keyword: number[]) => {
@@ -151,6 +162,54 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
             ...writePostData,
             dto: { ...writePostData.dto, keywordIdList: keyword, headKeywordId: keyword[0] },
         });
+    };
+
+    // Search location finish handler
+    const saveHistorySearchLocationStorage = async () => {
+        try {
+            let freshFilter: {
+                formatted_address: string;
+                name: string;
+                location: { lat: number; lng: number };
+            }[] = [];
+            const historyArray = await AsyncStorage.getItem('GAZI_hst_sch');
+            if (historyArray) {
+                const prevHistory: {
+                    formatted_address: string;
+                    name: string;
+                    location: { lat: number; lng: number };
+                }[] = JSON.parse(historyArray);
+                freshFilter = prevHistory.filter(
+                    item => item.formatted_address !== temporaryChooseLocationData.formatted_address,
+                );
+            }
+            const freshHistory = [
+                {
+                    formatted_address: temporaryChooseLocationData.formatted_address,
+                    name: temporaryChooseLocationData.name,
+                    location: temporaryChooseLocationData.location,
+                },
+                ...freshFilter,
+            ];
+            if (freshHistory.length > 10) {
+                freshHistory.pop();
+            }
+            await AsyncStorage.setItem('GAZI_hst_sch', JSON.stringify(freshHistory));
+            setWritePostData({
+                ...writePostData,
+                dto: {
+                    ...writePostData.dto,
+                    latitude: temporaryChooseLocationData.location.lat,
+                    longitude: temporaryChooseLocationData.location.lng,
+                    placeName: temporaryChooseLocationData.name,
+                },
+            });
+        } catch (error) {
+            // For Debug
+            console.log('(ERROR)Save search history from write.', error);
+        } finally {
+            setLoactionModal(false);
+        }
     };
 
     // Get image from gallery
@@ -724,31 +783,30 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
                     </TouchButton>
                 </View>
 
-                <Modal
-                    visible={loactionModal}
-                    onRequestClose={() => setLoactionModal(false)}
-                    style={writePostOrCommentTemplateStyles.locationSearchModal}>
-                    <HeaderMolecule
-                        isPaddingHorizontal={true}
-                        isWorkDone={writePostData.dto.latitude !== null}
-                        backHandler={locationModalHandler}
-                        headerFinish={true}
-                        isNextStep={false}
-                        title="위치 설정"
-                        finishText="완료"
-                        background="undefined"
-                        finishFunction={() => locationModalHandler('CLOSE')}
-                    />
+                <Modal visible={loactionModal} onRequestClose={() => setLoactionModal(false)}>
+                    <View style={writePostOrCommentTemplateStyles.locationSearchModal}>
+                        <HeaderMolecule
+                            isPaddingHorizontal={true}
+                            isWorkDone={temporaryChooseLocationData.location.lat !== null}
+                            backHandler={locationModalHandler}
+                            headerFinish={true}
+                            isNextStep={false}
+                            title="위치 설정"
+                            finishText="완료"
+                            background="undefined"
+                            finishFunction={saveHistorySearchLocationStorage}
+                        />
 
-                    <Spacer height={12} />
+                        <Spacer height={12} />
 
-                    <SearchLocation
-                        getLocationHandler={getLocationHandler}
-                        placeholder="어디에서 일어난 일인가요?"
-                        isHome={false}
-                        isAllowLocation={isAllowLocation.current}
-                        currentPosition={currentPositionRef.current}
-                    />
+                        <SearchLocation
+                            getLocationHandler={getLocationHandler}
+                            placeholder="어디에서 일어난 일인가요?"
+                            isHome={false}
+                            isAllowLocation={isAllowLocation.current}
+                            currentPosition={currentPositionRef.current}
+                        />
+                    </View>
                 </Modal>
 
                 <Modal visible={keywordModal} onRequestClose={() => setKeywordModal(false)}>

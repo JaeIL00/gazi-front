@@ -453,7 +453,7 @@ export type SearchLocationProps = {
     placeholder: string;
     isAllowLocation?: boolean;
     currentPosition?: { curLat: number; curLon: number };
-    getLocationHandler: (location: { lat: number; lng: number }, placeName: string) => void;
+    getLocationHandler: (location: { lat: number; lng: number }, placeName: string, address: string) => void;
     searchModalHandler?: (state: string) => void;
 };
 export type WritePostAddKeywordProps = {

@@ -557,6 +557,7 @@ export const postListItemStyles = StyleSheet.create({
     },
 });
 export const searchLocationStyles = StyleSheet.create({
+    container: { flex: 1 },
     inputContainer: {
         paddingHorizontal: 16 * screenWidth,
     },
@@ -1034,6 +1035,11 @@ export const serviceHomeTemplateStyles = StyleSheet.create({
         shadowOpacity: 0.05,
         shadowRadius: 34 * screenFont,
     },
+    searchModalBox: {
+        backgroundColor: Colors.WHITE,
+        paddingTop: 16 * screenHeight,
+        flex: 1,
+    },
 });
 export const writePostOrCommentTemplateStyles = StyleSheet.create({
     container: {
@@ -1068,6 +1074,7 @@ export const writePostOrCommentTemplateStyles = StyleSheet.create({
         alignItems: 'center',
     },
     locationSearchModal: {
+        flex: 1,
         backgroundColor: Colors.BACKGROUND_DEFAULT,
     },
     searchToggleIcon: {
