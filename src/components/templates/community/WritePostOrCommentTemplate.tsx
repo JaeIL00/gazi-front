@@ -659,6 +659,7 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
                 <Modal visible={isCamAllowPermission} onRequestClose={() => setIsCamAllowPermission(false)}>
                     <PhotoGallery closeGalleryHandling={closeGalleryHandling} getImageHandler={getImageHandler} />
                 </Modal>
+
                 <View style={writePostOrCommentTemplateStyles.bottomBox}>
                     <View style={writePostOrCommentTemplateStyles.bottomKeyword}>
                         {chooseKeywords.length > 0 && (
@@ -723,57 +724,57 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
                     </TouchButton>
                 </View>
 
-                {loactionModal && (
-                    <View style={writePostOrCommentTemplateStyles.searchContainer}>
-                        <HeaderMolecule
-                            isPaddingHorizontal={true}
-                            isWorkDone={writePostData.dto.latitude !== null}
-                            backHandler={locationModalHandler}
-                            headerFinish={true}
-                            isNextStep={false}
-                            title="위치 설정"
-                            finishText="완료"
-                            background="undefined"
-                            finishFunction={() => locationModalHandler('CLOSE')}
-                        />
+                <Modal
+                    visible={loactionModal}
+                    onRequestClose={() => setLoactionModal(false)}
+                    style={writePostOrCommentTemplateStyles.locationSearchModal}>
+                    <HeaderMolecule
+                        isPaddingHorizontal={true}
+                        isWorkDone={writePostData.dto.latitude !== null}
+                        backHandler={locationModalHandler}
+                        headerFinish={true}
+                        isNextStep={false}
+                        title="위치 설정"
+                        finishText="완료"
+                        background="undefined"
+                        finishFunction={() => locationModalHandler('CLOSE')}
+                    />
 
-                        <Spacer height={12} />
+                    <Spacer height={12} />
 
-                        <SearchLocation
-                            getLocationHandler={getLocationHandler}
-                            placeholder="어디에서 일어난 일인가요?"
-                            isHome={false}
-                            isAllowLocation={isAllowLocation.current}
-                            currentPosition={currentPositionRef.current}
-                        />
-                    </View>
-                )}
+                    <SearchLocation
+                        getLocationHandler={getLocationHandler}
+                        placeholder="어디에서 일어난 일인가요?"
+                        isHome={false}
+                        isAllowLocation={isAllowLocation.current}
+                        currentPosition={currentPositionRef.current}
+                    />
+                </Modal>
 
-                {keywordModal && (
+                <Modal visible={keywordModal} onRequestClose={() => setKeywordModal(false)}>
                     <WritePostAddKeyword
                         keywordModalHandler={keywordModalHandler}
                         getKeywordHandler={getKeywordHandler}
                     />
-                )}
-                {onErrorModal && (
-                    <View style={writePostOrCommentTemplateStyles.errorModalBack}>
-                        <View style={writePostOrCommentTemplateStyles.errorModalBox}>
-                            <SemiBoldText text={onErrorText} size={18} color={Colors.BLACK} />
-                            <Spacer height={18} />
-                            <TextButton
-                                onPress={offErrorModalHandler}
-                                text="확인"
-                                textColor="#49454F"
-                                fontSize={14}
-                                backgroundColor={Colors.LIGHTGRAY}
-                                paddingHorizontal={111}
-                                paddingVertical={12}
-                            />
-                        </View>
-                    </View>
-                )}
+                </Modal>
 
-                <ModalBackground visible={imagePermission} onRequestClose={() => setImagePermission(false)}>
+                <ModalBackground visible={onErrorModal}>
+                    <View style={writePostOrCommentTemplateStyles.errorModalBox}>
+                        <SemiBoldText text={onErrorText} size={18} color={Colors.BLACK} />
+                        <Spacer height={18} />
+                        <TextButton
+                            onPress={offErrorModalHandler}
+                            text="확인"
+                            textColor="#49454F"
+                            fontSize={14}
+                            backgroundColor={Colors.LIGHTGRAY}
+                            paddingHorizontal={111}
+                            paddingVertical={12}
+                        />
+                    </View>
+                </ModalBackground>
+
+                <ModalBackground visible={imagePermission}>
                     <FailPermissionModal
                         permissionName="사진 접근 권한 허용하기"
                         contentOne="사진 업로드를 하시려면"

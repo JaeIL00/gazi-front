@@ -317,7 +317,7 @@ export type AppTextProps = {
 export type ModalBackgroundProps = {
     children: ReactElement;
     visible: boolean;
-    onRequestClose: () => void;
+    onRequestClose?: () => void;
 };
 
 // MOLECULES

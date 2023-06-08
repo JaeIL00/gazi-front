@@ -1067,12 +1067,8 @@ export const writePostOrCommentTemplateStyles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
     },
-    searchContainer: {
-        position: 'absolute',
-        width: '100%',
-        height: '100%',
+    locationSearchModal: {
         backgroundColor: Colors.BACKGROUND_DEFAULT,
-        zIndex: 9999,
     },
     searchToggleIcon: {
         width: 10 * screenWidth,
@@ -1085,14 +1081,6 @@ export const writePostOrCommentTemplateStyles = StyleSheet.create({
     inputBox: {
         paddingHorizontal: 16 * screenWidth,
         paddingTop: 10 * screenHeight,
-    },
-    errorModalBack: {
-        position: 'absolute',
-        width: '100%',
-        height: '100%',
-        backgroundColor: '#00000099',
-        justifyContent: 'center',
-        alignItems: 'center',
     },
     errorModalBox: {
         backgroundColor: Colors.WHITE,
