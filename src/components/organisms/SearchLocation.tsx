@@ -1,5 +1,5 @@
 import React, { useCallback, useLayoutEffect, useState } from 'react';
-import { ActivityIndicator, FlatList, StatusBar, TouchableOpacity, View } from 'react-native';
+import { FlatList, StatusBar, TouchableOpacity, View } from 'react-native';
 import { debounce } from 'lodash';
 import { useQuery } from 'react-query';
 import FastImage from 'react-native-fast-image';
@@ -18,18 +18,18 @@ import { screenFont, screenHeight, screenWidth } from '../../utils/changeStyleSi
 import { LocationResultTypes, SearchHistoryTypes, SearchLocationProps } from '../../types/types';
 
 const SearchLocation = ({
-    getLocationHandler,
-    placeholder,
     isHome,
-    searchModalHandler,
+    placeholder,
     isAllowLocation,
     currentPosition,
+    searchModalHandler,
+    getLocationHandler,
 }: SearchLocationProps) => {
     const [searchText, setSearchText] = useState<string>('');
     const [nextPageToken, setNextPageToken] = useState<string>('');
-    const [resultsNearData, setResultsNearData] = useState<LocationResultTypes[]>([]);
     const [resultsData, setResultsData] = useState<LocationResultTypes[]>([]);
     const [searchHistory, setSearchHistory] = useState<SearchHistoryTypes[]>([]);
+    const [resultsNearData, setResultsNearData] = useState<LocationResultTypes[]>([]);
 
     // Get Google search results API
     const { refetch: placeSearchRefetch } = useQuery('placeSearch', () => searchGoogleAPI(searchText, nextPageToken), {
@@ -55,7 +55,7 @@ const SearchLocation = ({
     // Get Google near search results API
     const { refetch: nearPlaceSearchRefetch } = useQuery(
         'nearPlaceSearch',
-        () => nearPlaceGoogleAPI(currentPosition.curLat, currentPosition.curLon, nextPageToken),
+        () => nearPlaceGoogleAPI(currentPosition!.curLat, currentPosition!.curLon, nextPageToken),
         {
             enabled: false,
             onSuccess: ({ data }) => {
@@ -114,6 +114,8 @@ const SearchLocation = ({
             if (freshHistory.length > 10) {
                 freshHistory.pop();
             }
+            console.log('searchHistory', searchHistory);
+            console.log('freshHistory', freshHistory);
             setSearchHistory(freshHistory);
             await AsyncStorage.setItem('GAZI_hst_sch', JSON.stringify(freshHistory));
         } catch (error) {
@@ -191,7 +193,9 @@ const SearchLocation = ({
             return (
                 <TouchableOpacity
                     onPress={() => {
-                        saveSearchHistoryStorage(item.formatted_address, item.name, item.location);
+                        if (isHome) {
+                            saveSearchHistoryStorage(item.formatted_address, item.name, item.location);
+                        }
                         getLocationHandler(item.location, item.name);
                     }}
                     activeOpacity={1}

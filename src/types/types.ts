@@ -451,8 +451,8 @@ export type NearbyPostListModalProps = {
 export type SearchLocationProps = {
     isHome: boolean;
     placeholder: string;
-    isAllowLocation: boolean;
-    currentPosition: { curLat: number; curLon: number };
+    isAllowLocation?: boolean;
+    currentPosition?: { curLat: number; curLon: number };
     getLocationHandler: (location: { lat: number; lng: number }, placeName: string) => void;
     searchModalHandler?: (state: string) => void;
 };
