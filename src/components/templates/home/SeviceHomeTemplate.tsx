@@ -362,7 +362,7 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritePost }:
             </View>
 
             <Modal visible={searchModal} onRequestClose={() => setSearchModal(false)}>
-                <View style={{ backgroundColor: '#fff', paddingTop: 16 * screenHeight }}>
+                <View style={serviceHomeTemplateStyles.searchModalBox}>
                     <SearchLocation
                         getLocationHandler={getLocationHandler}
                         placeholder="지금 어디로 가시나요?"

@@ -557,6 +557,7 @@ export const postListItemStyles = StyleSheet.create({
     },
 });
 export const searchLocationStyles = StyleSheet.create({
+    container: { flex: 1 },
     inputContainer: {
         paddingHorizontal: 16 * screenWidth,
     },
@@ -1034,6 +1035,11 @@ export const serviceHomeTemplateStyles = StyleSheet.create({
         shadowOpacity: 0.05,
         shadowRadius: 34 * screenFont,
     },
+    searchModalBox: {
+        backgroundColor: Colors.WHITE,
+        paddingTop: 16 * screenHeight,
+        flex: 1,
+    },
 });
 export const writePostOrCommentTemplateStyles = StyleSheet.create({
     container: {
@@ -1067,12 +1073,9 @@ export const writePostOrCommentTemplateStyles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
     },
-    searchContainer: {
-        position: 'absolute',
-        width: '100%',
-        height: '100%',
+    locationSearchModal: {
+        flex: 1,
         backgroundColor: Colors.BACKGROUND_DEFAULT,
-        zIndex: 9999,
     },
     searchToggleIcon: {
         width: 10 * screenWidth,
@@ -1085,14 +1088,6 @@ export const writePostOrCommentTemplateStyles = StyleSheet.create({
     inputBox: {
         paddingHorizontal: 16 * screenWidth,
         paddingTop: 10 * screenHeight,
-    },
-    errorModalBack: {
-        position: 'absolute',
-        width: '100%',
-        height: '100%',
-        backgroundColor: '#00000099',
-        justifyContent: 'center',
-        alignItems: 'center',
     },
     errorModalBox: {
         backgroundColor: Colors.WHITE,

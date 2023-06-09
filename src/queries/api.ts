@@ -20,6 +20,19 @@ export const searchGoogleAPI = async (searchInput: string, nextPageToken: string
     });
     return response;
 };
+export const nearPlaceGoogleAPI = async (curLat: number, curLon: number, nextPageToken: string) => {
+    const url = nextPageToken
+        ? `https://maps.googleapis.com/maps/api/place/nearbysearch/json?pagetoken=${nextPageToken}&key=${Config.GOOGLE_PLACE_API_KEY}`
+        : `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${curLat}%2C${curLon}&radius=1000&key=${Config.GOOGLE_PLACE_API_KEY}`;
+    const response = await axios({
+        method: 'get',
+        url,
+        headers: {
+            'Accept-Language': 'ko',
+        },
+    });
+    return response;
+};
 
 // ACCOUT LOGIN LOGOUT
 export const loginAPI = async (data: { email: string; password: string }) => {

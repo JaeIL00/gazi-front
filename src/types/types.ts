@@ -109,6 +109,7 @@ export type LocationResultTypes = {
     reference: string;
     types: [];
     user_ratings_total: number;
+    vicinity: string;
 };
 export type UploadImageTypes =
     | {
@@ -316,7 +317,7 @@ export type AppTextProps = {
 export type ModalBackgroundProps = {
     children: ReactElement;
     visible: boolean;
-    onRequestClose: () => void;
+    onRequestClose?: () => void;
 };
 
 // MOLECULES
@@ -450,7 +451,9 @@ export type NearbyPostListModalProps = {
 export type SearchLocationProps = {
     isHome: boolean;
     placeholder: string;
-    getLocationHandler: (location: { lat: number; lng: number }, placeName: string) => void;
+    isAllowLocation?: boolean;
+    currentPosition?: { curLat: number; curLon: number };
+    getLocationHandler: (location: { lat: number; lng: number }, placeName: string, address: string) => void;
     searchModalHandler?: (state: string) => void;
 };
 export type WritePostAddKeywordProps = {

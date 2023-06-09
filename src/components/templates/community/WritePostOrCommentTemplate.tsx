@@ -1,4 +1,4 @@
-import React, { RefObject, useCallback, useRef, useState } from 'react';
+import React, { RefObject, useCallback, useLayoutEffect, useRef, useState } from 'react';
 import {
     ActivityIndicator,
     Image,
@@ -15,7 +15,8 @@ import { useRecoilValue } from 'recoil';
 import { debounce } from 'lodash';
 import MapView, { Marker } from 'react-native-maps';
 import FastImage from 'react-native-fast-image';
-import { PERMISSIONS, RESULTS, checkMultiple } from 'react-native-permissions';
+import { PERMISSIONS, RESULTS, check, checkMultiple } from 'react-native-permissions';
+import Geolocation from '@react-native-community/geolocation';
 
 import Icons from '../../smallest/Icons';
 import Spacer from '../../smallest/Spacer';
@@ -37,7 +38,6 @@ import { userTokenAtom } from '../../../store/atoms';
 import { screenWidth } from '../../../utils/changeStyleSize';
 import { SingleLineInput } from '../../smallest/SingleLineInput';
 import { writePostOrCommentTemplateStyles } from '../../../styles/styles';
-import { useRootNavigation, useRootRoute } from '../../../navigations/RootStackNavigation';
 import { issueKeywords, subwayKeywords, trafficKeywords } from '../../../utils/allKeywords';
 import {
     KeywordListTypes,
@@ -46,14 +46,18 @@ import {
     uploadImageFileTypes,
 } from '../../../types/types';
 import { writeCommentAPI, writeCommentFilesAPI, writePostAPI, writePostFilesAPI } from '../../../queries/api';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostOrCommentTemplateProps) => {
-    const rootNavigation = useRootNavigation();
-    const rootRoute = useRootRoute();
-
     const { accessToken } = useRecoilValue(userTokenAtom);
 
     const mapRef = useRef() as RefObject<MapView>;
+
+    const isAllowLocation = useRef<boolean>(false);
+    const currentPositionRef = useRef<{ curLat: number; curLon: number }>({
+        curLat: 0,
+        curLon: 0,
+    });
 
     const [title, setTitle] = useState<string>('');
     const [postId, setPostId] = useState<number>(0);
@@ -67,7 +71,15 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
     const [imagePermission, setImagePermission] = useState<boolean>(false);
     const [chooseKeywords, setChooseKeywords] = useState<KeywordListTypes[]>([]);
     const [isCamAllowPermission, setIsCamAllowPermission] = useState<boolean>(false);
-    const [checkImageFileList, setCheckImageFileList] = useState<uploadImageFileTypes[]>([]);
+    const [temporaryChooseLocationData, setTemporaryChooseLocationData] = useState<{
+        formatted_address: string;
+        name: string;
+        location: { lat: number | null; lng: number | null };
+    }>({
+        formatted_address: '',
+        name: '',
+        location: { lat: null, lng: null },
+    });
     const [writePostData, setWritePostData] = useState<WritePostTypes>({
         dto: {
             title: '',
@@ -130,10 +142,11 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
     });
 
     // Write post data for request API
-    const getLocationHandler = (location: { lat: number; lng: number }, placeName: string) => {
-        setWritePostData({
-            ...writePostData,
-            dto: { ...writePostData.dto, latitude: location.lat, longitude: location.lng, placeName },
+    const getLocationHandler = (location: { lat: number; lng: number }, placeName: string, address: string) => {
+        setTemporaryChooseLocationData({
+            formatted_address: address,
+            name: placeName,
+            location: { lat: location.lat, lng: location.lng },
         });
     };
     const getKeywordHandler = (keyword: number[]) => {
@@ -149,6 +162,54 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
             ...writePostData,
             dto: { ...writePostData.dto, keywordIdList: keyword, headKeywordId: keyword[0] },
         });
+    };
+
+    // Search location finish handler
+    const saveHistorySearchLocationStorage = async () => {
+        try {
+            let freshFilter: {
+                formatted_address: string;
+                name: string;
+                location: { lat: number; lng: number };
+            }[] = [];
+            const historyArray = await AsyncStorage.getItem('GAZI_hst_sch');
+            if (historyArray) {
+                const prevHistory: {
+                    formatted_address: string;
+                    name: string;
+                    location: { lat: number; lng: number };
+                }[] = JSON.parse(historyArray);
+                freshFilter = prevHistory.filter(
+                    item => item.formatted_address !== temporaryChooseLocationData.formatted_address,
+                );
+            }
+            const freshHistory = [
+                {
+                    formatted_address: temporaryChooseLocationData.formatted_address,
+                    name: temporaryChooseLocationData.name,
+                    location: temporaryChooseLocationData.location,
+                },
+                ...freshFilter,
+            ];
+            if (freshHistory.length > 10) {
+                freshHistory.pop();
+            }
+            await AsyncStorage.setItem('GAZI_hst_sch', JSON.stringify(freshHistory));
+            setWritePostData({
+                ...writePostData,
+                dto: {
+                    ...writePostData.dto,
+                    latitude: temporaryChooseLocationData.location.lat,
+                    longitude: temporaryChooseLocationData.location.lng,
+                    placeName: temporaryChooseLocationData.name,
+                },
+            });
+        } catch (error) {
+            // For Debug
+            console.log('(ERROR)Save search history from write.', error);
+        } finally {
+            setLoactionModal(false);
+        }
     };
 
     // Get image from gallery
@@ -214,9 +275,17 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
 
     // Check essential value of write post
     const finishWritingHandler = () => {
+        const isNotEnoughTitle = !writePostData.dto.title;
+        const isNotEnoughContent = !writePostData.dto.content;
         const isNotEnoughLocation = !writePostData.dto.latitude || !writePostData.dto.longitude;
         const isNotEnoughKeyword = !writePostData.dto.keywordIdList || !writePostData.dto.headKeywordId;
-        if (isNotEnoughLocation && isNotEnoughKeyword) {
+        if (isNotEnoughTitle) {
+            setOnErrorText('제목을 2자 이상 작성해주세요');
+            setOnErrorModal(true);
+        } else if (isNotEnoughContent) {
+            setOnErrorText('본문 내용을 입력해주세요');
+            setOnErrorModal(true);
+        } else if (isNotEnoughLocation && isNotEnoughKeyword) {
             setOnErrorText('위치와 키워드를 설정해주세요');
             setOnErrorModal(true);
         } else if (isNotEnoughLocation) {
@@ -339,8 +408,22 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
         }
     };
 
-    // Search location modal
+    // Check location permission and get current position
+    const locationSearchMyCurrentPosition = async () => {
+        const locationPermission = await check(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION);
+        const isAllow = locationPermission === RESULTS.GRANTED;
+        if (isAllow) {
+            isAllowLocation.current = true;
+            Geolocation.getCurrentPosition(info => {
+                currentPositionRef.current = {
+                    curLat: info.coords.latitude,
+                    curLon: info.coords.longitude,
+                };
+            });
+        }
+    };
 
+    // Search location modal
     const locationModalHandler = (state: string) => {
         switch (state) {
             case 'OPEN':
@@ -371,7 +454,6 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
     };
 
     // Input text title and content
-
     const onChangeTitleText = (text: string) => {
         setTitle(text);
         inputTitleDate(text);
@@ -461,6 +543,11 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
         }
     };
 
+    // Get current user position
+    useLayoutEffect(() => {
+        locationSearchMyCurrentPosition();
+    }, []);
+
     return (
         <>
             <StatusBar backgroundColor={Colors.WHITE} barStyle="dark-content" />
@@ -490,14 +577,19 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
                         <Icons type="ionicons" name="close-sharp" size={24} color={Colors.BLACK} />
                     </TouchButton>
                     <TouchButton onPress={finishWritingHandler}>
-                        <SemiBoldText text="다음" size={16} color={Colors.TXT_GRAY} />
+                        <SemiBoldText text="등록" size={16} color={Colors.BLACK} />
                     </TouchButton>
                 </View>
                 <ScrollView style={writePostOrCommentTemplateStyles.contentBox}>
                     <View style={writePostOrCommentTemplateStyles.settingContainer}>
                         {postThreadInfo ? (
                             <View>
-                                <SemiBoldText text={postThreadInfo.title} size={20} color={Colors.BLACK} />
+                                <SemiBoldText
+                                    text={postThreadInfo.title}
+                                    size={20}
+                                    color={Colors.BLACK}
+                                    numberOfLines={1}
+                                />
                                 <Spacer height={4} />
                                 <NormalText
                                     text={`${postThreadInfo.rePostCount} post • updated ${postThreadInfo.time}`}
@@ -639,6 +731,7 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
                 <Modal visible={isCamAllowPermission} onRequestClose={() => setIsCamAllowPermission(false)}>
                     <PhotoGallery closeGalleryHandling={closeGalleryHandling} getImageHandler={getImageHandler} />
                 </Modal>
+
                 <View style={writePostOrCommentTemplateStyles.bottomBox}>
                     <View style={writePostOrCommentTemplateStyles.bottomKeyword}>
                         {chooseKeywords.length > 0 && (
@@ -703,18 +796,18 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
                     </TouchButton>
                 </View>
 
-                {loactionModal && (
-                    <View style={writePostOrCommentTemplateStyles.searchContainer}>
+                <Modal visible={loactionModal} onRequestClose={() => setLoactionModal(false)}>
+                    <View style={writePostOrCommentTemplateStyles.locationSearchModal}>
                         <HeaderMolecule
                             isPaddingHorizontal={true}
-                            isWorkDone={writePostData.dto.latitude !== null}
+                            isWorkDone={temporaryChooseLocationData.location.lat !== null}
                             backHandler={locationModalHandler}
                             headerFinish={true}
                             isNextStep={false}
                             title="위치 설정"
                             finishText="완료"
                             background="undefined"
-                            finishFunction={() => locationModalHandler('CLOSE')}
+                            finishFunction={saveHistorySearchLocationStorage}
                         />
 
                         <Spacer height={12} />
@@ -723,35 +816,36 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
                             getLocationHandler={getLocationHandler}
                             placeholder="어디에서 일어난 일인가요?"
                             isHome={false}
+                            isAllowLocation={isAllowLocation.current}
+                            currentPosition={currentPositionRef.current}
                         />
                     </View>
-                )}
+                </Modal>
 
-                {keywordModal && (
+                <Modal visible={keywordModal} onRequestClose={() => setKeywordModal(false)}>
                     <WritePostAddKeyword
                         keywordModalHandler={keywordModalHandler}
                         getKeywordHandler={getKeywordHandler}
                     />
-                )}
-                {onErrorModal && (
-                    <View style={writePostOrCommentTemplateStyles.errorModalBack}>
-                        <View style={writePostOrCommentTemplateStyles.errorModalBox}>
-                            <SemiBoldText text={onErrorText} size={18} color={Colors.BLACK} />
-                            <Spacer height={18} />
-                            <TextButton
-                                onPress={offErrorModalHandler}
-                                text="확인"
-                                textColor="#49454F"
-                                fontSize={14}
-                                backgroundColor={Colors.LIGHTGRAY}
-                                paddingHorizontal={111}
-                                paddingVertical={12}
-                            />
-                        </View>
-                    </View>
-                )}
+                </Modal>
 
-                <ModalBackground visible={imagePermission} onRequestClose={() => setImagePermission(false)}>
+                <ModalBackground visible={onErrorModal}>
+                    <View style={writePostOrCommentTemplateStyles.errorModalBox}>
+                        <SemiBoldText text={onErrorText} size={18} color={Colors.BLACK} />
+                        <Spacer height={18} />
+                        <TextButton
+                            onPress={offErrorModalHandler}
+                            text="확인"
+                            textColor="#49454F"
+                            fontSize={14}
+                            backgroundColor={Colors.LIGHTGRAY}
+                            paddingHorizontal={111}
+                            paddingVertical={12}
+                        />
+                    </View>
+                </ModalBackground>
+
+                <ModalBackground visible={imagePermission}>
                     <FailPermissionModal
                         permissionName="사진 접근 권한 허용하기"
                         contentOne="사진 업로드를 하시려면"
