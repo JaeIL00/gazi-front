@@ -25,6 +25,7 @@ import { RootStackParamList } from '../types/types';
 import { userInfoAtom, userTokenAtom } from '../store/atoms';
 import SplashScreen from 'react-native-splash-screen';
 import ImageViewScreen from '../screens/cummunity/ImageViewScreen';
+import JoinMemberNavigation from './JoinMemberNavigation';
 
 export const RootStackNavigation = () => {
     const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -98,20 +99,20 @@ export const RootStackNavigation = () => {
         }
     };
     useLayoutEffect(() => {
-        checkAsyncStorage();
+        // checkAsyncStorage();
+        SplashScreen.hide();
     }, []);
 
     return (
-        <Stack.Navigator
-            screenOptions={{
-                headerShown: false,
-                presentation: 'containedModal',
-            }}>
-            <Stack.Screen name="NotLoginHome" component={NotLoginHomeScreen} />
+        <Stack.Navigator>
+            <Stack.Group>
+                <Stack.Screen name="NotLoginHome" component={NotLoginHomeScreen} options={{ headerShown: false }} />
+                <Stack.Screen name="InitKeyword" component={InitLikeKeywordScreen} />
+                <Stack.Screen name="JoinMember" component={JoinMemberNavigation} options={{ headerShown: false }} />
+                <Stack.Screen name="Login" component={LoginScreen} />
+            </Stack.Group>
             <Stack.Screen name="BottomTab" component={BottomTabNavigation} />
-            <Stack.Screen name="InitKeyword" component={InitLikeKeywordScreen} />
             <Stack.Screen name="Policies" component={PoliciesScreen} />
-            <Stack.Screen name="JoinMember" component={JoinMemberScreen} />
             <Stack.Screen name="RequestPermission" component={RequestPermissionScreen} />
             <Stack.Screen name="WritePostOrComment" component={WritePostOrCommentScreen} />
             <Stack.Screen name="LikeKeywordSetting" component={LikeKeywordSettingScreen} />
@@ -121,7 +122,6 @@ export const RootStackNavigation = () => {
             <Stack.Screen name="MyPostComment" component={MyPostCommentScreen} />
             <Stack.Screen name="ThreadItem" component={ThreadItemScreen} />
             <Stack.Screen name="EditNickname" component={EditNicknameScreen} />
-            <Stack.Screen name="Login" component={LoginScreen} />
             <Stack.Screen name="ImageView" component={ImageViewScreen} />
         </Stack.Navigator>
     );

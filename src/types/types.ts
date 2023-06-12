@@ -225,6 +225,9 @@ export type RootStackParamList = {
     DeleteMember: undefined;
     None: undefined;
 };
+export type JoinMemberParamList = {
+    JoinInputEmail: undefined;
+};
 export type BottomTabParamList = {
     ServiceHome: undefined;
     Community: undefined;
@@ -388,7 +391,7 @@ export type CommentListItemProps = {
     reportHandler: (repostId: number) => void;
 };
 export type ServiceAgreementProps = {
-    finishSlideComponentHandler: (state: string) => void;
+    authNumberModalHanlder: (state: string) => void;
 };
 export type WebViewComponentProps = {
     uri: string;
@@ -471,11 +474,7 @@ export type EditMyKeywordProps = {
 
 // TEMPLATES
 export type InputEmailTemplateProps = {
-    minutes: number;
-    seconds: number;
-    onPressNextStep: () => void;
-    resetTimeHandler: () => void;
-    didAuthEmail: () => void;
+    navigationHandler: (state: string) => void;
 };
 export type EmailWithPasswordProps = {
     onPressNextStep: () => void;

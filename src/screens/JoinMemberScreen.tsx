@@ -22,8 +22,6 @@ const JoinMemberScreen = () => {
     const [joinData, setJoinData] = useRecoilState(joinMemberAtom);
     const [authData, setAuthData] = useRecoilState(emailAuthAtom);
 
-    const [min, setMin] = useState<number>(5);
-    const [sec, setSec] = useState<number>(0);
     const [step, setStep] = useState<number>(1);
     const [twoTitle, setTwoTitle] = useState<string>('');
     const [oneTitle, setOneTitle] = useState<string>('회원가입');
@@ -41,9 +39,7 @@ const JoinMemberScreen = () => {
             setStep(step + 1);
         }
     };
-    const didAuthEmail = () => {
-        setStep(2);
-    };
+
     const finishSlideComponentHandler = (state: string) => {
         switch (state) {
             case 'OK':
@@ -88,21 +84,6 @@ const JoinMemberScreen = () => {
         }
     };
 
-    // Timer for email authorization
-    const timerHandler = () => {
-        if (sec > 0) {
-            setSec(sec - 1);
-        } else if (sec === 0) {
-            setSec(59);
-            setMin(min - 1);
-        }
-    };
-    const resetTimeHandler = () => {
-        setMin(5);
-        setSec(0);
-    };
-    useBackgroundInterval(timerHandler, min === 0 && sec === 0 ? null : 1000);
-
     // Android back button & Header Back Button Handling
     const handleBackButton = (): boolean => {
         if (step === 4) {
@@ -120,13 +101,6 @@ const JoinMemberScreen = () => {
         }
         return true;
     };
-
-    // Reset auth number by full time
-    useEffect(() => {
-        if (min === 0 && sec === 0) {
-            setAuthData({ ...authData, number: 0 });
-        }
-    }, [min]);
 
     useEffect(() => {
         headerTextHandler();
@@ -148,29 +122,9 @@ const JoinMemberScreen = () => {
                         onPress={handleBackButton}
                     />
 
-                    {step === 1 && (
-                        <InputEmailTemplate
-                            minutes={min}
-                            seconds={sec}
-                            resetTimeHandler={resetTimeHandler}
-                            onPressNextStep={onPressNextStep}
-                            didAuthEmail={didAuthEmail}
-                        />
-                    )}
                     {step === 2 && <EmailWithPasswordTemplate onPressNextStep={onPressNextStep} />}
                     {step === 3 && <NicknameTemplate onPressNextStep={onPressNextStep} />}
                     {step === 4 && <CompletedJoinTemplate onPressNextStep={onPressNextStep} />}
-
-                    <ModalBackground
-                        visible={isSlideComponent && step === 1}
-                        onRequestClose={() => finishSlideComponentHandler('BACK')}>
-                        <AuthEmail
-                            min={min}
-                            sec={sec}
-                            resetTimeHandler={resetTimeHandler}
-                            finishSlideComponentHandler={finishSlideComponentHandler}
-                        />
-                    </ModalBackground>
                 </View>
                 <ModalBackground
                     visible={isSlideComponent && step === 2}
