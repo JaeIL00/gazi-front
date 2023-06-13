@@ -15,8 +15,9 @@ import { InputNicknameTemplateProps } from '../../../types/types';
 import { inputNicknameTemplateStyles } from '../../../styles/styles';
 import { joinMemberAPI, checkNicknameAPI } from '../../../queries/api';
 import { joinMemberAtom, userInfoAtom, userTokenAtom } from '../../../store/atoms';
+import MoveBackWithPageTitle from '../../organisms/MoveBackWithPageTitle';
 
-const InputNicknameTemplate = ({ onPressNextStep }: InputNicknameTemplateProps) => {
+const InputNicknameTemplate = ({ navigationHandler }: InputNicknameTemplateProps) => {
     // Nickname Text Handling
     const [inputNickname, setInputNickname] = useState<string>('');
     const onChangeNickname = (text: string) => {
@@ -96,9 +97,8 @@ const InputNicknameTemplate = ({ onPressNextStep }: InputNicknameTemplateProps) 
         } catch (err) {
             // For Debug
             console.log('(ERROR) User authorization token set storage. err: ', err);
-            ToastAndroid.show('토큰 저장 실패', 4000);
         } finally {
-            onPressNextStep();
+            console.log('회원가입 완료');
         }
     };
 
@@ -110,53 +110,62 @@ const InputNicknameTemplate = ({ onPressNextStep }: InputNicknameTemplateProps) 
     }, 300);
 
     return (
-        <View style={inputNicknameTemplateStyles.container}>
-            <View style={inputNicknameTemplateStyles.mainContentBox}>
-                <View style={inputNicknameTemplateStyles.inputBox}>
-                    <SingleLineInput
-                        value={inputNickname}
-                        onChangeText={onChangeNickname}
-                        maxLength={7}
-                        placeholder="닉네임을 입력해주세요."
-                        fontSize={16}
-                    />
-                </View>
-
-                <Spacer height={8} />
-
-                {resultText && (
-                    <View style={inputNicknameTemplateStyles.emailErrorTextBox}>
-                        <Icons
-                            type={isDuplicate ? 'octicons' : 'fontisto'}
-                            name={isDuplicate ? 'check' : 'close'}
-                            size={14}
-                            color={isDuplicate ? Colors.STATUS_GREEN : Colors.STATUS_RED}
-                        />
-                        <Spacer width={4} />
-                        <MediumText
-                            text={resultText}
-                            size={12}
-                            color={isDuplicate ? Colors.STATUS_GREEN : Colors.STATUS_RED}
+        <>
+            <MoveBackWithPageTitle
+                onPress={() => navigationHandler('BACK')}
+                oneTitle="사용하실 닉네임을"
+                twoTitle="입력해주세요"
+                explainText="다른 사용자들이 볼 수 있고, 내 프로필에서 수정할 수 있어요"
+                explainSize={13}
+            />
+            <View style={inputNicknameTemplateStyles.container}>
+                <View style={inputNicknameTemplateStyles.mainContentBox}>
+                    <View style={inputNicknameTemplateStyles.inputBox}>
+                        <SingleLineInput
+                            value={inputNickname}
+                            onChangeText={onChangeNickname}
+                            maxLength={7}
+                            placeholder="닉네임을 입력해주세요."
+                            fontSize={16}
                         />
                     </View>
-                )}
+
+                    <Spacer height={8} />
+
+                    {resultText && (
+                        <View style={inputNicknameTemplateStyles.emailErrorTextBox}>
+                            <Icons
+                                type={isDuplicate ? 'octicons' : 'fontisto'}
+                                name={isDuplicate ? 'check' : 'close'}
+                                size={14}
+                                color={isDuplicate ? Colors.STATUS_GREEN : Colors.STATUS_RED}
+                            />
+                            <Spacer width={4} />
+                            <MediumText
+                                text={resultText}
+                                size={12}
+                                color={isDuplicate ? Colors.STATUS_GREEN : Colors.STATUS_RED}
+                            />
+                        </View>
+                    )}
+                </View>
+
+                <KeyboardAvoidingView behavior="height">
+                    <View style={inputNicknameTemplateStyles.bottomButton}>
+                        <TextButton
+                            text="확인"
+                            textColor={Colors.WHITE}
+                            backgroundColor={isDuplicate && resultText ? Colors.BLACK : Colors.BTN_GRAY}
+                            onPress={onPressJoinMember}
+                            height={48}
+                            fontSize={17}
+                        />
+                    </View>
+                </KeyboardAvoidingView>
             </View>
 
-            <KeyboardAvoidingView behavior="height">
-                <View style={inputNicknameTemplateStyles.bottomButton}>
-                    <TextButton
-                        text="확인"
-                        textColor={Colors.WHITE}
-                        backgroundColor={isDuplicate && resultText ? Colors.BLACK : Colors.BTN_GRAY}
-                        onPress={onPressJoinMember}
-                        height={48}
-                        fontSize={17}
-                    />
-                </View>
-            </KeyboardAvoidingView>
-
             {(isFetching || isLoading) && <ActivityIndicator size="large" />}
-        </View>
+        </>
     );
 };
 

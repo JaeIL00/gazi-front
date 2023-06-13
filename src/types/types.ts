@@ -228,6 +228,7 @@ export type RootStackParamList = {
 export type JoinMemberParamList = {
     JoinInputEmail: undefined;
     JoinInputPassword: undefined;
+    JoinInputNickname: undefined;
 };
 export type BottomTabParamList = {
     ServiceHome: undefined;
@@ -478,11 +479,9 @@ export type EditMyKeywordProps = {
 export type InputEmailTemplateProps = {
     navigationHandler: (state: string) => void;
 };
-export type InputPasswordTemplateProps = {
-    navigationHandler: (state: string) => void;
-};
-export interface InputNicknameTemplateProps extends InputPasswordTemplateProps {}
-export interface CompletedJoinTemplateProps extends InputPasswordTemplateProps {}
+export interface InputPasswordTemplateProps extends InputEmailTemplateProps {}
+export interface InputNicknameTemplateProps extends InputEmailTemplateProps {}
+export interface CompletedJoinTemplateProps extends InputEmailTemplateProps {}
 export type RequestPemissionTemplateProps = {
     moveToScreen: (state: string) => void;
 };

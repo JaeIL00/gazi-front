@@ -1,11 +1,10 @@
 import React from 'react';
 
 import ScreenWrapper from '../../components/organisms/ScreenWrapper';
-import InputPasswordTemplate from '../../components/templates/joinMember/InputPasswordTemplate';
-import { useRootNavigation } from '../../navigations/RootStackNavigation';
+import InputNicknameTemplate from '../../components/templates/joinMember/InputNicknameTemplate';
 import { useJoinNavigation } from '../../navigations/JoinMemberNavigation';
 
-const InputPasswordScreen = () => {
+const InputNicknameScreen = () => {
     const joinNavigation = useJoinNavigation();
     const navigationHandler = (state: string) => {
         switch (state) {
@@ -13,17 +12,18 @@ const InputPasswordScreen = () => {
                 joinNavigation.pop();
                 break;
             case 'GO':
-                joinNavigation.push('JoinInputNickname');
+                console.log('스크린 이동');
+                // joinNavigation.push('');
                 break;
             default:
                 // For Debug
-                console.log('(ERROR) Input password screen navigation handler', state);
+                console.log('(ERROR) Input nickname screen navigation handler', state);
         }
     };
     return (
         <ScreenWrapper isPaddingHorizontal={true}>
-            <InputPasswordTemplate navigationHandler={navigationHandler} />
+            <InputNicknameTemplate navigationHandler={navigationHandler} />
         </ScreenWrapper>
     );
 };
-export default InputPasswordScreen;
+export default InputNicknameScreen;

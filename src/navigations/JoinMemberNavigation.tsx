@@ -5,6 +5,7 @@ import InputEmailScreen from '../screens/joinMember/InputEmailScreen';
 import InputPasswordScreen from '../screens/joinMember/InputPasswordScreen';
 import { JoinMemberParamList } from '../types/types';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import InputNicknameScreen from '../screens/joinMember/InputNicknameScreen';
 
 const JoinMemberNavigation = () => {
     const Stack = createNativeStackNavigator<JoinMemberParamList>();
@@ -17,6 +18,7 @@ const JoinMemberNavigation = () => {
             initialRouteName="JoinInputEmail">
             <Stack.Screen name="JoinInputEmail" component={InputEmailScreen} />
             <Stack.Screen name="JoinInputPassword" component={InputPasswordScreen} />
+            <Stack.Screen name="JoinInputNickname" component={InputNicknameScreen} />
         </Stack.Navigator>
     );
 };
