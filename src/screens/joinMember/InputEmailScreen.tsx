@@ -2,18 +2,17 @@ import React from 'react';
 
 import ScreenWrapper from '../../components/organisms/ScreenWrapper';
 import InputEmailTemplate from '../../components/templates/joinMember/InputEmailTemplate';
-import { useRootNavigation } from '../../navigations/RootStackNavigation';
+import { useJoinNavigation } from '../../navigations/JoinMemberNavigation';
 
 const InputEmailScreen = () => {
-    const rootNavigation = useRootNavigation();
+    const joinNavigation = useJoinNavigation();
     const navigationHandler = (state: string) => {
         switch (state) {
             case 'BACK':
-                rootNavigation.popToTop();
+                joinNavigation.popToTop();
                 break;
             case 'GO':
-                console.log('다음');
-                // rootNavigation.pop()
+                joinNavigation.push('JoinInputPassword');
                 break;
             default:
                 // For Debug

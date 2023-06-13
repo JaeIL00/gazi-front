@@ -227,6 +227,7 @@ export type RootStackParamList = {
 };
 export type JoinMemberParamList = {
     JoinInputEmail: undefined;
+    JoinInputPassword: undefined;
 };
 export type BottomTabParamList = {
     ServiceHome: undefined;
@@ -391,17 +392,18 @@ export type CommentListItemProps = {
     reportHandler: (repostId: number) => void;
 };
 export type ServiceAgreementProps = {
-    authNumberModalHanlder: (state: string) => void;
+    finishSlideComponentHandler: (state: string) => void;
 };
 export type WebViewComponentProps = {
     uri: string;
     closeHandler: React.Dispatch<React.SetStateAction<string>>;
 };
-export interface AuthEmailProps extends ServiceAgreementProps {
+export type AuthEmailProps = {
     min: number;
     sec: number;
     resetTimeHandler: () => void;
-}
+    authNumberModalHanlder: (state: string) => void;
+};
 export type FailPermissionModalProps = {
     permissionName: string;
     contentOne: string;
@@ -477,7 +479,7 @@ export type InputEmailTemplateProps = {
     navigationHandler: (state: string) => void;
 };
 export type InputPasswordTemplateProps = {
-    onPressNextStep: () => void;
+    navigationHandler: (state: string) => void;
 };
 export interface NicknameTemplateProps extends InputPasswordTemplateProps {}
 export interface CompletedJoinTemplateProps extends InputPasswordTemplateProps {}

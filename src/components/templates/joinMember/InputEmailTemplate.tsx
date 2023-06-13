@@ -121,7 +121,7 @@ const InputEmailTemplate = ({ navigationHandler }: InputEmailTemplateProps) => {
                 onPress={() => navigationHandler('BACK')}
                 oneTitle="회원가입"
                 twoTitle=""
-                explainText="비밀번호를 입력해주세요"
+                explainText="본인인증을 위한 이메일을 입력해주세요"
                 explainSize={13}
             />
             <View style={inputEmailTemplateStyles.container}>

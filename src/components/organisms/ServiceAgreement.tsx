@@ -1,17 +1,16 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Animated, Modal, ScrollView, View, useWindowDimensions } from 'react-native';
+import { Animated, Modal, View, useWindowDimensions } from 'react-native';
 
 import Icons from '../smallest/Icons';
 import Colors from '../../styles/Colors';
 import TextButton from '../molecules/TextButton';
+import WebViewComponent from './WebViewComponent';
 import TouchButton from '../smallest/TouchButton';
-import ModalBackground from '../smallest/ModalBackground';
 import SemiBoldText from '../smallest/SemiBoldText';
 import AgreementCheckListItem from '../molecules/AgreementCheckListItem';
 import { ServiceAgreementProps } from '../../types/types';
-import { checkBoxBackground, serviceAgreementStyles } from '../../styles/styles';
-import WebViewComponent from './WebViewComponent';
 import { screenHeight } from '../../utils/changeStyleSize';
+import { checkBoxBackground, serviceAgreementStyles } from '../../styles/styles';
 
 const ServiceAgreement = ({ finishSlideComponentHandler }: ServiceAgreementProps) => {
     // Render list data
@@ -74,7 +73,7 @@ const ServiceAgreement = ({ finishSlideComponentHandler }: ServiceAgreementProps
                 useNativeDriver: true,
             }).start(({ finished }: { finished: boolean }) => {
                 if (finished) {
-                    finishSlideComponentHandler('OK');
+                    finishSlideComponentHandler('GO');
                 }
             });
         }

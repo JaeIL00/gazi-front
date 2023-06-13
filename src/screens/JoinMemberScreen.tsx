@@ -126,11 +126,6 @@ const JoinMemberScreen = () => {
                     {step === 3 && <NicknameTemplate onPressNextStep={onPressNextStep} />}
                     {step === 4 && <CompletedJoinTemplate onPressNextStep={onPressNextStep} />}
                 </View>
-                <ModalBackground
-                    visible={isSlideComponent && step === 2}
-                    onRequestClose={() => finishSlideComponentHandler('BACK')}>
-                    <ServiceAgreement finishSlideComponentHandler={finishSlideComponentHandler} />
-                </ModalBackground>
             </>
         </ScreenWrapper>
     );
