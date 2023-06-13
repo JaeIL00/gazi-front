@@ -831,7 +831,7 @@ export const inputEmailTemplateStyles = StyleSheet.create({
         marginLeft: 8 * screenWidth,
     },
 });
-export const emailWithPasswordTemplateStyles = StyleSheet.create({
+export const inputPasswordTemplateStyles = StyleSheet.create({
     container: {
         flex: 1,
         paddingTop: 51 * screenHeight,

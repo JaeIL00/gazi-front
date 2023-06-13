@@ -476,11 +476,11 @@ export type EditMyKeywordProps = {
 export type InputEmailTemplateProps = {
     navigationHandler: (state: string) => void;
 };
-export type EmailWithPasswordProps = {
+export type InputPasswordTemplateProps = {
     onPressNextStep: () => void;
 };
-export interface NicknameTemplateProps extends EmailWithPasswordProps {}
-export interface CompletedJoinTemplateProps extends EmailWithPasswordProps {}
+export interface NicknameTemplateProps extends InputPasswordTemplateProps {}
+export interface CompletedJoinTemplateProps extends InputPasswordTemplateProps {}
 export type RequestPemissionTemplateProps = {
     moveToScreen: (state: string) => void;
 };

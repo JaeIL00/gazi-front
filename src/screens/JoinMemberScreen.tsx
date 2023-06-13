@@ -11,7 +11,7 @@ import MoveBackWithPageTitle from '../components/organisms/MoveBackWithPageTitle
 import NicknameTemplate from '../components/templates/joinMember/NicknameTemplate';
 import InputEmailTemplate from '../components/templates/joinMember/InputEmailTemplate';
 import CompletedJoinTemplate from '../components/templates/joinMember/CompletedJoinTemplate';
-import EmailWithPasswordTemplate from '../components/templates/joinMember/EmailWithPasswordTemplate';
+import EmailWithPasswordTemplate from '../components/templates/joinMember/InputPasswordTemplate';
 import { JoinMemberScreenStyles } from '../styles/styles';
 import { emailAuthAtom, joinMemberAtom } from '../store/atoms';
 import { useRootNavigation } from '../navigations/RootStackNavigation';

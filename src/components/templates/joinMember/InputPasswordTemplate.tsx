@@ -10,10 +10,10 @@ import TextButton from '../../molecules/TextButton';
 import LoginTextInput from '../../molecules/LoginTextInput';
 import IconWithMediumText from '../../molecules/IconWithMediumText';
 import { joinMemberAtom } from '../../../store/atoms';
-import { EmailWithPasswordProps } from '../../../types/types';
-import { emailWithPasswordTemplateStyles } from '../../../styles/styles';
+import { InputPasswordTemplateProps } from '../../../types/types';
+import { inputPasswordTemplateStyles } from '../../../styles/styles';
 
-const EmailWithPasswordTemplate = ({ onPressNextStep }: EmailWithPasswordProps) => {
+const InputPasswordTemplate = ({ onPressNextStep }: InputPasswordTemplateProps) => {
     const [joinData, setJoinData] = useRecoilState(joinMemberAtom);
 
     const [password, setpassword] = useState<string>('');
@@ -40,12 +40,12 @@ const EmailWithPasswordTemplate = ({ onPressNextStep }: EmailWithPasswordProps) 
     };
 
     return (
-        <View style={emailWithPasswordTemplateStyles.container}>
+        <View style={inputPasswordTemplateStyles.container}>
             <View style={{ flex: 1 }}>
                 <MediumText text="Email" size={14} color="#7C8183" />
                 <Spacer height={6} />
 
-                <View style={emailWithPasswordTemplateStyles.emainTextBox}>
+                <View style={inputPasswordTemplateStyles.emainTextBox}>
                     <NormalText text={joinData.email} size={16} color={Colors.BLACK} />
                 </View>
 
@@ -62,7 +62,7 @@ const EmailWithPasswordTemplate = ({ onPressNextStep }: EmailWithPasswordProps) 
 
                 <Spacer height={8} />
 
-                <View style={emailWithPasswordTemplateStyles.emailErrorTextBox}>
+                <View style={inputPasswordTemplateStyles.emailErrorTextBox}>
                     <IconWithMediumText
                         type="octicons"
                         name="check"
@@ -81,7 +81,7 @@ const EmailWithPasswordTemplate = ({ onPressNextStep }: EmailWithPasswordProps) 
                 </View>
             </View>
 
-            <View style={emailWithPasswordTemplateStyles.bottomButton}>
+            <View style={inputPasswordTemplateStyles.bottomButton}>
                 <KeyboardAvoidingView behavior="height">
                     <TextButton
                         onPress={canMoveNextStepHandler}
@@ -97,4 +97,4 @@ const EmailWithPasswordTemplate = ({ onPressNextStep }: EmailWithPasswordProps) 
     );
 };
 
-export default EmailWithPasswordTemplate;
+export default InputPasswordTemplate;
