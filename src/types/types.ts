@@ -481,7 +481,7 @@ export type InputEmailTemplateProps = {
 export type InputPasswordTemplateProps = {
     navigationHandler: (state: string) => void;
 };
-export interface NicknameTemplateProps extends InputPasswordTemplateProps {}
+export interface InputNicknameTemplateProps extends InputPasswordTemplateProps {}
 export interface CompletedJoinTemplateProps extends InputPasswordTemplateProps {}
 export type RequestPemissionTemplateProps = {
     moveToScreen: (state: string) => void;

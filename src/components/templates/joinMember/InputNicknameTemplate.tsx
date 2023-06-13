@@ -1,5 +1,5 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { ActivityIndicator, Animated, Keyboard, KeyboardAvoidingView, ToastAndroid, View } from 'react-native';
+import React, { useCallback, useState } from 'react';
+import { ActivityIndicator, KeyboardAvoidingView, ToastAndroid, View } from 'react-native';
 import { useRecoilState } from 'recoil';
 import { useMutation, useQuery } from 'react-query';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -10,14 +10,13 @@ import Spacer from '../../smallest/Spacer';
 import Colors from '../../../styles/Colors';
 import MediumText from '../../smallest/MediumText';
 import TextButton from '../../molecules/TextButton';
-import { NicknameTemplateProps } from '../../../types/types';
 import { SingleLineInput } from '../../smallest/SingleLineInput';
-import { joinMemberAtom, userInfoAtom, userTokenAtom } from '../../../store/atoms';
+import { InputNicknameTemplateProps } from '../../../types/types';
+import { inputNicknameTemplateStyles } from '../../../styles/styles';
 import { joinMemberAPI, checkNicknameAPI } from '../../../queries/api';
-import { nicknameTemplateStyles } from '../../../styles/styles';
-import { screenHeight } from '../../../utils/changeStyleSize';
+import { joinMemberAtom, userInfoAtom, userTokenAtom } from '../../../store/atoms';
 
-const NicknameTemplate = ({ onPressNextStep }: NicknameTemplateProps) => {
+const InputNicknameTemplate = ({ onPressNextStep }: InputNicknameTemplateProps) => {
     // Nickname Text Handling
     const [inputNickname, setInputNickname] = useState<string>('');
     const onChangeNickname = (text: string) => {
@@ -111,9 +110,9 @@ const NicknameTemplate = ({ onPressNextStep }: NicknameTemplateProps) => {
     }, 300);
 
     return (
-        <View style={nicknameTemplateStyles.container}>
-            <View style={nicknameTemplateStyles.mainContentBox}>
-                <View style={nicknameTemplateStyles.inputBox}>
+        <View style={inputNicknameTemplateStyles.container}>
+            <View style={inputNicknameTemplateStyles.mainContentBox}>
+                <View style={inputNicknameTemplateStyles.inputBox}>
                     <SingleLineInput
                         value={inputNickname}
                         onChangeText={onChangeNickname}
@@ -126,7 +125,7 @@ const NicknameTemplate = ({ onPressNextStep }: NicknameTemplateProps) => {
                 <Spacer height={8} />
 
                 {resultText && (
-                    <View style={nicknameTemplateStyles.emailErrorTextBox}>
+                    <View style={inputNicknameTemplateStyles.emailErrorTextBox}>
                         <Icons
                             type={isDuplicate ? 'octicons' : 'fontisto'}
                             name={isDuplicate ? 'check' : 'close'}
@@ -144,7 +143,7 @@ const NicknameTemplate = ({ onPressNextStep }: NicknameTemplateProps) => {
             </View>
 
             <KeyboardAvoidingView behavior="height">
-                <View style={nicknameTemplateStyles.bottomButton}>
+                <View style={inputNicknameTemplateStyles.bottomButton}>
                     <TextButton
                         text="확인"
                         textColor={Colors.WHITE}
@@ -161,4 +160,4 @@ const NicknameTemplate = ({ onPressNextStep }: NicknameTemplateProps) => {
     );
 };
 
-export default NicknameTemplate;
+export default InputNicknameTemplate;

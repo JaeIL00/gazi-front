@@ -776,7 +776,7 @@ export const webViewComponentStyles = StyleSheet.create({
 });
 
 // TEMPLATES
-export const nicknameTemplateStyles = StyleSheet.create({
+export const inputNicknameTemplateStyles = StyleSheet.create({
     container: {
         position: 'relative',
         flex: 1,

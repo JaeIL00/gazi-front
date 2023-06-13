@@ -8,7 +8,7 @@ import ModalBackground from '../components/smallest/ModalBackground';
 import ServiceAgreement from '../components/organisms/ServiceAgreement';
 import useBackgroundInterval from '../utils/hooks/useBackgroundInterval';
 import MoveBackWithPageTitle from '../components/organisms/MoveBackWithPageTitle';
-import NicknameTemplate from '../components/templates/joinMember/NicknameTemplate';
+import NicknameTemplate from '../components/templates/joinMember/InputNicknameTemplate';
 import InputEmailTemplate from '../components/templates/joinMember/InputEmailTemplate';
 import CompletedJoinTemplate from '../components/templates/joinMember/CompletedJoinTemplate';
 import EmailWithPasswordTemplate from '../components/templates/joinMember/InputPasswordTemplate';
