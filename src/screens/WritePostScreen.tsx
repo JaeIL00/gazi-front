@@ -1,19 +1,17 @@
 import React from 'react';
 
-import WritePostOrCommentTemplate from '../components/templates/community/WritePostTemplate';
-import { useRootNavigation, useRootRoute } from '../navigations/RootStackNavigation';
+import WritePostTemplate from '../components/templates/community/WritePostTemplate';
+import { useRootNavigation } from '../navigations/RootStackNavigation';
+import ScreenWrapper from '../components/organisms/ScreenWrapper';
 
 const WritePostScreen = () => {
-    const route = useRootRoute<'WritePost'>();
-    const data = route.params;
-
     const rootNavigation = useRootNavigation();
-    const moveToScreen = (state: string, postId: number | null, freshRePostCount?: number) => {
+
+    const navigationHandler = (state: string, postId?: number) => {
         switch (state) {
             case 'GO':
                 rootNavigation.navigate('ThreadItem', {
                     postId: postId!,
-                    freshRePostCount,
                 });
                 break;
             case 'BACK':
@@ -21,11 +19,15 @@ const WritePostScreen = () => {
                 break;
             default:
                 // For Debug
-                console.log('(ERROR) Write post move to screen function argument.', state);
+                console.log('(ERROR) Write post move to screen.', state);
         }
     };
 
-    return <WritePostOrCommentTemplate moveToScreen={moveToScreen} postThreadInfo={data} />;
+    return (
+        <ScreenWrapper isPaddingHorizontal={false}>
+            <WritePostTemplate navigationHandler={navigationHandler} />
+        </ScreenWrapper>
+    );
 };
 
 export default WritePostScreen;

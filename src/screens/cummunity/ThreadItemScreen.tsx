@@ -1,5 +1,4 @@
 import React from 'react';
-import { useIsFocused } from '@react-navigation/native';
 
 import ScreenWrapper from '../../components/organisms/ScreenWrapper';
 import ThreadItemTemplate from '../../components/templates/community/ThreadItemTemplate';
@@ -15,7 +14,7 @@ const ThreadItemScreen = () => {
         rootNavigation.navigate('BottomTab', { screen: 'Community' });
     };
     const moveToWriteScreen = (title: string, rePostCount: number, time: string) => {
-        rootNavigation.navigate('WritePostOrComment', {
+        rootNavigation.navigate('WriteComment', {
             title,
             rePostCount,
             time,

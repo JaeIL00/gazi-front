@@ -598,7 +598,7 @@ export const searchLocationStyles = StyleSheet.create({
         flexWrap: 'wrap',
     },
 });
-export const writePostAddKeywordStyles = StyleSheet.create({
+export const addKeywordInWriteStyles = StyleSheet.create({
     container: {
         position: 'absolute',
         width: '100%',
@@ -835,6 +835,9 @@ export const inputPasswordTemplateStyles = StyleSheet.create({
     container: {
         flex: 1,
         paddingTop: 51 * screenHeight,
+    },
+    inputBox: {
+        flex: 1,
     },
     emainTextBox: {
         height: 48 * screenHeight,
@@ -1099,9 +1102,6 @@ export const writePostTemplateStyles = StyleSheet.create({
         padding: 24 * screenWidth,
         borderRadius: 12 * screenFont,
     },
-    conditionSettingBox: {
-        paddingTop: 14 * screenHeight,
-    },
     mapSize: {
         width: '100%',
         height: '50%',
@@ -1109,6 +1109,131 @@ export const writePostTemplateStyles = StyleSheet.create({
     mapMarkerPosition: {
         justifyContent: 'center',
         alignItems: 'center',
+    },
+    bottomBox: {
+        flexShrink: 1,
+        backgroundColor: Colors.BACKGROUND_DEFAULT,
+    },
+    bottomBarBotton: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        width: '100%',
+    },
+    addPhotoBox: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    cameraIcon: {
+        width: 24 * screenWidth,
+        height: 24 * screenWidth,
+    },
+    bottomKeyword: {
+        paddingHorizontal: 16 * screenWidth,
+        paddingTop: 8 * screenHeight,
+        paddingBottom: 13 * screenHeight,
+        backgroundColor: Colors.WHITE,
+    },
+    bottomKeywordItem: {
+        borderColor: Colors.TXT_LIGHTGRAY,
+        borderWidth: 0.8 * screenFont,
+        borderRadius: 21.57 * screenFont,
+        paddingHorizontal: 10 * screenWidth,
+        paddingVertical: 5 * screenHeight,
+        marginRight: 3 * screenWidth,
+    },
+    bottomImageBox: {
+        position: 'relative',
+        marginRight: 8 * screenWidth,
+        width: 66 * screenWidth,
+        height: 70 * screenWidth,
+    },
+    bottomImageInnerBox: {
+        width: '100%',
+        height: 66 * screenWidth,
+        position: 'absolute',
+        bottom: 0,
+    },
+    bottomImageSize: {
+        width: '100%',
+        height: '100%',
+        borderRadius: 10 * screenFont,
+        borderWidth: 1 * screenFont,
+        borderColor: '#E3E3E3',
+    },
+    bottomImageDelButton: {
+        position: 'absolute',
+        height: 25 * screenHeight,
+        top: -2 * screenWidth,
+        right: -4 * screenWidth,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    bottomImageDelIconBack: {
+        position: 'absolute',
+        width: '40%',
+        height: '40%',
+        backgroundColor: Colors.WHITE,
+    },
+});
+export const writeCommentTemplateStyles = StyleSheet.create({
+    container: {
+        backgroundColor: Colors.WHITE,
+        flex: 1,
+        position: 'absolute',
+        width: '100%',
+        height: '100%',
+    },
+    headerNavigateBox: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        paddingHorizontal: 16 * screenWidth,
+        paddingVertical: 16 * screenHeight,
+    },
+    contentBox: {
+        flex: 1,
+    },
+    settingContainer: {
+        borderBottomWidth: 1 * screenFont,
+        borderColor: '#EBEBEB',
+        paddingHorizontal: 16 * screenWidth,
+        paddingBottom: 12 * screenHeight,
+    },
+    contentInputFocus: {
+        height: 400 * screenHeight,
+    },
+    settingBox: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    settingButton: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    locationSearchModal: {
+        flex: 1,
+        backgroundColor: Colors.BACKGROUND_DEFAULT,
+    },
+    searchToggleIcon: {
+        width: 10 * screenWidth,
+        height: 10 * screenWidth,
+    },
+    locationIcon: {
+        width: 16 * screenWidth,
+        height: 16 * screenWidth,
+    },
+    inputBox: {
+        paddingHorizontal: 16 * screenWidth,
+        paddingTop: 10 * screenHeight,
+    },
+    errorModalBox: {
+        backgroundColor: Colors.WHITE,
+        alignItems: 'center',
+        padding: 24 * screenWidth,
+        borderRadius: 12 * screenFont,
+    },
+    conditionSettingBox: {
+        paddingTop: 14 * screenHeight,
     },
     bottomBox: {
         flexShrink: 1,

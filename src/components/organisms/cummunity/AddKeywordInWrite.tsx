@@ -1,5 +1,6 @@
 import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { ScrollView, StatusBar, View } from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
 
 import KeywordsList from '../KeywordsList';
 import Spacer from '../../smallest/Spacer';
@@ -9,12 +10,11 @@ import TextButton from '../../molecules/TextButton';
 import SemiBoldText from '../../smallest/SemiBoldText';
 import HeaderMolecule from '../../molecules/HeaderMolecule';
 import useCheckKeyword from '../../../utils/hooks/useCheckKeyword';
-import { initLikeKeywordTemplateStyles, writePostAddKeywordStyles } from '../../../styles/styles';
+import { addKeywordInWriteStyles } from '../../../styles/styles';
 import { KeywordListTypes, WritePostAddKeywordProps } from '../../../types/types';
 import { issueKeywords, subwayKeywords, trafficKeywords } from '../../../utils/allKeywords';
-import LinearGradient from 'react-native-linear-gradient';
 
-const WritePostAddKeyword = ({ keywordModalHandler, getKeywordHandler }: WritePostAddKeywordProps) => {
+const AddKeywordInWrite = ({ keywordModalHandler, getKeywordHandler }: WritePostAddKeywordProps) => {
     const [step, setStep] = useState<number>(1);
     const [headKeyword, setHeadKeyword] = useState<number[]>([]);
     const [chooseIssueList, setChooseIssueList] = useState<KeywordListTypes[]>([]);
@@ -102,7 +102,7 @@ const WritePostAddKeyword = ({ keywordModalHandler, getKeywordHandler }: WritePo
     }, [checkHead]);
 
     return (
-        <View style={writePostAddKeywordStyles.container}>
+        <View style={addKeywordInWriteStyles.container}>
             <StatusBar backgroundColor={Colors.BACKGROUND_DEFAULT} />
             <HeaderMolecule
                 title="키워드 설정"
@@ -116,11 +116,11 @@ const WritePostAddKeyword = ({ keywordModalHandler, getKeywordHandler }: WritePo
             <Spacer height={10} />
             {step === 1 && (
                 <View>
-                    <LinearGradient colors={['#F9F9F9', '#F9F9F900']} style={writePostAddKeywordStyles.upLinear} />
+                    <LinearGradient colors={['#F9F9F9', '#F9F9F900']} style={addKeywordInWriteStyles.upLinear} />
                     <ScrollView showsVerticalScrollIndicator={false}>
                         <View>
                             <Spacer height={16} />
-                            <View style={writePostAddKeywordStyles.keywordListBox}>
+                            <View style={addKeywordInWriteStyles.keywordListBox}>
                                 <SemiBoldText text="이슈" color={Colors.BLACK} size={16} />
                                 <Spacer width={6} />
                                 <NormalText text="1개이상 선택" size={13} color="#8F8F8F" />
@@ -139,7 +139,7 @@ const WritePostAddKeyword = ({ keywordModalHandler, getKeywordHandler }: WritePo
                         <Spacer height={29} />
 
                         <View>
-                            <View style={writePostAddKeywordStyles.keywordListBox}>
+                            <View style={addKeywordInWriteStyles.keywordListBox}>
                                 <SemiBoldText text="교통수단" color={Colors.BLACK} size={16} />
                                 <Spacer width={6} />
                                 <NormalText text="1개이상 선택" size={13} color="#8F8F8F" />
@@ -189,8 +189,8 @@ const WritePostAddKeyword = ({ keywordModalHandler, getKeywordHandler }: WritePo
                 </View>
             )}
 
-            <View style={writePostAddKeywordStyles.nextBottonBox}>
-                <LinearGradient colors={['#F9F9F900', '#F9F9F9']} style={writePostAddKeywordStyles.downLinear} />
+            <View style={addKeywordInWriteStyles.nextBottonBox}>
+                <LinearGradient colors={['#F9F9F900', '#F9F9F9']} style={addKeywordInWriteStyles.downLinear} />
                 <TextButton
                     onPress={stepHandler}
                     text={step === 1 ? '다음' : '완료'}
@@ -208,4 +208,4 @@ const WritePostAddKeyword = ({ keywordModalHandler, getKeywordHandler }: WritePo
     );
 };
 
-export default WritePostAddKeyword;
+export default AddKeywordInWrite;

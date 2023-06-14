@@ -2,7 +2,6 @@ import React from 'react';
 
 import ScreenWrapper from '../../components/organisms/ScreenWrapper';
 import InputNicknameTemplate from '../../components/templates/joinMember/InputNicknameTemplate';
-import { useRootNavigation } from '../../navigations/RootStackNavigation';
 import { useJoinNavigation } from '../../navigations/JoinMemberNavigation';
 
 const InputNicknameScreen = () => {

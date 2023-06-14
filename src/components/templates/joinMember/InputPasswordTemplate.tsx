@@ -53,7 +53,7 @@ const InputPasswordTemplate = ({ navigationHandler }: InputPasswordTemplateProps
                 explainSize={13}
             />
             <View style={inputPasswordTemplateStyles.container}>
-                <View style={{ flex: 1 }}>
+                <View style={inputPasswordTemplateStyles.inputBox}>
                     <MediumText text="Email" size={14} color="#7C8183" />
                     <Spacer height={6} />
 

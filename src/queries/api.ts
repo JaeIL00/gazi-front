@@ -1,6 +1,6 @@
 import axios from 'axios';
 import Config from 'react-native-config';
-import { CommentReqTypes, PostDto, userAuthAtomTypes } from '../types/types';
+import { CommentDtoTypes, PostDtoTypes } from '../types/types';
 
 const Axios = axios.create({
     baseURL: Config.API_BASE_URL,
@@ -312,7 +312,7 @@ export const delHelpfulCommentAPI = async (param: {
 };
 
 // TEMPORARY COMMUNITY
-export const writePostAPI = async (param: { accessToken: string; data: PostDto }) => {
+export const writePostAPI = async (param: { accessToken: string; data: PostDtoTypes }) => {
     const response = await Axios({
         url: '/api/v1/post/top-post',
         method: 'post',
@@ -335,7 +335,7 @@ export const writePostFilesAPI = async (param: { accessToken: string; data: Form
     });
     return response;
 };
-export const writeCommentAPI = async (param: { accessToken: string; data: CommentReqTypes }) => {
+export const writeCommentAPI = async (param: { accessToken: string; data: CommentDtoTypes }) => {
     const response = await Axios({
         url: '/api/v1/post/repost',
         method: 'post',

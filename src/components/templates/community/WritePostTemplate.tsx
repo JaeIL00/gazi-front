@@ -6,7 +6,6 @@ import {
     Linking,
     Modal,
     ScrollView,
-    StatusBar,
     TouchableOpacity,
     View,
 } from 'react-native';
@@ -34,20 +33,26 @@ import HeaderMolecule from '../../molecules/HeaderMolecule';
 import SearchLocation from '../../organisms/SearchLocation';
 import ModalBackground from '../../smallest/ModalBackground';
 import FailPermissionModal from '../../organisms/FailPermissionModal';
-import WritePostAddKeyword from '../../organisms/cummunity/WritePostAddKeyword';
+import WritePostAddKeyword from '../../organisms/cummunity/AddKeywordInWrite';
 import { userAuthAtom } from '../../../store/atoms';
 import { screenWidth } from '../../../utils/changeStyleSize';
 import { SingleLineInput } from '../../smallest/SingleLineInput';
 import { writePostTemplateStyles } from '../../../styles/styles';
+import { writePostAPI, writePostFilesAPI } from '../../../queries/api';
 import { issueKeywords, subwayKeywords, trafficKeywords } from '../../../utils/allKeywords';
-import { KeywordListTypes, WritePostTemplateProps, WritePostTypes, uploadImageFileTypes } from '../../../types/types';
-import { writeCommentAPI, writeCommentFilesAPI, writePostAPI, writePostFilesAPI } from '../../../queries/api';
+import {
+    KeywordListTypes,
+    TemporarySaveChooseLocationTypes,
+    WritePostTemplateProps,
+    WritePostTypes,
+    uploadImageFileTypes,
+} from '../../../types/types';
 
-const WritePostTemplate = ({ moveToScreen, postThreadInfo }: WritePostTemplateProps) => {
+const WritePostTemplate = ({ navigationHandler }: WritePostTemplateProps) => {
     const { accessToken } = useRecoilValue(userAuthAtom);
 
     const mapRef = useRef() as RefObject<MapView>;
-
+    const postIdRef = useRef<number>();
     const isAllowLocation = useRef<boolean>(false);
     const currentPositionRef = useRef<{ curLat: number; curLon: number }>({
         curLat: 0,
@@ -55,22 +60,17 @@ const WritePostTemplate = ({ moveToScreen, postThreadInfo }: WritePostTemplatePr
     });
 
     const [title, setTitle] = useState<string>('');
-    const [postId, setPostId] = useState<number>(0);
     const [content, setcontent] = useState<string>('');
     const [onErrorText, setOnErrorText] = useState<string>('');
     const [keywordModal, setKeywordModal] = useState<boolean>(false);
     const [onErrorModal, setOnErrorModal] = useState<boolean>(false);
     const [loactionModal, setLoactionModal] = useState<boolean>(false);
-    const [inputFocusBlur, setInputFocusBlur] = useState<boolean>(false);
     const [markerType, setMarkerType] = useState<ImageSourcePropType>();
+    const [inputFocusBlur, setInputFocusBlur] = useState<boolean>(false);
     const [imagePermission, setImagePermission] = useState<boolean>(false);
     const [chooseKeywords, setChooseKeywords] = useState<KeywordListTypes[]>([]);
     const [isCamAllowPermission, setIsCamAllowPermission] = useState<boolean>(false);
-    const [temporaryChooseLocationData, setTemporaryChooseLocationData] = useState<{
-        formatted_address: string;
-        name: string;
-        location: { lat: number | null; lng: number | null };
-    }>({
+    const [temporaryChooseLocationData, setTemporaryChooseLocationData] = useState<TemporarySaveChooseLocationTypes>({
         formatted_address: '',
         name: '',
         location: { lat: null, lng: null },
@@ -104,39 +104,15 @@ const WritePostTemplate = ({ moveToScreen, postThreadInfo }: WritePostTemplatePr
     // Post upload files API
     const { mutate: postFileMutate, isLoading: isPostFileLoading } = useMutation(writePostFilesAPI, {
         onSuccess: () => {
-            moveToScreen('GO', postId);
+            navigationHandler('GO', postIdRef.current);
         },
         onError: error => {
             // For Debug
-            console.log('(ERROR) Upload files API.', error);
-        },
-    });
-    // Write comment API
-    const { mutate: commentMutate, isLoading: iscommentLoading } = useMutation(writeCommentAPI, {
-        onSuccess: ({ data }) => {
-            const responseRepostId = data.data;
-            commentUploadFilesHandler(responseRepostId);
-        },
-        onError: error => {
-            // For Debug
-            console.log('(ERROR) Write comment API.', error);
+            console.log('(ERROR) Write post upload files API.', error);
         },
     });
 
-    // Comment upload files API
-    const { mutate: commentFileMutate, isLoading: iscommentFileLoading } = useMutation(writeCommentFilesAPI, {
-        onSuccess: ({ data }) => {
-            if (postThreadInfo) {
-                moveToScreen('GO', postThreadInfo.postId, postThreadInfo.rePostCount);
-            }
-        },
-        onError: error => {
-            // For Debug
-            console.log('(ERROR) Comment upload files.', error);
-        },
-    });
-
-    // Write post data for request API
+    // Choose location in search location modal
     const getLocationHandler = (location: { lat: number; lng: number }, placeName: string, address: string) => {
         setTemporaryChooseLocationData({
             formatted_address: address,
@@ -146,7 +122,7 @@ const WritePostTemplate = ({ moveToScreen, postThreadInfo }: WritePostTemplatePr
     };
     const getKeywordHandler = (keyword: number[]) => {
         const allKeywords = [...issueKeywords, ...trafficKeywords, ...subwayKeywords];
-        let newlist = allKeywords.filter((item, index) => keyword.includes(item.id));
+        let newlist = allKeywords.filter(item => keyword.includes(item.id));
         if (newlist[0].id !== keyword[0]) {
             const headIndex = newlist.findIndex(item => item.id === keyword[0]);
             newlist.unshift(newlist[headIndex]);
@@ -201,7 +177,7 @@ const WritePostTemplate = ({ moveToScreen, postThreadInfo }: WritePostTemplatePr
             });
         } catch (error) {
             // For Debug
-            console.log('(ERROR)Save search history from write.', error);
+            console.log('(ERROR)Save search history from write post.', error);
         } finally {
             setLoactionModal(false);
         }
@@ -290,34 +266,7 @@ const WritePostTemplate = ({ moveToScreen, postThreadInfo }: WritePostTemplatePr
             setOnErrorText('키워드를 설정해주세요');
             setOnErrorModal(true);
         } else {
-            postOrCommentWriteHandler();
-        }
-    };
-    const postOrCommentWriteHandler = () => {
-        if (
-            postThreadInfo &&
-            writePostData.dto.latitude &&
-            writePostData.dto.longitude &&
-            writePostData.dto.keywordIdList
-        ) {
-            // comment
-            commentMutate({
-                accessToken,
-                data: {
-                    postId: postThreadInfo.postId,
-                    content: writePostData.dto.content,
-                    latitude: writePostData.dto.latitude,
-                    longitude: writePostData.dto.longitude,
-                    keywordIdList: writePostData.dto.keywordIdList,
-                },
-            });
-        } else if (!postThreadInfo) {
-            // Try map snapshot then request write post
             mapSnapshotWithWritePostHandler();
-        } else {
-            // For Debug
-            console.log('(ERROR) Post or comment write handler. postThreadInfo:', postThreadInfo);
-            console.log('(ERROR) Post or comment write handler. writePostData.dto:', writePostData.dto);
         }
     };
     const offErrorModalHandler = () => {
@@ -326,7 +275,7 @@ const WritePostTemplate = ({ moveToScreen, postThreadInfo }: WritePostTemplatePr
 
     // Upload post formdata
     const postUploadFilesHandler = (id: number) => {
-        setPostId(id);
+        postIdRef.current = id;
         const formdata = new FormData();
 
         if (writePostData.files[0]) {
@@ -362,44 +311,19 @@ const WritePostTemplate = ({ moveToScreen, postThreadInfo }: WritePostTemplatePr
         });
     };
 
-    // Comment upload files
-    const commentUploadFilesHandler = (rePostId: number) => {
-        if (writePostData.files[0]) {
-            const formdata = new FormData();
-            for (const index in writePostData.files) {
-                formdata.append('files', {
-                    uri: writePostData.files[index].uri,
-                    type: writePostData.files[index].type,
-                    name: writePostData.files[index].fileName,
-                });
-            }
-            commentFileMutate({
-                data: formdata,
-                rePostId,
-            });
-        } else {
-            if (postThreadInfo) {
-                moveToScreen('GO', postThreadInfo.postId, postThreadInfo.rePostCount + 1);
-            }
-        }
-    };
-
-    // Guide image library permission
+    // Image library permission
     const notAllowPermission = () => {
         setImagePermission(true);
     };
     const onPressModalButton = async (state: string) => {
-        switch (state) {
-            case 'MOVE':
-                setImagePermission(false);
+        setImagePermission(false);
+        if (state === 'MOVE') {
+            try {
                 await Linking.openSettings();
-                break;
-            case 'CLOSE':
-                setImagePermission(false);
-                break;
-            default:
+            } catch (error) {
                 // For Debug
-                console.log('(ERROR) Guide image library permission.', state);
+                console.log('(ERROR) Cannot move to device setting for permission.', error);
+            }
         }
     };
 
@@ -545,7 +469,6 @@ const WritePostTemplate = ({ moveToScreen, postThreadInfo }: WritePostTemplatePr
 
     return (
         <>
-            <StatusBar backgroundColor={Colors.WHITE} barStyle="dark-content" />
             <MapView
                 ref={mapRef}
                 style={writePostTemplateStyles.mapSize}
@@ -568,142 +491,71 @@ const WritePostTemplate = ({ moveToScreen, postThreadInfo }: WritePostTemplatePr
             </MapView>
             <View style={writePostTemplateStyles.container}>
                 <View style={writePostTemplateStyles.headerNavigateBox}>
-                    <TouchButton onPress={() => moveToScreen('BACK', null)}>
+                    <TouchButton onPress={() => navigationHandler('BACK')} hitSlop={10}>
                         <Icons type="ionicons" name="close-sharp" size={24} color={Colors.BLACK} />
                     </TouchButton>
-                    <TouchButton onPress={finishWritingHandler}>
+                    <TouchButton onPress={finishWritingHandler} hitSlop={10}>
                         <SemiBoldText text="등록" size={16} color={Colors.BLACK} />
                     </TouchButton>
                 </View>
                 <ScrollView style={writePostTemplateStyles.contentBox}>
                     <View style={writePostTemplateStyles.settingContainer}>
-                        {postThreadInfo ? (
-                            <View>
-                                <SemiBoldText
-                                    text={postThreadInfo.title}
-                                    size={20}
-                                    color={Colors.BLACK}
-                                    numberOfLines={1}
-                                />
-                                <Spacer height={4} />
-                                <NormalText
-                                    text={`${postThreadInfo.rePostCount} post • updated ${postThreadInfo.time}`}
-                                    size={12}
-                                    color={Colors.BLACK}
-                                />
-                            </View>
-                        ) : (
-                            <View style={writePostTemplateStyles.settingBox}>
-                                <TouchButton onPress={() => locationModalHandler('OPEN')}>
-                                    <View style={writePostTemplateStyles.settingButton}>
-                                        {writePostData.dto.latitude && writePostData.dto.placeName ? (
-                                            <>
-                                                <FastImage
-                                                    source={require('../../../assets/icons/location-pin-outline-black.png')}
-                                                    style={writePostTemplateStyles.locationIcon}
-                                                />
-                                                <Spacer width={5} />
-                                                <MediumText
-                                                    text={writePostData.dto.placeName}
-                                                    size={13}
-                                                    color={Colors.BLACK}
-                                                />
-                                            </>
-                                        ) : (
-                                            <MediumText text="위치설정" size={13} color={Colors.BLACK} />
-                                        )}
-                                        <Spacer width={4} />
-                                        <FastImage
-                                            source={require('../../../assets/icons/triangle-down.png')}
-                                            style={writePostTemplateStyles.searchToggleIcon}
-                                        />
-                                    </View>
-                                </TouchButton>
-                                <Spacer width={13} />
-                                <TouchButton onPress={() => keywordModalHandler('OPEN')}>
-                                    <View style={writePostTemplateStyles.settingBox}>
-                                        {writePostData.dto.headKeywordId ? (
+                        <View style={writePostTemplateStyles.settingBox}>
+                            <TouchButton onPress={() => locationModalHandler('OPEN')} hitSlop={5}>
+                                <View style={writePostTemplateStyles.settingButton}>
+                                    {writePostData.dto.latitude && writePostData.dto.placeName ? (
+                                        <>
+                                            <FastImage
+                                                source={require('../../../assets/icons/location-pin-outline-black.png')}
+                                                style={writePostTemplateStyles.locationIcon}
+                                            />
+                                            <Spacer width={5} />
                                             <MediumText
-                                                text={issueKeywords[writePostData.dto.headKeywordId! - 1].keywordName}
+                                                text={writePostData.dto.placeName}
                                                 size={13}
                                                 color={Colors.BLACK}
                                             />
-                                        ) : (
-                                            <MediumText text="키워드설정" size={13} color={Colors.BLACK} />
-                                        )}
-                                        <Spacer width={4} />
-                                        <FastImage
-                                            source={require('../../../assets/icons/triangle-down.png')}
-                                            style={writePostTemplateStyles.searchToggleIcon}
-                                        />
-                                    </View>
-                                </TouchButton>
-                            </View>
-                        )}
-                        {postThreadInfo && (
-                            <View style={writePostTemplateStyles.conditionSettingBox}>
-                                <View style={writePostTemplateStyles.settingBox}>
-                                    <TouchButton onPress={() => locationModalHandler('OPEN')}>
-                                        <View style={writePostTemplateStyles.settingButton}>
-                                            {writePostData.dto.latitude && writePostData.dto.placeName ? (
-                                                <>
-                                                    <FastImage
-                                                        source={require('../../../assets/icons/location-pin-outline-black.png')}
-                                                        style={writePostTemplateStyles.locationIcon}
-                                                    />
-                                                    <Spacer width={5} />
-                                                    <MediumText
-                                                        text={writePostData.dto.placeName}
-                                                        size={13}
-                                                        color={Colors.BLACK}
-                                                    />
-                                                </>
-                                            ) : (
-                                                <MediumText text="위치설정" size={13} color={Colors.BLACK} />
-                                            )}
-                                            <Spacer width={4} />
-                                            <FastImage
-                                                source={require('../../../assets/icons/triangle-down.png')}
-                                                style={writePostTemplateStyles.searchToggleIcon}
-                                            />
-                                        </View>
-                                    </TouchButton>
-                                    <Spacer width={13} />
-                                    <TouchButton onPress={() => keywordModalHandler('OPEN')}>
-                                        <View style={writePostTemplateStyles.settingBox}>
-                                            {writePostData.dto.headKeywordId ? (
-                                                <MediumText
-                                                    text={
-                                                        issueKeywords[writePostData.dto.headKeywordId! - 1].keywordName
-                                                    }
-                                                    size={13}
-                                                    color={Colors.BLACK}
-                                                />
-                                            ) : (
-                                                <MediumText text="키워드설정" size={13} color={Colors.BLACK} />
-                                            )}
-                                            <Spacer width={4} />
-                                            <FastImage
-                                                source={require('../../../assets/icons/triangle-down.png')}
-                                                style={writePostTemplateStyles.searchToggleIcon}
-                                            />
-                                        </View>
-                                    </TouchButton>
+                                        </>
+                                    ) : (
+                                        <MediumText text="위치설정" size={13} color={Colors.BLACK} />
+                                    )}
+                                    <Spacer width={4} />
+                                    <FastImage
+                                        source={require('../../../assets/icons/triangle-down.png')}
+                                        style={writePostTemplateStyles.searchToggleIcon}
+                                    />
                                 </View>
-                            </View>
-                        )}
+                            </TouchButton>
+                            <Spacer width={13} />
+                            <TouchButton onPress={() => keywordModalHandler('OPEN')} hitSlop={5}>
+                                <View style={writePostTemplateStyles.settingBox}>
+                                    {writePostData.dto.headKeywordId ? (
+                                        <MediumText
+                                            text={issueKeywords[writePostData.dto.headKeywordId! - 1].keywordName}
+                                            size={13}
+                                            color={Colors.BLACK}
+                                        />
+                                    ) : (
+                                        <MediumText text="키워드설정" size={13} color={Colors.BLACK} />
+                                    )}
+                                    <Spacer width={4} />
+                                    <FastImage
+                                        source={require('../../../assets/icons/triangle-down.png')}
+                                        style={writePostTemplateStyles.searchToggleIcon}
+                                    />
+                                </View>
+                            </TouchButton>
+                        </View>
                     </View>
                     <View style={writePostTemplateStyles.inputBox}>
-                        {!postThreadInfo && (
-                            <SingleLineInput
-                                value={title}
-                                onChangeText={text => onChangeTitleText(text)}
-                                placeFontFamily="Pretendard-SemiBold"
-                                fontFamily="Pretendard-SemiBold"
-                                placeholder="제목을 입력해주세요"
-                                fontSize={24}
-                            />
-                        )}
+                        <SingleLineInput
+                            value={title}
+                            onChangeText={text => onChangeTitleText(text)}
+                            placeFontFamily="Pretendard-SemiBold"
+                            fontFamily="Pretendard-SemiBold"
+                            placeholder="제목을 입력해주세요"
+                            fontSize={24}
+                        />
                         <View>
                             <MultiLineInput
                                 value={content}
@@ -804,9 +656,7 @@ const WritePostTemplate = ({ moveToScreen, postThreadInfo }: WritePostTemplatePr
                             background="undefined"
                             finishFunction={saveHistorySearchLocationStorage}
                         />
-
                         <Spacer height={12} />
-
                         <SearchLocation
                             getLocationHandler={getLocationHandler}
                             placeholder="어디에서 일어난 일인가요?"
@@ -849,9 +699,7 @@ const WritePostTemplate = ({ moveToScreen, postThreadInfo }: WritePostTemplatePr
                     />
                 </ModalBackground>
 
-                {(isPostLoading || isPostFileLoading || iscommentLoading || iscommentFileLoading) && (
-                    <ActivityIndicator size="large" />
-                )}
+                {(isPostLoading || isPostFileLoading) && <ActivityIndicator size="large" />}
             </View>
         </>
     );

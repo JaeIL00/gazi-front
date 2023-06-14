@@ -79,6 +79,11 @@ export type GalleryAlbumListTypes = {
     count: number;
     thumbnail: string;
 };
+export type TemporarySaveChooseLocationTypes = {
+    formatted_address: string;
+    name: string;
+    location: { lat: number | null; lng: number | null };
+};
 export type LocationResultTypes = {
     business_status: string;
     formatted_address: string;
@@ -121,7 +126,7 @@ export type UploadImageTypes =
           width: null | number;
       }[]
     | Asset[];
-export type PostDto = {
+export type PostDtoTypes = {
     title: string;
     placeName: string;
     content: string;
@@ -130,18 +135,22 @@ export type PostDto = {
     keywordIdList: number[] | null;
     headKeywordId: number | null;
 };
-export type CommentReqTypes = {
+export type CommentDtoTypes = {
     postId: number;
     content: string;
-    latitude: number;
-    longitude: number;
-    keywordIdList: number[];
+    latitude: number | null;
+    longitude: number | null;
+    keywordIdList: number[] | null;
 };
 export type WritePostTypes = {
-    dto: PostDto;
+    dto: PostDtoTypes;
     files: uploadImageFileTypes[];
     thumbnail: Asset | null;
     backgroundMap: string;
+};
+export type WriteCommentTypes = {
+    dto: CommentDtoTypes;
+    files: uploadImageFileTypes[];
 };
 export type MyProfileTabTypes = {
     text: string;
@@ -504,15 +513,16 @@ export type MapHomeTemplateProps = {
     moveToWritePost: () => void;
 };
 export type WritePostTemplateProps = {
-    postThreadInfo:
-        | {
-              title: string;
-              rePostCount: number;
-              time: string;
-              postId: number;
-          }
-        | undefined;
-    moveToScreen: (state: string, postId: number | null, freshRePostCount?: number) => void;
+    navigationHandler: (state: string, postId?: number) => void;
+};
+export type WriteCommentTemplateProps = {
+    threadInfo: {
+        title: string;
+        rePostCount: number;
+        time: string;
+        postId: number;
+    };
+    navigationHandler: (state: string, postId?: number, freshRePostCount?: number) => void;
 };
 export type EditNicknameTemplateProps = {
     moveToMyProfileScreen: (state: string) => void;
