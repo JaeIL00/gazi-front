@@ -17,7 +17,7 @@ const JoinMemberNavigation = () => {
             screenOptions={{
                 headerShown: false,
             }}
-            initialRouteName="JoinInputEmail">
+            initialRouteName="JoinRequestPermission">
             <Stack.Screen name="JoinInputEmail" component={InputEmailScreen} />
             <Stack.Screen name="JoinInputPassword" component={InputPasswordScreen} />
             <Stack.Screen name="JoinInputNickname" component={InputNicknameScreen} />

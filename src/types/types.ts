@@ -485,7 +485,7 @@ export interface CompletedJoinTemplateProps extends InputEmailTemplateProps {
     inputNickname: string;
 }
 export type RequestPemissionTemplateProps = {
-    moveToScreen: (state: string) => void;
+    navigationHandler: (state: string) => void;
 };
 export type EmailLoginTemplateProps = {
     moveServiceHomeHandler: (state: string) => void;

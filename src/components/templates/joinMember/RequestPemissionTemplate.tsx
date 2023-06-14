@@ -11,7 +11,7 @@ import IconPermissionListItem from '../../molecules/IconPermissionListItem';
 import { RequestPemissionTemplateProps } from '../../../types/types';
 import { requestPemissionTemplateStyles } from '../../../styles/styles';
 
-const RequestPemissionTemplate = ({ moveToScreen }: RequestPemissionTemplateProps) => {
+const RequestPemissionTemplate = ({ navigationHandler }: RequestPemissionTemplateProps) => {
     // Request Permissions
     const onPressrequstPermission = async () => {
         if (Platform.OS === 'android') {
@@ -28,7 +28,7 @@ const RequestPemissionTemplate = ({ moveToScreen }: RequestPemissionTemplateProp
                 // For Debug
                 console.log('(ERROR) Request Permissions. err: ', err);
             } finally {
-                moveToScreen('OK');
+                navigationHandler('OK');
             }
         }
     };
@@ -38,7 +38,7 @@ const RequestPemissionTemplate = ({ moveToScreen }: RequestPemissionTemplateProp
             <MoveBackWithPageTitle
                 oneTitle="앱 사용을 위해"
                 twoTitle="접근 권한을 허용해주세요"
-                onPress={() => moveToScreen('BACK')}
+                onPress={() => navigationHandler('BACK')}
             />
 
             <Spacer height={63} />

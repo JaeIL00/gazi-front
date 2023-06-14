@@ -1,5 +1,6 @@
-import React, { useEffect } from 'react';
-import { BackHandler, Platform } from 'react-native';
+import React, { useCallback } from 'react';
+import { BackHandler } from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
 
 import ScreenWrapper from '../../components/organisms/ScreenWrapper';
 import RequestPemissionTemplate from '../../components/templates/joinMember/RequestPemissionTemplate';
@@ -11,7 +12,7 @@ const RequestPermissionScreen = () => {
     const joinNavigation = useJoinNavigation();
 
     // Move to screen handling
-    const moveToScreen = (state: string) => {
+    const navigationHandler = (state: string) => {
         switch (state) {
             case 'OK':
                 joinNavigation.navigate('JoinSettingKeyword');
@@ -30,16 +31,18 @@ const RequestPermissionScreen = () => {
         rootNavigation.navigate('BottomTab');
         return true;
     };
-    useEffect(() => {
-        if (Platform.OS === 'android') {
-            BackHandler.addEventListener('hardwareBackPress', handleBackButton);
-            return () => BackHandler.removeEventListener('hardwareBackPress', handleBackButton);
-        }
-    }, []);
+    useFocusEffect(
+        useCallback(() => {
+            // if (Platform.OS === 'android') {
+            const backhandler = BackHandler.addEventListener('hardwareBackPress', handleBackButton);
+            // }
+            return () => backhandler.remove();
+        }, []),
+    );
 
     return (
         <ScreenWrapper isPaddingHorizontal={true}>
-            <RequestPemissionTemplate moveToScreen={moveToScreen} />
+            <RequestPemissionTemplate navigationHandler={navigationHandler} />
         </ScreenWrapper>
     );
 };

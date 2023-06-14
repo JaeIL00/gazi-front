@@ -21,7 +21,7 @@ import { InitLikeKeywordTemplateProps } from '../../../types/types';
 import { initLikeKeywordTemplateStyles } from '../../../styles/styles';
 import { issueKeywordsNotEtc, subwayKeywords, trafficKeywords } from '../../../utils/allKeywords';
 
-const InitLikeKeywordTemplate = ({ moveToScreen }: InitLikeKeywordTemplateProps) => {
+const InitLikeKeywordTemplate = ({ navigationHandler }: InitLikeKeywordTemplateProps) => {
     const { accessToken } = useRecoilValue(userTokenAtom);
 
     // Custom hook useCheckKeyword
@@ -38,7 +38,7 @@ const InitLikeKeywordTemplate = ({ moveToScreen }: InitLikeKeywordTemplateProps)
     // Send like keywords API
     const { mutate } = useMutation(addLikeKeywordsAPI, {
         onSuccess: () => {
-            moveToScreen('OK');
+            navigationHandler('OK');
         },
         onError: ({ response }) => {
             //For Debug
@@ -76,10 +76,10 @@ const InitLikeKeywordTemplate = ({ moveToScreen }: InitLikeKeywordTemplateProps)
                     twoTitle="맞춤형 커뮤니티를 경험하세요"
                     explainText="관심 키워드는 마이페이지에서 언제든 변경할 수 있어요!"
                     explainSize={13}
-                    onPress={() => moveToScreen('BACK')}
+                    onPress={() => navigationHandler('BACK')}
                 />
                 <View style={initLikeKeywordTemplateStyles.skipBox}>
-                    <TouchButton onPress={() => moveToScreen('OK')}>
+                    <TouchButton onPress={() => navigationHandler('OK')}>
                         <MediumText text="Skip" color={Colors.TXT_GRAY} size={14} />
                     </TouchButton>
                 </View>

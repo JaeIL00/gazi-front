@@ -8,13 +8,13 @@ const InitLikeKeywordScreen = () => {
     const rootNavigation = useRootNavigation();
 
     // Move to screen handling
-    const moveToScreen = (state: string) => {
+    const navigationHandler = (state: string) => {
         switch (state) {
             case 'OK':
-                rootNavigation.navigate('BottomTab');
+                rootNavigation.push('BottomTab');
                 break;
             case 'BACK':
-                rootNavigation.goBack();
+                rootNavigation.pop();
                 break;
             default:
                 // For Debug
@@ -24,7 +24,7 @@ const InitLikeKeywordScreen = () => {
 
     return (
         <ScreenWrapper isPaddingHorizontal={true}>
-            <InitLikeKeywordTemplate moveToScreen={moveToScreen} />
+            <InitLikeKeywordTemplate navigationHandler={navigationHandler} />
         </ScreenWrapper>
     );
 };

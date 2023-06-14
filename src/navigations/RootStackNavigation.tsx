@@ -13,9 +13,7 @@ import NotLoginHomeScreen from '../screens/NotLoginHomeScreen';
 import PoliciesScreen from '../screens/myProfile/PoliciesScreen';
 import ImageViewScreen from '../screens/cummunity/ImageViewScreen';
 import ThreadItemScreen from '../screens/cummunity/ThreadItemScreen';
-import InitLikeKeywordScreen from '../screens/joinMember/InitLikeKeywordScreen';
 import DeleteMemberScreen from '../screens/myProfile/DeleteMemberScreen';
-import RequestPermissionScreen from '../screens/joinMember/RequestPermissionScreen';
 import EditNicknameScreen from '../screens/myProfile/EditNicknameScreen';
 import MyPostCommentScreen from '../screens/myProfile/MyPostCommentScreen';
 import ChangePasswordScreen from '../screens/myProfile/ChangePasswordScreen';
@@ -103,7 +101,7 @@ export const RootStackNavigation = () => {
     }, []);
 
     return (
-        <Stack.Navigator initialRouteName="JoinMember">
+        <Stack.Navigator initialRouteName="NotLoginHome">
             <Stack.Group screenOptions={{ headerShown: false }}>
                 <Stack.Screen name="NotLoginHome" component={NotLoginHomeScreen} />
                 <Stack.Screen name="Login" component={LoginScreen} />
