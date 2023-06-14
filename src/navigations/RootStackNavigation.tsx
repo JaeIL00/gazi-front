@@ -106,13 +106,13 @@ export const RootStackNavigation = () => {
         <Stack.Navigator>
             <Stack.Group>
                 <Stack.Screen name="NotLoginHome" component={NotLoginHomeScreen} options={{ headerShown: false }} />
-                <Stack.Screen name="InitKeyword" component={InitLikeKeywordScreen} />
-                <Stack.Screen name="JoinMember" component={JoinMemberNavigation} options={{ headerShown: false }} />
                 <Stack.Screen name="Login" component={LoginScreen} />
+                <Stack.Screen name="JoinMember" component={JoinMemberNavigation} options={{ headerShown: false }} />
+                <Stack.Screen name="RequestPermission" component={RequestPermissionScreen} />
+                <Stack.Screen name="InitKeyword" component={InitLikeKeywordScreen} />
             </Stack.Group>
             <Stack.Screen name="BottomTab" component={BottomTabNavigation} />
             <Stack.Screen name="Policies" component={PoliciesScreen} />
-            <Stack.Screen name="RequestPermission" component={RequestPermissionScreen} />
             <Stack.Screen name="WritePostOrComment" component={WritePostOrCommentScreen} />
             <Stack.Screen name="LikeKeywordSetting" component={LikeKeywordSettingScreen} />
             <Stack.Screen name="ChangePassword" component={ChangePasswordScreen} />
