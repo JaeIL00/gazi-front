@@ -2,9 +2,9 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import TabBar from '../components/organisms/TabBar';
+import ServiceHomeNavigation from './ServiceHomeNavigation';
 import CommunityScreen from '../screens/cummunity/CommunityScreen';
 import MyProfileScreen from '../screens/myProfile/MyProfileScreen';
-import SeviceHomeScreen from '../screens/SeviceHomeScreen';
 import { BottomTabParamList } from '../types/types';
 
 const BottomTabNavigation = () => {
@@ -16,7 +16,7 @@ const BottomTabNavigation = () => {
             screenOptions={{ headerShown: false }}
             initialRouteName="ServiceHome">
             <BottomTab.Screen name="Community" component={CommunityScreen} />
-            <BottomTab.Screen name="ServiceHome" component={SeviceHomeScreen} />
+            <BottomTab.Screen name="ServiceHome" component={ServiceHomeNavigation} />
             <BottomTab.Screen name="MyProfile" component={MyProfileScreen} />
         </BottomTab.Navigator>
     );

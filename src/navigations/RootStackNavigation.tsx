@@ -18,7 +18,6 @@ import EditNicknameScreen from '../screens/myProfile/EditNicknameScreen';
 import MyPostCommentScreen from '../screens/myProfile/MyPostCommentScreen';
 import ChangePasswordScreen from '../screens/myProfile/ChangePasswordScreen';
 import AccountManagementScreen from '../screens/myProfile/AccountManagementScreen';
-import WritePostOrCommentScreen from '../screens/cummunity/WritePostOrCommentScreen';
 import LikeKeywordSettingScreen from '../screens/myProfile/LikeKeywordSettingScreen';
 import { autoLoginAPI } from '../queries/api';
 import { RootStackParamList } from '../types/types';
@@ -104,12 +103,11 @@ export const RootStackNavigation = () => {
     }, []);
 
     return (
-        <Stack.Navigator>
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
             {userAuth.isLogIn ? (
                 <>
                     <Stack.Screen name="BottomTab" component={BottomTabNavigation} />
                     <Stack.Screen name="Policies" component={PoliciesScreen} />
-                    <Stack.Screen name="WritePostOrComment" component={WritePostOrCommentScreen} />
                     <Stack.Screen name="LikeKeywordSetting" component={LikeKeywordSettingScreen} />
                     <Stack.Screen name="ChangePassword" component={ChangePasswordScreen} />
                     <Stack.Screen name="AccountManagement" component={AccountManagementScreen} />
@@ -121,7 +119,7 @@ export const RootStackNavigation = () => {
                 </>
             ) : (
                 <>
-                    <Stack.Group screenOptions={{ headerShown: false }}>
+                    <Stack.Group>
                         <Stack.Screen name="NotLoginHome" component={NotLoginHomeScreen} />
                         <Stack.Screen name="Login" component={LoginScreen} />
                         <Stack.Screen name="JoinMember" component={JoinMemberNavigation} />

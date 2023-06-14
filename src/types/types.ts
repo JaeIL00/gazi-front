@@ -201,14 +201,6 @@ export type RootStackParamList = {
     BottomTab?: {
         screen: string;
     };
-    WritePostOrComment:
-        | {
-              title: string;
-              rePostCount: number;
-              time: string;
-              postId: number;
-          }
-        | undefined;
     EditNickname: undefined;
     AccountManagement: undefined;
     LikeKeywordSetting: {
@@ -235,6 +227,17 @@ export type BottomTabParamList = {
     ServiceHome: undefined;
     Community: undefined;
     MyProfile: undefined;
+};
+export type ServiceHomeParamList = {
+    MapHome: undefined;
+    WritePostOrComment:
+        | {
+              title: string;
+              rePostCount: number;
+              time: string;
+              postId: number;
+          }
+        | undefined;
 };
 export interface TabBarProps extends BottomTabBarProps {}
 

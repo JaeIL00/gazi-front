@@ -1,23 +1,21 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import { BackHandler, Platform, StatusBar, ToastAndroid, View } from 'react-native';
-import { useIsFocused } from '@react-navigation/native';
+import { useFocusEffect } from '@react-navigation/native';
 
 import Colors from '../styles/Colors';
 import SeviceHomeTemplate from '../components/templates/home/SeviceHomeTemplate';
 import { seviceHomeScreenStyles } from '../styles/styles';
-import { useRootNavigation } from '../navigations/RootStackNavigation';
+import { useHomeNavigation } from '../navigations/ServiceHomeNavigation';
 
-const SeviceHomeScreen = () => {
-    const isFocus = useIsFocused();
-    const rootNavigation = useRootNavigation();
+const MapHomeScreen = () => {
+    const homeNavigation = useHomeNavigation();
 
-    const isModalRef = useRef<boolean>(false);
     const isAppExit = useRef<boolean>(false);
-
-    // const [isAppExit, setIsAppExit] = useState<boolean>(false);
+    const isModalRef = useRef<boolean>(false);
     const [handleModalTrigger, setHandleModalTrigger] = useState<boolean>(false);
+
     const moveToWritePost = () => {
-        rootNavigation.navigate('WritePostOrComment');
+        homeNavigation.navigate('WritePostOrComment');
     };
 
     // Android back button & Header Back Button Handling
@@ -31,7 +29,7 @@ const SeviceHomeScreen = () => {
         } else {
             // Android back button touch twice
             if (Platform.OS === 'android' && !isAppExit.current) {
-                ToastAndroid.show('한번 더 눌러 종료', 1000);
+                ToastAndroid.show('한번 더 눌러서 앱 종료', ToastAndroid.SHORT);
                 isAppExit.current = true;
                 setTimeout(() => {
                     isAppExit.current = false;
@@ -44,14 +42,16 @@ const SeviceHomeScreen = () => {
         return true;
     };
 
-    useEffect(() => {
-        if (Platform.OS === 'android' && isFocus) {
+    useFocusEffect(
+        useCallback(() => {
+            // if (Platform.OS === 'android') {
             BackHandler.addEventListener('hardwareBackPress', handleBackButton);
-        }
-        return () => {
-            BackHandler.removeEventListener('hardwareBackPress', handleBackButton);
-        };
-    }, [isFocus]);
+            // }
+            return () => {
+                BackHandler.removeEventListener('hardwareBackPress', handleBackButton);
+            };
+        }, []),
+    );
 
     return (
         <View style={seviceHomeScreenStyles.container}>
@@ -65,4 +65,4 @@ const SeviceHomeScreen = () => {
     );
 };
 
-export default SeviceHomeScreen;
+export default MapHomeScreen;
