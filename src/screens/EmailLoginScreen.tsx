@@ -14,7 +14,7 @@ const EmailLoginScreen = () => {
                 rootNavigation.navigate('BottomTab');
                 break;
             case 'BACK':
-                rootNavigation.goBack();
+                rootNavigation.popToTop();
                 break;
             default:
                 // For Debug
