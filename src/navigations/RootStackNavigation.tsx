@@ -22,14 +22,14 @@ import WritePostOrCommentScreen from '../screens/cummunity/WritePostOrCommentScr
 import LikeKeywordSettingScreen from '../screens/myProfile/LikeKeywordSettingScreen';
 import { autoLoginAPI } from '../queries/api';
 import { RootStackParamList } from '../types/types';
-import { userInfoAtom, userTokenAtom } from '../store/atoms';
+import { userInfoAtom, userAuthAtom } from '../store/atoms';
 
 export const RootStackNavigation = () => {
     const Stack = createNativeStackNavigator<RootStackParamList>();
     const rootNavigation = useRootNavigation();
 
     // Check storage and token valication for auto login
-    const [userToken, setUserToken] = useRecoilState(userTokenAtom);
+    const [userAuth, setUserAuth] = useRecoilState(userAuthAtom);
     const [userInfo, setUserInfo] = useRecoilState(userInfoAtom);
     const { mutate, isLoading } = useMutation(autoLoginAPI, {
         onSuccess: ({ data }) => {
@@ -58,9 +58,10 @@ export const RootStackNavigation = () => {
         try {
             await AsyncStorage.setItem('GAZI_ac_tk', data.accessToken);
             await AsyncStorage.setItem('GAZI_re_tk', data.refreshToken);
-            setUserToken({
+            setUserAuth({
                 accessToken: data.accessToken,
                 refreshToken: data.refreshToken,
+                isLogIn: true,
             });
             setUserInfo({
                 memberId: data.memberId,
@@ -93,31 +94,40 @@ export const RootStackNavigation = () => {
         } catch (error) {
             // For Debug
             console.log('(ERROR) Check async storage for auto login ', error);
+            rootNavigation.navigate('NotLoginHome');
+            SplashScreen.hide();
         }
     };
     useLayoutEffect(() => {
-        // checkAsyncStorage();
-        SplashScreen.hide();
+        checkAsyncStorage();
+        // SplashScreen.hide();
     }, []);
 
     return (
-        <Stack.Navigator initialRouteName="NotLoginHome">
-            <Stack.Group screenOptions={{ headerShown: false }}>
-                <Stack.Screen name="NotLoginHome" component={NotLoginHomeScreen} />
-                <Stack.Screen name="Login" component={LoginScreen} />
-                <Stack.Screen name="JoinMember" component={JoinMemberNavigation} />
-            </Stack.Group>
-            <Stack.Screen name="BottomTab" component={BottomTabNavigation} />
-            <Stack.Screen name="Policies" component={PoliciesScreen} />
-            <Stack.Screen name="WritePostOrComment" component={WritePostOrCommentScreen} />
-            <Stack.Screen name="LikeKeywordSetting" component={LikeKeywordSettingScreen} />
-            <Stack.Screen name="ChangePassword" component={ChangePasswordScreen} />
-            <Stack.Screen name="AccountManagement" component={AccountManagementScreen} />
-            <Stack.Screen name="DeleteMember" component={DeleteMemberScreen} />
-            <Stack.Screen name="MyPostComment" component={MyPostCommentScreen} />
-            <Stack.Screen name="ThreadItem" component={ThreadItemScreen} />
-            <Stack.Screen name="EditNickname" component={EditNicknameScreen} />
-            <Stack.Screen name="ImageView" component={ImageViewScreen} />
+        <Stack.Navigator>
+            {userAuth.isLogIn ? (
+                <>
+                    <Stack.Screen name="BottomTab" component={BottomTabNavigation} />
+                    <Stack.Screen name="Policies" component={PoliciesScreen} />
+                    <Stack.Screen name="WritePostOrComment" component={WritePostOrCommentScreen} />
+                    <Stack.Screen name="LikeKeywordSetting" component={LikeKeywordSettingScreen} />
+                    <Stack.Screen name="ChangePassword" component={ChangePasswordScreen} />
+                    <Stack.Screen name="AccountManagement" component={AccountManagementScreen} />
+                    <Stack.Screen name="DeleteMember" component={DeleteMemberScreen} />
+                    <Stack.Screen name="MyPostComment" component={MyPostCommentScreen} />
+                    <Stack.Screen name="ThreadItem" component={ThreadItemScreen} />
+                    <Stack.Screen name="EditNickname" component={EditNicknameScreen} />
+                    <Stack.Screen name="ImageView" component={ImageViewScreen} />
+                </>
+            ) : (
+                <>
+                    <Stack.Group screenOptions={{ headerShown: false }}>
+                        <Stack.Screen name="NotLoginHome" component={NotLoginHomeScreen} />
+                        <Stack.Screen name="Login" component={LoginScreen} />
+                        <Stack.Screen name="JoinMember" component={JoinMemberNavigation} />
+                    </Stack.Group>
+                </>
+            )}
         </Stack.Navigator>
     );
 };

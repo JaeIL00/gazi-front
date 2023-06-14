@@ -16,12 +16,12 @@ import { useRootNavigation } from '../../../navigations/RootStackNavigation';
 import { addHelpfulCommentAPI, delHelpfulCommentAPI } from '../../../queries/api';
 import { debounce } from 'lodash';
 import { useRecoilValue } from 'recoil';
-import { userTokenAtom } from '../../../store/atoms';
+import { userAuthAtom } from '../../../store/atoms';
 
 const CommentListItem = ({ comment, postTitle, postCount, reportHandler, firstCommentId }: CommentListItemProps) => {
     const rootNavigation = useRootNavigation();
 
-    const { accessToken } = useRecoilValue(userTokenAtom);
+    const { accessToken } = useRecoilValue(userAuthAtom);
 
     const [isHelpful, setIsHelpful] = useState<boolean>(comment.like);
     const [helpfulCount, setHelpfulCount] = useState<number>(comment.likeCount);

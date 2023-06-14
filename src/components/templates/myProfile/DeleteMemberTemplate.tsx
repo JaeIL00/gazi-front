@@ -1,7 +1,7 @@
 import React from 'react';
 import { ActivityIndicator, View } from 'react-native';
 import { useRecoilValue } from 'recoil';
-import { userInfoAtom, userTokenAtom } from '../../../store/atoms';
+import { userInfoAtom, userAuthAtom } from '../../../store/atoms';
 import { useMutation } from 'react-query';
 import FastImage from 'react-native-fast-image';
 
@@ -17,7 +17,7 @@ import { DeleteMemberTemplateStyles } from '../../../styles/styles';
 
 const DeleteMemberTemplate = ({ moveToScreenHandler }: DeleteMemberTemplateProps) => {
     const { nickname } = useRecoilValue(userInfoAtom);
-    const { accessToken } = useRecoilValue(userTokenAtom);
+    const { accessToken } = useRecoilValue(userAuthAtom);
 
     // Delete member API Handling
     const { mutate, isLoading } = useMutation(deleteMemberAPI, {

@@ -11,7 +11,7 @@ import NormalText from '../../smallest/NormalText';
 import TouchButton from '../../smallest/TouchButton';
 import SemiBoldText from '../../smallest/SemiBoldText';
 import EditMyKeyword from '../../organisms/myProfile/EditMyKeyword';
-import { userTokenAtom } from '../../../store/atoms';
+import { userAuthAtom } from '../../../store/atoms';
 import { geyMyLikeKeywordsAPI } from '../../../queries/api';
 import { likeKeywordSettingTemplateStyles } from '../../../styles/styles';
 import { LikeKeywordSettingTemplateProps, MyLikeKeywordTypes } from '../../../types/types';
@@ -20,7 +20,7 @@ const LikeKeywordSettingTemplate = ({
     moveToBackScreenHandler,
     isFromCommunity = false,
 }: LikeKeywordSettingTemplateProps) => {
-    const { accessToken } = useRecoilValue(userTokenAtom);
+    const { accessToken } = useRecoilValue(userAuthAtom);
 
     const [isEditWindow, setIsEditWindow] = useState<boolean>(isFromCommunity);
     const [myKeywordList, setMyKeywordList] = useState<MyLikeKeywordTypes[]>([]);

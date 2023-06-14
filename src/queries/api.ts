@@ -1,6 +1,6 @@
 import axios from 'axios';
 import Config from 'react-native-config';
-import { CommentReqTypes, PostDto, userTokenAtomTypes } from '../types/types';
+import { CommentReqTypes, PostDto, userAuthAtomTypes } from '../types/types';
 
 const Axios = axios.create({
     baseURL: Config.API_BASE_URL,
@@ -67,7 +67,7 @@ export const deleteMemberAPI = async (accessToken: string) => {
     });
     return response;
 };
-export const logoutAPI = async (data: userTokenAtomTypes) => {
+export const logoutAPI = async (data: { accessToken: string; refreshToken: string }) => {
     const response = await Axios({
         url: '/api/v1/member/logout',
         method: 'post',

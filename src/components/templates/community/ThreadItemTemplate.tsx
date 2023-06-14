@@ -11,7 +11,7 @@ import NormalText from '../../smallest/NormalText';
 import TouchButton from '../../smallest/TouchButton';
 import SemiBoldText from '../../smallest/SemiBoldText';
 import CommentListItem from '../../organisms/cummunity/CommentListItem';
-import { userTokenAtom } from '../../../store/atoms';
+import { userAuthAtom } from '../../../store/atoms';
 import { threadItemTemplateStyles } from '../../../styles/styles';
 import { getCommentListAPI, reportAPI } from '../../../queries/api';
 import { screenHeight, screenWidth } from '../../../utils/changeStyleSize';
@@ -23,7 +23,7 @@ const ThreadItemTemplate = ({
     movetoCommunityScreen,
     moveToWriteScreen,
 }: ThreadItemTemplateProps) => {
-    const { accessToken } = useRecoilValue(userTokenAtom);
+    const { accessToken } = useRecoilValue(userAuthAtom);
 
     const firstCommentId = useRef<number>();
     const indexNumber = useRef<number>(0);

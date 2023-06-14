@@ -16,11 +16,11 @@ import { SingleLineInput } from '../../smallest/SingleLineInput';
 import { InputNicknameTemplateProps } from '../../../types/types';
 import { inputNicknameTemplateStyles } from '../../../styles/styles';
 import { joinMemberAPI, checkNicknameAPI } from '../../../queries/api';
-import { joinMemberAtom, userInfoAtom, userTokenAtom } from '../../../store/atoms';
+import { joinMemberAtom, userInfoAtom, userAuthAtom } from '../../../store/atoms';
 
 const InputNicknameTemplate = ({ navigationHandler }: InputNicknameTemplateProps) => {
     const [joinData, setJoinData] = useRecoilState(joinMemberAtom);
-    const [tokenAtom, setTokenAtom] = useRecoilState(userTokenAtom);
+    const [tokenAtom, setTokenAtom] = useRecoilState(userAuthAtom);
     const [userInfo, setUserInfo] = useRecoilState(userInfoAtom);
 
     const [resultText, setResultText] = useState<string>('');
@@ -74,6 +74,7 @@ const InputNicknameTemplate = ({ navigationHandler }: InputNicknameTemplateProps
             setTokenAtom({
                 accessToken: data.accessToken,
                 refreshToken: data.refreshToken,
+                isLogIn: true,
             });
             setUserInfo({
                 memberId: data.memberId,

@@ -1,6 +1,6 @@
 import React from 'react';
 import { ActivityIndicator, View } from 'react-native';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState } from 'recoil';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useMutation } from 'react-query';
 import FastImage from 'react-native-fast-image';
@@ -11,13 +11,13 @@ import MediumText from '../../smallest/MediumText';
 import NormalText from '../../smallest/NormalText';
 import TouchButton from '../../smallest/TouchButton';
 import { logoutAPI } from '../../../queries/api';
-import { userTokenAtom } from '../../../store/atoms';
+import { userAuthAtom } from '../../../store/atoms';
 import { AccountManagementTemplateProps } from '../../../types/types';
 import { AccountManagementTemplateStyles } from '../../../styles/styles';
 
 const AccountManagementTemplate = ({ moveToScreenHandler }: AccountManagementTemplateProps) => {
     // logout API
-    const userToken = useRecoilValue(userTokenAtom);
+    const [userAuth, setUserAuth] = useRecoilState(userAuthAtom);
     const { mutate, isLoading } = useMutation(logoutAPI, {
         onSuccess: () => {
             logoutHandler();
@@ -30,6 +30,10 @@ const AccountManagementTemplate = ({ moveToScreenHandler }: AccountManagementTem
     const logoutHandler = async () => {
         try {
             await AsyncStorage.multiRemove(['GAZI_ac_tk', 'GAZI_re_tk']);
+            setUserAuth({
+                ...userAuth,
+                isLogIn: false,
+            });
             moveToScreenHandler('INIT_HOME');
         } catch (error) {
             // For Debug
@@ -58,7 +62,13 @@ const AccountManagementTemplate = ({ moveToScreenHandler }: AccountManagementTem
                 </TouchButton>
             </View>
             <View style={AccountManagementTemplateStyles.tabBox}>
-                <TouchButton onPress={() => mutate(userToken)}>
+                <TouchButton
+                    onPress={() =>
+                        mutate({
+                            accessToken: userAuth.accessToken,
+                            refreshToken: userAuth.refreshToken,
+                        })
+                    }>
                     <View style={AccountManagementTemplateStyles.buttonBox}>
                         <NormalText text="로그아웃" size={16} color={Colors.BLACK} />
                     </View>

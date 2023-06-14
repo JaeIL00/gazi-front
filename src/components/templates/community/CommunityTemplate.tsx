@@ -15,7 +15,7 @@ import MediumText from '../../smallest/MediumText';
 import TouchButton from '../../smallest/TouchButton';
 import SemiBoldText from '../../smallest/SemiBoldText';
 import PostListItem from '../../organisms/PostListItem';
-import { userTokenAtom } from '../../../store/atoms';
+import { userAuthAtom } from '../../../store/atoms';
 import { KeywordListTypes } from '../../../types/types';
 import { communityTemplateStyles } from '../../../styles/styles';
 import { CommunityTemplateProps, PostTypes } from '../../../types/types';
@@ -24,7 +24,7 @@ import { getAllPostAPI, geyMyLikeKeywordsAPI } from '../../../queries/api';
 const CommunityTemplate = ({ moveToKeywordSettingScreen }: CommunityTemplateProps) => {
     const isFocusScreen = useIsFocused();
 
-    const { accessToken } = useRecoilValue(userTokenAtom);
+    const { accessToken } = useRecoilValue(userAuthAtom);
 
     const postsResponseIndexRef = useRef<number>(0);
     const getKeywordPostParamRef = useRef<string>('');

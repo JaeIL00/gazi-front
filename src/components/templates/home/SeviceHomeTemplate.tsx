@@ -19,14 +19,14 @@ import SearchLocation from '../../organisms/SearchLocation';
 import ModalBackground from '../../smallest/ModalBackground';
 import FailPermissionModal from '../../organisms/FailPermissionModal';
 import NearbyPostListModal from '../../organisms/NearbyPostListModal';
-import { userTokenAtom } from '../../../store/atoms';
+import { userAuthAtom } from '../../../store/atoms';
 import { nearByUserPostsAPI } from '../../../queries/api';
 import { serviceHomeTemplateStyles } from '../../../styles/styles';
 import { screenFont, screenHeight, screenWidth } from '../../../utils/changeStyleSize';
 import { SeviceHomeTemplateProps, MapLocationTypes, PostTypes, MapBoundaryTypes } from '../../../types/types';
 
 const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritePost }: SeviceHomeTemplateProps) => {
-    const { accessToken } = useRecoilValue(userTokenAtom);
+    const { accessToken } = useRecoilValue(userAuthAtom);
 
     const nearPostResponseIndexRef = useRef<number>(0);
     const mapRef = useRef() as RefObject<MapView>;

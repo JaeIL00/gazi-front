@@ -12,14 +12,14 @@ import MediumText from '../../smallest/MediumText';
 import TouchButton from '../../smallest/TouchButton';
 import SemiBoldText from '../../smallest/SemiBoldText';
 import { PostTypes } from '../../../types/types';
-import { userTokenAtom } from '../../../store/atoms';
+import { userAuthAtom } from '../../../store/atoms';
 import { getMyPostCommentAPI } from '../../../queries/api';
 import { myPostCommentTemplateStyles } from '../../../styles/styles';
 import { MyCommentTypes, MyPostCommentTemplateProps } from '../../../types/types';
 import { screenFont, screenHeight, screenWidth } from '../../../utils/changeStyleSize';
 
 const MyPostCommentTemplate = ({ moveToBackScreenHandler }: MyPostCommentTemplateProps) => {
-    const { accessToken } = useRecoilValue(userTokenAtom);
+    const { accessToken } = useRecoilValue(userAuthAtom);
 
     const pageIndexRef = useRef<number>(0);
     const isPostRef = useRef<boolean>(true);

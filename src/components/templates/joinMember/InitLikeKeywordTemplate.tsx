@@ -15,14 +15,14 @@ import SemiBoldText from '../../smallest/SemiBoldText';
 import KeywordsList from '../../organisms/KeywordsList';
 import useCheckKeyword from '../../../utils/hooks/useCheckKeyword';
 import MoveBackWithPageTitle from '../../organisms/MoveBackWithPageTitle';
-import { userTokenAtom } from '../../../store/atoms';
+import { userAuthAtom } from '../../../store/atoms';
 import { addLikeKeywordsAPI } from '../../../queries/api';
 import { InitLikeKeywordTemplateProps } from '../../../types/types';
 import { initLikeKeywordTemplateStyles } from '../../../styles/styles';
 import { issueKeywordsNotEtc, subwayKeywords, trafficKeywords } from '../../../utils/allKeywords';
 
 const InitLikeKeywordTemplate = ({ navigationHandler }: InitLikeKeywordTemplateProps) => {
-    const { accessToken } = useRecoilValue(userTokenAtom);
+    const { accessToken } = useRecoilValue(userAuthAtom);
 
     // Custom hook useCheckKeyword
     const {

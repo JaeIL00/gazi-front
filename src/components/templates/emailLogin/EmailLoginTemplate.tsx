@@ -17,7 +17,7 @@ import MoveBackWithPageTitle from '../../organisms/MoveBackWithPageTitle';
 import { loginAPI } from '../../../queries/api';
 import { EmailLoginTemplateProps } from '../../../types/types';
 import { emailLoginTemplateStyles } from '../../../styles/styles';
-import { userInfoAtom, userTokenAtom } from '../../../store/atoms';
+import { userInfoAtom, userAuthAtom } from '../../../store/atoms';
 
 const EmailLoginTemplate = ({ moveServiceHomeHandler }: EmailLoginTemplateProps) => {
     // Text change Handling
@@ -33,7 +33,7 @@ const EmailLoginTemplate = ({ moveServiceHomeHandler }: EmailLoginTemplateProps)
     };
 
     // Login API Handling
-    const [tokenAtom, setTokenAtom] = useRecoilState(userTokenAtom);
+    const [tokenAtom, setTokenAtom] = useRecoilState(userAuthAtom);
     const [userInfo, setUserInfo] = useRecoilState(userInfoAtom);
     const [loginErrorText, setLoginErrorText] = useState<string>('');
     const { mutate, isLoading } = useMutation(loginAPI, {
@@ -66,6 +66,7 @@ const EmailLoginTemplate = ({ moveServiceHomeHandler }: EmailLoginTemplateProps)
             setTokenAtom({
                 accessToken: data.accessToken,
                 refreshToken: data.refreshToken,
+                isLogIn: true,
             });
             setUserInfo({
                 memberId: data.memberId,

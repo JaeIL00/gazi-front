@@ -13,7 +13,7 @@ import HeaderMolecule from '../../molecules/HeaderMolecule';
 import useTextInputValidation from '../../../utils/hooks/useTextInputValidation';
 import { SingleLineInput } from '../../smallest/SingleLineInput';
 import { EditNicknameTemplateProps } from '../../../types/types';
-import { userInfoAtom, userTokenAtom } from '../../../store/atoms';
+import { userInfoAtom, userAuthAtom } from '../../../store/atoms';
 import { editNicknameTemplateStyles } from '../../../styles/styles';
 import { checkNicknameAPI, editNicknameAPI } from '../../../queries/api';
 
@@ -66,7 +66,7 @@ const EditNicknameTemplate = ({ moveToMyProfileScreen }: EditNicknameTemplatePro
     });
 
     // Edit nickname API
-    const { accessToken } = useRecoilValue(userTokenAtom);
+    const { accessToken } = useRecoilValue(userAuthAtom);
     const [userInfo, setUserInfo] = useRecoilState(userInfoAtom);
     const [isGoodResponse, setIsGoodResponse] = useState(false);
     const { mutate: editMutate, isLoading: isEditLoading } = useMutation(editNicknameAPI, {

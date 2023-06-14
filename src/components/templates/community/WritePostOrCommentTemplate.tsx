@@ -34,7 +34,7 @@ import SearchLocation from '../../organisms/SearchLocation';
 import ModalBackground from '../../smallest/ModalBackground';
 import FailPermissionModal from '../../organisms/FailPermissionModal';
 import WritePostAddKeyword from '../../organisms/cummunity/WritePostAddKeyword';
-import { userTokenAtom } from '../../../store/atoms';
+import { userAuthAtom } from '../../../store/atoms';
 import { screenWidth } from '../../../utils/changeStyleSize';
 import { SingleLineInput } from '../../smallest/SingleLineInput';
 import { writePostOrCommentTemplateStyles } from '../../../styles/styles';
@@ -49,7 +49,7 @@ import { writeCommentAPI, writeCommentFilesAPI, writePostAPI, writePostFilesAPI 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostOrCommentTemplateProps) => {
-    const { accessToken } = useRecoilValue(userTokenAtom);
+    const { accessToken } = useRecoilValue(userAuthAtom);
 
     const mapRef = useRef() as RefObject<MapView>;
 

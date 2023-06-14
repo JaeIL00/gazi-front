@@ -171,9 +171,10 @@ export type ImageViewTypes = {
 };
 
 // ATOM
-export type userTokenAtomTypes = {
+export type userAuthAtomTypes = {
     accessToken: string;
     refreshToken: string;
+    isLogIn: boolean;
 };
 export type userInfoAtomTypes = {
     memberId: number | null;

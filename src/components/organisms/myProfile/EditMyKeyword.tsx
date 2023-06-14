@@ -13,7 +13,7 @@ import TextButton from '../../molecules/TextButton';
 import TouchButton from '../../smallest/TouchButton';
 import SemiBoldText from '../../smallest/SemiBoldText';
 import useCheckKeyword from '../../../utils/hooks/useCheckKeyword';
-import { userTokenAtom } from '../../../store/atoms';
+import { userAuthAtom } from '../../../store/atoms';
 import { EditMyKeywordProps } from '../../../types/types';
 import { editMyKeywordStyles } from '../../../styles/styles';
 import { editMyLikeKeywordsAPI } from '../../../queries/api';
@@ -27,7 +27,7 @@ const EditMyKeyword = ({
     getMyKeywordRefetch,
 }: EditMyKeywordProps) => {
     const rootNavigation = useRootNavigation();
-    const { accessToken } = useRecoilValue(userTokenAtom);
+    const { accessToken } = useRecoilValue(userAuthAtom);
 
     // Initialized check keywords
     const [editCheckIssue, setEditCheckIssue] = useState<boolean[]>(Array(issueKeywordsNotEtc.length).fill(false));
