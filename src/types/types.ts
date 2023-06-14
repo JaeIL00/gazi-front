@@ -215,6 +215,20 @@ export type RootStackParamList = {
     ChangePassword: undefined;
     DeleteMember: undefined;
     None: undefined;
+    WritePost:
+        | {
+              title: string;
+              rePostCount: number;
+              time: string;
+              postId: number;
+          }
+        | undefined;
+    WriteComment: {
+        title: string;
+        rePostCount: number;
+        time: string;
+        postId: number;
+    };
 };
 export type JoinMemberParamList = {
     JoinInputEmail: undefined;
@@ -224,20 +238,9 @@ export type JoinMemberParamList = {
     JoinSettingKeyword: undefined;
 };
 export type BottomTabParamList = {
-    ServiceHome: undefined;
+    MapHome: undefined;
     Community: undefined;
     MyProfile: undefined;
-};
-export type ServiceHomeParamList = {
-    MapHome: undefined;
-    WritePostOrComment:
-        | {
-              title: string;
-              rePostCount: number;
-              time: string;
-              postId: number;
-          }
-        | undefined;
 };
 export interface TabBarProps extends BottomTabBarProps {}
 
@@ -500,7 +503,7 @@ export type MapHomeTemplateProps = {
     handleModalTrigger: boolean;
     moveToWritePost: () => void;
 };
-export type WritePostOrCommentTemplateProps = {
+export type WritePostTemplateProps = {
     postThreadInfo:
         | {
               title: string;

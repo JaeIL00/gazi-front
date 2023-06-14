@@ -1,11 +1,10 @@
 import React from 'react';
 
-import WritePostOrCommentTemplate from '../../components/templates/home/WritePostOrCommentTemplate';
-import { useRootNavigation } from '../../navigations/RootStackNavigation';
-import { useHomeRoute } from '../../navigations/ServiceHomeNavigation';
+import WritePostOrCommentTemplate from '../components/templates/community/WritePostTemplate';
+import { useRootNavigation, useRootRoute } from '../navigations/RootStackNavigation';
 
-const WritePostOrCommentScreen = () => {
-    const route = useHomeRoute();
+const WritePostScreen = () => {
+    const route = useRootRoute<'WritePost'>();
     const data = route.params;
 
     const rootNavigation = useRootNavigation();
@@ -29,4 +28,4 @@ const WritePostOrCommentScreen = () => {
     return <WritePostOrCommentTemplate moveToScreen={moveToScreen} postThreadInfo={data} />;
 };
 
-export default WritePostOrCommentScreen;
+export default WritePostScreen;

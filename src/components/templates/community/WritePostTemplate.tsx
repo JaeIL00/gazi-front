@@ -17,6 +17,7 @@ import MapView, { Marker } from 'react-native-maps';
 import FastImage from 'react-native-fast-image';
 import { PERMISSIONS, RESULTS, check, checkMultiple } from 'react-native-permissions';
 import Geolocation from '@react-native-community/geolocation';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import Icons from '../../smallest/Icons';
 import Spacer from '../../smallest/Spacer';
@@ -37,18 +38,12 @@ import WritePostAddKeyword from '../../organisms/cummunity/WritePostAddKeyword';
 import { userAuthAtom } from '../../../store/atoms';
 import { screenWidth } from '../../../utils/changeStyleSize';
 import { SingleLineInput } from '../../smallest/SingleLineInput';
-import { writePostOrCommentTemplateStyles } from '../../../styles/styles';
+import { writePostTemplateStyles } from '../../../styles/styles';
 import { issueKeywords, subwayKeywords, trafficKeywords } from '../../../utils/allKeywords';
-import {
-    KeywordListTypes,
-    WritePostOrCommentTemplateProps,
-    WritePostTypes,
-    uploadImageFileTypes,
-} from '../../../types/types';
+import { KeywordListTypes, WritePostTemplateProps, WritePostTypes, uploadImageFileTypes } from '../../../types/types';
 import { writeCommentAPI, writeCommentFilesAPI, writePostAPI, writePostFilesAPI } from '../../../queries/api';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostOrCommentTemplateProps) => {
+const WritePostTemplate = ({ moveToScreen, postThreadInfo }: WritePostTemplateProps) => {
     const { accessToken } = useRecoilValue(userAuthAtom);
 
     const mapRef = useRef() as RefObject<MapView>;
@@ -553,7 +548,7 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
             <StatusBar backgroundColor={Colors.WHITE} barStyle="dark-content" />
             <MapView
                 ref={mapRef}
-                style={writePostOrCommentTemplateStyles.mapSize}
+                style={writePostTemplateStyles.mapSize}
                 customMapStyle={mapStyle}
                 showsBuildings={false}>
                 {writePostData.dto.latitude && writePostData.dto.longitude && (
@@ -563,7 +558,7 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
                             longitude: writePostData.dto.longitude,
                         }}
                         anchor={{ x: 0.5, y: 0.5 }}
-                        style={writePostOrCommentTemplateStyles.mapMarkerPosition}>
+                        style={writePostTemplateStyles.mapMarkerPosition}>
                         <FastImage
                             source={markerType ? markerType : require('../../../assets/icons/marker-protest.png')}
                             style={{ width: 25 * screenWidth, height: 25 * screenWidth }}
@@ -571,8 +566,8 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
                     </Marker>
                 )}
             </MapView>
-            <View style={writePostOrCommentTemplateStyles.container}>
-                <View style={writePostOrCommentTemplateStyles.headerNavigateBox}>
+            <View style={writePostTemplateStyles.container}>
+                <View style={writePostTemplateStyles.headerNavigateBox}>
                     <TouchButton onPress={() => moveToScreen('BACK', null)}>
                         <Icons type="ionicons" name="close-sharp" size={24} color={Colors.BLACK} />
                     </TouchButton>
@@ -580,8 +575,8 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
                         <SemiBoldText text="등록" size={16} color={Colors.BLACK} />
                     </TouchButton>
                 </View>
-                <ScrollView style={writePostOrCommentTemplateStyles.contentBox}>
-                    <View style={writePostOrCommentTemplateStyles.settingContainer}>
+                <ScrollView style={writePostTemplateStyles.contentBox}>
+                    <View style={writePostTemplateStyles.settingContainer}>
                         {postThreadInfo ? (
                             <View>
                                 <SemiBoldText
@@ -598,14 +593,14 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
                                 />
                             </View>
                         ) : (
-                            <View style={writePostOrCommentTemplateStyles.settingBox}>
+                            <View style={writePostTemplateStyles.settingBox}>
                                 <TouchButton onPress={() => locationModalHandler('OPEN')}>
-                                    <View style={writePostOrCommentTemplateStyles.settingButton}>
+                                    <View style={writePostTemplateStyles.settingButton}>
                                         {writePostData.dto.latitude && writePostData.dto.placeName ? (
                                             <>
                                                 <FastImage
                                                     source={require('../../../assets/icons/location-pin-outline-black.png')}
-                                                    style={writePostOrCommentTemplateStyles.locationIcon}
+                                                    style={writePostTemplateStyles.locationIcon}
                                                 />
                                                 <Spacer width={5} />
                                                 <MediumText
@@ -620,13 +615,13 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
                                         <Spacer width={4} />
                                         <FastImage
                                             source={require('../../../assets/icons/triangle-down.png')}
-                                            style={writePostOrCommentTemplateStyles.searchToggleIcon}
+                                            style={writePostTemplateStyles.searchToggleIcon}
                                         />
                                     </View>
                                 </TouchButton>
                                 <Spacer width={13} />
                                 <TouchButton onPress={() => keywordModalHandler('OPEN')}>
-                                    <View style={writePostOrCommentTemplateStyles.settingBox}>
+                                    <View style={writePostTemplateStyles.settingBox}>
                                         {writePostData.dto.headKeywordId ? (
                                             <MediumText
                                                 text={issueKeywords[writePostData.dto.headKeywordId! - 1].keywordName}
@@ -639,22 +634,22 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
                                         <Spacer width={4} />
                                         <FastImage
                                             source={require('../../../assets/icons/triangle-down.png')}
-                                            style={writePostOrCommentTemplateStyles.searchToggleIcon}
+                                            style={writePostTemplateStyles.searchToggleIcon}
                                         />
                                     </View>
                                 </TouchButton>
                             </View>
                         )}
                         {postThreadInfo && (
-                            <View style={writePostOrCommentTemplateStyles.conditionSettingBox}>
-                                <View style={writePostOrCommentTemplateStyles.settingBox}>
+                            <View style={writePostTemplateStyles.conditionSettingBox}>
+                                <View style={writePostTemplateStyles.settingBox}>
                                     <TouchButton onPress={() => locationModalHandler('OPEN')}>
-                                        <View style={writePostOrCommentTemplateStyles.settingButton}>
+                                        <View style={writePostTemplateStyles.settingButton}>
                                             {writePostData.dto.latitude && writePostData.dto.placeName ? (
                                                 <>
                                                     <FastImage
                                                         source={require('../../../assets/icons/location-pin-outline-black.png')}
-                                                        style={writePostOrCommentTemplateStyles.locationIcon}
+                                                        style={writePostTemplateStyles.locationIcon}
                                                     />
                                                     <Spacer width={5} />
                                                     <MediumText
@@ -669,13 +664,13 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
                                             <Spacer width={4} />
                                             <FastImage
                                                 source={require('../../../assets/icons/triangle-down.png')}
-                                                style={writePostOrCommentTemplateStyles.searchToggleIcon}
+                                                style={writePostTemplateStyles.searchToggleIcon}
                                             />
                                         </View>
                                     </TouchButton>
                                     <Spacer width={13} />
                                     <TouchButton onPress={() => keywordModalHandler('OPEN')}>
-                                        <View style={writePostOrCommentTemplateStyles.settingBox}>
+                                        <View style={writePostTemplateStyles.settingBox}>
                                             {writePostData.dto.headKeywordId ? (
                                                 <MediumText
                                                     text={
@@ -690,7 +685,7 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
                                             <Spacer width={4} />
                                             <FastImage
                                                 source={require('../../../assets/icons/triangle-down.png')}
-                                                style={writePostOrCommentTemplateStyles.searchToggleIcon}
+                                                style={writePostTemplateStyles.searchToggleIcon}
                                             />
                                         </View>
                                     </TouchButton>
@@ -698,7 +693,7 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
                             </View>
                         )}
                     </View>
-                    <View style={writePostOrCommentTemplateStyles.inputBox}>
+                    <View style={writePostTemplateStyles.inputBox}>
                         {!postThreadInfo && (
                             <SingleLineInput
                                 value={title}
@@ -722,7 +717,7 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
                     </View>
                     {!inputFocusBlur && (
                         <TouchableOpacity
-                            style={writePostOrCommentTemplateStyles.contentInputFocus}
+                            style={writePostTemplateStyles.contentInputFocus}
                             onPress={() => inputFocusBlurHandler('FOCUS')}
                         />
                     )}
@@ -732,13 +727,13 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
                     <PhotoGallery closeGalleryHandling={closeGalleryHandling} getImageHandler={getImageHandler} />
                 </Modal>
 
-                <View style={writePostOrCommentTemplateStyles.bottomBox}>
-                    <View style={writePostOrCommentTemplateStyles.bottomKeyword}>
+                <View style={writePostTemplateStyles.bottomBox}>
+                    <View style={writePostTemplateStyles.bottomKeyword}>
                         {chooseKeywords.length > 0 && (
                             <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
                                 <>
                                     {chooseKeywords.map(item => (
-                                        <View key={item.id} style={writePostOrCommentTemplateStyles.bottomKeywordItem}>
+                                        <View key={item.id} style={writePostTemplateStyles.bottomKeywordItem}>
                                             <MediumText
                                                 text={item.keywordName}
                                                 size={12}
@@ -753,18 +748,18 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
                             <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
                                 <>
                                     {writePostData.files.map(item => (
-                                        <View style={writePostOrCommentTemplateStyles.bottomImageBox}>
-                                            <View style={writePostOrCommentTemplateStyles.bottomImageInnerBox}>
+                                        <View style={writePostTemplateStyles.bottomImageBox}>
+                                            <View style={writePostTemplateStyles.bottomImageInnerBox}>
                                                 <Image
                                                     source={{ uri: item.uri }}
-                                                    style={writePostOrCommentTemplateStyles.bottomImageSize}
+                                                    style={writePostTemplateStyles.bottomImageSize}
                                                 />
                                             </View>
                                             <TouchableOpacity
                                                 onPress={() => getImageHandler(item, 'DEL')}
                                                 activeOpacity={1}
-                                                style={writePostOrCommentTemplateStyles.bottomImageDelButton}>
-                                                <View style={writePostOrCommentTemplateStyles.bottomImageDelIconBack} />
+                                                style={writePostTemplateStyles.bottomImageDelButton}>
+                                                <View style={writePostTemplateStyles.bottomImageDelIconBack} />
                                                 <Icons type="ionicons" name="close-circle" size={20} color="#000000" />
                                             </TouchableOpacity>
                                         </View>
@@ -779,11 +774,11 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
                         alignSelf="flex-start"
                         paddingHorizontal={16}
                         paddingVertical={11}>
-                        <View style={writePostOrCommentTemplateStyles.bottomBarBotton}>
-                            <View style={writePostOrCommentTemplateStyles.addPhotoBox}>
+                        <View style={writePostTemplateStyles.bottomBarBotton}>
+                            <View style={writePostTemplateStyles.addPhotoBox}>
                                 <FastImage
                                     source={require('../../../assets/icons/camera-outline.png')}
-                                    style={writePostOrCommentTemplateStyles.cameraIcon}
+                                    style={writePostTemplateStyles.cameraIcon}
                                 />
                                 <Spacer width={4} />
                                 <MediumText text="사진추가" size={14} color="#706C76" />
@@ -797,7 +792,7 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
                 </View>
 
                 <Modal visible={loactionModal} onRequestClose={() => setLoactionModal(false)}>
-                    <View style={writePostOrCommentTemplateStyles.locationSearchModal}>
+                    <View style={writePostTemplateStyles.locationSearchModal}>
                         <HeaderMolecule
                             isPaddingHorizontal={true}
                             isWorkDone={temporaryChooseLocationData.location.lat !== null}
@@ -830,7 +825,7 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
                 </Modal>
 
                 <ModalBackground visible={onErrorModal}>
-                    <View style={writePostOrCommentTemplateStyles.errorModalBox}>
+                    <View style={writePostTemplateStyles.errorModalBox}>
                         <SemiBoldText text={onErrorText} size={18} color={Colors.BLACK} />
                         <Spacer height={18} />
                         <TextButton
@@ -862,4 +857,4 @@ const WritePostOrCommentTemplate = ({ moveToScreen, postThreadInfo }: WritePostO
     );
 };
 
-export default WritePostOrCommentTemplate;
+export default WritePostTemplate;

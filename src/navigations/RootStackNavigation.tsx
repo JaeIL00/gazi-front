@@ -22,6 +22,7 @@ import LikeKeywordSettingScreen from '../screens/myProfile/LikeKeywordSettingScr
 import { autoLoginAPI } from '../queries/api';
 import { RootStackParamList } from '../types/types';
 import { userInfoAtom, userAuthAtom } from '../store/atoms';
+import WritePostOrCommentScreen from '../screens/WritePostScreen';
 
 export const RootStackNavigation = () => {
     const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -98,14 +99,16 @@ export const RootStackNavigation = () => {
         }
     };
     useLayoutEffect(() => {
-        checkAsyncStorage();
-        // SplashScreen.hide();
+        // checkAsyncStorage();
+        SplashScreen.hide();
     }, []);
 
     return (
         <Stack.Navigator screenOptions={{ headerShown: false }}>
-            {userAuth.isLogIn ? (
+            {!userAuth.isLogIn ? (
                 <>
+                    <Stack.Screen name="WritePost" component={WritePostOrCommentScreen} />
+                    <Stack.Screen name="WriteComment" component={WritePostOrCommentScreen} />
                     <Stack.Screen name="BottomTab" component={BottomTabNavigation} />
                     <Stack.Screen name="Policies" component={PoliciesScreen} />
                     <Stack.Screen name="LikeKeywordSetting" component={LikeKeywordSettingScreen} />

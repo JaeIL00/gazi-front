@@ -5,17 +5,17 @@ import { useFocusEffect } from '@react-navigation/native';
 import Colors from '../styles/Colors';
 import MapHomeTemplate from '../components/templates/home/MapHomeTemplate';
 import { mapHomeScreenStyles } from '../styles/styles';
-import { useHomeNavigation } from '../navigations/ServiceHomeNavigation';
+import { useRootNavigation } from '../navigations/RootStackNavigation';
 
 const MapHomeScreen = () => {
-    const homeNavigation = useHomeNavigation();
+    const rootNavigation = useRootNavigation();
 
     const isAppExit = useRef<boolean>(false);
     const isModalRef = useRef<boolean>(false);
     const [handleModalTrigger, setHandleModalTrigger] = useState<boolean>(false);
 
     const moveToWritePost = () => {
-        homeNavigation.navigate('WritePostOrComment');
+        rootNavigation.navigate('WritePost');
     };
 
     // Android back button & Header Back Button Handling

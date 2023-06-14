@@ -1045,7 +1045,7 @@ export const mapHomeTemplateStyles = StyleSheet.create({
         flex: 1,
     },
 });
-export const writePostOrCommentTemplateStyles = StyleSheet.create({
+export const writePostTemplateStyles = StyleSheet.create({
     container: {
         backgroundColor: Colors.WHITE,
         flex: 1,
