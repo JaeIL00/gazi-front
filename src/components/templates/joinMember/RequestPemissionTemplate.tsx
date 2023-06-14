@@ -1,6 +1,6 @@
 import React from 'react';
 import { Platform, ScrollView, View } from 'react-native';
-import { PERMISSIONS, requestMultiple } from 'react-native-permissions';
+import { PERMISSIONS, request, requestMultiple } from 'react-native-permissions';
 
 import Spacer from '../../smallest/Spacer';
 import Colors from '../../../styles/Colors';
@@ -23,6 +23,7 @@ const RequestPemissionTemplate = ({ moveToScreen }: RequestPemissionTemplateProp
                     PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION,
                     PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
                 ]);
+                await request(PERMISSIONS.ANDROID.CAMERA);
             } catch (err) {
                 // For Debug
                 console.log('(ERROR) Request Permissions. err: ', err);
