@@ -21,11 +21,11 @@ import FailPermissionModal from '../../organisms/FailPermissionModal';
 import NearbyPostListModal from '../../organisms/NearbyPostListModal';
 import { userAuthAtom } from '../../../store/atoms';
 import { nearByUserPostsAPI } from '../../../queries/api';
-import { serviceHomeTemplateStyles } from '../../../styles/styles';
+import { mapHomeTemplateStyles } from '../../../styles/styles';
 import { screenFont, screenHeight, screenWidth } from '../../../utils/changeStyleSize';
-import { SeviceHomeTemplateProps, MapLocationTypes, PostTypes, MapBoundaryTypes } from '../../../types/types';
+import { MapHomeTemplateProps, MapLocationTypes, PostTypes, MapBoundaryTypes } from '../../../types/types';
 
-const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritePost }: SeviceHomeTemplateProps) => {
+const MapHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritePost }: MapHomeTemplateProps) => {
     const { accessToken } = useRecoilValue(userAuthAtom);
 
     const nearPostResponseIndexRef = useRef<number>(0);
@@ -338,14 +338,14 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritePost }:
                 mapRenderCompleteHandler={mapRenderCompleteHandler}
                 findMarkerPost={findMarkerPost}
             />
-            <View style={serviceHomeTemplateStyles.searchLayout}>
+            <View style={mapHomeTemplateStyles.searchLayout}>
                 {Platform.OS === 'android' && (
-                    <DropShadow style={serviceHomeTemplateStyles.dropshadow}>
+                    <DropShadow style={mapHomeTemplateStyles.dropshadow}>
                         <TouchableOpacity onPress={() => searchModalHandler('OPEN')} activeOpacity={1}>
-                            <View style={serviceHomeTemplateStyles.inputBox}>
+                            <View style={mapHomeTemplateStyles.inputBox}>
                                 <FastImage
                                     source={require('../../../assets/icons/search.png')}
-                                    style={serviceHomeTemplateStyles.searchIcon}
+                                    style={mapHomeTemplateStyles.searchIcon}
                                 />
                                 <NormalText text="지금 어디로 가시나요?" size={16} color={Colors.TXT_LIGHTGRAY} />
                             </View>
@@ -362,7 +362,7 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritePost }:
             </View>
 
             <Modal visible={searchModal} onRequestClose={() => setSearchModal(false)}>
-                <View style={serviceHomeTemplateStyles.searchModalBox}>
+                <View style={mapHomeTemplateStyles.searchModalBox}>
                     <SearchLocation
                         getLocationHandler={getLocationHandler}
                         placeholder="지금 어디로 가시나요?"
@@ -411,13 +411,13 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritePost }:
             </ModalBackground>
 
             {isFarMapLevel && (
-                <View style={serviceHomeTemplateStyles.zoomWarning}>
+                <View style={mapHomeTemplateStyles.zoomWarning}>
                     <MediumText text="지도를 확대해 지금 일어나는 일을 확인해보세요!" size={14} color={Colors.WHITE} />
                 </View>
             )}
 
             {isNearPostSearchTopBar && !isFarMapLevel && Platform.OS === 'android' && (
-                <DropShadow style={serviceHomeTemplateStyles.mapMoveSearch}>
+                <DropShadow style={mapHomeTemplateStyles.mapMoveSearch}>
                     <TouchButton
                         onPress={getBoundaryMap}
                         backgroundColor="#F8F7FA"
@@ -434,4 +434,4 @@ const SeviceHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritePost }:
     );
 };
 
-export default SeviceHomeTemplate;
+export default MapHomeTemplate;

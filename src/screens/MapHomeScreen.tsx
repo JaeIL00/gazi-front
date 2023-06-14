@@ -3,8 +3,8 @@ import { BackHandler, Platform, StatusBar, ToastAndroid, View } from 'react-nati
 import { useFocusEffect } from '@react-navigation/native';
 
 import Colors from '../styles/Colors';
-import SeviceHomeTemplate from '../components/templates/home/SeviceHomeTemplate';
-import { seviceHomeScreenStyles } from '../styles/styles';
+import MapHomeTemplate from '../components/templates/home/MapHomeTemplate';
+import { mapHomeScreenStyles } from '../styles/styles';
 import { useHomeNavigation } from '../navigations/ServiceHomeNavigation';
 
 const MapHomeScreen = () => {
@@ -54,9 +54,9 @@ const MapHomeScreen = () => {
     );
 
     return (
-        <View style={seviceHomeScreenStyles.container}>
+        <View style={mapHomeScreenStyles.container}>
             <StatusBar backgroundColor={Colors.BACKGROUND_DEFAULT} barStyle="dark-content" />
-            <SeviceHomeTemplate
+            <MapHomeTemplate
                 isModalRef={isModalRef}
                 handleModalTrigger={handleModalTrigger}
                 moveToWritePost={moveToWritePost}

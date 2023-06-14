@@ -980,7 +980,7 @@ export const completedJoinTemplateStyles = StyleSheet.create({
         paddingBottom: 42 * screenHeight,
     },
 });
-export const serviceHomeTemplateStyles = StyleSheet.create({
+export const mapHomeTemplateStyles = StyleSheet.create({
     searchLayout: {
         position: 'absolute',
         top: 16 * screenHeight,
@@ -1611,7 +1611,7 @@ export const likeKeywordSettingTemplateStyles = StyleSheet.create({
 });
 
 // SCREEN
-export const seviceHomeScreenStyles = StyleSheet.create({
+export const mapHomeScreenStyles = StyleSheet.create({
     container: {
         flex: 1,
     },

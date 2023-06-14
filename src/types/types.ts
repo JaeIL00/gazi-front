@@ -495,7 +495,7 @@ export type EmailLoginTemplateProps = {
     moveServiceHomeHandler: (state: string) => void;
 };
 export interface InitLikeKeywordTemplateProps extends RequestPemissionTemplateProps {}
-export type SeviceHomeTemplateProps = {
+export type MapHomeTemplateProps = {
     isModalRef: React.MutableRefObject<boolean>;
     handleModalTrigger: boolean;
     moveToWritePost: () => void;
