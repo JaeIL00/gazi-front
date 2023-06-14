@@ -3,9 +3,9 @@ import { NativeStackNavigationProp, createNativeStackNavigator } from '@react-na
 
 import InputEmailScreen from '../screens/joinMember/InputEmailScreen';
 import InputPasswordScreen from '../screens/joinMember/InputPasswordScreen';
+import InputNicknameScreen from '../screens/joinMember/InputNicknameScreen';
 import { JoinMemberParamList } from '../types/types';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
-import InputNicknameScreen from '../screens/joinMember/InputNicknameScreen';
 
 const JoinMemberNavigation = () => {
     const Stack = createNativeStackNavigator<JoinMemberParamList>();

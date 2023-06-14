@@ -962,6 +962,10 @@ export const initLikeKeywordTemplateStyles = StyleSheet.create({
 export const completedJoinTemplateStyles = StyleSheet.create({
     container: {
         flex: 1,
+        paddingHorizontal: 16 * screenWidth,
+    },
+    titleBox: {
+        paddingTop: 97 * screenHeight,
     },
     imageBox: {
         flex: 1,

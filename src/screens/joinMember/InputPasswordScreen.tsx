@@ -2,7 +2,6 @@ import React from 'react';
 
 import ScreenWrapper from '../../components/organisms/ScreenWrapper';
 import InputPasswordTemplate from '../../components/templates/joinMember/InputPasswordTemplate';
-import { useRootNavigation } from '../../navigations/RootStackNavigation';
 import { useJoinNavigation } from '../../navigations/JoinMemberNavigation';
 
 const InputPasswordScreen = () => {

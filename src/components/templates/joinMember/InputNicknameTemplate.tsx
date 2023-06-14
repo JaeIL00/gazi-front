@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import { ActivityIndicator, KeyboardAvoidingView, ToastAndroid, View } from 'react-native';
+import { ActivityIndicator, KeyboardAvoidingView, Modal, ToastAndroid, View } from 'react-native';
 import { useRecoilState } from 'recoil';
 import { useMutation, useQuery } from 'react-query';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -10,31 +10,25 @@ import Spacer from '../../smallest/Spacer';
 import Colors from '../../../styles/Colors';
 import MediumText from '../../smallest/MediumText';
 import TextButton from '../../molecules/TextButton';
+import CompletedJoinTemplate from './CompletedJoinTemplate';
+import MoveBackWithPageTitle from '../../organisms/MoveBackWithPageTitle';
 import { SingleLineInput } from '../../smallest/SingleLineInput';
 import { InputNicknameTemplateProps } from '../../../types/types';
 import { inputNicknameTemplateStyles } from '../../../styles/styles';
 import { joinMemberAPI, checkNicknameAPI } from '../../../queries/api';
 import { joinMemberAtom, userInfoAtom, userTokenAtom } from '../../../store/atoms';
-import MoveBackWithPageTitle from '../../organisms/MoveBackWithPageTitle';
 
 const InputNicknameTemplate = ({ navigationHandler }: InputNicknameTemplateProps) => {
-    // Nickname Text Handling
+    const [joinData, setJoinData] = useRecoilState(joinMemberAtom);
+    const [tokenAtom, setTokenAtom] = useRecoilState(userTokenAtom);
+    const [userInfo, setUserInfo] = useRecoilState(userInfoAtom);
+
+    const [resultText, setResultText] = useState<string>('');
+    const [isModalOn, setIsModalOn] = useState<boolean>(false);
+    const [isDuplicate, setIsDuplicate] = useState<boolean>(false);
     const [inputNickname, setInputNickname] = useState<string>('');
-    const onChangeNickname = (text: string) => {
-        setInputNickname(text);
-        setIsDuplicate(false);
-        checkDuplicate(text);
-        if (text.length === 1) {
-            setResultText('2글자 이상 입력해주세요');
-        } else {
-            setResultText('');
-        }
-    };
 
     // Check nickname duplicate API
-    const [joinData, setJoinData] = useRecoilState(joinMemberAtom);
-    const [resultText, setResultText] = useState<string>('');
-    const [isDuplicate, setIsDuplicate] = useState<boolean>(false);
     const { refetch, isFetching } = useQuery('duplicateNickname', () => checkNicknameAPI(inputNickname), {
         enabled: false,
         onSuccess: ({ data }) => {
@@ -53,18 +47,8 @@ const InputNicknameTemplate = ({ navigationHandler }: InputNicknameTemplateProps
             console.log('(ERROR) Check nickname duplicate API. respense: ', response);
         },
     });
-    const checkDuplicate = useCallback(
-        debounce((text: string) => {
-            if (text.length > 1) {
-                refetch();
-            }
-        }, 600),
-        [],
-    );
 
     // Join member API
-    const [tokenAtom, setTokenAtom] = useRecoilState(userTokenAtom);
-    const [userInfo, setUserInfo] = useRecoilState(userInfoAtom);
     const { mutate, isLoading } = useMutation(joinMemberAPI, {
         onSuccess: ({ data }) => {
             successJoinMemberHandler(data.data);
@@ -75,6 +59,8 @@ const InputNicknameTemplate = ({ navigationHandler }: InputNicknameTemplateProps
             ToastAndroid.show('회원가입 실패', 4000);
         },
     });
+
+    // Success join member by API response
     const successJoinMemberHandler = async (data: {
         accessToken: string;
         refreshToken: string;
@@ -98,7 +84,29 @@ const InputNicknameTemplate = ({ navigationHandler }: InputNicknameTemplateProps
             // For Debug
             console.log('(ERROR) User authorization token set storage. err: ', err);
         } finally {
-            console.log('회원가입 완료');
+            setIsModalOn(true);
+        }
+    };
+
+    // Call check duplicate refetch
+    const checkDuplicate = useCallback(
+        debounce((text: string) => {
+            if (text.length > 1) {
+                refetch();
+            }
+        }, 600),
+        [],
+    );
+
+    // Nickname Text Handling
+    const onChangeNickname = (text: string) => {
+        setInputNickname(text);
+        setIsDuplicate(false);
+        checkDuplicate(text);
+        if (text.length === 1) {
+            setResultText('2글자 이상 입력해주세요');
+        } else {
+            setResultText('');
         }
     };
 
@@ -163,6 +171,10 @@ const InputNicknameTemplate = ({ navigationHandler }: InputNicknameTemplateProps
                     </View>
                 </KeyboardAvoidingView>
             </View>
+
+            <Modal visible={isModalOn}>
+                <CompletedJoinTemplate navigationHandler={navigationHandler} inputNickname={inputNickname} />
+            </Modal>
 
             {(isFetching || isLoading) && <ActivityIndicator size="large" />}
         </>
