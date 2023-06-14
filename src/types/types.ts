@@ -196,8 +196,6 @@ export type RootStackParamList = {
     NotLoginHome: undefined;
     JoinMember: undefined;
     Login: undefined;
-    RequestPermission: undefined;
-    InitKeyword: undefined;
     ImageView: ImageViewTypes;
     BottomTab?: {
         screen: string;
@@ -229,6 +227,8 @@ export type JoinMemberParamList = {
     JoinInputEmail: undefined;
     JoinInputPassword: undefined;
     JoinInputNickname: undefined;
+    JoinRequestPermission: undefined;
+    JoinSettingKeyword: undefined;
 };
 export type BottomTabParamList = {
     ServiceHome: undefined;

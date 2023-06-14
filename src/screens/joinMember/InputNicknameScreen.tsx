@@ -3,16 +3,17 @@ import React from 'react';
 import ScreenWrapper from '../../components/organisms/ScreenWrapper';
 import InputNicknameTemplate from '../../components/templates/joinMember/InputNicknameTemplate';
 import { useRootNavigation } from '../../navigations/RootStackNavigation';
+import { useJoinNavigation } from '../../navigations/JoinMemberNavigation';
 
 const InputNicknameScreen = () => {
-    const rootNavigation = useRootNavigation();
+    const joinNavigation = useJoinNavigation();
     const navigationHandler = (state: string) => {
         switch (state) {
             case 'BACK':
-                rootNavigation.pop();
+                joinNavigation.pop();
                 break;
             case 'GO':
-                rootNavigation.push('RequestPermission');
+                joinNavigation.push('JoinRequestPermission');
                 break;
             default:
                 // For Debug

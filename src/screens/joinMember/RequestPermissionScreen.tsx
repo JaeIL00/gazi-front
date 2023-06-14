@@ -1,18 +1,20 @@
 import React, { useEffect } from 'react';
 import { BackHandler, Platform } from 'react-native';
 
-import ScreenWrapper from '../components/organisms/ScreenWrapper';
-import RequestPemissionTemplate from '../components/templates/joinMember/RequestPemissionTemplate';
-import { useRootNavigation } from '../navigations/RootStackNavigation';
+import ScreenWrapper from '../../components/organisms/ScreenWrapper';
+import RequestPemissionTemplate from '../../components/templates/joinMember/RequestPemissionTemplate';
+import { useRootNavigation } from '../../navigations/RootStackNavigation';
+import { useJoinNavigation } from '../../navigations/JoinMemberNavigation';
 
 const RequestPermissionScreen = () => {
     const rootNavigation = useRootNavigation();
+    const joinNavigation = useJoinNavigation();
 
     // Move to screen handling
     const moveToScreen = (state: string) => {
         switch (state) {
             case 'OK':
-                rootNavigation.navigate('InitKeyword');
+                joinNavigation.navigate('JoinSettingKeyword');
                 break;
             case 'BACK':
                 rootNavigation.navigate('BottomTab');

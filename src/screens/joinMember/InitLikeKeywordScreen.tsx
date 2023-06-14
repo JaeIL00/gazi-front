@@ -1,8 +1,8 @@
 import React from 'react';
 
-import ScreenWrapper from '../components/organisms/ScreenWrapper';
-import InitLikeKeywordTemplate from '../components/templates/joinMember/InitLikeKeywordTemplate';
-import { useRootNavigation } from '../navigations/RootStackNavigation';
+import ScreenWrapper from '../../components/organisms/ScreenWrapper';
+import InitLikeKeywordTemplate from '../../components/templates/joinMember/InitLikeKeywordTemplate';
+import { useRootNavigation } from '../../navigations/RootStackNavigation';
 
 const InitLikeKeywordScreen = () => {
     const rootNavigation = useRootNavigation();
