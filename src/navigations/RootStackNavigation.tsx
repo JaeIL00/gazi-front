@@ -4,12 +4,14 @@ import { NativeStackNavigationProp, createNativeStackNavigator } from '@react-na
 import { useRecoilState } from 'recoil';
 import { useMutation } from 'react-query';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import SplashScreen from 'react-native-splash-screen';
 
 import LoginScreen from '../screens/EmailLoginScreen';
 import BottomTabNavigation from './BottomTabNavigation';
-import JoinMemberScreen from '../screens/JoinMemberScreen';
+import JoinMemberNavigation from './JoinMemberNavigation';
 import NotLoginHomeScreen from '../screens/NotLoginHomeScreen';
 import PoliciesScreen from '../screens/myProfile/PoliciesScreen';
+import ImageViewScreen from '../screens/cummunity/ImageViewScreen';
 import ThreadItemScreen from '../screens/cummunity/ThreadItemScreen';
 import InitLikeKeywordScreen from '../screens/InitLikeKeywordScreen';
 import DeleteMemberScreen from '../screens/myProfile/DeleteMemberScreen';
@@ -23,9 +25,6 @@ import LikeKeywordSettingScreen from '../screens/myProfile/LikeKeywordSettingScr
 import { autoLoginAPI } from '../queries/api';
 import { RootStackParamList } from '../types/types';
 import { userInfoAtom, userTokenAtom } from '../store/atoms';
-import SplashScreen from 'react-native-splash-screen';
-import ImageViewScreen from '../screens/cummunity/ImageViewScreen';
-import JoinMemberNavigation from './JoinMemberNavigation';
 
 export const RootStackNavigation = () => {
     const Stack = createNativeStackNavigator<RootStackParamList>();
