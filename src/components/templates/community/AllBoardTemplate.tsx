@@ -17,11 +17,11 @@ import SemiBoldText from '../../smallest/SemiBoldText';
 import PostListItem from '../../organisms/PostListItem';
 import { userAuthAtom } from '../../../store/atoms';
 import { KeywordListTypes } from '../../../types/types';
-import { communityTemplateStyles } from '../../../styles/styles';
-import { CommunityTemplateProps, PostTypes } from '../../../types/types';
+import { allBoardTemplateStyles } from '../../../styles/styles';
+import { AllBoardTemplateProps, PostTypes } from '../../../types/types';
 import { getAllPostAPI, geyMyLikeKeywordsAPI } from '../../../queries/api';
 
-const CommunityTemplate = ({ moveToKeywordSettingScreen }: CommunityTemplateProps) => {
+const AllBoardTemplate = ({ moveToKeywordSettingScreen }: AllBoardTemplateProps) => {
     const isFocusScreen = useIsFocused();
 
     const { accessToken } = useRecoilValue(userAuthAtom);
@@ -258,15 +258,15 @@ const CommunityTemplate = ({ moveToKeywordSettingScreen }: CommunityTemplateProp
     }, [currentPositionRef.current]);
 
     return (
-        <View style={communityTemplateStyles.container}>
-            <View style={communityTemplateStyles.headerBox}>
+        <View style={allBoardTemplateStyles.container}>
+            <View style={allBoardTemplateStyles.headerBox}>
                 <SemiBoldText text="커뮤니티" size={20} color="#000000" />
             </View>
 
-            <View style={communityTemplateStyles.tabBox}>
+            <View style={allBoardTemplateStyles.tabBox}>
                 <View
                     style={[
-                        communityTemplateStyles.tabButton,
+                        allBoardTemplateStyles.tabButton,
                         {
                             borderColor: isLikePostTab ? '#EBEBEB' : Colors.BLACK,
                         },
@@ -277,7 +277,7 @@ const CommunityTemplate = ({ moveToKeywordSettingScreen }: CommunityTemplateProp
                 </View>
                 <View
                     style={[
-                        communityTemplateStyles.tabButton,
+                        allBoardTemplateStyles.tabButton,
                         {
                             borderColor: isLikePostTab ? Colors.BLACK : '#EBEBEB',
                         },
@@ -288,12 +288,12 @@ const CommunityTemplate = ({ moveToKeywordSettingScreen }: CommunityTemplateProp
                 </View>
             </View>
 
-            <View style={communityTemplateStyles.contentBox}>
+            <View style={allBoardTemplateStyles.contentBox}>
                 {isLikePostTab && !myKeywordList && (
-                    <View style={communityTemplateStyles.emptyKeywordBox}>
-                        <View style={communityTemplateStyles.emptyButtonBox}>
+                    <View style={allBoardTemplateStyles.emptyKeywordBox}>
+                        <View style={allBoardTemplateStyles.emptyButtonBox}>
                             <TouchButton onPress={moveToKeywordSettingScreen}>
-                                <View style={communityTemplateStyles.addKeywordButton}>
+                                <View style={allBoardTemplateStyles.addKeywordButton}>
                                     <Icons type="entypo" name="plus" size={16} color={Colors.VIOLET} />
                                     <Spacer width={4} />
                                     <MediumText text="관심 키워드 추가하기" size={14} color={Colors.VIOLET} />
@@ -301,7 +301,7 @@ const CommunityTemplate = ({ moveToKeywordSettingScreen }: CommunityTemplateProp
                             </TouchButton>
                             <Animated.View
                                 style={[
-                                    communityTemplateStyles.tooltipBox,
+                                    allBoardTemplateStyles.tooltipBox,
                                     {
                                         opacity: tooltipAnimRef.interpolate({
                                             inputRange: [0, 10],
@@ -311,9 +311,9 @@ const CommunityTemplate = ({ moveToKeywordSettingScreen }: CommunityTemplateProp
                                 ]}>
                                 <FastImage
                                     source={require('../../../assets/icons/text-balloon.png')}
-                                    style={communityTemplateStyles.tooltipImg}
+                                    style={allBoardTemplateStyles.tooltipImg}
                                 />
-                                <View style={communityTemplateStyles.tooltipTextBox}>
+                                <View style={allBoardTemplateStyles.tooltipTextBox}>
                                     <MediumText
                                         text="관심 키워드를 추가하면 한번에 모아볼 수 있어요"
                                         size={12}
@@ -322,10 +322,10 @@ const CommunityTemplate = ({ moveToKeywordSettingScreen }: CommunityTemplateProp
                                 </View>
                             </Animated.View>
                         </View>
-                        <View style={communityTemplateStyles.nothingBox}>
+                        <View style={allBoardTemplateStyles.nothingBox}>
                             <FastImage
                                 source={require('../../../assets/icons/warning.png')}
-                                style={communityTemplateStyles.nothingIcon}
+                                style={allBoardTemplateStyles.nothingIcon}
                             />
                             <Spacer height={20} />
                             <SemiBoldText text="관심 키워드를 골라주세요" size={18} color={Colors.BTN_GRAY} />
@@ -333,7 +333,7 @@ const CommunityTemplate = ({ moveToKeywordSettingScreen }: CommunityTemplateProp
                     </View>
                 )}
                 {isLikePostTab && myKeywordList && (
-                    <View style={communityTemplateStyles.myKeywordScrollBox}>
+                    <View style={allBoardTemplateStyles.myKeywordScrollBox}>
                         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                             <TouchButton
                                 onPress={moveToKeywordSettingScreen}
@@ -390,4 +390,4 @@ const CommunityTemplate = ({ moveToKeywordSettingScreen }: CommunityTemplateProp
     );
 };
 
-export default CommunityTemplate;
+export default AllBoardTemplate;

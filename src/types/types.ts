@@ -560,6 +560,9 @@ export type LikeKeywordSettingTemplateProps = {
 export type PoliciesTemplateProps = {
     moveToBackScreenHandler: () => void;
 };
-export type CommunityTemplateProps = {
+export type AllBoardTemplateProps = {
+    moveToKeywordSettingScreen: () => void;
+};
+export type LikeKeywordBoardTemplateProps = {
     moveToKeywordSettingScreen: () => void;
 };

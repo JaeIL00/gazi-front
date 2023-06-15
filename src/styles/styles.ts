@@ -1538,7 +1538,82 @@ export const PoliciesTemplateStyles = StyleSheet.create({
         height: '100%',
     },
 });
-export const communityTemplateStyles = StyleSheet.create({
+export const allBoardTemplateStyles = StyleSheet.create({
+    container: {
+        flex: 1,
+    },
+    headerBox: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingBottom: 16 * screenHeight,
+        paddingTop: 25 * screenHeight,
+        paddingHorizontal: 16 * screenWidth,
+    },
+    tabBox: {
+        flexDirection: 'row',
+    },
+    tabButton: {
+        width: '50%',
+        paddingBottom: 7 * screenHeight,
+        paddingTop: 13 * screenHeight,
+        borderBottomWidth: 1.5 * screenFont,
+    },
+    contentBox: {
+        flex: 1,
+        overflow: 'hidden',
+    },
+    nothingBox: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        flex: 1,
+    },
+    nothingIcon: {
+        width: 88 * screenWidth,
+        height: 88 * screenWidth,
+    },
+    emptyKeywordBox: {
+        flex: 1,
+        position: 'relative',
+    },
+    emptyButtonBox: {
+        paddingTop: 16 * screenHeight,
+        paddingLeft: 16 * screenWidth,
+    },
+    addKeywordButton: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingHorizontal: 16 * screenWidth,
+        paddingVertical: 4 * screenHeight,
+        borderColor: Colors.VIOLET,
+        borderRadius: 16 * screenFont,
+        borderWidth: 1 * screenFont,
+        alignSelf: 'flex-start',
+    },
+    tooltipBox: {
+        position: 'absolute',
+        top: 51 * screenHeight,
+        left: 16 * screenWidth,
+    },
+    tooltipImg: {
+        width: 246 * screenWidth,
+        height: 42 * screenHeight,
+    },
+    tooltipTextBox: {
+        position: 'absolute',
+        width: 246 * screenWidth,
+        height: 34 * screenHeight,
+        bottom: 0,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    myKeywordScrollBox: {
+        width: '100%',
+        height: 47 * screenHeight,
+        paddingLeft: 16 * screenWidth,
+        paddingTop: 17 * screenHeight,
+    },
+});
+export const likeKeywordBoardTemplateStyles = StyleSheet.create({
     container: {
         flex: 1,
     },
