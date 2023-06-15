@@ -6,7 +6,7 @@ import CommunityTemplate from '../../components/templates/community/CommunityTem
 import { globalBackWhiteStyles } from '../../styles/styles';
 import { useRootNavigation } from '../../navigations/RootStackNavigation';
 
-const CommunityScreen = () => {
+const LikeBoardScreen = () => {
     const rootNavigation = useRootNavigation();
     const moveToKeywordSettingScreen = () => {
         rootNavigation.navigate('LikeKeywordSetting', { isFromCommunity: true });
@@ -20,4 +20,4 @@ const CommunityScreen = () => {
     );
 };
 
-export default CommunityScreen;
+export default LikeBoardScreen;

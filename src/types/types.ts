@@ -252,6 +252,10 @@ export type BottomTabParamList = {
     Community: undefined;
     MyProfile: undefined;
 };
+export type CommunityTabParamList = {
+    AllBoard: undefined;
+    LikeBoard: undefined;
+};
 export interface TabBarProps extends BottomTabBarProps {}
 
 // SMALLEST
