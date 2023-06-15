@@ -228,6 +228,7 @@ const SearchLocation = ({
         getSearchHistory();
         if (!isHome && isAllowLocation) {
             nearPlaceSearchRefetch();
+            console.log('hi');
         }
     }, []);
 

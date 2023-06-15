@@ -1,8 +1,8 @@
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useLayoutEffect, useRef, useState } from 'react';
 import { ActivityIndicator, Image, Linking, Modal, ScrollView, TouchableOpacity, View } from 'react-native';
 import { useMutation } from 'react-query';
 import { useRecoilValue } from 'recoil';
-import { PERMISSIONS, RESULTS, checkMultiple } from 'react-native-permissions';
+import { PERMISSIONS, RESULTS, check, checkMultiple } from 'react-native-permissions';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { debounce } from 'lodash';
 
@@ -36,6 +36,7 @@ import {
     WriteCommentTypes,
     uploadImageFileTypes,
 } from '../../../types/types';
+import Geolocation from '@react-native-community/geolocation';
 
 const WriteCommentTemplate = ({ navigationHandler, threadInfo }: WriteCommentTemplateProps) => {
     const { accessToken } = useRecoilValue(userAuthAtom);
@@ -356,6 +357,26 @@ const WriteCommentTemplate = ({ navigationHandler, threadInfo }: WriteCommentTem
                 console.log('(ERROR) Guide image library permission.', state);
         }
     };
+
+    // Check location permission and get current position
+    const locationSearchMyCurrentPosition = async () => {
+        const locationPermission = await check(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION);
+        const isAllow = locationPermission === RESULTS.GRANTED;
+        if (isAllow) {
+            isAllowLocation.current = true;
+            Geolocation.getCurrentPosition(info => {
+                currentPositionRef.current = {
+                    curLat: info.coords.latitude,
+                    curLon: info.coords.longitude,
+                };
+            });
+        }
+    };
+
+    // Get current user position
+    useLayoutEffect(() => {
+        locationSearchMyCurrentPosition();
+    }, []);
 
     return (
         <View style={writeCommentTemplateStyles.container}>
