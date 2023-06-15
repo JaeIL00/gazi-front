@@ -1,9 +1,10 @@
-import React, { useRef, useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import { ActivityIndicator, Image, Linking, Modal, ScrollView, TouchableOpacity, View } from 'react-native';
 import { useMutation } from 'react-query';
 import { useRecoilValue } from 'recoil';
 import { PERMISSIONS, RESULTS, checkMultiple } from 'react-native-permissions';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { debounce } from 'lodash';
 
 import Icons from '../../smallest/Icons';
 import Spacer from '../../smallest/Spacer';
@@ -22,12 +23,12 @@ import ModalBackground from '../../smallest/ModalBackground';
 import FailPermissionModal from '../../organisms/FailPermissionModal';
 import AddKeywordInWrite from '../../organisms/cummunity/AddKeywordInWrite';
 import useTextInputValidation from '../../../utils/hooks/useTextInputValidation';
-import { writeCommentTemplateStyles } from '../../../styles/styles';
-import { writeCommentAPI, writeCommentFilesAPI } from '../../../queries/api';
 import { userAuthAtom } from '../../../store/atoms';
 import { issueKeywords } from '../../../utils/allKeywords';
 import { subwayKeywords } from '../../../utils/allKeywords';
 import { trafficKeywords } from '../../../utils/allKeywords';
+import { writeCommentTemplateStyles } from '../../../styles/styles';
+import { writeCommentAPI, writeCommentFilesAPI } from '../../../queries/api';
 import {
     KeywordListTypes,
     TemporarySaveChooseLocationTypes,
@@ -60,7 +61,7 @@ const WriteCommentTemplate = ({ navigationHandler, threadInfo }: WriteCommentTem
         name: '',
         location: { lat: null, lng: null },
     });
-    const [writePostData, setWritePostData] = useState<WriteCommentTypes>({
+    const [writeCommentData, setWriteCommentData] = useState<WriteCommentTypes>({
         placeName: '',
         dto: {
             postId: threadInfo.postId,
@@ -75,7 +76,7 @@ const WriteCommentTemplate = ({ navigationHandler, threadInfo }: WriteCommentTem
     // Write comment API
     const { mutate: commentMutate, isLoading: isCommentLoading } = useMutation(writeCommentAPI, {
         onSuccess: ({ data }) => {
-            if (writePostData.files.length > 0) {
+            if (writeCommentData.files.length > 0) {
                 const responseRepostId = data.data;
                 commentUploadFilesHandler(responseRepostId);
             } else {
@@ -98,15 +99,27 @@ const WriteCommentTemplate = ({ navigationHandler, threadInfo }: WriteCommentTem
         },
     });
 
+    // Input content text to writeCommentData state
+    const onChangeContentTextData = (text: string) => {
+        onChangeContentText(text);
+        inputTitleDate(text);
+    };
+    const inputTitleDate = useCallback(
+        debounce((text: string) => {
+            setWriteCommentData({ ...writeCommentData, dto: { ...writeCommentData.dto, content: text } });
+        }, 1000),
+        [writeCommentData],
+    );
+
     // Comment upload files
     const commentUploadFilesHandler = (rePostId: number) => {
-        if (writePostData.files[0]) {
+        if (writeCommentData.files[0]) {
             const formdata = new FormData();
-            for (const index in writePostData.files) {
+            for (const index in writeCommentData.files) {
                 formdata.append('files', {
-                    uri: writePostData.files[index].uri,
-                    type: writePostData.files[index].type,
-                    name: writePostData.files[index].fileName,
+                    uri: writeCommentData.files[index].uri,
+                    type: writeCommentData.files[index].type,
+                    name: writeCommentData.files[index].fileName,
                 });
             }
             commentFileMutate({
@@ -135,9 +148,9 @@ const WriteCommentTemplate = ({ navigationHandler, threadInfo }: WriteCommentTem
 
     // Check essential value of write post
     const finishWritingHandler = () => {
-        const isNotEnoughContent = !writePostData.dto.content;
-        const isNotEnoughLocation = !writePostData.dto.latitude || !writePostData.dto.longitude;
-        const isNotEnoughKeyword = !writePostData.dto.keywordIdList;
+        const isNotEnoughContent = !writeCommentData.dto.content;
+        const isNotEnoughLocation = !writeCommentData.dto.latitude || !writeCommentData.dto.longitude;
+        const isNotEnoughKeyword = !writeCommentData.dto.keywordIdList;
         if (isNotEnoughContent) {
             setOnErrorText('본문 내용을 입력해주세요');
             setOnErrorModal(true);
@@ -160,11 +173,11 @@ const WriteCommentTemplate = ({ navigationHandler, threadInfo }: WriteCommentTem
         commentMutate({
             accessToken,
             data: {
-                postId: writePostData.dto.postId,
-                content: writePostData.dto.content,
-                latitude: writePostData.dto.latitude,
-                longitude: writePostData.dto.longitude,
-                keywordIdList: writePostData.dto.keywordIdList,
+                postId: writeCommentData.dto.postId,
+                content: writeCommentData.dto.content,
+                latitude: writeCommentData.dto.latitude,
+                longitude: writeCommentData.dto.longitude,
+                keywordIdList: writeCommentData.dto.keywordIdList,
             },
         });
     };
@@ -178,11 +191,11 @@ const WriteCommentTemplate = ({ navigationHandler, threadInfo }: WriteCommentTem
     const getImageHandler = (file: uploadImageFileTypes, state: string) => {
         switch (state) {
             case 'ADD':
-                setWritePostData({ ...writePostData, files: [...writePostData.files, file] });
+                setWriteCommentData({ ...writeCommentData, files: [...writeCommentData.files, file] });
                 break;
             case 'DEL':
-                const freshFiles = writePostData.files.filter(item => item.uri !== file.uri);
-                setWritePostData({ ...writePostData, files: freshFiles });
+                const freshFiles = writeCommentData.files.filter(item => item.uri !== file.uri);
+                setWriteCommentData({ ...writeCommentData, files: freshFiles });
                 break;
             default:
                 // For Debug
@@ -266,11 +279,11 @@ const WriteCommentTemplate = ({ navigationHandler, threadInfo }: WriteCommentTem
                 freshHistory.pop();
             }
             await AsyncStorage.setItem('GAZI_hst_sch', JSON.stringify(freshHistory));
-            setWritePostData({
-                ...writePostData,
+            setWriteCommentData({
+                ...writeCommentData,
                 placeName: temporaryChooseLocationData.name,
                 dto: {
-                    ...writePostData.dto,
+                    ...writeCommentData.dto,
                     latitude: temporaryChooseLocationData.location.lat,
                     longitude: temporaryChooseLocationData.location.lng,
                 },
@@ -282,7 +295,6 @@ const WriteCommentTemplate = ({ navigationHandler, threadInfo }: WriteCommentTem
             setLoactionModal(false);
         }
     };
-    console.log('hi');
 
     // Choose location in search location modal
     const getLocationHandler = (location: { lat: number; lng: number }, placeName: string, address: string) => {
@@ -318,9 +330,9 @@ const WriteCommentTemplate = ({ navigationHandler, threadInfo }: WriteCommentTem
             newlist.splice(headIndex + 1, 1);
         }
         setChooseKeywords(newlist);
-        setWritePostData({
-            ...writePostData,
-            dto: { ...writePostData.dto, keywordIdList: keyword },
+        setWriteCommentData({
+            ...writeCommentData,
+            dto: { ...writeCommentData.dto, keywordIdList: keyword },
         });
     };
 
@@ -372,14 +384,18 @@ const WriteCommentTemplate = ({ navigationHandler, threadInfo }: WriteCommentTem
                         <View style={writeCommentTemplateStyles.settingBox}>
                             <TouchButton onPress={() => locationModalHandler('OPEN')} hitSlop={5}>
                                 <View style={writeCommentTemplateStyles.settingButton}>
-                                    {writePostData.placeName ? (
+                                    {writeCommentData.placeName ? (
                                         <>
                                             <FastImage
                                                 source={require('../../../assets/icons/location-pin-outline-black.png')}
                                                 style={writeCommentTemplateStyles.locationIcon}
                                             />
                                             <Spacer width={5} />
-                                            <MediumText text={writePostData.placeName} size={13} color={Colors.BLACK} />
+                                            <MediumText
+                                                text={writeCommentData.placeName}
+                                                size={13}
+                                                color={Colors.BLACK}
+                                            />
                                         </>
                                     ) : (
                                         <MediumText text="위치설정" size={13} color={Colors.BLACK} />
@@ -417,7 +433,7 @@ const WriteCommentTemplate = ({ navigationHandler, threadInfo }: WriteCommentTem
                 <View style={writeCommentTemplateStyles.inputBox}>
                     <MultiLineInput
                         value={content}
-                        onChangeText={text => onChangeContentText(text)}
+                        onChangeText={text => onChangeContentTextData(text)}
                         placeholder="무슨일이 일어나고 있나요?"
                         maxLength={300}
                         inputFocusBlur={inputFocusBlur}
@@ -450,10 +466,10 @@ const WriteCommentTemplate = ({ navigationHandler, threadInfo }: WriteCommentTem
                             </>
                         </ScrollView>
                     )}
-                    {writePostData.files.length > 0 && (
+                    {writeCommentData.files.length > 0 && (
                         <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
                             <>
-                                {writePostData.files.map(item => (
+                                {writeCommentData.files.map(item => (
                                     <View style={writeCommentTemplateStyles.bottomImageBox}>
                                         <View style={writeCommentTemplateStyles.bottomImageInnerBox}>
                                             <Image

@@ -380,7 +380,7 @@ const WritePostTemplate = ({ navigationHandler }: WritePostTemplateProps) => {
     const inputTitleDate = useCallback(
         debounce((text: string) => {
             setWritePostData({ ...writePostData, dto: { ...writePostData.dto, title: text } });
-        }, 500),
+        }, 1000),
         [writePostData],
     );
     const onChangeContentText = (text: string) => {
