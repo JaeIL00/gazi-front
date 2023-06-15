@@ -221,7 +221,7 @@ export const nearByUserPostsAPI = async (param: {
 };
 
 // COMMUNITY
-export const getAllPostAPI = async (param: {
+export const getCommunityPostAPI = async (param: {
     accessToken: string;
     curLat: number;
     curLon: number;

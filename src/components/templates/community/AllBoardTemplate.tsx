@@ -19,7 +19,7 @@ import { userAuthAtom } from '../../../store/atoms';
 import { KeywordListTypes } from '../../../types/types';
 import { allBoardTemplateStyles } from '../../../styles/styles';
 import { AllBoardTemplateProps, PostTypes } from '../../../types/types';
-import { getAllPostAPI, geyMyLikeKeywordsAPI } from '../../../queries/api';
+import { getCommunityPostAPI } from '../../../queries/api';
 
 const AllBoardTemplate = ({ moveToKeywordSettingScreen }: AllBoardTemplateProps) => {
     const isFocusScreen = useIsFocused();
@@ -51,7 +51,7 @@ const AllBoardTemplate = ({ moveToKeywordSettingScreen }: AllBoardTemplateProps)
     } = useInfiniteQuery(
         'getAllPosts',
         ({ pageParam = 0 }) =>
-            getAllPostAPI({
+            getCommunityPostAPI({
                 curLat: currentPositionRef.current.lat,
                 curLon: currentPositionRef.current.lon,
                 accessToken,
@@ -78,59 +78,6 @@ const AllBoardTemplate = ({ moveToKeywordSettingScreen }: AllBoardTemplateProps)
             },
         },
     );
-
-    // Get my Keyword API
-    const { refetch: getMyKeywordRefetch, isSuccess: isSuccessGetMyKeywords } = useQuery(
-        'getMyLikeKeyword',
-        () => geyMyLikeKeywordsAPI(accessToken),
-        {
-            onSuccess: ({ data }) => {
-                if (data.data.length < 1) {
-                    setMyKeywordList(null);
-                } else if (data.data !== myKeywordList) {
-                    setMyKeywordList(data.data);
-                    if (isLikePostTab) {
-                        initGetKeywordPost(data.data);
-                    }
-                }
-            },
-            onError: error => {
-                // For Debug
-                console.log('(ERROR), Get my like keyword list API.', error);
-            },
-        },
-    );
-
-    // All posts or like keyword posts choose handler
-    const tabHandler = (state: string) => {
-        postsResponseIndexRef.current = 0;
-        setPostList([]);
-        switch (state) {
-            case 'ALL':
-                getKeywordPostParamRef.current = '';
-                remove();
-                getPostRefetch();
-                setIsLikePostTab(false);
-                break;
-            case 'LIKE':
-                if (!myKeywordList) {
-                    setTimeout(() => {
-                        Animated.timing(tooltipAnimRef, {
-                            toValue: 10,
-                            duration: 500,
-                            useNativeDriver: true,
-                        }).start();
-                    }, 5000);
-                } else {
-                    initGetKeywordPost(myKeywordList);
-                }
-                setIsLikePostTab(true);
-                break;
-            default:
-                // For Debug
-                console.log('(ERROR) Tab control handler.', state);
-        }
-    };
 
     // Init get post and check permission
     const isAllowLocationPermission = async () => {
@@ -238,14 +185,6 @@ const AllBoardTemplate = ({ moveToKeywordSettingScreen }: AllBoardTemplateProps)
     const keyExtractor = useCallback((item: PostTypes) => item.postId + '', []);
     const renderItem = useCallback(({ item }: { item: PostTypes }) => <PostListItem post={item} isBorder={true} />, []);
 
-    // Refresh my keyword setting
-    useLayoutEffect(() => {
-        if (isLikePostTab) {
-            getKeywordPostParamRef.current = '';
-            getMyKeywordRefetch();
-        }
-    }, [isFocusScreen]);
-
     useLayoutEffect(() => {
         isAllowLocationPermission();
     }, []);
@@ -259,35 +198,6 @@ const AllBoardTemplate = ({ moveToKeywordSettingScreen }: AllBoardTemplateProps)
 
     return (
         <View style={allBoardTemplateStyles.container}>
-            <View style={allBoardTemplateStyles.headerBox}>
-                <SemiBoldText text="커뮤니티" size={20} color="#000000" />
-            </View>
-
-            <View style={allBoardTemplateStyles.tabBox}>
-                <View
-                    style={[
-                        allBoardTemplateStyles.tabButton,
-                        {
-                            borderColor: isLikePostTab ? '#EBEBEB' : Colors.BLACK,
-                        },
-                    ]}>
-                    <TouchButton onPress={() => tabHandler('ALL')}>
-                        <SemiBoldText text="전체 게시판" size={16} color={Colors.BLACK} />
-                    </TouchButton>
-                </View>
-                <View
-                    style={[
-                        allBoardTemplateStyles.tabButton,
-                        {
-                            borderColor: isLikePostTab ? Colors.BLACK : '#EBEBEB',
-                        },
-                    ]}>
-                    <TouchButton onPress={() => tabHandler('LIKE')}>
-                        <SemiBoldText text="관심 게시판" size={16} color={Colors.BLACK} />
-                    </TouchButton>
-                </View>
-            </View>
-
             <View style={allBoardTemplateStyles.contentBox}>
                 {isLikePostTab && !myKeywordList && (
                     <View style={allBoardTemplateStyles.emptyKeywordBox}>

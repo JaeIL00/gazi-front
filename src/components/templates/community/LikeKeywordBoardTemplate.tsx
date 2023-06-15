@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from
 import { ActivityIndicator, Animated, FlatList, RefreshControl, ScrollView, View } from 'react-native';
 import { useRecoilValue } from 'recoil';
 import { useInfiniteQuery, useQuery } from 'react-query';
-import { useIsFocused } from '@react-navigation/native';
+import { useFocusEffect, useIsFocused } from '@react-navigation/native';
 import { debounce } from 'lodash';
 import FastImage from 'react-native-fast-image';
 import Geolocation from '@react-native-community/geolocation';
@@ -19,7 +19,7 @@ import { userAuthAtom } from '../../../store/atoms';
 import { KeywordListTypes } from '../../../types/types';
 import { likeKeywordBoardTemplateStyles } from '../../../styles/styles';
 import { LikeKeywordBoardTemplateProps, PostTypes } from '../../../types/types';
-import { getAllPostAPI, geyMyLikeKeywordsAPI } from '../../../queries/api';
+import { getCommunityPostAPI, geyMyLikeKeywordsAPI } from '../../../queries/api';
 
 const LikeKeywordBoardTemplate = ({ moveToKeywordSettingScreen }: LikeKeywordBoardTemplateProps) => {
     const isFocusScreen = useIsFocused();
@@ -36,12 +36,11 @@ const LikeKeywordBoardTemplate = ({ moveToKeywordSettingScreen }: LikeKeywordBoa
     const tooltipAnimRef = useRef<Animated.Value>(new Animated.Value(0)).current;
 
     const [postList, setPostList] = useState<PostTypes[]>([]);
-    const [isLikePostTab, setIsLikePostTab] = useState<boolean>(false);
     const [isPostRefresh, setIsPostRefresh] = useState<boolean>(false);
     const [chooseKeywordFilter, setChooseKeywordFilter] = useState<number[]>([]);
     const [myKeywordList, setMyKeywordList] = useState<KeywordListTypes[] | null>(null);
 
-    // Get post API
+    // Get post by like keyword API
     const {
         hasNextPage,
         isFetching,
@@ -49,9 +48,9 @@ const LikeKeywordBoardTemplate = ({ moveToKeywordSettingScreen }: LikeKeywordBoa
         refetch: getPostRefetch,
         remove,
     } = useInfiniteQuery(
-        'getAllPosts',
+        'getLikeKeywordPosts',
         ({ pageParam = 0 }) =>
-            getAllPostAPI({
+            getCommunityPostAPI({
                 curLat: currentPositionRef.current.lat,
                 curLon: currentPositionRef.current.lon,
                 accessToken,
@@ -80,7 +79,7 @@ const LikeKeywordBoardTemplate = ({ moveToKeywordSettingScreen }: LikeKeywordBoa
     );
 
     // Get my Keyword API
-    const { refetch: getMyKeywordRefetch, isSuccess: isSuccessGetMyKeywords } = useQuery(
+    const { isSuccess: isSuccessGetMyKeywords } = useQuery(
         'getMyLikeKeyword',
         () => geyMyLikeKeywordsAPI(accessToken),
         {
@@ -88,10 +87,7 @@ const LikeKeywordBoardTemplate = ({ moveToKeywordSettingScreen }: LikeKeywordBoa
                 if (data.data.length < 1) {
                     setMyKeywordList(null);
                 } else if (data.data !== myKeywordList) {
-                    setMyKeywordList(data.data);
-                    if (isLikePostTab) {
-                        initGetKeywordPost(data.data);
-                    }
+                    initGetKeywordPost(data.data);
                 }
             },
             onError: error => {
@@ -100,37 +96,6 @@ const LikeKeywordBoardTemplate = ({ moveToKeywordSettingScreen }: LikeKeywordBoa
             },
         },
     );
-
-    // All posts or like keyword posts choose handler
-    const tabHandler = (state: string) => {
-        postsResponseIndexRef.current = 0;
-        setPostList([]);
-        switch (state) {
-            case 'ALL':
-                getKeywordPostParamRef.current = '';
-                remove();
-                getPostRefetch();
-                setIsLikePostTab(false);
-                break;
-            case 'LIKE':
-                if (!myKeywordList) {
-                    setTimeout(() => {
-                        Animated.timing(tooltipAnimRef, {
-                            toValue: 10,
-                            duration: 500,
-                            useNativeDriver: true,
-                        }).start();
-                    }, 5000);
-                } else {
-                    initGetKeywordPost(myKeywordList);
-                }
-                setIsLikePostTab(true);
-                break;
-            default:
-                // For Debug
-                console.log('(ERROR) Tab control handler.', state);
-        }
-    };
 
     // Init get post and check permission
     const isAllowLocationPermission = async () => {
@@ -165,6 +130,7 @@ const LikeKeywordBoardTemplate = ({ moveToKeywordSettingScreen }: LikeKeywordBoa
 
     // Get my keyword post (init)
     const initGetKeywordPost = (keywords: KeywordListTypes[]) => {
+        setMyKeywordList(keywords);
         postsResponseIndexRef.current = 0;
         setChooseKeywordFilter([]);
         for (const index in keywords) {
@@ -194,7 +160,7 @@ const LikeKeywordBoardTemplate = ({ moveToKeywordSettingScreen }: LikeKeywordBoa
         getPostRefetch();
     };
 
-    // My like keyword posts filtering by my like keyword
+    // My like keyword posts filtering for request API by my like keyword
     const myLikeKeywordFilterHandler = useCallback(
         (keywordId: number) => {
             postsResponseIndexRef.current = 0;
@@ -238,58 +204,41 @@ const LikeKeywordBoardTemplate = ({ moveToKeywordSettingScreen }: LikeKeywordBoa
     const keyExtractor = useCallback((item: PostTypes) => item.postId + '', []);
     const renderItem = useCallback(({ item }: { item: PostTypes }) => <PostListItem post={item} isBorder={true} />, []);
 
-    // Refresh my keyword setting
+    // My like Keyword is nothing then tooltip animation
     useLayoutEffect(() => {
-        if (isLikePostTab) {
-            getKeywordPostParamRef.current = '';
-            getMyKeywordRefetch();
+        if (!isFocusScreen) {
+            tooltipAnimRef.setValue(0);
         }
     }, [isFocusScreen]);
+    useFocusEffect(
+        useCallback(() => {
+            if (!myKeywordList) {
+                setTimeout(() => {
+                    Animated.timing(tooltipAnimRef, {
+                        toValue: 10,
+                        duration: 500,
+                        useNativeDriver: true,
+                    }).start();
+                }, 5000);
+            }
+        }, [tooltipAnimRef]),
+    );
 
-    useLayoutEffect(() => {
-        isAllowLocationPermission();
-    }, []);
+    // useLayoutEffect(() => {
+    //     isAllowLocationPermission();
+    // }, []);
 
     useLayoutEffect(() => {
         if (currentPositionRef.current.isChecked) {
             remove();
-            getPostRefetch();
+            // getPostRefetch();
         }
     }, [currentPositionRef.current]);
 
     return (
         <View style={likeKeywordBoardTemplateStyles.container}>
-            <View style={likeKeywordBoardTemplateStyles.headerBox}>
-                <SemiBoldText text="커뮤니티" size={20} color="#000000" />
-            </View>
-
-            <View style={likeKeywordBoardTemplateStyles.tabBox}>
-                <View
-                    style={[
-                        likeKeywordBoardTemplateStyles.tabButton,
-                        {
-                            borderColor: isLikePostTab ? '#EBEBEB' : Colors.BLACK,
-                        },
-                    ]}>
-                    <TouchButton onPress={() => tabHandler('ALL')}>
-                        <SemiBoldText text="전체 게시판" size={16} color={Colors.BLACK} />
-                    </TouchButton>
-                </View>
-                <View
-                    style={[
-                        likeKeywordBoardTemplateStyles.tabButton,
-                        {
-                            borderColor: isLikePostTab ? Colors.BLACK : '#EBEBEB',
-                        },
-                    ]}>
-                    <TouchButton onPress={() => tabHandler('LIKE')}>
-                        <SemiBoldText text="관심 게시판" size={16} color={Colors.BLACK} />
-                    </TouchButton>
-                </View>
-            </View>
-
             <View style={likeKeywordBoardTemplateStyles.contentBox}>
-                {isLikePostTab && !myKeywordList && (
+                {!myKeywordList ? (
                     <View style={likeKeywordBoardTemplateStyles.emptyKeywordBox}>
                         <View style={likeKeywordBoardTemplateStyles.emptyButtonBox}>
                             <TouchButton onPress={moveToKeywordSettingScreen}>
@@ -331,8 +280,7 @@ const LikeKeywordBoardTemplate = ({ moveToKeywordSettingScreen }: LikeKeywordBoa
                             <SemiBoldText text="관심 키워드를 골라주세요" size={18} color={Colors.BTN_GRAY} />
                         </View>
                     </View>
-                )}
-                {isLikePostTab && myKeywordList && (
+                ) : (
                     <View style={likeKeywordBoardTemplateStyles.myKeywordScrollBox}>
                         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                             <TouchButton
@@ -363,7 +311,7 @@ const LikeKeywordBoardTemplate = ({ moveToKeywordSettingScreen }: LikeKeywordBoa
                         </ScrollView>
                     </View>
                 )}
-                {isLikePostTab && !myKeywordList ? null : (
+                {/* {isLikePostTab && !myKeywordList ? null : (
                     <FlatList
                         keyExtractor={keyExtractor}
                         data={postList}
@@ -383,7 +331,7 @@ const LikeKeywordBoardTemplate = ({ moveToKeywordSettingScreen }: LikeKeywordBoa
                             />
                         }
                     />
-                )}
+                )} */}
                 {isFetching && !isPostRefresh && <ActivityIndicator size="large" />}
             </View>
         </View>
