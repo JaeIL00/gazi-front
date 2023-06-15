@@ -61,6 +61,7 @@ const WriteCommentTemplate = ({ navigationHandler, threadInfo }: WriteCommentTem
         location: { lat: null, lng: null },
     });
     const [writePostData, setWritePostData] = useState<WriteCommentTypes>({
+        placeName: '',
         dto: {
             postId: threadInfo.postId,
             content: '',
@@ -267,6 +268,7 @@ const WriteCommentTemplate = ({ navigationHandler, threadInfo }: WriteCommentTem
             await AsyncStorage.setItem('GAZI_hst_sch', JSON.stringify(freshHistory));
             setWritePostData({
                 ...writePostData,
+                placeName: temporaryChooseLocationData.name,
                 dto: {
                     ...writePostData.dto,
                     latitude: temporaryChooseLocationData.location.lat,
@@ -280,6 +282,7 @@ const WriteCommentTemplate = ({ navigationHandler, threadInfo }: WriteCommentTem
             setLoactionModal(false);
         }
     };
+    console.log('hi');
 
     // Choose location in search location modal
     const getLocationHandler = (location: { lat: number; lng: number }, placeName: string, address: string) => {
@@ -369,10 +372,18 @@ const WriteCommentTemplate = ({ navigationHandler, threadInfo }: WriteCommentTem
                         <View style={writeCommentTemplateStyles.settingBox}>
                             <TouchButton onPress={() => locationModalHandler('OPEN')} hitSlop={5}>
                                 <View style={writeCommentTemplateStyles.settingButton}>
-                                    {
-                                        // writePostData.dto.latitude && writePostData.dto.placeName
-                                        false ? null : <MediumText text="위치설정" size={13} color={Colors.BLACK} />
-                                    }
+                                    {writePostData.placeName ? (
+                                        <>
+                                            <FastImage
+                                                source={require('../../../assets/icons/location-pin-outline-black.png')}
+                                                style={writeCommentTemplateStyles.locationIcon}
+                                            />
+                                            <Spacer width={5} />
+                                            <MediumText text={writePostData.placeName} size={13} color={Colors.BLACK} />
+                                        </>
+                                    ) : (
+                                        <MediumText text="위치설정" size={13} color={Colors.BLACK} />
+                                    )}
                                     <Spacer width={4} />
                                     <FastImage
                                         source={require('../../../assets/icons/triangle-down.png')}
@@ -383,10 +394,15 @@ const WriteCommentTemplate = ({ navigationHandler, threadInfo }: WriteCommentTem
                             <Spacer width={13} />
                             <TouchButton onPress={() => keywordModalHandler('OPEN')} hitSlop={5}>
                                 <View style={writeCommentTemplateStyles.settingBox}>
-                                    {
-                                        // writePostData.dto.headKeywordId
-                                        false ? null : <MediumText text="키워드설정" size={13} color={Colors.BLACK} />
-                                    }
+                                    {chooseKeywords.length > 0 ? (
+                                        <MediumText
+                                            text={issueKeywords[chooseKeywords[0].id - 1].keywordName}
+                                            size={13}
+                                            color={Colors.BLACK}
+                                        />
+                                    ) : (
+                                        <MediumText text="키워드설정" size={13} color={Colors.BLACK} />
+                                    )}
                                     <Spacer width={4} />
                                     <FastImage
                                         source={require('../../../assets/icons/triangle-down.png')}

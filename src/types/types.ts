@@ -149,6 +149,7 @@ export type WritePostTypes = {
     backgroundMap: string;
 };
 export type WriteCommentTypes = {
+    placeName: string;
     dto: CommentDtoTypes;
     files: uploadImageFileTypes[];
 };

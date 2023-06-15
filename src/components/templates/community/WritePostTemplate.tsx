@@ -503,7 +503,7 @@ const WritePostTemplate = ({ navigationHandler }: WritePostTemplateProps) => {
                         <View style={writePostTemplateStyles.settingBox}>
                             <TouchButton onPress={() => locationModalHandler('OPEN')} hitSlop={5}>
                                 <View style={writePostTemplateStyles.settingButton}>
-                                    {writePostData.dto.latitude && writePostData.dto.placeName ? (
+                                    {writePostData.dto.placeName ? (
                                         <>
                                             <FastImage
                                                 source={require('../../../assets/icons/location-pin-outline-black.png')}
