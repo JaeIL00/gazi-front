@@ -45,8 +45,8 @@ const LikeKeywordBoardTemplate = ({ moveToKeywordSettingScreen }: LikeKeywordBoa
         hasNextPage,
         isFetching,
         fetchNextPage,
-        refetch: getPostRefetch,
-        remove,
+        refetch: postRefetch,
+        remove: postRemove,
     } = useInfiniteQuery(
         'getLikeKeywordPosts',
         ({ pageParam = 0 }) =>
@@ -79,23 +79,23 @@ const LikeKeywordBoardTemplate = ({ moveToKeywordSettingScreen }: LikeKeywordBoa
     );
 
     // Get my Keyword API
-    const { isSuccess: isSuccessGetMyKeywords } = useQuery(
-        'getMyLikeKeyword',
-        () => geyMyLikeKeywordsAPI(accessToken),
-        {
-            onSuccess: ({ data }) => {
-                if (data.data.length < 1) {
-                    setMyKeywordList(null);
-                } else if (data.data !== myKeywordList) {
-                    initGetKeywordPost(data.data);
-                }
-            },
-            onError: error => {
-                // For Debug
-                console.log('(ERROR), Get my like keyword list API.', error);
-            },
+    const {
+        refetch: keywordRefetch,
+        remove: keywordRemove,
+        isSuccess: isSuccessGetMyKeywords,
+    } = useQuery('getMyLikeKeyword', () => geyMyLikeKeywordsAPI(accessToken), {
+        onSuccess: ({ data }) => {
+            if (data.data.length < 1) {
+                setMyKeywordList(null);
+            } else if (data.data !== myKeywordList) {
+                initGetKeywordPost(data.data);
+            }
         },
-    );
+        onError: error => {
+            // For Debug
+            console.log('(ERROR), Get my like keyword list API.', error);
+        },
+    });
 
     // Init get post and check permission
     const isAllowLocationPermission = async () => {
@@ -137,8 +137,8 @@ const LikeKeywordBoardTemplate = ({ moveToKeywordSettingScreen }: LikeKeywordBoa
             getKeywordPostParamRef.current =
                 getKeywordPostParamRef.current + `&keywordId=${keywords[Number(index)].id}`;
         }
-        remove();
-        getPostRefetch();
+        postRemove();
+        postRefetch();
     };
 
     // Get post list handler
@@ -156,8 +156,8 @@ const LikeKeywordBoardTemplate = ({ moveToKeywordSettingScreen }: LikeKeywordBoa
     const postListRefresh = () => {
         postsResponseIndexRef.current = 0;
         setIsPostRefresh(true);
-        remove();
-        getPostRefetch();
+        postRemove();
+        postRefetch();
     };
 
     // My like keyword posts filtering for request API by my like keyword
@@ -188,14 +188,14 @@ const LikeKeywordBoardTemplate = ({ moveToKeywordSettingScreen }: LikeKeywordBoa
                     }
                 }
             }
-            keywordPostListRefetch();
+            keywordPostListPostRefetch();
         },
         [getKeywordPostParamRef.current, myKeywordList, chooseKeywordFilter, postsResponseIndexRef.current],
     );
-    const keywordPostListRefetch = useCallback(
+    const keywordPostListPostRefetch = useCallback(
         debounce(() => {
-            remove();
-            getPostRefetch();
+            postRemove();
+            postRefetch();
         }, 600),
         [],
     );
@@ -208,6 +208,9 @@ const LikeKeywordBoardTemplate = ({ moveToKeywordSettingScreen }: LikeKeywordBoa
     useLayoutEffect(() => {
         if (!isFocusScreen) {
             tooltipAnimRef.setValue(0);
+        } else {
+            keywordRemove();
+            keywordRefetch();
         }
     }, [isFocusScreen]);
     useFocusEffect(
@@ -224,14 +227,14 @@ const LikeKeywordBoardTemplate = ({ moveToKeywordSettingScreen }: LikeKeywordBoa
         }, [tooltipAnimRef]),
     );
 
-    // useLayoutEffect(() => {
-    //     isAllowLocationPermission();
-    // }, []);
+    useLayoutEffect(() => {
+        isAllowLocationPermission();
+    }, []);
 
     useLayoutEffect(() => {
         if (currentPositionRef.current.isChecked) {
-            remove();
-            // getPostRefetch();
+            postRemove();
+            postRefetch();
         }
     }, [currentPositionRef.current]);
 
@@ -311,7 +314,7 @@ const LikeKeywordBoardTemplate = ({ moveToKeywordSettingScreen }: LikeKeywordBoa
                         </ScrollView>
                     </View>
                 )}
-                {/* {isLikePostTab && !myKeywordList ? null : (
+                {myKeywordList && (
                     <FlatList
                         keyExtractor={keyExtractor}
                         data={postList}
@@ -331,7 +334,7 @@ const LikeKeywordBoardTemplate = ({ moveToKeywordSettingScreen }: LikeKeywordBoa
                             />
                         }
                     />
-                )} */}
+                )}
                 {isFetching && !isPostRefresh && <ActivityIndicator size="large" />}
             </View>
         </View>
