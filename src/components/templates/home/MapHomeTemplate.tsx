@@ -5,7 +5,6 @@ import DropShadow from 'react-native-drop-shadow';
 import { useRecoilValue } from 'recoil';
 import MapView, { BoundingBox, Details, Region } from 'react-native-maps';
 import { useInfiniteQuery } from 'react-query';
-import { PERMISSIONS, RESULTS, check } from 'react-native-permissions';
 import { debounce } from 'lodash';
 import SplashScreen from 'react-native-splash-screen';
 import FastImage from 'react-native-fast-image';
@@ -19,17 +18,18 @@ import SearchLocation from '../../organisms/SearchLocation';
 import ModalBackground from '../../smallest/ModalBackground';
 import FailPermissionModal from '../../organisms/FailPermissionModal';
 import NearbyPostListModal from '../../organisms/NearbyPostListModal';
-import { userAuthAtom } from '../../../store/atoms';
 import { nearByUserPostsAPI } from '../../../queries/api';
 import { mapHomeTemplateStyles } from '../../../styles/styles';
+import { userAuthAtom, userInfoAtom } from '../../../store/atoms';
 import { screenFont, screenHeight, screenWidth } from '../../../utils/changeStyleSize';
 import { MapHomeTemplateProps, MapLocationTypes, PostTypes, MapBoundaryTypes } from '../../../types/types';
 
 const MapHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritePost }: MapHomeTemplateProps) => {
     const { accessToken } = useRecoilValue(userAuthAtom);
+    const { isAllowLocation } = useRecoilValue(userInfoAtom);
 
-    const nearPostResponseIndexRef = useRef<number>(0);
     const mapRef = useRef() as RefObject<MapView>;
+    const nearPostResponseIndexRef = useRef<number>(0);
     const locationPermissionRef = useRef<boolean>(false);
     const currentPositionRef = useRef<MapLocationTypes>({
         latitude: 37.49795103144074,
@@ -37,12 +37,12 @@ const MapHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritePost }: Ma
     });
     const mapBoundaryStateRef = useRef<MapBoundaryTypes>({
         northEast: {
-            latitude: 37.45878314300355,
-            longitude: 126.8773839622736,
+            latitude: 0,
+            longitude: 0,
         },
         southWest: {
-            latitude: 37.45878314300355,
-            longitude: 126.8773839622736,
+            latitude: 0,
+            longitude: 0,
         },
         isNearSearch: false,
     });
@@ -51,7 +51,7 @@ const MapHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritePost }: Ma
     const [nearPostList, setNearPostList] = useState<PostTypes[]>([]);
     const [isFarMapLevel, setIsFarMapLevel] = useState<boolean>(false);
     const [markerPost, setMarkerPost] = useState<PostTypes | null>(null);
-    const [isAllowLocation, setIsAllowLocation] = useState<boolean>(false);
+    // const [isAllowLocation, setIsAllowLocation] = useState<boolean>(false);
     const [isNearPostRefresh, setIsNearPostRefresh] = useState<boolean>(false);
     const [isBottomSheetMini, setIsBottomSheetMini] = useState<boolean>(false);
     const [isBottomSheetFull, setIsBottomSheetFull] = useState<boolean>(false);
@@ -134,30 +134,15 @@ const MapHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritePost }: Ma
         setSearchModal(false);
     };
 
-    // Check Location Permission
-    const checkLocationPermission = async (): Promise<boolean> => {
-        try {
-            const locationPermmission = await check(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION);
-            const isAllow = locationPermmission === RESULTS.GRANTED;
-            return isAllow;
-        } catch (err) {
-            // For Debug
-            console.log('(ERROR) Check Location Permission.', err);
-            return false;
-        }
-    };
-
     // Init first map rendering
     const isAllowPermissionInit = async () => {
-        const isOkPermission = await checkLocationPermission();
-        if (isOkPermission) {
+        if (isAllowLocation) {
             locationPermissionRef.current = true;
             Geolocation.getCurrentPosition(info => {
                 currentPositionRef.current = {
                     latitude: info.coords.latitude,
                     longitude: info.coords.longitude,
                 };
-                setIsAllowLocation(true);
             });
         } else {
             locationPermissionRef.current = false;
@@ -171,8 +156,7 @@ const MapHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritePost }: Ma
 
     // Get current user position
     const onPressGetUserPosition = debounce(async () => {
-        const isOkPermission = await checkLocationPermission();
-        if (isOkPermission) {
+        if (isAllowLocation) {
             Geolocation.getCurrentPosition(info => {
                 if (
                     info.coords.latitude !== currentPositionRef.current.latitude &&
@@ -182,7 +166,6 @@ const MapHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritePost }: Ma
                         latitude: info.coords.latitude,
                         longitude: info.coords.longitude,
                     };
-                    setIsAllowLocation(true);
                 } else {
                     mapRef.current?.animateToRegion({
                         latitude: currentPositionRef.current.latitude,
@@ -194,7 +177,6 @@ const MapHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritePost }: Ma
             });
         } else {
             setOnLocationPermissionModal(true);
-            setIsAllowLocation(false);
         }
     }, 300);
 
@@ -214,10 +196,12 @@ const MapHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritePost }: Ma
         } finally {
             if (boundaryValue) {
                 setIsNearPostSearchTopBar(false);
-                initNearPosts();
+                setTimeout(() => {
+                    initNearPosts();
+                }, 2000);
             }
         }
-    }, [locationPermissionRef.current]);
+    }, [isAllowLocation]);
     const initNearPosts = () => {
         nearPostResponseIndexRef.current = 0;
         remove();

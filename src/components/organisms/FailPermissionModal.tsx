@@ -34,7 +34,7 @@ const FailPermissionModal = ({
                     text="닫기"
                     textColor={Colors.TXT_GRAY}
                     fontSize={14}
-                    onPress={() => onPressModalButton('')}
+                    onPress={() => onPressModalButton('CLOSE')}
                     paddingVertical={12}
                     borderWidth={1}
                     borderColor={Colors.TXT_GRAY}

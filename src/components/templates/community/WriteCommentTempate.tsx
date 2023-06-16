@@ -23,7 +23,7 @@ import ModalBackground from '../../smallest/ModalBackground';
 import FailPermissionModal from '../../organisms/FailPermissionModal';
 import AddKeywordInWrite from '../../organisms/cummunity/AddKeywordInWrite';
 import useTextInputValidation from '../../../utils/hooks/useTextInputValidation';
-import { userAuthAtom } from '../../../store/atoms';
+import { userAuthAtom, userInfoAtom } from '../../../store/atoms';
 import { issueKeywords } from '../../../utils/allKeywords';
 import { subwayKeywords } from '../../../utils/allKeywords';
 import { trafficKeywords } from '../../../utils/allKeywords';
@@ -40,10 +40,10 @@ import Geolocation from '@react-native-community/geolocation';
 
 const WriteCommentTemplate = ({ navigationHandler, threadInfo }: WriteCommentTemplateProps) => {
     const { accessToken } = useRecoilValue(userAuthAtom);
+    const { isAllowLocation } = useRecoilValue(userInfoAtom);
 
     const { text: content, onChangeText: onChangeContentText } = useTextInputValidation();
 
-    const isAllowLocation = useRef<boolean>(false);
     const currentPositionRef = useRef<{ curLat: number; curLon: number }>({
         curLat: 0,
         curLon: 0,
@@ -204,25 +204,9 @@ const WriteCommentTemplate = ({ navigationHandler, threadInfo }: WriteCommentTem
         }
     };
 
-    // Check image library permission
-    const checkImagePermission = async (): Promise<boolean> => {
-        try {
-            const check = await checkMultiple([PERMISSIONS.ANDROID.READ_MEDIA_IMAGES, PERMISSIONS.ANDROID.CAMERA]);
-            const isAllow =
-                check['android.permission.CAMERA'] === RESULTS.GRANTED &&
-                check['android.permission.READ_MEDIA_IMAGES'] === RESULTS.GRANTED;
-            return isAllow;
-        } catch (error) {
-            // For Debug
-            console.log('(ERROR) Check image library permission');
-            return false;
-        }
-    };
-
     // Get image in library
     const openGalleryHandler = async () => {
-        const isAllow = await checkImagePermission();
-        if (isAllow) {
+        if (isAllowLocation) {
             setIsCamAllowPermission(true);
         } else {
             notAllowPermission();
@@ -360,10 +344,7 @@ const WriteCommentTemplate = ({ navigationHandler, threadInfo }: WriteCommentTem
 
     // Check location permission and get current position
     const locationSearchMyCurrentPosition = async () => {
-        const locationPermission = await check(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION);
-        const isAllow = locationPermission === RESULTS.GRANTED;
-        if (isAllow) {
-            isAllowLocation.current = true;
+        if (isAllowLocation) {
             Geolocation.getCurrentPosition(info => {
                 currentPositionRef.current = {
                     curLat: info.coords.latitude,
@@ -552,7 +533,7 @@ const WriteCommentTemplate = ({ navigationHandler, threadInfo }: WriteCommentTem
                         getLocationHandler={getLocationHandler}
                         placeholder="어디에서 일어난 일인가요?"
                         isHome={false}
-                        isAllowLocation={isAllowLocation.current}
+                        isAllowLocation={isAllowLocation}
                         currentPosition={currentPositionRef.current}
                     />
                 </View>

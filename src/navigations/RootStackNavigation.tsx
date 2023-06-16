@@ -1,7 +1,7 @@
 import React, { useLayoutEffect } from 'react';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { NativeStackNavigationProp, createNativeStackNavigator } from '@react-navigation/native-stack';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { useMutation } from 'react-query';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import SplashScreen from 'react-native-splash-screen';
@@ -24,89 +24,22 @@ import LikeKeywordSettingScreen from '../screens/myProfile/LikeKeywordSettingScr
 import { autoLoginAPI } from '../queries/api';
 import { RootStackParamList } from '../types/types';
 import { userInfoAtom, userAuthAtom } from '../store/atoms';
+import initEssentialFunc from '../utils/initEssentialFunc';
 
 export const RootStackNavigation = () => {
     const Stack = createNativeStackNavigator<RootStackParamList>();
-    const rootNavigation = useRootNavigation();
+    const { isLogIn } = useRecoilValue(userAuthAtom);
+    const { checkAsyncStorage, isAllowLocationPermission } = initEssentialFunc();
 
-    // Check storage and token valication for auto login
-    const [userAuth, setUserAuth] = useRecoilState(userAuthAtom);
-    const [userInfo, setUserInfo] = useRecoilState(userInfoAtom);
-    const { mutate } = useMutation(autoLoginAPI, {
-        onSuccess: ({ data }) => {
-            successTokenHandler(data.data);
-        },
-        onError: ({ response }) => {
-            errorLoginHandler(response.status);
-            // For Debug
-            console.log('(ERROR) auto login API.', response);
-        },
-    });
-    const errorLoginHandler = async (status: number) => {
-        if (status === 400 || status === 404) {
-            await AsyncStorage.multiRemove(['GAZI_ac_tk', 'GAZI_re_tk']);
-        }
-        rootNavigation.navigate('NotLoginHome');
-        SplashScreen.hide();
-    };
-    const successTokenHandler = async (data: {
-        accessToken: string;
-        refreshToken: string;
-        memberId: number;
-        nickName: string;
-        email: string;
-    }) => {
-        try {
-            await AsyncStorage.setItem('GAZI_ac_tk', data.accessToken);
-            await AsyncStorage.setItem('GAZI_re_tk', data.refreshToken);
-            setUserAuth({
-                accessToken: data.accessToken,
-                refreshToken: data.refreshToken,
-                isLogIn: true,
-            });
-            setUserInfo({
-                memberId: data.memberId,
-                nickname: data.nickName,
-                email: data.email,
-            });
-            console.log('저장 엑세스', data.accessToken);
-            console.log('저장 리프레시', data.refreshToken);
-            rootNavigation.navigate('BottomTab');
-        } catch (error) {
-            // For Debug
-            console.log('(ERROR) User authorization token set storage.', error);
-        }
-    };
-    const checkAsyncStorage = async () => {
-        try {
-            const accessToken = await AsyncStorage.getItem('GAZI_ac_tk');
-            const refreshToken = await AsyncStorage.getItem('GAZI_re_tk');
-            if (accessToken && refreshToken) {
-                console.log('겟 엑세스', accessToken);
-                console.log('겟 리프레시', refreshToken);
-                mutate({
-                    accessToken,
-                    refreshToken,
-                });
-            } else {
-                rootNavigation.navigate('NotLoginHome');
-                SplashScreen.hide();
-            }
-        } catch (error) {
-            // For Debug
-            console.log('(ERROR) Check async storage for auto login ', error);
-            rootNavigation.navigate('NotLoginHome');
-            SplashScreen.hide();
-        }
-    };
     useLayoutEffect(() => {
         checkAsyncStorage();
+        isAllowLocationPermission();
         // SplashScreen.hide();
     }, []);
 
     return (
         <Stack.Navigator screenOptions={{ headerShown: false }}>
-            {userAuth.isLogIn ? (
+            {isLogIn ? (
                 <>
                     <Stack.Screen name="BottomTab" component={BottomTabNavigation} />
                     <Stack.Screen name="WritePost" component={WritePostScreen} />

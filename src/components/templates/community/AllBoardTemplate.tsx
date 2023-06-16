@@ -15,7 +15,7 @@ import MediumText from '../../smallest/MediumText';
 import TouchButton from '../../smallest/TouchButton';
 import SemiBoldText from '../../smallest/SemiBoldText';
 import PostListItem from '../../organisms/PostListItem';
-import { userAuthAtom } from '../../../store/atoms';
+import { userAuthAtom, userInfoAtom } from '../../../store/atoms';
 import { KeywordListTypes } from '../../../types/types';
 import { allBoardTemplateStyles } from '../../../styles/styles';
 import { AllBoardTemplateProps, PostTypes } from '../../../types/types';
@@ -25,6 +25,7 @@ const AllBoardTemplate = ({ moveToKeywordSettingScreen }: AllBoardTemplateProps)
     const isFocusScreen = useIsFocused();
 
     const { accessToken } = useRecoilValue(userAuthAtom);
+    const { isAllowLocation } = useRecoilValue(userInfoAtom);
 
     const postsResponseIndexRef = useRef<number>(0);
     const getKeywordPostParamRef = useRef<string>('');
@@ -79,29 +80,17 @@ const AllBoardTemplate = ({ moveToKeywordSettingScreen }: AllBoardTemplateProps)
         },
     );
 
-    // Init get post and check permission
-    const isAllowLocationPermission = async () => {
-        try {
-            const locationPermission = await check(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION);
-            const isAllow = locationPermission === RESULTS.GRANTED;
-            if (isAllow) {
-                Geolocation.getCurrentPosition(info => {
-                    currentPositionRef.current = {
-                        lat: info.coords.latitude,
-                        lon: info.coords.longitude,
-                        isChecked: true,
-                    };
-                });
-            } else {
+    // Get my current location
+    const getMyCurrentLocation = () => {
+        if (isAllowLocation) {
+            Geolocation.getCurrentPosition(info => {
                 currentPositionRef.current = {
-                    lat: 0,
-                    lon: 0,
+                    lat: info.coords.latitude,
+                    lon: info.coords.longitude,
                     isChecked: true,
                 };
-            }
-        } catch (err) {
-            // For Debug
-            console.log('(ERROR) Check Location Permission.', err);
+            });
+        } else {
             currentPositionRef.current = {
                 lat: 0,
                 lon: 0,
@@ -186,7 +175,7 @@ const AllBoardTemplate = ({ moveToKeywordSettingScreen }: AllBoardTemplateProps)
     const renderItem = useCallback(({ item }: { item: PostTypes }) => <PostListItem post={item} isBorder={true} />, []);
 
     useLayoutEffect(() => {
-        isAllowLocationPermission();
+        getMyCurrentLocation();
     }, []);
 
     useLayoutEffect(() => {

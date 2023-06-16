@@ -190,6 +190,7 @@ export type userInfoAtomTypes = {
     memberId: number | null;
     nickname: string;
     email: string;
+    isAllowLocation: boolean;
 };
 
 export type joinMemberTypes = {

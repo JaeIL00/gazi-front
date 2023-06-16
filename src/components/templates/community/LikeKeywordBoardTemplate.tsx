@@ -15,7 +15,7 @@ import MediumText from '../../smallest/MediumText';
 import TouchButton from '../../smallest/TouchButton';
 import SemiBoldText from '../../smallest/SemiBoldText';
 import PostListItem from '../../organisms/PostListItem';
-import { userAuthAtom } from '../../../store/atoms';
+import { userAuthAtom, userInfoAtom } from '../../../store/atoms';
 import { KeywordListTypes } from '../../../types/types';
 import { likeKeywordBoardTemplateStyles } from '../../../styles/styles';
 import { LikeKeywordBoardTemplateProps, PostTypes } from '../../../types/types';
@@ -25,6 +25,7 @@ const LikeKeywordBoardTemplate = ({ moveToKeywordSettingScreen }: LikeKeywordBoa
     const isFocusScreen = useIsFocused();
 
     const { accessToken } = useRecoilValue(userAuthAtom);
+    const { isAllowLocation } = useRecoilValue(userInfoAtom);
 
     const postsResponseIndexRef = useRef<number>(0);
     const getKeywordPostParamRef = useRef<string>('');
@@ -97,29 +98,17 @@ const LikeKeywordBoardTemplate = ({ moveToKeywordSettingScreen }: LikeKeywordBoa
         },
     });
 
-    // Init get post and check permission
-    const isAllowLocationPermission = async () => {
-        try {
-            const locationPermission = await check(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION);
-            const isAllow = locationPermission === RESULTS.GRANTED;
-            if (isAllow) {
-                Geolocation.getCurrentPosition(info => {
-                    currentPositionRef.current = {
-                        lat: info.coords.latitude,
-                        lon: info.coords.longitude,
-                        isChecked: true,
-                    };
-                });
-            } else {
+    // Get my current location
+    const getMyCurrentLocation = () => {
+        if (isAllowLocation) {
+            Geolocation.getCurrentPosition(info => {
                 currentPositionRef.current = {
-                    lat: 0,
-                    lon: 0,
+                    lat: info.coords.latitude,
+                    lon: info.coords.longitude,
                     isChecked: true,
                 };
-            }
-        } catch (err) {
-            // For Debug
-            console.log('(ERROR) Check Location Permission.', err);
+            });
+        } else {
             currentPositionRef.current = {
                 lat: 0,
                 lon: 0,
@@ -209,6 +198,8 @@ const LikeKeywordBoardTemplate = ({ moveToKeywordSettingScreen }: LikeKeywordBoa
         if (!isFocusScreen) {
             tooltipAnimRef.setValue(0);
         } else {
+            // Get current location
+            getMyCurrentLocation();
             keywordRemove();
             keywordRefetch();
         }
@@ -226,17 +217,6 @@ const LikeKeywordBoardTemplate = ({ moveToKeywordSettingScreen }: LikeKeywordBoa
             }
         }, [tooltipAnimRef]),
     );
-
-    useLayoutEffect(() => {
-        isAllowLocationPermission();
-    }, []);
-
-    useLayoutEffect(() => {
-        if (currentPositionRef.current.isChecked) {
-            postRemove();
-            postRefetch();
-        }
-    }, [currentPositionRef.current]);
 
     return (
         <View style={likeKeywordBoardTemplateStyles.container}>

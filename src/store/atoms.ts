@@ -18,6 +18,7 @@ export const userInfoAtom = atom<userInfoAtomTypes>({
         memberId: null,
         nickname: '',
         email: '',
+        isAllowLocation: false,
     },
 });
 
