@@ -2,7 +2,7 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import TabBar from '../components/organisms/TabBar';
-import MapHomeScreen from '../screens/MapHomeScreen';
+import MapHomeScreen from '../screens/home/MapHomeScreen';
 import CommunityTabNavigation from './CommunityTabNavigation';
 import MyProfileScreen from '../screens/myProfile/MyProfileScreen';
 import { BottomTabParamList } from '../types/types';

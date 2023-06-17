@@ -1,8 +1,8 @@
 import React from 'react';
 
-import ScreenWrapper from '../components/organisms/ScreenWrapper';
-import EmailLoginTemplate from '../components/templates/emailLogin/EmailLoginTemplate';
-import { useRootNavigation } from '../navigations/RootStackNavigation';
+import ScreenWrapper from '../../components/organisms/ScreenWrapper';
+import EmailLoginTemplate from '../../components/templates/login/EmailLoginTemplate';
+import { useRootNavigation } from '../../navigations/RootStackNavigation';
 
 const EmailLoginScreen = () => {
     const rootNavigation = useRootNavigation();

@@ -2,10 +2,10 @@ import React, { useCallback, useRef, useState } from 'react';
 import { BackHandler, Platform, StatusBar, ToastAndroid, View } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 
-import Colors from '../styles/Colors';
-import MapHomeTemplate from '../components/templates/home/MapHomeTemplate';
-import { mapHomeScreenStyles } from '../styles/styles';
-import { useRootNavigation } from '../navigations/RootStackNavigation';
+import Colors from '../../styles/Colors';
+import MapHomeTemplate from '../../components/templates/home/MapHomeTemplate';
+import { mapHomeScreenStyles } from '../../styles/styles';
+import { useRootNavigation } from '../../navigations/RootStackNavigation';
 
 const MapHomeScreen = () => {
     const rootNavigation = useRootNavigation();

@@ -6,12 +6,12 @@ import { useMutation } from 'react-query';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import SplashScreen from 'react-native-splash-screen';
 
-import LoginScreen from '../screens/EmailLoginScreen';
+import LoginScreen from '../screens/login/EmailLoginScreen';
 import BottomTabNavigation from './BottomTabNavigation';
 import WritePostScreen from '../screens/WritePostScreen';
 import JoinMemberNavigation from './JoinMemberNavigation';
 import WriteCommentScreen from '../screens/WriteCommentScreen';
-import NotLoginHomeScreen from '../screens/NotLoginHomeScreen';
+import NotLoginHomeScreen from '../screens/home/NotLoginHomeScreen';
 import PoliciesScreen from '../screens/myProfile/PoliciesScreen';
 import ImageViewScreen from '../screens/community/ImageViewScreen';
 import ThreadItemScreen from '../screens/community/ThreadItemScreen';
