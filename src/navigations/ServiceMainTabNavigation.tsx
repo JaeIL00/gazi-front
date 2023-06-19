@@ -10,6 +10,7 @@ import MyProfileScreen from '../screens/myProfile/MyProfileScreen';
 import { View } from 'react-native';
 import { ServiceMainTabParamList } from '../types/types';
 import { screenHeight, screenWidth } from '../utils/changeStyleSize';
+import MyPageNavigation from './MyPageNavigation';
 
 const ServiceMainTabNavigation = () => {
     const ServiceMainTab = createBottomTabNavigator<ServiceMainTabParamList>();
@@ -39,7 +40,7 @@ const ServiceMainTabNavigation = () => {
                 }}
             />
             <ServiceMainTab.Screen name="MapHome" component={MapHomeScreen} />
-            <ServiceMainTab.Screen name="MyProfile" component={MyProfileScreen} />
+            <ServiceMainTab.Screen name="MyProfile" component={MyPageNavigation} />
         </ServiceMainTab.Navigator>
     );
 };

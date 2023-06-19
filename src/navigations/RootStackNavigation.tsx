@@ -1,19 +1,17 @@
 import React, { useLayoutEffect } from 'react';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { NativeStackNavigationProp, createNativeStackNavigator } from '@react-navigation/native-stack';
-import { useRecoilState, useRecoilValue } from 'recoil';
-import { useMutation } from 'react-query';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import SplashScreen from 'react-native-splash-screen';
+import { useRecoilValue } from 'recoil';
 
-import LoginScreen from '../screens/login/EmailLoginScreen';
-import ServiceMainTabNavigation from './ServiceMainTabNavigation';
 import WritePostScreen from '../screens/WritePostScreen';
 import JoinMemberNavigation from './JoinMemberNavigation';
+import initEssentialFunc from '../utils/initEssentialFunc';
+import LoginScreen from '../screens/login/EmailLoginScreen';
 import WriteCommentScreen from '../screens/WriteCommentScreen';
-import NotLoginHomeScreen from '../screens/home/NotLoginHomeScreen';
 import PoliciesScreen from '../screens/myProfile/PoliciesScreen';
+import ServiceMainTabNavigation from './ServiceMainTabNavigation';
 import ImageViewScreen from '../screens/community/ImageViewScreen';
+import NotLoginHomeScreen from '../screens/home/NotLoginHomeScreen';
 import ThreadItemScreen from '../screens/community/ThreadItemScreen';
 import DeleteMemberScreen from '../screens/myProfile/DeleteMemberScreen';
 import EditNicknameScreen from '../screens/myProfile/EditNicknameScreen';
@@ -21,10 +19,8 @@ import MyPostCommentScreen from '../screens/myProfile/MyPostCommentScreen';
 import ChangePasswordScreen from '../screens/myProfile/ChangePasswordScreen';
 import AccountManagementScreen from '../screens/myProfile/AccountManagementScreen';
 import LikeKeywordSettingScreen from '../screens/myProfile/LikeKeywordSettingScreen';
-import { autoLoginAPI } from '../queries/api';
+import { userAuthAtom } from '../store/atoms';
 import { RootStackParamList } from '../types/types';
-import { userInfoAtom, userAuthAtom } from '../store/atoms';
-import initEssentialFunc from '../utils/initEssentialFunc';
 
 export const RootStackNavigation = () => {
     const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -44,14 +40,8 @@ export const RootStackNavigation = () => {
                     <Stack.Screen name="ServiceMainTab" component={ServiceMainTabNavigation} />
                     <Stack.Screen name="WritePost" component={WritePostScreen} />
                     <Stack.Screen name="WriteComment" component={WriteCommentScreen} />
-                    <Stack.Screen name="Policies" component={PoliciesScreen} />
-                    <Stack.Screen name="LikeKeywordSetting" component={LikeKeywordSettingScreen} />
                     <Stack.Screen name="ChangePassword" component={ChangePasswordScreen} />
-                    <Stack.Screen name="AccountManagement" component={AccountManagementScreen} />
-                    <Stack.Screen name="DeleteMember" component={DeleteMemberScreen} />
-                    <Stack.Screen name="MyPostComment" component={MyPostCommentScreen} />
                     <Stack.Screen name="ThreadItem" component={ThreadItemScreen} />
-                    <Stack.Screen name="EditNickname" component={EditNicknameScreen} />
                     <Stack.Screen name="ImageView" component={ImageViewScreen} />
                 </>
             ) : (

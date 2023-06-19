@@ -257,7 +257,16 @@ export type CommunityTabParamList = {
     AllBoard: undefined;
     LikeBoard: undefined;
 };
-export interface TabBarProps extends ServiceMainTabBarProps {}
+export type MyPageParamList = {
+    MyPageInitial: undefined;
+    Policies: undefined;
+    LikeKeywordSetting: undefined;
+    AccountManagement: undefined;
+    MyPostComment: undefined;
+    DeleteMember: undefined;
+    EditNickname: undefined;
+};
+export interface TabBarProps extends BottomTabBarProps {}
 
 // SMALLEST
 export type TouchButtonProps = {
