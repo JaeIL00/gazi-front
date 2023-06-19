@@ -12,13 +12,13 @@ const AccountManagementScreen = () => {
                 rootNavigation.goBack();
                 break;
             case 'PASSWORD':
-                rootNavigation.navigate('ChangePassword');
+                rootNavigation.push('ChangePassword');
                 break;
             case 'INIT_HOME':
                 rootNavigation.navigate('NotLoginHome');
                 break;
             case 'DELETE':
-                rootNavigation.navigate('DeleteMember');
+                rootNavigation.push('DeleteMember');
                 break;
             default:
                 // For Debug

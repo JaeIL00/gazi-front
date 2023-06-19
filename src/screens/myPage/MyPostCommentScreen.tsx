@@ -10,7 +10,7 @@ const MyPostCommentScreen = () => {
     const isFocus = useIsFocused();
 
     const moveToBackScreenHandler = () => {
-        rootNavigation.goBack();
+        rootNavigation.pop();
     };
     return (
         <>

@@ -12,7 +12,7 @@ const LikeKeywordSettingScreen = () => {
         isFromCommunity = rootRoute.params.isFromCommunity;
     }
     const moveToBackScreenHandler = () => {
-        rootNavigation.goBack();
+        rootNavigation.pop();
     };
     return (
         <ScreenWrapper isPaddingHorizontal={false}>

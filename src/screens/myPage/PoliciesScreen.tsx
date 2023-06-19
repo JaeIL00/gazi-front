@@ -7,7 +7,7 @@ import { useRootNavigation } from '../../navigations/RootStackNavigation';
 const PoliciesScreen = () => {
     const rootNavigation = useRootNavigation();
     const moveToBackScreenHandler = () => {
-        rootNavigation.goBack();
+        rootNavigation.pop();
     };
     return (
         <ScreenWrapper isPaddingHorizontal={false}>

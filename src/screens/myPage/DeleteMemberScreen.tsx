@@ -9,7 +9,7 @@ const DeleteMemberScreen = () => {
     const moveToScreenHandler = (state: string) => {
         switch (state) {
             case 'BACK':
-                rootNavigation.goBack();
+                rootNavigation.pop();
                 break;
             case 'HOME':
                 rootNavigation.navigate('NotLoginHome');
