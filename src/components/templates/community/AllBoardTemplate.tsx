@@ -70,7 +70,6 @@ const AllBoardTemplate = ({ moveToKeywordSettingScreen }: AllBoardTemplateProps)
                 const pageNumber = data.pages[postsResponseIndexRef.current].data.data.pageable.pageNumber;
                 const content = data.pages[postsResponseIndexRef.current].data.data.content;
                 const isLast = data.pages[postsResponseIndexRef.current].data.data.last;
-                console.log(content);
                 getPostHandler(pageNumber, content, isLast);
                 setIsPostRefresh(false);
             },
