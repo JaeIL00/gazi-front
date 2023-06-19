@@ -11,7 +11,7 @@ const InitLikeKeywordScreen = () => {
     const navigationHandler = (state: string) => {
         switch (state) {
             case 'OK':
-                rootNavigation.push('BottomTab');
+                rootNavigation.push('ServiceMainTab');
                 break;
             case 'BACK':
                 rootNavigation.pop();

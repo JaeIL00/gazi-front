@@ -11,7 +11,7 @@ const ThreadItemScreen = () => {
 
     const rootNavigation = useRootNavigation();
     const movetoCommunityScreen = () => {
-        rootNavigation.navigate('BottomTab', { screen: 'Community' });
+        rootNavigation.navigate('ServiceMainTab', { screen: 'Community' });
     };
     const moveToWriteScreen = (title: string, rePostCount: number, time: string) => {
         rootNavigation.navigate('WriteComment', {

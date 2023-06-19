@@ -1,25 +1,25 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
+import Colors from '../styles/Colors';
 import TabBar from '../components/organisms/TabBar';
 import MapHomeScreen from '../screens/home/MapHomeScreen';
 import CommunityTabNavigation from './CommunityTabNavigation';
-import MyProfileScreen from '../screens/myProfile/MyProfileScreen';
-import { BottomTabParamList } from '../types/types';
-import { Text, View } from 'react-native';
 import SemiBoldText from '../components/smallest/SemiBoldText';
+import MyProfileScreen from '../screens/myProfile/MyProfileScreen';
+import { View } from 'react-native';
+import { ServiceMainTabParamList } from '../types/types';
 import { screenHeight, screenWidth } from '../utils/changeStyleSize';
-import Colors from '../styles/Colors';
 
-const BottomTabNavigation = () => {
-    const BottomTab = createBottomTabNavigator<BottomTabParamList>();
+const ServiceMainTabNavigation = () => {
+    const ServiceMainTab = createBottomTabNavigator<ServiceMainTabParamList>();
 
     return (
-        <BottomTab.Navigator
+        <ServiceMainTab.Navigator
             tabBar={props => <TabBar {...props} />}
             screenOptions={{ headerShown: false }}
             initialRouteName="MapHome">
-            <BottomTab.Screen
+            <ServiceMainTab.Screen
                 name="Community"
                 component={CommunityTabNavigation}
                 options={{
@@ -38,10 +38,10 @@ const BottomTabNavigation = () => {
                     },
                 }}
             />
-            <BottomTab.Screen name="MapHome" component={MapHomeScreen} />
-            <BottomTab.Screen name="MyProfile" component={MyProfileScreen} />
-        </BottomTab.Navigator>
+            <ServiceMainTab.Screen name="MapHome" component={MapHomeScreen} />
+            <ServiceMainTab.Screen name="MyProfile" component={MyProfileScreen} />
+        </ServiceMainTab.Navigator>
     );
 };
 
-export default BottomTabNavigation;
+export default ServiceMainTabNavigation;

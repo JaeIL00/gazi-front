@@ -8,7 +8,7 @@ const EditNicknameScreen = () => {
     const rootNavigation = useRootNavigation();
     const moveToMyProfileScreen = (state: string) => {
         if (state === 'CLOSE') {
-            rootNavigation.navigate('BottomTab', { screen: 'MyProfile' });
+            rootNavigation.navigate('ServiceMainTab', { screen: 'MyProfile' });
         }
     };
     return (

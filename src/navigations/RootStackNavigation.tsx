@@ -7,7 +7,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import SplashScreen from 'react-native-splash-screen';
 
 import LoginScreen from '../screens/login/EmailLoginScreen';
-import BottomTabNavigation from './BottomTabNavigation';
+import ServiceMainTabNavigation from './ServiceMainTabNavigation';
 import WritePostScreen from '../screens/WritePostScreen';
 import JoinMemberNavigation from './JoinMemberNavigation';
 import WriteCommentScreen from '../screens/WriteCommentScreen';
@@ -41,7 +41,7 @@ export const RootStackNavigation = () => {
         <Stack.Navigator screenOptions={{ headerShown: false }}>
             {isLogIn ? (
                 <>
-                    <Stack.Screen name="BottomTab" component={BottomTabNavigation} />
+                    <Stack.Screen name="ServiceMainTab" component={ServiceMainTabNavigation} />
                     <Stack.Screen name="WritePost" component={WritePostScreen} />
                     <Stack.Screen name="WriteComment" component={WriteCommentScreen} />
                     <Stack.Screen name="Policies" component={PoliciesScreen} />

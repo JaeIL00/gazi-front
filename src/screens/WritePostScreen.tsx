@@ -15,7 +15,7 @@ const WritePostScreen = () => {
                 });
                 break;
             case 'BACK':
-                rootNavigation.navigate('BottomTab');
+                rootNavigation.navigate('ServiceMainTab');
                 break;
             default:
                 // For Debug

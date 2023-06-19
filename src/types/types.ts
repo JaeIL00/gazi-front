@@ -209,7 +209,7 @@ export type RootStackParamList = {
     JoinMember: undefined;
     Login: undefined;
     ImageView: ImageViewTypes;
-    BottomTab?: {
+    ServiceMainTab?: {
         screen: string;
     };
     EditNickname: undefined;
@@ -248,7 +248,7 @@ export type JoinMemberParamList = {
     JoinRequestPermission: undefined;
     JoinSettingKeyword: undefined;
 };
-export type BottomTabParamList = {
+export type ServiceMainTabParamList = {
     MapHome: undefined;
     Community: undefined;
     MyProfile: undefined;
@@ -257,7 +257,7 @@ export type CommunityTabParamList = {
     AllBoard: undefined;
     LikeBoard: undefined;
 };
-export interface TabBarProps extends BottomTabBarProps {}
+export interface TabBarProps extends ServiceMainTabBarProps {}
 
 // SMALLEST
 export type TouchButtonProps = {

@@ -54,7 +54,7 @@ const initEssentialFunc = () => {
             });
             console.log('저장 엑세스', data.accessToken);
             console.log('저장 리프레시', data.refreshToken);
-            rootNavigation.navigate('BottomTab');
+            rootNavigation.navigate('ServiceMainTab');
         } catch (error) {
             // For Debug
             console.log('(ERROR) User authorization token set storage.', error);

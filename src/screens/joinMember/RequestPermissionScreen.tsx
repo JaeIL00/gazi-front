@@ -18,7 +18,7 @@ const RequestPermissionScreen = () => {
                 joinNavigation.navigate('JoinSettingKeyword');
                 break;
             case 'BACK':
-                rootNavigation.navigate('BottomTab');
+                rootNavigation.navigate('ServiceMainTab');
                 break;
             default:
                 // For Debug
@@ -28,7 +28,7 @@ const RequestPermissionScreen = () => {
 
     // Android back button & Header Back Button Handling
     const handleBackButton = (): boolean => {
-        rootNavigation.navigate('BottomTab');
+        rootNavigation.navigate('ServiceMainTab');
         return true;
     };
     useFocusEffect(

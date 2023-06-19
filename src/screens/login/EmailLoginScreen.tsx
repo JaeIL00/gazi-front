@@ -11,7 +11,7 @@ const EmailLoginScreen = () => {
     const moveScreenHandler = (state: string) => {
         switch (state) {
             case 'GO':
-                rootNavigation.navigate('BottomTab');
+                rootNavigation.navigate('ServiceMainTab');
                 break;
             case 'BACK':
                 rootNavigation.popToTop();

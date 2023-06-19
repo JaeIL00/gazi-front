@@ -127,7 +127,7 @@ const EditMyKeyword = ({
     // My keyword API success
     const successEdit = async () => {
         if (isFromCommunity) {
-            rootNavigation.navigate('BottomTab', { screen: 'Community' });
+            rootNavigation.navigate('ServiceMainTab', { screen: 'Community' });
         } else {
             await getMyKeywordRefetch();
             controlEditWindowHandler('BACK');
