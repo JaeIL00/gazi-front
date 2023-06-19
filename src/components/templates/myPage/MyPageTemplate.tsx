@@ -1,5 +1,5 @@
 import React, { useCallback, useLayoutEffect, useState } from 'react';
-import { Image, ScrollView, View } from 'react-native';
+import { Image, ScrollView, SectionList, TouchableOpacity, View } from 'react-native';
 import { useRecoilValue } from 'recoil';
 import { useNavigation } from '@react-navigation/native';
 import VersionCheck from 'react-native-version-check';
@@ -12,13 +12,15 @@ import NormalText from '../../smallest/NormalText';
 import TouchButton from '../../smallest/TouchButton';
 import SemiBoldText from '../../smallest/SemiBoldText';
 import { userInfoAtom } from '../../../store/atoms';
-import { myPageTemplateStyles } from '../../../styles/styles';
 import { myPageTabList } from '../../../utils/myPageTabList';
+import { myPageTemplateStyles } from '../../../styles/styles';
 import { MyPageTabTypes, MyPageTemplateProps } from '../../../types/types';
 import { screenFont, screenHeight, screenWidth } from '../../../utils/changeStyleSize';
 
 const MyProfileTemplate = ({ moveToScreen }: MyPageTemplateProps) => {
-    const rootNavigation = useNavigation<any>();
+    const navigation = useNavigation<any>();
+
+    const { nickname, email } = useRecoilValue(userInfoAtom);
 
     const [appVersionText, setAppVersionText] = useState<string>('');
 
@@ -32,35 +34,59 @@ const MyProfileTemplate = ({ moveToScreen }: MyPageTemplateProps) => {
         }
     };
 
-    // Get user nickname
-    const { nickname, email } = useRecoilValue(userInfoAtom);
-
-    const scrollViewRender = useCallback((item: MyPageTabTypes) => {
-        return (
-            <View key={item.text}>
-                {item.tab ? (
-                    <TouchButton
-                        onPress={() => item.screen && rootNavigation.navigate(item.screen)}
-                        paddingHorizontal={16}
-                        paddingVertical={16}
-                        borderBottomWidth={item.borderLine ? 1 * screenFont : undefined}
-                        borderColor="#EBEBEB">
-                        <View style={myPageTemplateStyles.tabListBox}>
-                            <NormalText text={item.text} size={16} color={Colors.BLACK} />
-                            <FastImage
-                                source={require('../../../assets/icons/to-right-white.png')}
-                                style={myPageTemplateStyles.tabRightIcon}
-                            />
-                        </View>
-                    </TouchButton>
-                ) : (
+    // Section list render item
+    const renderItem = useCallback(
+        ({
+            item,
+        }: {
+            item: {
+                name: string;
+                screen: string;
+                isBorder: boolean;
+            };
+        }) => (
+            <TouchableOpacity
+                onPress={() => navigation.push(item.screen)}
+                style={[
+                    {
+                        paddingHorizontal: 16 * screenWidth,
+                        paddingVertical: 16 * screenHeight,
+                        borderColor: '#EBEBEB',
+                    },
+                    {
+                        borderBottomWidth: item.isBorder ? 1 * screenFont : undefined,
+                    },
+                ]}
+                activeOpacity={1}>
+                <View style={myPageTemplateStyles.tabListBox}>
+                    <NormalText text={item.name} size={16} color={Colors.BLACK} />
+                    <FastImage
+                        source={require('../../../assets/icons/to-right-white.png')}
+                        style={myPageTemplateStyles.tabRightIcon}
+                    />
+                </View>
+            </TouchableOpacity>
+        ),
+        [],
+    );
+    const renderSectionHeader = useCallback(
+        ({
+            section,
+        }: {
+            section: {
+                title: string;
+            };
+        }) => (
+            <>
+                {section.title && (
                     <View style={myPageTemplateStyles.tabTitleBox}>
-                        <MediumText text={item.text} size={14} color={Colors.TXT_GRAY} />
+                        <MediumText text={section.title} size={14} color={Colors.TXT_GRAY} />
                     </View>
                 )}
-            </View>
-        );
-    }, []);
+            </>
+        ),
+        [],
+    );
 
     useLayoutEffect(() => {
         checkAppVersion();
@@ -95,13 +121,18 @@ const MyProfileTemplate = ({ moveToScreen }: MyPageTemplateProps) => {
                 </View>
             </View>
 
-            <ScrollView>
-                {myPageTabList.map(scrollViewRender)}
+            <View>
+                <SectionList
+                    keyExtractor={({ name }) => name}
+                    sections={myPageTabList}
+                    renderItem={renderItem}
+                    renderSectionHeader={renderSectionHeader}
+                />
                 <View style={myPageTemplateStyles.versionBox}>
                     <NormalText text="버전" size={16} color={Colors.BLACK} />
                     <NormalText text={appVersionText} size={12} color="#00000099" />
                 </View>
-            </ScrollView>
+            </View>
         </View>
     );
 };

@@ -154,12 +154,12 @@ export type WriteCommentTypes = {
     files: uploadImageFileTypes[];
 };
 export type MyPageTabTypes = {
-    text: string;
-    screen: string | null;
-    icon: boolean;
-    version: boolean;
-    tab: boolean;
-    borderLine: boolean;
+    title: string;
+    data: {
+        name: string;
+        screen: string;
+        isBorder: boolean;
+    }[];
 };
 export type MyLikeKeywordTypes = {
     id: number;
