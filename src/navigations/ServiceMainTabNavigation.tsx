@@ -2,9 +2,9 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import Colors from '../styles/Colors';
-import MyPageNavigation from './MyPageNavigation';
 import TabBar from '../components/organisms/TabBar';
 import MapHomeScreen from '../screens/home/MapHomeScreen';
+import MyPageScreen from '../screens/myPage/MyPageScreen';
 import CommunityTabNavigation from './CommunityTabNavigation';
 import SemiBoldText from '../components/smallest/SemiBoldText';
 import { View } from 'react-native';
@@ -39,7 +39,7 @@ const ServiceMainTabNavigation = () => {
                 }}
             />
             <ServiceMainTab.Screen name="MapHome" component={MapHomeScreen} />
-            <ServiceMainTab.Screen name="MyPage" component={MyPageNavigation} />
+            <ServiceMainTab.Screen name="MyPage" component={MyPageScreen} />
         </ServiceMainTab.Navigator>
     );
 };
