@@ -80,6 +80,7 @@ const InputNicknameTemplate = ({ navigationHandler }: InputNicknameTemplateProps
                 memberId: data.memberId,
                 nickname: data.nickName,
                 email: data.email,
+                isAllowLocation: false,
             });
         } catch (err) {
             // For Debug

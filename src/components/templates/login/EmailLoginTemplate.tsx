@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { ActivityIndicator, KeyboardAvoidingView, ToastAndroid, View } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useMutation } from 'react-query';
@@ -18,24 +18,17 @@ import { loginAPI } from '../../../queries/api';
 import { EmailLoginTemplateProps } from '../../../types/types';
 import { emailLoginTemplateStyles } from '../../../styles/styles';
 import { userInfoAtom, userAuthAtom } from '../../../store/atoms';
+import { PERMISSIONS, RESULTS, check } from 'react-native-permissions';
 
 const EmailLoginTemplate = ({ moveServiceHomeHandler }: EmailLoginTemplateProps) => {
-    // Text change Handling
-    const [email, setEmail] = useState<string>('');
-    const onChangeEmail = (text: string) => {
-        setEmail(text);
-        setLoginErrorText('');
-    };
-    const [password, setPassword] = useState('');
-    const onChangePassword = (text: string) => {
-        setPassword(text);
-        setLoginErrorText('');
-    };
-
-    // Login API Handling
     const [tokenAtom, setTokenAtom] = useRecoilState(userAuthAtom);
     const [userInfo, setUserInfo] = useRecoilState(userInfoAtom);
+
+    const [email, setEmail] = useState<string>('');
+    const [password, setPassword] = useState<string>('');
     const [loginErrorText, setLoginErrorText] = useState<string>('');
+
+    // Login API Handling
     const { mutate, isLoading } = useMutation(loginAPI, {
         onSuccess: ({ data }) => {
             successJoinMemberHandler(data.data);
@@ -48,6 +41,7 @@ const EmailLoginTemplate = ({ moveServiceHomeHandler }: EmailLoginTemplateProps)
             console.log('(ERROR) Login API Handling. response: ', response);
         },
     });
+
     const onPressLoginButton = debounce(() => {
         if (email && password) {
             mutate({ email, password });
@@ -68,18 +62,46 @@ const EmailLoginTemplate = ({ moveServiceHomeHandler }: EmailLoginTemplateProps)
                 refreshToken: data.refreshToken,
                 isLogIn: true,
             });
+            isAllowLocationPermission(data);
+        } catch (err) {
+            // For Debug
+            console.log('(ERROR) User authorization token set storage. err: ', err);
+        } finally {
+            moveServiceHomeHandler('GO');
+        }
+    };
+
+    // Check location permission
+    const isAllowLocationPermission = async (data: {
+        accessToken: string;
+        refreshToken: string;
+        memberId: number;
+        nickName: string;
+        email: string;
+    }) => {
+        try {
+            const locationPermission = await check(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION);
+            const isAllow = locationPermission === RESULTS.GRANTED;
             setUserInfo({
                 memberId: data.memberId,
                 nickname: data.nickName,
                 email: data.email,
+                isAllowLocation: isAllow,
             });
         } catch (err) {
             // For Debug
-            console.log('(ERROR) User authorization token set storage. err: ', err);
-            ToastAndroid.show('토큰 저장 실패', 4000);
-        } finally {
-            moveServiceHomeHandler('GO');
+            console.log('(ERROR) Check Location Permission.', err);
         }
+    };
+
+    // Text change Handling
+    const onChangeEmail = (text: string) => {
+        setEmail(text);
+        setLoginErrorText('');
+    };
+    const onChangePassword = (text: string) => {
+        setPassword(text);
+        setLoginErrorText('');
     };
 
     return (
