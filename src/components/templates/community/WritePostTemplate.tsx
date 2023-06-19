@@ -53,7 +53,6 @@ const WritePostTemplate = ({ navigationHandler }: WritePostTemplateProps) => {
 
     const mapRef = useRef() as RefObject<MapView>;
     const postIdRef = useRef<number>();
-    // const isAllowLocation = useRef<boolean>(false);
     const currentPositionRef = useRef<{ curLat: number; curLon: number }>({
         curLat: 0,
         curLon: 0,

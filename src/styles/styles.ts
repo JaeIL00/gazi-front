@@ -541,11 +541,12 @@ export const mapWithMarkerStyles = StyleSheet.create({
 });
 export const postListItemStyles = StyleSheet.create({
     container: {
+        flex: 1,
         paddingHorizontal: 16 * screenWidth,
         flexDirection: 'row',
     },
     textBox: {
-        flexShrink: 1,
+        flex: 1,
     },
     postImageBox: {
         marginLeft: 22 * screenWidth,
