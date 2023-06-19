@@ -1,7 +1,7 @@
 import React from 'react';
 
 import ScreenWrapper from '../../components/organisms/ScreenWrapper';
-import ChangePasswordTemplate from '../../components/templates/myProfile/ChangePasswordTemplate';
+import ChangePasswordTemplate from '../../components/templates/myPage/ChangePasswordTemplate';
 import { useRootNavigation } from '../../navigations/RootStackNavigation';
 
 const ChangePasswordScreen = () => {

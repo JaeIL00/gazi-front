@@ -2,11 +2,11 @@ import React from 'react';
 import { StatusBar, View } from 'react-native';
 
 import Colors from '../../styles/Colors';
-import MyProfileTemplate from '../../components/templates/myProfile/MyProfileTemplate';
+import MyProfileTemplate from '../../components/templates/myPage/MyPageTemplate';
 import { globalBackWhiteStyles } from '../../styles/styles';
 import { useRootNavigation } from '../../navigations/RootStackNavigation';
 
-const MyProfileScreen = () => {
+const MyPageScreen = () => {
     const rootNavigation = useRootNavigation();
     const moveToScreen = (state: string) => {
         switch (state) {
@@ -23,4 +23,4 @@ const MyProfileScreen = () => {
     );
 };
 
-export default MyProfileScreen;
+export default MyPageScreen;

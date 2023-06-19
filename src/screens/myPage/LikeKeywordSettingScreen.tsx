@@ -1,7 +1,7 @@
 import React from 'react';
 
 import ScreenWrapper from '../../components/organisms/ScreenWrapper';
-import LikeKeywordSettingTemplate from '../../components/templates/myProfile/LikeKeywordSettingTemplate';
+import LikeKeywordSettingTemplate from '../../components/templates/myPage/LikeKeywordSettingTemplate';
 import { useRootNavigation, useRootRoute } from '../../navigations/RootStackNavigation';
 
 const LikeKeywordSettingScreen = () => {

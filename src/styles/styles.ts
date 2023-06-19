@@ -1302,7 +1302,7 @@ export const writeCommentTemplateStyles = StyleSheet.create({
         backgroundColor: Colors.WHITE,
     },
 });
-export const myProfileTemplateStyles = StyleSheet.create({
+export const myPageTemplateStyles = StyleSheet.create({
     container: {
         backgroundColor: Colors.WHITE,
         flex: 1,

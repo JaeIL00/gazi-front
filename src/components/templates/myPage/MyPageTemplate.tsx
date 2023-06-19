@@ -12,12 +12,12 @@ import NormalText from '../../smallest/NormalText';
 import TouchButton from '../../smallest/TouchButton';
 import SemiBoldText from '../../smallest/SemiBoldText';
 import { userInfoAtom } from '../../../store/atoms';
-import { myProfileTemplateStyles } from '../../../styles/styles';
-import { myProfileTabList } from '../../../utils/myProfileTabList';
-import { MyProfileTabTypes, MyProfileTemplateProps } from '../../../types/types';
+import { myPageTemplateStyles } from '../../../styles/styles';
+import { myPageTabList } from '../../../utils/myPageTabList';
+import { MyPageTabTypes, MyPageTemplateProps } from '../../../types/types';
 import { screenFont, screenHeight, screenWidth } from '../../../utils/changeStyleSize';
 
-const MyProfileTemplate = ({ moveToScreen }: MyProfileTemplateProps) => {
+const MyProfileTemplate = ({ moveToScreen }: MyPageTemplateProps) => {
     const rootNavigation = useNavigation<any>();
 
     const [appVersionText, setAppVersionText] = useState<string>('');
@@ -35,7 +35,7 @@ const MyProfileTemplate = ({ moveToScreen }: MyProfileTemplateProps) => {
     // Get user nickname
     const { nickname, email } = useRecoilValue(userInfoAtom);
 
-    const scrollViewRender = useCallback((item: MyProfileTabTypes) => {
+    const scrollViewRender = useCallback((item: MyPageTabTypes) => {
         return (
             <View key={item.text}>
                 {item.tab ? (
@@ -45,16 +45,16 @@ const MyProfileTemplate = ({ moveToScreen }: MyProfileTemplateProps) => {
                         paddingVertical={16}
                         borderBottomWidth={item.borderLine ? 1 * screenFont : undefined}
                         borderColor="#EBEBEB">
-                        <View style={myProfileTemplateStyles.tabListBox}>
+                        <View style={myPageTemplateStyles.tabListBox}>
                             <NormalText text={item.text} size={16} color={Colors.BLACK} />
                             <FastImage
                                 source={require('../../../assets/icons/to-right-white.png')}
-                                style={myProfileTemplateStyles.tabRightIcon}
+                                style={myPageTemplateStyles.tabRightIcon}
                             />
                         </View>
                     </TouchButton>
                 ) : (
-                    <View style={myProfileTemplateStyles.tabTitleBox}>
+                    <View style={myPageTemplateStyles.tabTitleBox}>
                         <MediumText text={item.text} size={14} color={Colors.TXT_GRAY} />
                     </View>
                 )}
@@ -67,8 +67,8 @@ const MyProfileTemplate = ({ moveToScreen }: MyProfileTemplateProps) => {
     }, []);
 
     return (
-        <View style={myProfileTemplateStyles.container}>
-            <View style={myProfileTemplateStyles.profileBox}>
+        <View style={myPageTemplateStyles.container}>
+            <View style={myPageTemplateStyles.profileBox}>
                 <TouchButton
                     onPress={() => {}}
                     width={63}
@@ -77,17 +77,17 @@ const MyProfileTemplate = ({ moveToScreen }: MyProfileTemplateProps) => {
                     borderRadius={63}>
                     {/* profile image empty
                     <Image /> */}
-                    <View style={myProfileTemplateStyles.profileCameraBox}>
+                    <View style={myPageTemplateStyles.profileCameraBox}>
                         <Icons type="feather" name="camera" color="#D9D9D9" size={12} />
                     </View>
                 </TouchButton>
-                <View style={myProfileTemplateStyles.profileTextBox}>
-                    <View style={myProfileTemplateStyles.profileNameBox}>
+                <View style={myPageTemplateStyles.profileTextBox}>
+                    <View style={myPageTemplateStyles.profileNameBox}>
                         <SemiBoldText text={nickname} size={16} color={Colors.WHITE} />
                         <TouchButton onPress={() => moveToScreen('EDIT_NICK')}>
                             <FastImage
                                 source={require('../../../assets/icons/pencil.png')}
-                                style={myProfileTemplateStyles.penIcon}
+                                style={myPageTemplateStyles.penIcon}
                             />
                         </TouchButton>
                     </View>
@@ -96,8 +96,8 @@ const MyProfileTemplate = ({ moveToScreen }: MyProfileTemplateProps) => {
             </View>
 
             <ScrollView>
-                {myProfileTabList.map(scrollViewRender)}
-                <View style={myProfileTemplateStyles.versionBox}>
+                {myPageTabList.map(scrollViewRender)}
+                <View style={myPageTemplateStyles.versionBox}>
                     <NormalText text="버전" size={16} color={Colors.BLACK} />
                     <NormalText text={appVersionText} size={12} color="#00000099" />
                 </View>

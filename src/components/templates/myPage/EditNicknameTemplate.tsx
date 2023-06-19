@@ -17,7 +17,7 @@ import { userInfoAtom, userAuthAtom } from '../../../store/atoms';
 import { editNicknameTemplateStyles } from '../../../styles/styles';
 import { checkNicknameAPI, editNicknameAPI } from '../../../queries/api';
 
-const EditNicknameTemplate = ({ moveToMyProfileScreen }: EditNicknameTemplateProps) => {
+const EditNicknameTemplate = ({ moveToMyPageScreen }: EditNicknameTemplateProps) => {
     // Validator custom hook input text
     const { text: nickname, onChangeText, validationResult, changeValidationResult } = useTextInputValidation();
     const { nickname: nicknameAtom } = useRecoilValue(userInfoAtom);
@@ -71,7 +71,7 @@ const EditNicknameTemplate = ({ moveToMyProfileScreen }: EditNicknameTemplatePro
     const [isGoodResponse, setIsGoodResponse] = useState(false);
     const { mutate: editMutate, isLoading: isEditLoading } = useMutation(editNicknameAPI, {
         onSuccess: () => {
-            moveToMyProfileScreen('CLOSE');
+            moveToMyPageScreen('CLOSE');
             setUserInfo({
                 ...userInfo,
                 nickname,
@@ -93,7 +93,7 @@ const EditNicknameTemplate = ({ moveToMyProfileScreen }: EditNicknameTemplatePro
         <>
             <HeaderMolecule
                 isPaddingHorizontal={true}
-                backHandler={moveToMyProfileScreen}
+                backHandler={moveToMyPageScreen}
                 headerFinish={true}
                 title="닉네임 수정"
                 finishText="완료"

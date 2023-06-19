@@ -1,7 +1,7 @@
 import React from 'react';
 
 import ScreenWrapper from '../../components/organisms/ScreenWrapper';
-import EditNicknameTemplate from '../../components/templates/myProfile/EditNicknameTemplate';
+import EditNicknameTemplate from '../../components/templates/myPage/EditNicknameTemplate';
 import { useRootNavigation } from '../../navigations/RootStackNavigation';
 
 const EditNicknameScreen = () => {

@@ -1,6 +1,6 @@
-import { MyProfileTabTypes } from '../types/types';
+import { MyPageTabTypes } from '../types/types';
 
-export const myProfileTabList: MyProfileTabTypes[] = [
+export const myPageTabList: MyPageTabTypes[] = [
     {
         text: '내가 작성한 글',
         screen: 'MyPostComment',

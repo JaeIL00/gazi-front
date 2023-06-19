@@ -1,7 +1,7 @@
 import React from 'react';
 
 import ScreenWrapper from '../../components/organisms/ScreenWrapper';
-import PoliciesTemplate from '../../components/templates/myProfile/PoliciesTemplate';
+import PoliciesTemplate from '../../components/templates/myPage/PoliciesTemplate';
 import { useRootNavigation } from '../../navigations/RootStackNavigation';
 
 const PoliciesScreen = () => {

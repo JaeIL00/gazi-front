@@ -8,17 +8,11 @@ import JoinMemberNavigation from './JoinMemberNavigation';
 import initEssentialFunc from '../utils/initEssentialFunc';
 import LoginScreen from '../screens/login/EmailLoginScreen';
 import WriteCommentScreen from '../screens/WriteCommentScreen';
-import PoliciesScreen from '../screens/myProfile/PoliciesScreen';
 import ServiceMainTabNavigation from './ServiceMainTabNavigation';
 import ImageViewScreen from '../screens/community/ImageViewScreen';
 import NotLoginHomeScreen from '../screens/home/NotLoginHomeScreen';
 import ThreadItemScreen from '../screens/community/ThreadItemScreen';
-import DeleteMemberScreen from '../screens/myProfile/DeleteMemberScreen';
-import EditNicknameScreen from '../screens/myProfile/EditNicknameScreen';
-import MyPostCommentScreen from '../screens/myProfile/MyPostCommentScreen';
-import ChangePasswordScreen from '../screens/myProfile/ChangePasswordScreen';
-import AccountManagementScreen from '../screens/myProfile/AccountManagementScreen';
-import LikeKeywordSettingScreen from '../screens/myProfile/LikeKeywordSettingScreen';
+import ChangePasswordScreen from '../screens/myPage/ChangePasswordScreen';
 import { userAuthAtom } from '../store/atoms';
 import { RootStackParamList } from '../types/types';
 

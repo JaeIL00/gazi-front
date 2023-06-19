@@ -1,29 +1,35 @@
 import React from 'react';
 
 import ScreenWrapper from '../../components/organisms/ScreenWrapper';
-import DeleteMemberTemplate from '../../components/templates/myProfile/DeleteMemberTemplate';
+import AccountManagementTemplate from '../../components/templates/myPage/AccountManagementTemplate';
 import { useRootNavigation } from '../../navigations/RootStackNavigation';
 
-const DeleteMemberScreen = () => {
+const AccountManagementScreen = () => {
     const rootNavigation = useRootNavigation();
     const moveToScreenHandler = (state: string) => {
         switch (state) {
             case 'BACK':
                 rootNavigation.goBack();
                 break;
-            case 'HOME':
+            case 'PASSWORD':
+                rootNavigation.navigate('ChangePassword');
+                break;
+            case 'INIT_HOME':
                 rootNavigation.navigate('NotLoginHome');
+                break;
+            case 'DELETE':
+                rootNavigation.navigate('DeleteMember');
                 break;
             default:
                 // For Debug
-                console.log('(ERROR) Delete member screen move handler.', state);
+                console.log('(ERROR) Move screen account manage.', state);
         }
     };
+
     return (
         <ScreenWrapper isPaddingHorizontal={false}>
-            <DeleteMemberTemplate moveToScreenHandler={moveToScreenHandler} />
+            <AccountManagementTemplate moveToScreenHandler={moveToScreenHandler} />
         </ScreenWrapper>
     );
 };
-
-export default DeleteMemberScreen;
+export default AccountManagementScreen;

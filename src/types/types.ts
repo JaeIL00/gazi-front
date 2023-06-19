@@ -153,7 +153,7 @@ export type WriteCommentTypes = {
     dto: CommentDtoTypes;
     files: uploadImageFileTypes[];
 };
-export type MyProfileTabTypes = {
+export type MyPageTabTypes = {
     text: string;
     screen: string | null;
     icon: boolean;
@@ -251,7 +251,7 @@ export type JoinMemberParamList = {
 export type ServiceMainTabParamList = {
     MapHome: undefined;
     Community: undefined;
-    MyProfile: undefined;
+    MyPage: undefined;
 };
 export type CommunityTabParamList = {
     AllBoard: undefined;
@@ -540,9 +540,9 @@ export type WriteCommentTemplateProps = {
     navigationHandler: (state: string, postId?: number, freshRePostCount?: number) => void;
 };
 export type EditNicknameTemplateProps = {
-    moveToMyProfileScreen: (state: string) => void;
+    moveToMyPageScreen: (state: string) => void;
 };
-export type MyProfileTemplateProps = {
+export type MyPageTemplateProps = {
     moveToScreen: (state: string) => void;
 };
 export type ThreadItemTemplateProps = {

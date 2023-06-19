@@ -10,7 +10,7 @@ import MediumText from '../../smallest/MediumText';
 import NormalText from '../../smallest/NormalText';
 import TouchButton from '../../smallest/TouchButton';
 import SemiBoldText from '../../smallest/SemiBoldText';
-import EditMyKeyword from '../../organisms/myProfile/EditMyKeyword';
+import EditMyKeyword from '../../organisms/myPage/EditMyKeyword';
 import { userAuthAtom } from '../../../store/atoms';
 import { geyMyLikeKeywordsAPI } from '../../../queries/api';
 import { likeKeywordSettingTemplateStyles } from '../../../styles/styles';
