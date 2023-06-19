@@ -1,5 +1,5 @@
 import React, { useCallback, useLayoutEffect, useState } from 'react';
-import { Image, ScrollView, SectionList, TouchableOpacity, View } from 'react-native';
+import { SectionList, TouchableOpacity, View } from 'react-native';
 import { useRecoilValue } from 'recoil';
 import { useNavigation } from '@react-navigation/native';
 import VersionCheck from 'react-native-version-check';
@@ -14,7 +14,7 @@ import SemiBoldText from '../../smallest/SemiBoldText';
 import { userInfoAtom } from '../../../store/atoms';
 import { myPageTabList } from '../../../utils/myPageTabList';
 import { myPageTemplateStyles } from '../../../styles/styles';
-import { MyPageTabTypes, MyPageTemplateProps } from '../../../types/types';
+import { MyPageTemplateProps } from '../../../types/types';
 import { screenFont, screenHeight, screenWidth } from '../../../utils/changeStyleSize';
 
 const MyProfileTemplate = ({ moveToScreen }: MyPageTemplateProps) => {
@@ -110,7 +110,7 @@ const MyProfileTemplate = ({ moveToScreen }: MyPageTemplateProps) => {
                 <View style={myPageTemplateStyles.profileTextBox}>
                     <View style={myPageTemplateStyles.profileNameBox}>
                         <SemiBoldText text={nickname} size={16} color={Colors.WHITE} />
-                        <TouchButton onPress={() => moveToScreen('EDIT_NICK')}>
+                        <TouchButton onPress={() => moveToScreen('EDIT_NICK')} hitSlop={10}>
                             <FastImage
                                 source={require('../../../assets/icons/pencil.png')}
                                 style={myPageTemplateStyles.penIcon}

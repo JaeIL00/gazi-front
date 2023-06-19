@@ -1,11 +1,8 @@
 import React from 'react';
-import { StatusBar, View } from 'react-native';
 
-import Colors from '../../styles/Colors';
-import MyProfileTemplate from '../../components/templates/myPage/MyPageTemplate';
-import { globalBackWhiteStyles } from '../../styles/styles';
-import { useRootNavigation } from '../../navigations/RootStackNavigation';
 import ScreenWrapper from '../../components/organisms/ScreenWrapper';
+import MyProfileTemplate from '../../components/templates/myPage/MyPageTemplate';
+import { useRootNavigation } from '../../navigations/RootStackNavigation';
 
 const MyPageScreen = () => {
     const rootNavigation = useRootNavigation();

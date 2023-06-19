@@ -6,14 +6,13 @@ import { useRootNavigation } from '../../navigations/RootStackNavigation';
 
 const EditNicknameScreen = () => {
     const rootNavigation = useRootNavigation();
-    const moveToMyProfileScreen = (state: string) => {
-        if (state === 'CLOSE') {
-            rootNavigation.navigate('ServiceMainTab', { screen: 'MyProfile' });
-        }
+    const moveToMyPageScreen = () => {
+        rootNavigation.pop();
     };
+
     return (
         <ScreenWrapper isPaddingHorizontal={false}>
-            <EditNicknameTemplate moveToMyProfileScreen={moveToMyProfileScreen} />
+            <EditNicknameTemplate moveToMyPageScreen={moveToMyPageScreen} />
         </ScreenWrapper>
     );
 };

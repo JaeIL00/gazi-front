@@ -540,7 +540,7 @@ export type WriteCommentTemplateProps = {
     navigationHandler: (state: string, postId?: number, freshRePostCount?: number) => void;
 };
 export type EditNicknameTemplateProps = {
-    moveToMyPageScreen: (state: string) => void;
+    moveToMyPageScreen: () => void;
 };
 export type MyPageTemplateProps = {
     moveToScreen: (state: string) => void;

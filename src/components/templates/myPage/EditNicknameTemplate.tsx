@@ -71,7 +71,7 @@ const EditNicknameTemplate = ({ moveToMyPageScreen }: EditNicknameTemplateProps)
     const [isGoodResponse, setIsGoodResponse] = useState(false);
     const { mutate: editMutate, isLoading: isEditLoading } = useMutation(editNicknameAPI, {
         onSuccess: () => {
-            moveToMyPageScreen('CLOSE');
+            moveToMyPageScreen();
             setUserInfo({
                 ...userInfo,
                 nickname,
