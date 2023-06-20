@@ -28,7 +28,7 @@ const RequestPermissionScreen = () => {
 
     // Android back button & Header Back Button Handling
     const handleBackButton = (): boolean => {
-        rootNavigation.navigate('ServiceMainTab');
+        navigationHandler('BACK');
         return true;
     };
     useFocusEffect(
