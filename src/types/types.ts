@@ -79,6 +79,11 @@ export type GalleryAlbumListTypes = {
     count: number;
     thumbnail: string;
 };
+export type TemporarySaveChooseLocationTypes = {
+    formatted_address: string;
+    name: string;
+    location: { lat: number | null; lng: number | null };
+};
 export type LocationResultTypes = {
     business_status: string;
     formatted_address: string;
@@ -121,7 +126,7 @@ export type UploadImageTypes =
           width: null | number;
       }[]
     | Asset[];
-export type PostDto = {
+export type PostDtoTypes = {
     title: string;
     placeName: string;
     content: string;
@@ -130,26 +135,31 @@ export type PostDto = {
     keywordIdList: number[] | null;
     headKeywordId: number | null;
 };
-export type CommentReqTypes = {
+export type CommentDtoTypes = {
     postId: number;
     content: string;
-    latitude: number;
-    longitude: number;
-    keywordIdList: number[];
+    latitude: number | null;
+    longitude: number | null;
+    keywordIdList: number[] | null;
 };
 export type WritePostTypes = {
-    dto: PostDto;
+    dto: PostDtoTypes;
     files: uploadImageFileTypes[];
     thumbnail: Asset | null;
     backgroundMap: string;
 };
-export type MyProfileTabTypes = {
-    text: string;
-    screen: string | null;
-    icon: boolean;
-    version: boolean;
-    tab: boolean;
-    borderLine: boolean;
+export type WriteCommentTypes = {
+    placeName: string;
+    dto: CommentDtoTypes;
+    files: uploadImageFileTypes[];
+};
+export type MyPageTabTypes = {
+    title: string;
+    data: {
+        name: string;
+        screen: string;
+        isBorder: boolean;
+    }[];
 };
 export type MyLikeKeywordTypes = {
     id: number;
@@ -171,14 +181,16 @@ export type ImageViewTypes = {
 };
 
 // ATOM
-export type userTokenAtomTypes = {
+export type userAuthAtomTypes = {
     accessToken: string;
     refreshToken: string;
+    isLogIn: boolean;
 };
 export type userInfoAtomTypes = {
     memberId: number | null;
     nickname: string;
     email: string;
+    isAllowLocation: boolean;
 };
 
 export type joinMemberTypes = {
@@ -196,20 +208,10 @@ export type RootStackParamList = {
     NotLoginHome: undefined;
     JoinMember: undefined;
     Login: undefined;
-    RequestPermission: undefined;
-    InitKeyword: undefined;
     ImageView: ImageViewTypes;
-    BottomTab?: {
+    ServiceMainTab?: {
         screen: string;
     };
-    WritePostOrComment:
-        | {
-              title: string;
-              rePostCount: number;
-              time: string;
-              postId: number;
-          }
-        | undefined;
     EditNickname: undefined;
     AccountManagement: undefined;
     LikeKeywordSetting: {
@@ -224,11 +226,45 @@ export type RootStackParamList = {
     ChangePassword: undefined;
     DeleteMember: undefined;
     None: undefined;
+    WritePost:
+        | {
+              title: string;
+              rePostCount: number;
+              time: string;
+              postId: number;
+          }
+        | undefined;
+    WriteComment: {
+        title: string;
+        rePostCount: number;
+        time: string;
+        postId: number;
+    };
 };
-export type BottomTabParamList = {
-    ServiceHome: undefined;
+export type JoinMemberParamList = {
+    JoinInputEmail: undefined;
+    JoinInputPassword: undefined;
+    JoinInputNickname: undefined;
+    JoinRequestPermission: undefined;
+    JoinSettingKeyword: undefined;
+};
+export type ServiceMainTabParamList = {
+    MapHome: undefined;
     Community: undefined;
-    MyProfile: undefined;
+    MyPage: undefined;
+};
+export type CommunityTabParamList = {
+    AllBoard: undefined;
+    LikeBoard: undefined;
+};
+export type MyPageParamList = {
+    MyPageInitial: undefined;
+    Policies: undefined;
+    LikeKeywordSetting: undefined;
+    AccountManagement: undefined;
+    MyPostComment: undefined;
+    DeleteMember: undefined;
+    EditNickname: undefined;
 };
 export interface TabBarProps extends BottomTabBarProps {}
 
@@ -394,11 +430,12 @@ export type WebViewComponentProps = {
     uri: string;
     closeHandler: React.Dispatch<React.SetStateAction<string>>;
 };
-export interface AuthEmailProps extends ServiceAgreementProps {
+export type AuthEmailProps = {
     min: number;
     sec: number;
     resetTimeHandler: () => void;
-}
+    authNumberModalHanlder: (state: string) => void;
+};
 export type FailPermissionModalProps = {
     permissionName: string;
     contentOne: string;
@@ -471,44 +508,41 @@ export type EditMyKeywordProps = {
 
 // TEMPLATES
 export type InputEmailTemplateProps = {
-    minutes: number;
-    seconds: number;
-    onPressNextStep: () => void;
-    resetTimeHandler: () => void;
-    didAuthEmail: () => void;
+    navigationHandler: (state: string) => void;
 };
-export type EmailWithPasswordProps = {
-    onPressNextStep: () => void;
-};
-export interface NicknameTemplateProps extends EmailWithPasswordProps {}
-export interface CompletedJoinTemplateProps extends EmailWithPasswordProps {}
+export interface InputPasswordTemplateProps extends InputEmailTemplateProps {}
+export interface InputNicknameTemplateProps extends InputEmailTemplateProps {}
+export interface CompletedJoinTemplateProps extends InputEmailTemplateProps {
+    inputNickname: string;
+}
 export type RequestPemissionTemplateProps = {
-    moveToScreen: (state: string) => void;
+    navigationHandler: (state: string) => void;
 };
 export type EmailLoginTemplateProps = {
     moveServiceHomeHandler: (state: string) => void;
 };
 export interface InitLikeKeywordTemplateProps extends RequestPemissionTemplateProps {}
-export type SeviceHomeTemplateProps = {
+export type MapHomeTemplateProps = {
     isModalRef: React.MutableRefObject<boolean>;
     handleModalTrigger: boolean;
     moveToWritePost: () => void;
 };
-export type WritePostOrCommentTemplateProps = {
-    postThreadInfo:
-        | {
-              title: string;
-              rePostCount: number;
-              time: string;
-              postId: number;
-          }
-        | undefined;
-    moveToScreen: (state: string, postId: number | null, freshRePostCount?: number) => void;
+export type WritePostTemplateProps = {
+    navigationHandler: (state: string, postId?: number) => void;
+};
+export type WriteCommentTemplateProps = {
+    threadInfo: {
+        title: string;
+        rePostCount: number;
+        time: string;
+        postId: number;
+    };
+    navigationHandler: (state: string, postId?: number, freshRePostCount?: number) => void;
 };
 export type EditNicknameTemplateProps = {
-    moveToMyProfileScreen: (state: string) => void;
+    moveToMyPageScreen: () => void;
 };
-export type MyProfileTemplateProps = {
+export type MyPageTemplateProps = {
     moveToScreen: (state: string) => void;
 };
 export type ThreadItemTemplateProps = {
@@ -536,6 +570,9 @@ export type LikeKeywordSettingTemplateProps = {
 export type PoliciesTemplateProps = {
     moveToBackScreenHandler: () => void;
 };
-export type CommunityTemplateProps = {
+export type AllBoardTemplateProps = {
+    moveToKeywordSettingScreen: () => void;
+};
+export type LikeKeywordBoardTemplateProps = {
     moveToKeywordSettingScreen: () => void;
 };

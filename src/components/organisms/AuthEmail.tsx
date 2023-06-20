@@ -20,7 +20,7 @@ import { authEmailStyles } from '../../styles/styles';
 import { SingleLineInput } from '../smallest/SingleLineInput';
 import { emailAuthAtom, joinMemberAtom } from '../../store/atoms';
 
-const AuthEmail = ({ min, sec, resetTimeHandler, finishSlideComponentHandler }: AuthEmailProps) => {
+const AuthEmail = ({ min, sec, resetTimeHandler, authNumberModalHanlder }: AuthEmailProps) => {
     const { height } = useWindowDimensions();
 
     const [authData, setAuthData] = useRecoilState(emailAuthAtom);
@@ -65,7 +65,7 @@ const AuthEmail = ({ min, sec, resetTimeHandler, finishSlideComponentHandler }: 
             }).start(({ finished }: { finished: boolean }) => {
                 if (finished) {
                     setAuthData({ number: 0, isOk: true });
-                    finishSlideComponentHandler('OK');
+                    authNumberModalHanlder('CORRECT');
                 }
             });
         }
@@ -73,7 +73,7 @@ const AuthEmail = ({ min, sec, resetTimeHandler, finishSlideComponentHandler }: 
 
     // Back Icon handling
     const onPressBackIcon = () => {
-        finishSlideComponentHandler('BACK');
+        authNumberModalHanlder('CLOSE');
     };
 
     // Input authorization number

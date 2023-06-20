@@ -541,11 +541,12 @@ export const mapWithMarkerStyles = StyleSheet.create({
 });
 export const postListItemStyles = StyleSheet.create({
     container: {
+        flex: 1,
         paddingHorizontal: 16 * screenWidth,
         flexDirection: 'row',
     },
     textBox: {
-        flexShrink: 1,
+        flex: 1,
     },
     postImageBox: {
         marginLeft: 22 * screenWidth,
@@ -598,7 +599,7 @@ export const searchLocationStyles = StyleSheet.create({
         flexWrap: 'wrap',
     },
 });
-export const writePostAddKeywordStyles = StyleSheet.create({
+export const addKeywordInWriteStyles = StyleSheet.create({
     container: {
         position: 'absolute',
         width: '100%',
@@ -776,7 +777,7 @@ export const webViewComponentStyles = StyleSheet.create({
 });
 
 // TEMPLATES
-export const nicknameTemplateStyles = StyleSheet.create({
+export const inputNicknameTemplateStyles = StyleSheet.create({
     container: {
         position: 'relative',
         flex: 1,
@@ -831,10 +832,13 @@ export const inputEmailTemplateStyles = StyleSheet.create({
         marginLeft: 8 * screenWidth,
     },
 });
-export const emailWithPasswordTemplateStyles = StyleSheet.create({
+export const inputPasswordTemplateStyles = StyleSheet.create({
     container: {
         flex: 1,
         paddingTop: 51 * screenHeight,
+    },
+    inputBox: {
+        flex: 1,
     },
     emainTextBox: {
         height: 48 * screenHeight,
@@ -962,6 +966,10 @@ export const initLikeKeywordTemplateStyles = StyleSheet.create({
 export const completedJoinTemplateStyles = StyleSheet.create({
     container: {
         flex: 1,
+        paddingHorizontal: 16 * screenWidth,
+    },
+    titleBox: {
+        paddingTop: 97 * screenHeight,
     },
     imageBox: {
         flex: 1,
@@ -976,7 +984,7 @@ export const completedJoinTemplateStyles = StyleSheet.create({
         paddingBottom: 42 * screenHeight,
     },
 });
-export const serviceHomeTemplateStyles = StyleSheet.create({
+export const mapHomeTemplateStyles = StyleSheet.create({
     searchLayout: {
         position: 'absolute',
         top: 16 * screenHeight,
@@ -1041,7 +1049,7 @@ export const serviceHomeTemplateStyles = StyleSheet.create({
         flex: 1,
     },
 });
-export const writePostOrCommentTemplateStyles = StyleSheet.create({
+export const writePostTemplateStyles = StyleSheet.create({
     container: {
         backgroundColor: Colors.WHITE,
         flex: 1,
@@ -1094,9 +1102,6 @@ export const writePostOrCommentTemplateStyles = StyleSheet.create({
         alignItems: 'center',
         padding: 24 * screenWidth,
         borderRadius: 12 * screenFont,
-    },
-    conditionSettingBox: {
-        paddingTop: 14 * screenHeight,
     },
     mapSize: {
         width: '100%',
@@ -1172,7 +1177,132 @@ export const writePostOrCommentTemplateStyles = StyleSheet.create({
         backgroundColor: Colors.WHITE,
     },
 });
-export const myProfileTemplateStyles = StyleSheet.create({
+export const writeCommentTemplateStyles = StyleSheet.create({
+    container: {
+        backgroundColor: Colors.WHITE,
+        flex: 1,
+        position: 'absolute',
+        width: '100%',
+        height: '100%',
+    },
+    headerNavigateBox: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        paddingHorizontal: 16 * screenWidth,
+        paddingVertical: 16 * screenHeight,
+    },
+    contentBox: {
+        flex: 1,
+    },
+    settingContainer: {
+        borderBottomWidth: 1 * screenFont,
+        borderColor: '#EBEBEB',
+        paddingHorizontal: 16 * screenWidth,
+        paddingBottom: 12 * screenHeight,
+    },
+    contentInputFocus: {
+        height: 400 * screenHeight,
+    },
+    settingBox: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    settingButton: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    locationSearchModal: {
+        flex: 1,
+        backgroundColor: Colors.BACKGROUND_DEFAULT,
+    },
+    searchToggleIcon: {
+        width: 10 * screenWidth,
+        height: 10 * screenWidth,
+    },
+    locationIcon: {
+        width: 16 * screenWidth,
+        height: 16 * screenWidth,
+    },
+    inputBox: {
+        paddingHorizontal: 16 * screenWidth,
+        paddingTop: 10 * screenHeight,
+    },
+    errorModalBox: {
+        backgroundColor: Colors.WHITE,
+        alignItems: 'center',
+        padding: 24 * screenWidth,
+        borderRadius: 12 * screenFont,
+    },
+    conditionSettingBox: {
+        paddingTop: 14 * screenHeight,
+    },
+    bottomBox: {
+        flexShrink: 1,
+        backgroundColor: Colors.BACKGROUND_DEFAULT,
+    },
+    bottomBarBotton: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        width: '100%',
+    },
+    addPhotoBox: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    cameraIcon: {
+        width: 24 * screenWidth,
+        height: 24 * screenWidth,
+    },
+    bottomKeyword: {
+        paddingHorizontal: 16 * screenWidth,
+        paddingTop: 8 * screenHeight,
+        paddingBottom: 13 * screenHeight,
+        backgroundColor: Colors.WHITE,
+    },
+    bottomKeywordItem: {
+        borderColor: Colors.TXT_LIGHTGRAY,
+        borderWidth: 0.8 * screenFont,
+        borderRadius: 21.57 * screenFont,
+        paddingHorizontal: 10 * screenWidth,
+        paddingVertical: 5 * screenHeight,
+        marginRight: 3 * screenWidth,
+    },
+    bottomImageBox: {
+        position: 'relative',
+        marginRight: 8 * screenWidth,
+        width: 66 * screenWidth,
+        height: 70 * screenWidth,
+    },
+    bottomImageInnerBox: {
+        width: '100%',
+        height: 66 * screenWidth,
+        position: 'absolute',
+        bottom: 0,
+    },
+    bottomImageSize: {
+        width: '100%',
+        height: '100%',
+        borderRadius: 10 * screenFont,
+        borderWidth: 1 * screenFont,
+        borderColor: '#E3E3E3',
+    },
+    bottomImageDelButton: {
+        position: 'absolute',
+        height: 25 * screenHeight,
+        top: -2 * screenWidth,
+        right: -4 * screenWidth,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    bottomImageDelIconBack: {
+        position: 'absolute',
+        width: '40%',
+        height: '40%',
+        backgroundColor: Colors.WHITE,
+    },
+});
+export const myPageTemplateStyles = StyleSheet.create({
     container: {
         backgroundColor: Colors.WHITE,
         flex: 1,
@@ -1409,7 +1539,82 @@ export const PoliciesTemplateStyles = StyleSheet.create({
         height: '100%',
     },
 });
-export const communityTemplateStyles = StyleSheet.create({
+export const allBoardTemplateStyles = StyleSheet.create({
+    container: {
+        flex: 1,
+    },
+    headerBox: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingBottom: 16 * screenHeight,
+        paddingTop: 25 * screenHeight,
+        paddingHorizontal: 16 * screenWidth,
+    },
+    tabBox: {
+        flexDirection: 'row',
+    },
+    tabButton: {
+        width: '50%',
+        paddingBottom: 7 * screenHeight,
+        paddingTop: 13 * screenHeight,
+        borderBottomWidth: 1.5 * screenFont,
+    },
+    contentBox: {
+        flex: 1,
+        overflow: 'hidden',
+    },
+    nothingBox: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        flex: 1,
+    },
+    nothingIcon: {
+        width: 88 * screenWidth,
+        height: 88 * screenWidth,
+    },
+    emptyKeywordBox: {
+        flex: 1,
+        position: 'relative',
+    },
+    emptyButtonBox: {
+        paddingTop: 16 * screenHeight,
+        paddingLeft: 16 * screenWidth,
+    },
+    addKeywordButton: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingHorizontal: 16 * screenWidth,
+        paddingVertical: 4 * screenHeight,
+        borderColor: Colors.VIOLET,
+        borderRadius: 16 * screenFont,
+        borderWidth: 1 * screenFont,
+        alignSelf: 'flex-start',
+    },
+    tooltipBox: {
+        position: 'absolute',
+        top: 51 * screenHeight,
+        left: 16 * screenWidth,
+    },
+    tooltipImg: {
+        width: 246 * screenWidth,
+        height: 42 * screenHeight,
+    },
+    tooltipTextBox: {
+        position: 'absolute',
+        width: 246 * screenWidth,
+        height: 34 * screenHeight,
+        bottom: 0,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    myKeywordScrollBox: {
+        width: '100%',
+        height: 47 * screenHeight,
+        paddingLeft: 16 * screenWidth,
+        paddingTop: 17 * screenHeight,
+    },
+});
+export const likeKeywordBoardTemplateStyles = StyleSheet.create({
     container: {
         flex: 1,
     },
@@ -1607,7 +1812,7 @@ export const likeKeywordSettingTemplateStyles = StyleSheet.create({
 });
 
 // SCREEN
-export const seviceHomeScreenStyles = StyleSheet.create({
+export const mapHomeScreenStyles = StyleSheet.create({
     container: {
         flex: 1,
     },

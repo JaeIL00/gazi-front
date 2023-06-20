@@ -1,6 +1,8 @@
 import React, { useCallback, useState } from 'react';
 import { Image, View } from 'react-native';
 import { useMutation } from 'react-query';
+import { debounce } from 'lodash';
+import { useRecoilValue } from 'recoil';
 
 import Icons from '../../smallest/Icons';
 import Spacer from '../../smallest/Spacer';
@@ -10,18 +12,16 @@ import MediumText from '../../smallest/MediumText';
 import TouchButton from '../../smallest/TouchButton';
 import SemiBoldText from '../../smallest/SemiBoldText';
 import CommentImageItem from '../../molecules/CommentImageItem';
+import { userAuthAtom } from '../../../store/atoms';
 import { commentListItemStyles } from '../../../styles/styles';
 import { CommentListItemProps, ImageViewTypes } from '../../../types/types';
 import { useRootNavigation } from '../../../navigations/RootStackNavigation';
 import { addHelpfulCommentAPI, delHelpfulCommentAPI } from '../../../queries/api';
-import { debounce } from 'lodash';
-import { useRecoilValue } from 'recoil';
-import { userTokenAtom } from '../../../store/atoms';
 
 const CommentListItem = ({ comment, postTitle, postCount, reportHandler, firstCommentId }: CommentListItemProps) => {
     const rootNavigation = useRootNavigation();
 
-    const { accessToken } = useRecoilValue(userTokenAtom);
+    const { accessToken } = useRecoilValue(userAuthAtom);
 
     const [isHelpful, setIsHelpful] = useState<boolean>(comment.like);
     const [helpfulCount, setHelpfulCount] = useState<number>(comment.likeCount);

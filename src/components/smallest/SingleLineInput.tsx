@@ -51,7 +51,6 @@ export const SingleLineInput = ({
                     : singleLineInputStyles(fontSize, width, height, placeFontFamily, fontFamily).placeholder,
                 singleLineInputStyles(fontSize, width, height, placeFontFamily, fontFamily).common,
             ]}
-            underlineColorAndroid={'transparent'}
             autoFocus={isFocus}
         />
     );

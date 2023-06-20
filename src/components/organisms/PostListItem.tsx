@@ -8,15 +8,19 @@ import MediumText from '../smallest/MediumText';
 import SemiBoldText from '../smallest/SemiBoldText';
 import { PostListItemProps } from '../../types/types';
 import { postListItemStyles } from '../../styles/styles';
-import { useRootNavigation } from '../../navigations/RootStackNavigation';
 import { screenFont, screenHeight } from '../../utils/changeStyleSize';
+import { useRootNavigation } from '../../navigations/RootStackNavigation';
 
 const PostListItem = ({ post, isBorder, isMarkerPost, isNearList }: PostListItemProps) => {
     const rootNavigation = useRootNavigation();
     return (
         <>
             {post && (
-                <View style={{ borderBottomWidth: isBorder ? 1 * screenFont : undefined, borderColor: '#EBEBEB' }}>
+                <View
+                    style={{
+                        borderBottomWidth: isBorder ? 1 * screenFont : undefined,
+                        borderColor: '#EBEBEB',
+                    }}>
                     <TouchableOpacity
                         onPress={() => rootNavigation.navigate('ThreadItem', { postId: post.postId })}
                         activeOpacity={1}>
