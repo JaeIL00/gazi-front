@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import React, { useCallback, useLayoutEffect, useRef, useState } from 'react';
 import { ActivityIndicator, Animated, FlatList, RefreshControl, ScrollView, View } from 'react-native';
 import { useRecoilValue } from 'recoil';
 import { useInfiniteQuery, useQuery } from 'react-query';
@@ -6,7 +6,6 @@ import { useFocusEffect, useIsFocused } from '@react-navigation/native';
 import { debounce } from 'lodash';
 import FastImage from 'react-native-fast-image';
 import Geolocation from '@react-native-community/geolocation';
-import { PERMISSIONS, RESULTS, check } from 'react-native-permissions';
 
 import Icons from '../../smallest/Icons';
 import Spacer from '../../smallest/Spacer';
@@ -19,7 +18,7 @@ import { userAuthAtom, userInfoAtom } from '../../../store/atoms';
 import { KeywordListTypes } from '../../../types/types';
 import { likeKeywordBoardTemplateStyles } from '../../../styles/styles';
 import { LikeKeywordBoardTemplateProps, PostTypes } from '../../../types/types';
-import { getCommunityPostAPI, geyMyLikeKeywordsAPI } from '../../../queries/api';
+import { getCommunityPostAPI, getMyLikeKeywordsAPI } from '../../../queries/api';
 
 const LikeKeywordBoardTemplate = ({ moveToKeywordSettingScreen }: LikeKeywordBoardTemplateProps) => {
     const isFocusScreen = useIsFocused();
@@ -82,7 +81,7 @@ const LikeKeywordBoardTemplate = ({ moveToKeywordSettingScreen }: LikeKeywordBoa
     // Get my Keyword API
     const { refetch: keywordRefetch, remove: keywordRemove } = useQuery(
         'getMyLikeKeyword',
-        () => geyMyLikeKeywordsAPI(accessToken),
+        () => getMyLikeKeywordsAPI(accessToken),
         {
             onSuccess: ({ data }) => {
                 if (data.data.length < 1) {

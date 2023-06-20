@@ -166,7 +166,7 @@ export const addLikeKeywordsAPI = async (param: { accessToken: string; data: num
     });
     return response;
 };
-export const geyMyLikeKeywordsAPI = async (accessToken: string) => {
+export const getMyLikeKeywordsAPI = async (accessToken: string) => {
     const response = await Axios({
         url: '/api/v1/member/my-keyword',
         method: 'get',
