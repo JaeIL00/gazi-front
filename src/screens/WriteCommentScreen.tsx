@@ -13,10 +13,12 @@ const WriteCommentScreen = () => {
     const navigationHandler = (state: string, postId?: number, freshRePostCount?: number) => {
         switch (state) {
             case 'GO':
-                rootNavigation.navigate('ThreadItem', {
-                    postId: postId!,
-                    freshRePostCount,
-                });
+                if (postId) {
+                    rootNavigation.navigate('ThreadItem', {
+                        postId: postId,
+                        freshRePostCount,
+                    });
+                }
                 break;
             case 'BACK':
                 rootNavigation.navigate('ServiceMainTab');
