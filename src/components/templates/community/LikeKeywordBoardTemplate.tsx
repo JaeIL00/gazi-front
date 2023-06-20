@@ -80,23 +80,23 @@ const LikeKeywordBoardTemplate = ({ moveToKeywordSettingScreen }: LikeKeywordBoa
     );
 
     // Get my Keyword API
-    const {
-        refetch: keywordRefetch,
-        remove: keywordRemove,
-        isSuccess: isSuccessGetMyKeywords,
-    } = useQuery('getMyLikeKeyword', () => geyMyLikeKeywordsAPI(accessToken), {
-        onSuccess: ({ data }) => {
-            if (data.data.length < 1) {
-                setMyKeywordList(null);
-            } else if (data.data !== myKeywordList) {
-                initGetKeywordPost(data.data);
-            }
+    const { refetch: keywordRefetch, remove: keywordRemove } = useQuery(
+        'getMyLikeKeyword',
+        () => geyMyLikeKeywordsAPI(accessToken),
+        {
+            onSuccess: ({ data }) => {
+                if (data.data.length < 1) {
+                    setMyKeywordList(null);
+                } else if (data.data !== myKeywordList) {
+                    initGetKeywordPost(data.data);
+                }
+            },
+            onError: error => {
+                // For Debug
+                console.log('(ERROR), Get my like keyword list API.', error);
+            },
         },
-        onError: error => {
-            // For Debug
-            console.log('(ERROR), Get my like keyword list API.', error);
-        },
-    });
+    );
 
     // Get my current location
     const getMyCurrentLocation = () => {

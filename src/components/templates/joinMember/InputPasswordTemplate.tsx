@@ -16,22 +16,24 @@ import { joinMemberAtom } from '../../../store/atoms';
 import { InputPasswordTemplateProps } from '../../../types/types';
 import { inputPasswordTemplateStyles } from '../../../styles/styles';
 
+// Password validation rule
+const REG = /^(?=.*[a-zA-Z])(?=.*[!~.,?@#$%^&()_/|;:'"<>*+=-])(?=.*[0-9])/;
+
 const InputPasswordTemplate = ({ navigationHandler }: InputPasswordTemplateProps) => {
     const [joinData, setJoinData] = useRecoilState(joinMemberAtom);
 
-    const [password, setpassword] = useState<string>('');
+    const [password, setPassword] = useState<string>('');
     const [isModalOn, setIsModalOn] = useState<boolean>(false);
     const [isPasswordReg, setIsPasswordReg] = useState<boolean>(false);
     const [isPasswordLeng, setIsPasswordLeng] = useState<boolean>(false);
 
     // Password validation handling
     const onChangePasswordText = (text: string) => {
-        setpassword(text);
+        setPassword(text);
         passwordErrorTextStyle(text);
     };
     const passwordErrorTextStyle = (text: string) => {
-        const reg = /^(?=.*[a-zA-Z])(?=.*[!~.,?@#$%^&()_/|;:'"<>*+=-])(?=.*[0-9])/;
-        reg.test(text) ? setIsPasswordReg(true) : setIsPasswordReg(false);
+        REG.test(text) ? setIsPasswordReg(true) : setIsPasswordReg(false);
         text.length >= 8 && text.length <= 20 ? setIsPasswordLeng(true) : setIsPasswordLeng(false);
     };
 
