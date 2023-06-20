@@ -1,5 +1,5 @@
-import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { FlatList, Image, Platform, RefreshControl, View } from 'react-native';
+import React, { useCallback, useLayoutEffect, useRef, useState } from 'react';
+import { FlatList, Image, Platform, View } from 'react-native';
 import DropShadow from 'react-native-drop-shadow';
 import { useRecoilValue } from 'recoil';
 import { useInfiniteQuery, useMutation } from 'react-query';

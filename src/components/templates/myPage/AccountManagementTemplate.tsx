@@ -16,8 +16,9 @@ import { AccountManagementTemplateProps } from '../../../types/types';
 import { AccountManagementTemplateStyles } from '../../../styles/styles';
 
 const AccountManagementTemplate = ({ moveToScreenHandler }: AccountManagementTemplateProps) => {
-    // logout API
     const [userAuth, setUserAuth] = useRecoilState(userAuthAtom);
+
+    // logout API
     const { mutate, isLoading } = useMutation(logoutAPI, {
         onSuccess: () => {
             logoutHandler();

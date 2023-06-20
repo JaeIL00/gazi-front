@@ -27,6 +27,7 @@ const EditMyKeyword = ({
     getMyKeywordRefetch,
 }: EditMyKeywordProps) => {
     const rootNavigation = useRootNavigation();
+
     const { accessToken } = useRecoilValue(userAuthAtom);
 
     // Initialized check keywords

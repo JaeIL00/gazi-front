@@ -29,12 +29,12 @@ const LikeKeywordBoardTemplate = ({ moveToKeywordSettingScreen }: LikeKeywordBoa
 
     const postsResponseIndexRef = useRef<number>(0);
     const getKeywordPostParamRef = useRef<string>('');
+    const tooltipAnimRef = useRef<Animated.Value>(new Animated.Value(0)).current;
     const currentPositionRef = useRef<{ lat: number; lon: number; isChecked: boolean }>({
         lat: 0,
         lon: 0,
         isChecked: false,
     });
-    const tooltipAnimRef = useRef<Animated.Value>(new Animated.Value(0)).current;
 
     const [postList, setPostList] = useState<PostTypes[]>([]);
     const [isPostRefresh, setIsPostRefresh] = useState<boolean>(false);

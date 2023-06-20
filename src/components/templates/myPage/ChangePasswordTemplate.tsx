@@ -13,17 +13,25 @@ import { screenHeight, screenWidth } from '../../../utils/changeStyleSize';
 import { ChangePasswordTemplateProps } from '../../../types/types';
 
 const ChangePasswordTemplate = ({ moveToBackScreenHandler }: ChangePasswordTemplateProps) => {
-    const [curPassword, setCurPassword] = useState<string>('');
-    const [oneNewPassword, setOneNewPassword] = useState<string>('');
     const {
         text: twoNewPassword,
         onChangeText: onChangeTwoNewPassword,
         validationResult,
         changeValidationResult,
     } = useTextInputValidation();
-    const [isPasswordLeng, setIsPasswordLeng] = useState<boolean>(false);
+
+    const [curPassword, setCurPassword] = useState<string>('');
+    const [oneNewPassword, setOneNewPassword] = useState<string>('');
     const [isPasswordReg, setIsPasswordReg] = useState<boolean>(false);
+    const [isPasswordLeng, setIsPasswordLeng] = useState<boolean>(false);
     const [isSamePassword, setIsSamePassword] = useState<boolean>(false);
+
+    // Change text password
+    const onChangeOneNewPassword = (text: string) => {
+        setOneNewPassword(text);
+        passwordErrorTextStyle(text);
+        onChangeTwoNewPassword('');
+    };
     const passwordErrorTextStyle = (text: string) => {
         const reg = /^(?=.*[a-zA-Z])(?=.*[!~.,?@#$%^&()_/|;:'"<>*+=-])(?=.*[0-9])/;
         reg.test(text) ? setIsPasswordReg(true) : setIsPasswordReg(false);
@@ -31,11 +39,6 @@ const ChangePasswordTemplate = ({ moveToBackScreenHandler }: ChangePasswordTempl
     };
     const onChangeCurPassword = (text: string) => {
         setCurPassword(text);
-    };
-    const onChangeOneNewPassword = (text: string) => {
-        setOneNewPassword(text);
-        passwordErrorTextStyle(text);
-        onChangeTwoNewPassword('');
     };
     const checkSamePassword = (text: string) => {
         onChangeTwoNewPassword(text);

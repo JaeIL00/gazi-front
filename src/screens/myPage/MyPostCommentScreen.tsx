@@ -1,9 +1,9 @@
 import React from 'react';
+import { useIsFocused } from '@react-navigation/native';
 
 import ScreenWrapper from '../../components/organisms/ScreenWrapper';
 import MyPostCommentTemplate from '../../components/templates/myPage/MyPostCommentTemplate';
 import { useRootNavigation } from '../../navigations/RootStackNavigation';
-import { useIsFocused } from '@react-navigation/native';
 
 const MyPostCommentScreen = () => {
     const rootNavigation = useRootNavigation();

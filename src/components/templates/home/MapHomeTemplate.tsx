@@ -51,7 +51,6 @@ const MapHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritePost }: Ma
     const [nearPostList, setNearPostList] = useState<PostTypes[]>([]);
     const [isFarMapLevel, setIsFarMapLevel] = useState<boolean>(false);
     const [markerPost, setMarkerPost] = useState<PostTypes | null>(null);
-    // const [isAllowLocation, setIsAllowLocation] = useState<boolean>(false);
     const [isNearPostRefresh, setIsNearPostRefresh] = useState<boolean>(false);
     const [isBottomSheetMini, setIsBottomSheetMini] = useState<boolean>(false);
     const [isBottomSheetFull, setIsBottomSheetFull] = useState<boolean>(false);

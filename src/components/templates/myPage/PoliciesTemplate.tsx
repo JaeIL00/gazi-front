@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Image, Modal, View } from 'react-native';
+import { Modal, View } from 'react-native';
 
 import Spacer from '../../smallest/Spacer';
 import Colors from '../../../styles/Colors';

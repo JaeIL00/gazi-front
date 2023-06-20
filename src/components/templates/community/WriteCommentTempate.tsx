@@ -2,7 +2,6 @@ import React, { useCallback, useLayoutEffect, useRef, useState } from 'react';
 import { ActivityIndicator, Image, Linking, Modal, ScrollView, TouchableOpacity, View } from 'react-native';
 import { useMutation } from 'react-query';
 import { useRecoilValue } from 'recoil';
-import { PERMISSIONS, RESULTS, check, checkMultiple } from 'react-native-permissions';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { debounce } from 'lodash';
 

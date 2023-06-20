@@ -9,10 +9,10 @@ import Spacer from '../smallest/Spacer';
 import Colors from '../../styles/Colors';
 import MediumText from '../smallest/MediumText';
 import TouchButton from '../smallest/TouchButton';
-import { GalleryAlbumListTypes, PhotoGalleryProps, uploadImageFileTypes } from '../../types/types';
+import SemiBoldText from '../smallest/SemiBoldText';
+import { GalleryAlbumListTypes, PhotoGalleryProps } from '../../types/types';
 import { photoGalleryStyles } from '../../styles/styles';
 import { screenFont, screenHeight, screenWidth } from '../../utils/changeStyleSize';
-import SemiBoldText from '../smallest/SemiBoldText';
 
 const PhotoGallery = ({ closeGalleryHandling, getImageHandler }: PhotoGalleryProps) => {
     const [checkIndex, setCheckIndex] = useState<number[]>([]);

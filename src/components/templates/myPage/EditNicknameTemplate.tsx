@@ -18,16 +18,49 @@ import { editNicknameTemplateStyles } from '../../../styles/styles';
 import { checkNicknameAPI, editNicknameAPI } from '../../../queries/api';
 
 const EditNicknameTemplate = ({ moveToMyPageScreen }: EditNicknameTemplateProps) => {
-    // Validator custom hook input text
-    const { text: nickname, onChangeText, validationResult, changeValidationResult } = useTextInputValidation();
+    const { accessToken } = useRecoilValue(userAuthAtom);
+    const [userInfo, setUserInfo] = useRecoilState(userInfoAtom);
     const { nickname: nicknameAtom } = useRecoilValue(userInfoAtom);
-    useLayoutEffect(() => {
-        onChangeText(nicknameAtom);
-    }, []);
+
+    const { text: nickname, onChangeText, validationResult, changeValidationResult } = useTextInputValidation();
+
+    const [isGoodResponse, setIsGoodResponse] = useState<boolean>(false);
+
+    // Check nickname API
+    const { mutate: checkMutatie, isLoading: isCheckLoading } = useMutation(checkNicknameAPI, {
+        onSuccess: () => {
+            setIsGoodResponse(true);
+            changeValidationResult('사용 가능한 닉네임입니다');
+        },
+        onError: ({ response }) => {
+            if (response.data.state === 409) {
+                setIsGoodResponse(false);
+                changeValidationResult('중복된 닉네임입니다');
+            }
+            // For Debug
+            console.log('(ERROR) Check nickname API.', response);
+        },
+    });
+
+    // Edit nickname API
+    const { mutate: editMutate, isLoading: isEditLoading } = useMutation(editNicknameAPI, {
+        onSuccess: () => {
+            moveToMyPageScreen();
+            setUserInfo({
+                ...userInfo,
+                nickname,
+            });
+        },
+        onError: ({ response }) => {
+            // For Debug
+            console.log('(ERROR) Edit nickname API.', response);
+        },
+    });
+
+    // Validator custom hook input text
     const onChangeNicknameText = (text: string) => {
         onChangeText(text);
         setIsGoodResponse(false);
-        // setIsFocusText(false);
         if (text.length < 2) {
             changeValidationResult('2글자 이상 입력해주세요');
         } else {
@@ -49,45 +82,18 @@ const EditNicknameTemplate = ({ moveToMyPageScreen }: EditNicknameTemplateProps)
         // setIsFocusText(true);
     };
 
-    // Check nickname API
-    const { mutate: checkMutatie, isLoading: isCheckLoading } = useMutation(checkNicknameAPI, {
-        onSuccess: () => {
-            setIsGoodResponse(true);
-            changeValidationResult('사용 가능한 닉네임입니다');
-        },
-        onError: ({ response }) => {
-            if (response.data.state === 409) {
-                setIsGoodResponse(false);
-                changeValidationResult('중복된 닉네임입니다');
-            }
-            // For Debug
-            console.log('(ERROR) Check nickname API.', response);
-        },
-    });
-
-    // Edit nickname API
-    const { accessToken } = useRecoilValue(userAuthAtom);
-    const [userInfo, setUserInfo] = useRecoilState(userInfoAtom);
-    const [isGoodResponse, setIsGoodResponse] = useState(false);
-    const { mutate: editMutate, isLoading: isEditLoading } = useMutation(editNicknameAPI, {
-        onSuccess: () => {
-            moveToMyPageScreen();
-            setUserInfo({
-                ...userInfo,
-                nickname,
-            });
-        },
-        onError: ({ response }) => {
-            // For Debug
-            console.log('(ERROR) Edit nickname API.', response);
-        },
-    });
+    // Edit nickname call API
     const editNicknameHandler = () => {
         editMutate({
             accessToken,
             data: nickname,
         });
     };
+
+    // Validator custom hook input text
+    useLayoutEffect(() => {
+        onChangeText(nicknameAtom);
+    }, []);
 
     return (
         <>

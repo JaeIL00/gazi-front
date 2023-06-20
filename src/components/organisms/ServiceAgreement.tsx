@@ -12,15 +12,21 @@ import { ServiceAgreementProps } from '../../types/types';
 import { screenHeight } from '../../utils/changeStyleSize';
 import { checkBoxBackground, serviceAgreementStyles } from '../../styles/styles';
 
-const ServiceAgreement = ({ finishSlideComponentHandler }: ServiceAgreementProps) => {
-    // Render list data
-    const listData = ['(필수) 서비스 약관 동의', '(필수) 개인정보 수집 동의', '(필수) 위치기반 서비스 이용 동의'];
+// Render list data
+const listData = ['(필수) 서비스 약관 동의', '(필수) 개인정보 수집 동의', '(필수) 위치기반 서비스 이용 동의'];
 
-    // Check box handling
+const ServiceAgreement = ({ finishSlideComponentHandler }: ServiceAgreementProps) => {
+    const { height } = useWindowDimensions();
+
+    const topValue = useRef<Animated.Value>(new Animated.Value(height)).current;
+
+    const [uri, seturi] = useState<string>('');
+    const [isAllCheck, setIsAllCheck] = useState<boolean>(false);
     const [isServiceCheck, setIsServiceCheck] = useState<boolean>(false);
     const [isPersonalCheck, setIsPersonalCheck] = useState<boolean>(false);
     const [isLocationCheck, setIsLocationCheck] = useState<boolean>(false);
-    const [isAllCheck, setIsAllCheck] = useState<boolean>(false);
+
+    // Check box handling
     const onPressCheckList = (index: number) => {
         switch (index) {
             case 0:
@@ -47,17 +53,8 @@ const ServiceAgreement = ({ finishSlideComponentHandler }: ServiceAgreementProps
             setIsLocationCheck(true);
         }
     };
-    useEffect(() => {
-        if (isServiceCheck && isPersonalCheck && isLocationCheck) {
-            setIsAllCheck(true);
-        } else {
-            setIsAllCheck(false);
-        }
-    }, [isServiceCheck, isPersonalCheck, isLocationCheck]);
 
     // Animation handling
-    const { height } = useWindowDimensions();
-    const topValue = useRef<Animated.Value>(new Animated.Value(height)).current;
     const startAnimationHandler = () => {
         Animated.timing(topValue, {
             toValue: 290 * screenHeight,
@@ -83,7 +80,6 @@ const ServiceAgreement = ({ finishSlideComponentHandler }: ServiceAgreementProps
     }, []);
 
     // WebView component handling
-    const [uri, seturi] = useState<string>('');
     const webViewHandler = (index: number) => {
         switch (index) {
             case 0:
@@ -100,6 +96,15 @@ const ServiceAgreement = ({ finishSlideComponentHandler }: ServiceAgreementProps
                 console.log('(ERROR) WebView Handler.', index);
         }
     };
+
+    // Agreement check
+    useEffect(() => {
+        if (isServiceCheck && isPersonalCheck && isLocationCheck) {
+            setIsAllCheck(true);
+        } else {
+            setIsAllCheck(false);
+        }
+    }, [isServiceCheck, isPersonalCheck, isLocationCheck]);
 
     return (
         <>

@@ -1,12 +1,11 @@
-import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import React, { useCallback, useLayoutEffect, useRef, useState } from 'react';
 import { ActivityIndicator, Animated, FlatList, RefreshControl, ScrollView, View } from 'react-native';
 import { useRecoilValue } from 'recoil';
-import { useInfiniteQuery, useQuery } from 'react-query';
+import { useInfiniteQuery } from 'react-query';
 import { useIsFocused } from '@react-navigation/native';
 import { debounce } from 'lodash';
 import FastImage from 'react-native-fast-image';
 import Geolocation from '@react-native-community/geolocation';
-import { PERMISSIONS, RESULTS, check } from 'react-native-permissions';
 
 import Icons from '../../smallest/Icons';
 import Spacer from '../../smallest/Spacer';

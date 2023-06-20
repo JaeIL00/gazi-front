@@ -8,8 +8,8 @@ import MediumText from '../smallest/MediumText';
 import SemiBoldText from '../smallest/SemiBoldText';
 import { PostListItemProps } from '../../types/types';
 import { postListItemStyles } from '../../styles/styles';
-import { useRootNavigation } from '../../navigations/RootStackNavigation';
 import { screenFont, screenHeight } from '../../utils/changeStyleSize';
+import { useRootNavigation } from '../../navigations/RootStackNavigation';
 
 const PostListItem = ({ post, isBorder, isMarkerPost, isNearList }: PostListItemProps) => {
     const rootNavigation = useRootNavigation();
