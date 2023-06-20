@@ -2,6 +2,7 @@ import React, { useLayoutEffect } from 'react';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { NativeStackNavigationProp, createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useRecoilValue } from 'recoil';
+import SplashScreen from 'react-native-splash-screen';
 
 import WritePostScreen from '../screens/WritePostScreen';
 import JoinMemberNavigation from './JoinMemberNavigation';
