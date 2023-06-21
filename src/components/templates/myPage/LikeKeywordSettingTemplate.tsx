@@ -12,7 +12,7 @@ import TouchButton from '../../smallest/TouchButton';
 import SemiBoldText from '../../smallest/SemiBoldText';
 import EditMyKeyword from '../../organisms/myPage/EditMyKeyword';
 import { userAuthAtom } from '../../../store/atoms';
-import { geyMyLikeKeywordsAPI } from '../../../queries/api';
+import { getMyLikeKeywordsAPI } from '../../../queries/api';
 import { likeKeywordSettingTemplateStyles } from '../../../styles/styles';
 import { LikeKeywordSettingTemplateProps, MyLikeKeywordTypes } from '../../../types/types';
 
@@ -26,7 +26,7 @@ const LikeKeywordSettingTemplate = ({
     const [myKeywordList, setMyKeywordList] = useState<MyLikeKeywordTypes[]>([]);
 
     // My like keyword API
-    const { refetch: getMyKeywordRefetch } = useQuery('getMyLikeKeyword', () => geyMyLikeKeywordsAPI(accessToken), {
+    const { refetch: getMyKeywordRefetch } = useQuery('getMyLikeKeyword', () => getMyLikeKeywordsAPI(accessToken), {
         onSuccess: ({ data }) => {
             setMyKeywordList(data.data);
         },

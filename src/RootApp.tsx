@@ -4,6 +4,7 @@ import { RecoilRoot } from 'recoil';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { NavigationContainer } from '@react-navigation/native';
 import { RootStackNavigation } from './navigations/RootStackNavigation';
+import { linking } from './utils/linking';
 
 interface TextWithDefaultProps extends Text {
     defaultProps?: { allowFontScaling?: boolean };
@@ -32,7 +33,7 @@ export const RootApp = () => {
     return (
         <QueryClientProvider client={queryClient}>
             <RecoilRoot>
-                <NavigationContainer>
+                <NavigationContainer linking={linking}>
                     <RootStackNavigation />
                 </NavigationContainer>
             </RecoilRoot>
