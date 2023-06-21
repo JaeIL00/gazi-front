@@ -29,9 +29,9 @@ export const RootStackNavigation = () => {
     const { checkAsyncStorage, isAllowLocationPermission } = initEssentialFunc();
 
     useLayoutEffect(() => {
-        checkAsyncStorage();
+        // checkAsyncStorage();
         isAllowLocationPermission();
-        // SplashScreen.hide();
+        SplashScreen.hide();
     }, []);
 
     return (

@@ -1,9 +1,7 @@
 import React from 'react';
-import { StatusBar, View } from 'react-native';
 
-import Colors from '../../styles/Colors';
+import ScreenWrapper from '../../components/organisms/ScreenWrapper';
 import AllBoardTemplate from '../../components/templates/community/AllBoardTemplate';
-import { globalBackWhiteStyles } from '../../styles/styles';
 import { useRootNavigation } from '../../navigations/RootStackNavigation';
 
 const AllBoardScreen = () => {
@@ -13,10 +11,9 @@ const AllBoardScreen = () => {
     };
 
     return (
-        <View style={globalBackWhiteStyles.container}>
-            <StatusBar backgroundColor={Colors.WHITE} barStyle="dark-content" />
+        <ScreenWrapper isPaddingHorizontal={false}>
             <AllBoardTemplate moveToKeywordSettingScreen={moveToKeywordSettingScreen} />
-        </View>
+        </ScreenWrapper>
     );
 };
 

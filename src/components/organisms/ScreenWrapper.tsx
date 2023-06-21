@@ -13,7 +13,8 @@ const ScreenWrapper = ({ children, isPaddingHorizontal }: ScreenWrapperProps) =>
 
     useLayoutEffect(() => {
         if (
-            route.name === 'Community' ||
+            route.name === 'AllBoard' ||
+            route.name === 'LikeBoard' ||
             route.name === 'LikeKeywordSetting' ||
             route.name === 'WritePost' ||
             route.name === 'WriteComment' ||
