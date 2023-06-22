@@ -94,6 +94,7 @@ const InputNicknameTemplate = ({ navigationHandler }: InputNicknameTemplateProps
                 email: data.email,
                 isAllowLocation: false,
             });
+            setJoinData({ email: '', password: '', nickName: '' });
             getTokenFCM(data.accessToken);
         } catch (err) {
             // For Debug
