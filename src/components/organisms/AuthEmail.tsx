@@ -38,7 +38,7 @@ const AuthEmail = ({ min, sec, resetTimeHandler, authNumberModalHanlder }: AuthE
         onSuccess: data => {
             setInputNumber('');
             setIsWrong(false);
-            setAuthNumber(data.data);
+            setAuthNumber(data.data.data);
             resetTimeHandler();
         },
     });
@@ -83,6 +83,8 @@ const AuthEmail = ({ min, sec, resetTimeHandler, authNumberModalHanlder }: AuthE
         // Auth number validation
         if (text.length === 4) {
             validationHandler(text);
+        } else {
+            setActivityButton(false);
         }
     };
     const validationHandler = (text: string) => {
@@ -94,11 +96,6 @@ const AuthEmail = ({ min, sec, resetTimeHandler, authNumberModalHanlder }: AuthE
         }
     };
 
-    // Initialized auth number
-    useEffect(() => {
-        setAuthNumber(authData.number);
-    }, [authData]);
-
     // Finish button transitionY handling
     const { bottomValue, buttonUpAnimationHandler, buttonDownAnimationHandler } = useKeyboardMotion(53, 271);
     useEffect(() => {
@@ -109,6 +106,11 @@ const AuthEmail = ({ min, sec, resetTimeHandler, authNumberModalHanlder }: AuthE
             keyboardDidShowListener.remove();
             keyboardDidHideListener.remove();
         };
+    }, []);
+
+    // Initialized auth number
+    useEffect(() => {
+        setAuthNumber(authData.number);
     }, []);
 
     return (
