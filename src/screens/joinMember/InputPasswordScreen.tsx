@@ -3,8 +3,10 @@ import React from 'react';
 import ScreenWrapper from '../../components/organisms/ScreenWrapper';
 import InputPasswordTemplate from '../../components/templates/joinMember/InputPasswordTemplate';
 import { useJoinNavigation } from '../../navigations/JoinMemberNavigation';
+import { useIsFocused } from '@react-navigation/native';
 
 const InputPasswordScreen = () => {
+    const isFocus = useIsFocused();
     const joinNavigation = useJoinNavigation();
     const navigationHandler = (state: string) => {
         switch (state) {
@@ -21,7 +23,7 @@ const InputPasswordScreen = () => {
     };
     return (
         <ScreenWrapper isPaddingHorizontal={true}>
-            <InputPasswordTemplate navigationHandler={navigationHandler} />
+            <>{isFocus && <InputPasswordTemplate navigationHandler={navigationHandler} />}</>
         </ScreenWrapper>
     );
 };
