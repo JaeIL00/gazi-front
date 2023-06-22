@@ -66,7 +66,7 @@ const InputEmailTemplate = ({ navigationHandler }: InputEmailTemplateProps) => {
     const onPressEmailAuth = debounce(() => {
         if (!duplicatedError && email === joinData.email && isEmail && (minutes || seconds)) {
             authData.isOk ? navigationHandler('GO') : authNumberModalHanlder('OPEN');
-        } else if (!email && !duplicatedError) {
+        } else if (!email || !duplicatedError || !isEmail) {
             return;
         } else {
             setJoinData({ ...joinData, email });
