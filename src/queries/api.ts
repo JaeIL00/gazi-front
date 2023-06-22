@@ -35,6 +35,18 @@ export const nearPlaceGoogleAPI = async (curLat: number, curLon: number, nextPag
 };
 
 // ACCOUT LOGIN LOGOUT
+export const fcmDeviceTokenAPI = async (param: { accessToken: string; fireBaseToken: string }) => {
+    const response = await Axios({
+        url: '/api/v1/member/get-firebase-access-key',
+        method: 'post',
+        headers: {
+            Authorization: `Bearer ${param.accessToken}`,
+            'Content-Type': 'application/json',
+        },
+        data: JSON.stringify({ fireBaseToken: param.fireBaseToken }),
+    });
+    return response;
+};
 export const loginAPI = async (data: { email: string; password: string }) => {
     const response = await Axios({
         url: '/api/v1/member/login',

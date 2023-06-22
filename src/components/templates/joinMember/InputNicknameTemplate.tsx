@@ -4,6 +4,7 @@ import { useRecoilState } from 'recoil';
 import { useMutation, useQuery } from 'react-query';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { debounce } from 'lodash';
+import messaging from '@react-native-firebase/messaging';
 
 import Icons from '../../smallest/Icons';
 import Spacer from '../../smallest/Spacer';
@@ -15,7 +16,7 @@ import MoveBackWithPageTitle from '../../organisms/MoveBackWithPageTitle';
 import { SingleLineInput } from '../../smallest/SingleLineInput';
 import { InputNicknameTemplateProps } from '../../../types/types';
 import { inputNicknameTemplateStyles } from '../../../styles/styles';
-import { joinMemberAPI, checkNicknameAPI } from '../../../queries/api';
+import { joinMemberAPI, checkNicknameAPI, fcmDeviceTokenAPI } from '../../../queries/api';
 import { joinMemberAtom, userInfoAtom, userAuthAtom } from '../../../store/atoms';
 
 const InputNicknameTemplate = ({ navigationHandler }: InputNicknameTemplateProps) => {
@@ -60,6 +61,17 @@ const InputNicknameTemplate = ({ navigationHandler }: InputNicknameTemplateProps
         },
     });
 
+    // Send device token to FCM server
+    const { mutate: fcmTokenMutate } = useMutation(fcmDeviceTokenAPI, {
+        onSuccess: () => {
+            setIsModalOn(true);
+        },
+        onError: error => {
+            // For Debug
+            console.log('(ERROR) Send device token to FCM server. ', error);
+        },
+    });
+
     // Success join member by API response
     const successJoinMemberHandler = async (data: {
         accessToken: string;
@@ -82,12 +94,18 @@ const InputNicknameTemplate = ({ navigationHandler }: InputNicknameTemplateProps
                 email: data.email,
                 isAllowLocation: false,
             });
+            getTokenFCM(data.accessToken);
         } catch (err) {
             // For Debug
             console.log('(ERROR) User authorization token set storage. err: ', err);
-        } finally {
-            setIsModalOn(true);
         }
+    };
+    const getTokenFCM = async (accessToken: string) => {
+        const deviceToken = await messaging().getToken();
+        fcmTokenMutate({
+            accessToken,
+            fireBaseToken: deviceToken,
+        });
     };
 
     // Call check duplicate refetch

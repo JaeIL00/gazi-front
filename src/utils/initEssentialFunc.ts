@@ -3,9 +3,10 @@ import { useMutation } from 'react-query';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import SplashScreen from 'react-native-splash-screen';
 import { PERMISSIONS, RESULTS, check } from 'react-native-permissions';
+import messaging from '@react-native-firebase/messaging';
 
-import { autoLoginAPI } from '../queries/api';
 import { userAuthAtom, userInfoAtom } from '../store/atoms';
+import { autoLoginAPI, fcmDeviceTokenAPI } from '../queries/api';
 import { useRootNavigation } from '../navigations/RootStackNavigation';
 
 const initEssentialFunc = () => {
@@ -24,6 +25,18 @@ const initEssentialFunc = () => {
             console.log('(ERROR) auto login API.', response);
         },
     });
+
+    // Send device token to FCM server
+    const { mutate: fcmTokenMutate } = useMutation(fcmDeviceTokenAPI, {
+        onSuccess: () => {
+            rootNavigation.navigate('ServiceMainTab');
+        },
+        onError: error => {
+            // For Debug
+            console.log('(ERROR) Send device token to FCM server. ', error);
+        },
+    });
+
     const errorLoginHandler = async (status: number) => {
         if (status === 400 || status === 404) {
             await AsyncStorage.multiRemove(['GAZI_ac_tk', 'GAZI_re_tk']);
@@ -37,6 +50,7 @@ const initEssentialFunc = () => {
         memberId: number;
         nickName: string;
         email: string;
+        firebaseToken: string;
     }) => {
         try {
             await AsyncStorage.setItem('GAZI_ac_tk', data.accessToken);
@@ -54,12 +68,25 @@ const initEssentialFunc = () => {
             });
             console.log('저장 엑세스', data.accessToken);
             console.log('저장 리프레시', data.refreshToken);
-            rootNavigation.navigate('ServiceMainTab');
+
+            if (!data.firebaseToken) {
+                getTokenFCM(data.accessToken);
+            } else {
+                rootNavigation.navigate('ServiceMainTab');
+            }
         } catch (error) {
             // For Debug
             console.log('(ERROR) User authorization token set storage.', error);
         }
     };
+    const getTokenFCM = async (accessToken: string) => {
+        const deviceToken = await messaging().getToken();
+        fcmTokenMutate({
+            accessToken,
+            fireBaseToken: deviceToken,
+        });
+    };
+
     const checkAsyncStorage = async () => {
         try {
             const accessToken = await AsyncStorage.getItem('GAZI_ac_tk');

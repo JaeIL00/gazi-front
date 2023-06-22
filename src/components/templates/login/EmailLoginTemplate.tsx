@@ -4,6 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useMutation } from 'react-query';
 import { debounce } from 'lodash';
 import { useRecoilState } from 'recoil';
+import messaging from '@react-native-firebase/messaging';
 
 import Icons from '../../smallest/Icons';
 import Spacer from '../../smallest/Spacer';
@@ -14,7 +15,7 @@ import TextButton from '../../molecules/TextButton';
 import TouchButton from '../../smallest/TouchButton';
 import LoginTextInput from '../../molecules/LoginTextInput';
 import MoveBackWithPageTitle from '../../organisms/MoveBackWithPageTitle';
-import { loginAPI } from '../../../queries/api';
+import { fcmDeviceTokenAPI, loginAPI } from '../../../queries/api';
 import { EmailLoginTemplateProps } from '../../../types/types';
 import { emailLoginTemplateStyles } from '../../../styles/styles';
 import { userInfoAtom, userAuthAtom } from '../../../store/atoms';
@@ -29,7 +30,7 @@ const EmailLoginTemplate = ({ moveServiceHomeHandler }: EmailLoginTemplateProps)
     const [loginErrorText, setLoginErrorText] = useState<string>('');
 
     // Login API Handling
-    const { mutate, isLoading } = useMutation(loginAPI, {
+    const { mutate: loginMutate, isLoading } = useMutation(loginAPI, {
         onSuccess: ({ data }) => {
             successJoinMemberHandler(data.data);
         },
@@ -42,9 +43,20 @@ const EmailLoginTemplate = ({ moveServiceHomeHandler }: EmailLoginTemplateProps)
         },
     });
 
+    // Send device token to FCM server
+    const { mutate: fcmTokenMutate } = useMutation(fcmDeviceTokenAPI, {
+        onSuccess: () => {
+            moveServiceHomeHandler('GO');
+        },
+        onError: error => {
+            // For Debug
+            console.log('(ERROR) Send device token to FCM server. ', error);
+        },
+    });
+
     const onPressLoginButton = debounce(() => {
         if (email && password) {
-            mutate({ email, password });
+            loginMutate({ email, password });
         }
     }, 300);
     const successJoinMemberHandler = async (data: {
@@ -53,6 +65,7 @@ const EmailLoginTemplate = ({ moveServiceHomeHandler }: EmailLoginTemplateProps)
         memberId: number;
         nickName: string;
         email: string;
+        firebaseToken: string;
     }) => {
         try {
             await AsyncStorage.setItem('GAZI_ac_tk', data.accessToken);
@@ -63,12 +76,23 @@ const EmailLoginTemplate = ({ moveServiceHomeHandler }: EmailLoginTemplateProps)
                 isLogIn: true,
             });
             isAllowLocationPermission(data);
+
+            if (!data.firebaseToken) {
+                getTokenFCM(data.accessToken);
+            } else {
+                moveServiceHomeHandler('GO');
+            }
         } catch (err) {
             // For Debug
             console.log('(ERROR) User authorization token set storage. err: ', err);
-        } finally {
-            moveServiceHomeHandler('GO');
         }
+    };
+    const getTokenFCM = async (accessToken: string) => {
+        const deviceToken = await messaging().getToken();
+        fcmTokenMutate({
+            accessToken,
+            fireBaseToken: deviceToken,
+        });
     };
 
     // Check location permission
