@@ -1382,6 +1382,15 @@ export const myPageTemplateStyles = StyleSheet.create({
         borderColor: Colors.BORDER_GRAY,
     },
 });
+export const keywordAlarmTemplateStyles = StyleSheet.create({
+    headerBox: {
+        flexDirection: 'row',
+        paddingTop: 14 * screenHeight,
+        paddingBottom: 13 * screenHeight,
+        justifyContent: 'space-between',
+        alignItems: 'center',
+    },
+});
 export const editNicknameTemplateStyles = StyleSheet.create({
     templateContent: {
         paddingHorizontal: 16 * screenWidth,
