@@ -258,6 +258,10 @@ export type CommunityTabParamList = {
     AllBoard: undefined;
     LikeBoard: undefined;
 };
+export type AlarmPageTabParamList = {
+    KeywordAlarm: undefined;
+    NewsAlarm: undefined;
+};
 export type MyPageParamList = {
     MyPageInitial: undefined;
     Policies: undefined;
