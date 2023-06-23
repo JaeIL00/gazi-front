@@ -19,7 +19,7 @@ const PostListItem = ({ post, isBorder, isMarkerPost, isNearList }: PostListItem
                 <View
                     style={{
                         borderBottomWidth: isBorder ? 1 * screenFont : undefined,
-                        borderColor: '#EBEBEB',
+                        borderColor: Colors.BORDER_GRAY,
                     }}>
                     <TouchableOpacity
                         onPress={() => rootNavigation.navigate('ThreadItem', { postId: post.postId })}

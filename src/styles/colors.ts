@@ -5,6 +5,7 @@ export default {
     TXT_BLACK: '#171717',
     TXT_GRAY: '#999999',
     TXT_LIGHTGRAY: '#BEBEBE',
+    BORDER_GRAY: '#EBEBEB',
     BTN_GRAY: '#DDDDDD',
     STATUS_RED: '#EB5147',
     STATUS_GRAY: '#999999',

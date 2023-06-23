@@ -120,13 +120,7 @@ const MyPostCommentTemplate = ({ moveToBackScreenHandler }: MyPostCommentTemplat
     );
     const renderItemComment = useCallback(
         ({ item }: { item: MyCommentTypes }) => (
-            <View
-                style={{
-                    borderColor: '#EBEBEB',
-                    borderBottomWidth: 1 * screenFont,
-                    paddingVertical: 12 * screenHeight,
-                    paddingHorizontal: 16 * screenWidth,
-                }}>
+            <View style={myPostCommentTemplateStyles.commentItem}>
                 <MediumText text={item.title} size={16} color={Colors.BLACK} numberOfLines={1} />
                 <Spacer height={4} />
                 <NormalText
@@ -161,7 +155,7 @@ const MyPostCommentTemplate = ({ moveToBackScreenHandler }: MyPostCommentTemplat
                     style={[
                         myPostCommentTemplateStyles.tabButton,
                         {
-                            borderColor: isPost ? Colors.BLACK : '#EBEBEB',
+                            borderColor: isPost ? Colors.BLACK : Colors.BORDER_GRAY,
                         },
                     ]}>
                     <TouchButton onPress={() => tabHandler('POST')}>
@@ -172,7 +166,7 @@ const MyPostCommentTemplate = ({ moveToBackScreenHandler }: MyPostCommentTemplat
                     style={[
                         myPostCommentTemplateStyles.tabButton,
                         {
-                            borderColor: !isPost ? Colors.BLACK : '#EBEBEB',
+                            borderColor: !isPost ? Colors.BLACK : Colors.BORDER_GRAY,
                         },
                     ]}>
                     <TouchButton onPress={() => tabHandler('COMMENT')}>
