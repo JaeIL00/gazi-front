@@ -185,7 +185,7 @@ const EditMyKeyword = ({
         <>
             <Spacer height={10} />
             <View style={editMyKeywordStyles.mainContainer}>
-                <LinearGradient colors={['#F9F9F9', '#F9F9F900']} style={editMyKeywordStyles.upLinear} />
+                <LinearGradient colors={['#FFFFFF', '#FFFFFF00']} style={editMyKeywordStyles.upLinear} />
                 <ScrollView showsVerticalScrollIndicator={false}>
                     <Spacer height={16} />
                     <View>
@@ -238,7 +238,7 @@ const EditMyKeyword = ({
             </View>
 
             <View style={editMyKeywordStyles.bottomBox}>
-                <LinearGradient colors={['#F9F9F900', '#F9F9F9']} style={editMyKeywordStyles.downLinear} />
+                <LinearGradient colors={['#FFFFFF00', '#FFFFFF']} style={editMyKeywordStyles.downLinear} />
                 <TouchButton onPress={resetCheckedHandler} paddingHorizontal={7}>
                     <View style={editMyKeywordStyles.resetText}>
                         <Icons type="feather" name="refresh-cw" size={17} color={Colors.TXT_GRAY} />
