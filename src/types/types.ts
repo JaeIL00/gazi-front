@@ -575,9 +575,6 @@ export type LikeKeywordSettingTemplateProps = {
 export type PoliciesTemplateProps = {
     moveToBackScreenHandler: () => void;
 };
-export type AllBoardTemplateProps = {
-    moveToKeywordSettingScreen: () => void;
-};
 export type LikeKeywordBoardTemplateProps = {
     moveToKeywordSettingScreen: () => void;
 };
