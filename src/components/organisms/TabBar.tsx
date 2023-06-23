@@ -23,7 +23,14 @@ const TabBar = ({ state, navigation }: TabBarProps) => {
     return (
         <View style={tabBarStyles.container}>
             {state.routes.map((route, index) => {
-                const label = route.name === 'ServiceHome' ? '지도' : route.name === 'Community' ? '커뮤니티' : '마이';
+                const label =
+                    route.name === 'MapHome'
+                        ? '지도'
+                        : route.name === 'Community'
+                        ? '커뮤니티'
+                        : route.name === 'MyPage'
+                        ? '마이'
+                        : '알림';
 
                 const isFocused = state.index === index;
 

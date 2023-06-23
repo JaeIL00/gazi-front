@@ -252,6 +252,7 @@ export type ServiceMainTabParamList = {
     MapHome: undefined;
     Community: undefined;
     MyPage: undefined;
+    AlarmPage: undefined;
 };
 export type CommunityTabParamList = {
     AllBoard: undefined;

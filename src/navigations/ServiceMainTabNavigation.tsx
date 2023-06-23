@@ -40,6 +40,7 @@ const ServiceMainTabNavigation = () => {
             />
             <ServiceMainTab.Screen name="MapHome" component={MapHomeScreen} />
             <ServiceMainTab.Screen name="MyPage" component={MyPageScreen} />
+            <ServiceMainTab.Screen name="AlarmPage" component={MyPageScreen} />
         </ServiceMainTab.Navigator>
     );
 };
