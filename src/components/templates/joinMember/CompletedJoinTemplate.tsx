@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Image, View } from 'react-native';
-import { useRecoilState } from 'recoil';
+import { useSetRecoilState } from 'recoil';
 
 import Colors from '../../../styles/Colors';
 import BoldText from '../../smallest/BoldText';
@@ -10,9 +10,9 @@ import { CompletedJoinTemplateProps } from '../../../types/types';
 import { completedJoinTemplateStyles } from '../../../styles/styles';
 
 const CompletedJoinTemplate = ({ navigationHandler, inputNickname }: CompletedJoinTemplateProps) => {
-    const [joinMemberInfo, setJoinMemberInfo] = useRecoilState(joinMemberAtom);
+    const setJoinMemberState = useSetRecoilState(joinMemberAtom);
     useEffect(() => {
-        setJoinMemberInfo({
+        setJoinMemberState({
             email: '',
             password: '',
             nickName: '',

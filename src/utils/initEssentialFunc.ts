@@ -1,4 +1,4 @@
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 import { useMutation } from 'react-query';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import SplashScreen from 'react-native-splash-screen';
@@ -13,7 +13,7 @@ const initEssentialFunc = () => {
     const rootNavigation = useRootNavigation();
 
     // Check storage and token valication for auto login
-    const [userAuth, setUserAuth] = useRecoilState(userAuthAtom);
+    const setUserAuthState = useSetRecoilState(userAuthAtom);
     const [userInfo, setUserInfo] = useRecoilState(userInfoAtom);
     const { mutate } = useMutation(autoLoginAPI, {
         onSuccess: ({ data }) => {
@@ -55,7 +55,7 @@ const initEssentialFunc = () => {
         try {
             await AsyncStorage.setItem('GAZI_ac_tk', data.accessToken);
             await AsyncStorage.setItem('GAZI_re_tk', data.refreshToken);
-            setUserAuth({
+            setUserAuthState({
                 accessToken: data.accessToken,
                 refreshToken: data.refreshToken,
                 isLogIn: true,

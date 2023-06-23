@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import { ActivityIndicator, KeyboardAvoidingView, Modal, ToastAndroid, View } from 'react-native';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 import { useMutation, useQuery } from 'react-query';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { debounce } from 'lodash';
@@ -21,8 +21,8 @@ import { joinMemberAtom, userInfoAtom, userAuthAtom } from '../../../store/atoms
 
 const InputNicknameTemplate = ({ navigationHandler }: InputNicknameTemplateProps) => {
     const [joinData, setJoinData] = useRecoilState(joinMemberAtom);
-    const [tokenAtom, setTokenAtom] = useRecoilState(userAuthAtom);
-    const [userInfo, setUserInfo] = useRecoilState(userInfoAtom);
+    const setUserAuthState = useSetRecoilState(userAuthAtom);
+    const setUserInfoState = useSetRecoilState(userInfoAtom);
 
     const [resultText, setResultText] = useState<string>('');
     const [isModalOn, setIsModalOn] = useState<boolean>(false);
@@ -83,12 +83,12 @@ const InputNicknameTemplate = ({ navigationHandler }: InputNicknameTemplateProps
         try {
             await AsyncStorage.setItem('GAZI_ac_tk', data.accessToken);
             await AsyncStorage.setItem('GAZI_re_tk', data.refreshToken);
-            setTokenAtom({
+            setUserAuthState({
                 accessToken: data.accessToken,
                 refreshToken: data.refreshToken,
                 isLogIn: true,
             });
-            setUserInfo({
+            setUserInfoState({
                 memberId: data.memberId,
                 nickname: data.nickName,
                 email: data.email,
