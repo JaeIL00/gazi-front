@@ -8,8 +8,8 @@ import { AlarmPageTabParamList } from '../types/types';
 import { Props } from 'react-native-tab-view/lib/typescript/src/TabBarIndicator';
 
 import Colors from '../styles/Colors';
-import KeywordAlarmScreen from '../screens/Alarm/KeywordAlarmScreen';
-import NewsAlarmScreen from '../screens/Alarm/NewsAlarmScreen';
+import KeywordAlarmScreen from '../screens/alarmPage/KeywordAlarmScreen';
+import NewsAlarmScreen from '../screens/alarmPage/NewsAlarmScreen';
 
 const AlarmPageTabNavigation = () => {
     const Tab = createMaterialTopTabNavigator<AlarmPageTabParamList>();
