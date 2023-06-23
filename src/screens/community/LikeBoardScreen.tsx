@@ -7,7 +7,7 @@ import { useRootNavigation } from '../../navigations/RootStackNavigation';
 const LikeBoardScreen = () => {
     const rootNavigation = useRootNavigation();
     const moveToKeywordSettingScreen = () => {
-        rootNavigation.navigate('LikeKeywordSetting', { isFromCommunity: true });
+        rootNavigation.navigate('LikeKeywordSetting', { isShortcut: true });
     };
 
     return (

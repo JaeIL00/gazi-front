@@ -215,7 +215,7 @@ export type RootStackParamList = {
     EditNickname: undefined;
     AccountManagement: undefined;
     LikeKeywordSetting: {
-        isFromCommunity?: boolean;
+        isShortcut?: boolean;
     };
     Policies: undefined;
     ThreadItem: {
@@ -504,7 +504,7 @@ export type WritePostAddKeywordProps = {
 };
 export type EditMyKeywordProps = {
     myKeywordList: MyLikeKeywordTypes[];
-    isFromCommunity: boolean;
+    isShortcut: boolean;
     controlEditWindowHandler: (state: string) => void;
     getMyKeywordRefetch: <TPageData>(
         options?: (RefetchOptions & RefetchQueryFilters<TPageData>) | undefined,
@@ -569,7 +569,7 @@ export type ChangePasswordTemplateProps = {
     moveToBackScreenHandler: () => void;
 };
 export type LikeKeywordSettingTemplateProps = {
-    isFromCommunity: boolean | undefined;
+    isShortcut: boolean | undefined;
     moveToBackScreenHandler: () => void;
 };
 export type PoliciesTemplateProps = {
@@ -580,4 +580,7 @@ export type AllBoardTemplateProps = {
 };
 export type LikeKeywordBoardTemplateProps = {
     moveToKeywordSettingScreen: () => void;
+};
+export type KeywordAlarmTemplateProps = {
+    navigationHandler: () => void;
 };

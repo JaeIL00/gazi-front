@@ -22,7 +22,7 @@ import { issueKeywordsNotEtc, subwayKeywords, trafficKeywords } from '../../../u
 
 const EditMyKeyword = ({
     myKeywordList,
-    isFromCommunity,
+    isShortcut,
     controlEditWindowHandler,
     getMyKeywordRefetch,
 }: EditMyKeywordProps) => {
@@ -127,7 +127,7 @@ const EditMyKeyword = ({
 
     // My keyword API success
     const successEdit = async () => {
-        if (isFromCommunity) {
+        if (isShortcut) {
             rootNavigation.navigate('ServiceMainTab', { screen: 'Community' });
         } else {
             await getMyKeywordRefetch();

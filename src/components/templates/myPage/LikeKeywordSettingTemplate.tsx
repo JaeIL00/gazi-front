@@ -18,11 +18,11 @@ import { LikeKeywordSettingTemplateProps, MyLikeKeywordTypes } from '../../../ty
 
 const LikeKeywordSettingTemplate = ({
     moveToBackScreenHandler,
-    isFromCommunity = false,
+    isShortcut = false,
 }: LikeKeywordSettingTemplateProps) => {
     const { accessToken } = useRecoilValue(userAuthAtom);
 
-    const [isEditWindow, setIsEditWindow] = useState<boolean>(isFromCommunity);
+    const [isEditWindow, setIsEditWindow] = useState<boolean>(isShortcut);
     const [myKeywordList, setMyKeywordList] = useState<MyLikeKeywordTypes[]>([]);
 
     // My like keyword API
@@ -80,7 +80,7 @@ const LikeKeywordSettingTemplate = ({
                 {isEditWindow ? (
                     <EditMyKeyword
                         myKeywordList={myKeywordList}
-                        isFromCommunity={isFromCommunity}
+                        isShortcut={isShortcut}
                         controlEditWindowHandler={controlEditWindowHandler}
                         getMyKeywordRefetch={getMyKeywordRefetch}
                     />
