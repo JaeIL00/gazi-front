@@ -1,10 +1,8 @@
 import React from 'react';
-import { StatusBar, View } from 'react-native';
 
-import Colors from '../../styles/Colors';
-import { globalBackWhiteStyles } from '../../styles/styles';
-import { useRootNavigation } from '../../navigations/RootStackNavigation';
+import ScreenWrapper from '../../components/organisms/ScreenWrapper';
 import LikeKeywordBoardTemplate from '../../components/templates/community/LikeKeywordBoardTemplate';
+import { useRootNavigation } from '../../navigations/RootStackNavigation';
 
 const LikeBoardScreen = () => {
     const rootNavigation = useRootNavigation();
@@ -13,10 +11,9 @@ const LikeBoardScreen = () => {
     };
 
     return (
-        <View style={globalBackWhiteStyles.container}>
-            <StatusBar backgroundColor={Colors.WHITE} barStyle="dark-content" />
+        <ScreenWrapper isPaddingHorizontal={false}>
             <LikeKeywordBoardTemplate moveToKeywordSettingScreen={moveToKeywordSettingScreen} />
-        </View>
+        </ScreenWrapper>
     );
 };
 

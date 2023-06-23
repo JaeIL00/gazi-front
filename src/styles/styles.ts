@@ -9,14 +9,18 @@ export const appStyles = StyleSheet.create({
         flex: 1,
     },
 });
-export const globalBackWhiteStyles = StyleSheet.create({
+export const communityTabStyle = StyleSheet.create({
     container: {
-        flex: 1,
-        backgroundColor: Colors.WHITE,
+        width: '100%',
+        height: 1.5 * screenFont,
+        backgroundColor: '#EBEBEB',
+        position: 'absolute',
+        bottom: 0,
     },
-});
-export const nextStepButtonPosition = StyleSheet.create({
-    button: {},
+    animBar: {
+        height: 1.5 * screenFont,
+        backgroundColor: Colors.BLACK,
+    },
 });
 
 // SMALLEST
