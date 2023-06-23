@@ -64,9 +64,12 @@ const InputEmailTemplate = ({ navigationHandler }: InputEmailTemplateProps) => {
 
     // Request email authorization number API handling by button
     const onPressEmailAuth = debounce(() => {
-        if (!duplicatedError && email === joinData.email && isEmail && (minutes || seconds)) {
+        const doNotMutate = !duplicatedError && email === joinData.email && (minutes || seconds);
+        const doNothing = !email || !duplicatedError || !isEmail;
+
+        if (doNotMutate) {
             authData.isOk ? navigationHandler('GO') : authNumberModalHanlder('OPEN');
-        } else if (!email || !duplicatedError || !isEmail) {
+        } else if (doNothing) {
             return;
         } else {
             setJoinData({ ...joinData, email });

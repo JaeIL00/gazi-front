@@ -12,7 +12,6 @@ import NormalText from '../smallest/NormalText';
 import MediumText from '../smallest/MediumText';
 import TextButton from '../molecules/TextButton';
 import TouchButton from '../smallest/TouchButton';
-import ModalBackground from '../smallest/ModalBackground';
 import useKeyboardMotion from '../../utils/hooks/useKeyboardMotion';
 import { emailAuthAPI } from '../../queries/api';
 import { AuthEmailProps } from '../../types/types';
