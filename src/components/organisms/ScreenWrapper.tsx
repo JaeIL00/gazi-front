@@ -18,7 +18,9 @@ const ScreenWrapper = ({ children, isPaddingHorizontal }: ScreenWrapperProps) =>
             route.name === 'LikeKeywordSetting' ||
             route.name === 'WritePost' ||
             route.name === 'WriteComment' ||
-            route.name === 'MyProfile'
+            route.name === 'MyProfile' ||
+            route.name === 'KeywordAlarm' ||
+            route.name === 'NewsAlarm'
         ) {
             setStatusColor(Colors.WHITE);
             setBackgroundColor(Colors.WHITE);
