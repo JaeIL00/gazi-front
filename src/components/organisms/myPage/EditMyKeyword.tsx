@@ -126,11 +126,11 @@ const EditMyKeyword = ({
     };
 
     // My keyword API success
-    const successEdit = async () => {
+    const successEdit = () => {
         if (isShortcut) {
-            rootNavigation.navigate('ServiceMainTab', { screen: 'Community' });
+            rootNavigation.pop();
         } else {
-            await getMyKeywordRefetch();
+            getMyKeywordRefetch();
             controlEditWindowHandler('BACK');
         }
     };
