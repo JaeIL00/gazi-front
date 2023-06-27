@@ -29,6 +29,7 @@ const ThreadItemTemplate = ({
     const indexNumber = useRef<number>(0);
 
     const [commentList, setCommentList] = useState<CommentTypes[]>([]);
+    const [isReportSuccess, setIsReportSuccess] = useState<boolean>(false);
     const [isCommentRefresh, setIsCommentRefresh] = useState<boolean>(false);
     const [postValue, setPostValue] = useState<CommentTopicTypes>({
         title: '',
@@ -93,8 +94,10 @@ const ThreadItemTemplate = ({
         onSuccess: () => {
             commentRemove();
             commentRefetch();
+            setIsReportSuccess(true);
         },
         onError: ({ response }) => {
+            setIsReportSuccess(false);
             // For Debug
             console.log('(ERROR) report API. respense: ', response);
         },
@@ -122,9 +125,10 @@ const ThreadItemTemplate = ({
                 postTitle={postValue.title}
                 postCount={postValue.rePostCount}
                 firstCommentId={firstCommentId.current}
+                isReportSuccess={isReportSuccess}
             />
         ),
-        [postValue],
+        [postValue, isReportSuccess],
     );
     const commentListRefresh = () => {
         setIsCommentRefresh(true);

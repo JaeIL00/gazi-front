@@ -4,6 +4,7 @@ import { useMutation } from 'react-query';
 import { debounce } from 'lodash';
 import { useRecoilValue } from 'recoil';
 
+import ReportModal from './ReportModal';
 import Icons from '../../smallest/Icons';
 import Spacer from '../../smallest/Spacer';
 import Colors from '../../../styles/Colors';
@@ -11,6 +12,7 @@ import NormalText from '../../smallest/NormalText';
 import MediumText from '../../smallest/MediumText';
 import TouchButton from '../../smallest/TouchButton';
 import SemiBoldText from '../../smallest/SemiBoldText';
+import ModalBackground from '../../smallest/ModalBackground';
 import CommentImageItem from '../../molecules/CommentImageItem';
 import { userAuthAtom } from '../../../store/atoms';
 import { commentListItemStyles } from '../../../styles/styles';
@@ -18,11 +20,19 @@ import { CommentListItemProps, ImageViewTypes } from '../../../types/types';
 import { useRootNavigation } from '../../../navigations/RootStackNavigation';
 import { addHelpfulCommentAPI, delHelpfulCommentAPI } from '../../../queries/api';
 
-const CommentListItem = ({ comment, postTitle, postCount, reportHandler, firstCommentId }: CommentListItemProps) => {
+const CommentListItem = ({
+    comment,
+    postTitle,
+    postCount,
+    reportHandler,
+    firstCommentId,
+    isReportSuccess,
+}: CommentListItemProps) => {
     const rootNavigation = useRootNavigation();
 
     const { accessToken } = useRecoilValue(userAuthAtom);
 
+    const [isReportModal, setIsReportModal] = useState<boolean>(false);
     const [isHelpful, setIsHelpful] = useState<boolean>(comment.like);
     const [helpfulCount, setHelpfulCount] = useState<number>(comment.likeCount);
 
@@ -104,6 +114,13 @@ const CommentListItem = ({ comment, postTitle, postCount, reportHandler, firstCo
         [firstCommentId],
     );
 
+    const reportTopicHandler = () => {
+        reportHandler(comment.postId);
+    };
+    const closeReportModalHandler = () => {
+        setIsReportModal(false);
+    };
+
     // Move image view screen
     const moveImageViewScreen = (viewData: ImageViewTypes) => {
         rootNavigation.navigate('ImageView', viewData);
@@ -124,9 +141,21 @@ const CommentListItem = ({ comment, postTitle, postCount, reportHandler, firstCo
                                 <MediumText text={`${comment.distance} | ${comment.time}`} size={11} color="#999999" />
                             </View>
                         </View>
-                        <TouchButton onPress={() => reportHandler(comment.postId)} hitSlop={10}>
+                        <TouchButton
+                            onPress={
+                                // () =>
+                                () => setIsReportModal(true)
+                            }
+                            hitSlop={10}>
                             <MediumText text="신고하기" size={11} color={Colors.BLACK} />
                         </TouchButton>
+                        <ModalBackground visible={isReportModal} onRequestClose={closeReportModalHandler}>
+                            <ReportModal
+                                isReportSuccess={isReportSuccess}
+                                closeReportModalHandler={closeReportModalHandler}
+                                reportTopicHandler={reportTopicHandler}
+                            />
+                        </ModalBackground>
                     </View>
                 </View>
 

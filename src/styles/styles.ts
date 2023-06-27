@@ -233,6 +233,50 @@ export const moveBackWithPageTitleStyles = StyleSheet.create({
         paddingBottom: 43 * screenHeight,
     },
 });
+export const reportModalStyles = StyleSheet.create({
+    container: {
+        paddingHorizontal: 24 * screenWidth,
+        paddingTop: 32 * screenHeight,
+        paddingBottom: 24 * screenHeight,
+        backgroundColor: Colors.WHITE,
+        borderRadius: 12 * screenFont,
+        marginHorizontal: 33 * screenWidth,
+    },
+    titleBox: {
+        alignItems: 'center',
+    },
+    reportFinishButtonBox: {
+        flexDirection: 'row',
+        paddingTop: 30 * screenHeight,
+    },
+    reportTopicButtonBox: {
+        flexDirection: 'row',
+    },
+    topicRadioButtonBox: {
+        gap: 20 * screenHeight,
+        paddingTop: 24 * screenHeight,
+        paddingBottom: 30 * screenHeight,
+        paddingRight: 57.5 * screenWidth,
+    },
+    topicRadioButton: {
+        flexDirection: 'row',
+    },
+    radio: {
+        width: 22 * screenWidth,
+        height: 22 * screenWidth,
+        borderWidth: 1 * screenFont,
+        borderRadius: 11 * screenWidth,
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginRight: 8 * screenWidth,
+    },
+    radioInnerCircle: {
+        width: 12.7 * screenWidth,
+        height: 12.7 * screenWidth,
+        borderRadius: 6.35 * screenFont,
+        backgroundColor: '#6826F5',
+    },
+});
 export const photoGalleryStyles = StyleSheet.create({
     container: {
         backgroundColor: Colors.WHITE,

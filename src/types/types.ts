@@ -413,6 +413,11 @@ export type HeaderMoleculeProps = {
 export interface MoveBackWithPageTitleProps extends PageTitleWithExplainProps {
     onPress: () => void;
 }
+export type ReportModalProps = {
+    isReportSuccess: boolean;
+    reportTopicHandler: () => void;
+    closeReportModalHandler: () => void;
+};
 export type ScreenWrapperProps = {
     children: ReactElement;
     isPaddingHorizontal: boolean;
@@ -426,6 +431,7 @@ export type CommentListItemProps = {
     postTitle: string;
     postCount: number;
     firstCommentId: number | undefined;
+    isReportSuccess: boolean;
     reportHandler: (repostId: number) => void;
 };
 export type ServiceAgreementProps = {
