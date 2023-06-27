@@ -1,43 +1,43 @@
-import React, { useCallback, useEffect } from 'react';
+import React from 'react';
 import { SafeAreaView } from 'react-native';
-import { RootApp } from './src/RootApp';
+import RootApp, { navigationRef } from './src/RootApp';
 import { appStyles } from './src/styles/styles';
 import CodePush from 'react-native-code-push';
-import messaging from '@react-native-firebase/messaging';
 import PushNotification from 'react-native-push-notification';
+import { NavigationContainer } from '@react-navigation/native';
+import { linking } from './src/utils/linking';
+import messaging from '@react-native-firebase/messaging';
+
+// Create notification channel id
+PushNotification.createChannel(
+    {
+        channelId: 'channel_general', // (required)
+        channelName: 'General Notifications', // (required)
+    },
+    created => console.log(`createChannel returned '${created}'`), // (optional) callback returns whether the channel was created, false means it already existed.
+);
+
+// Get background notification
+messaging().setBackgroundMessageHandler(async remoteMessage => {
+    console.log('Message handled in the background!', remoteMessage);
+});
+
+// Get foreground notification
+PushNotification.configure({
+    onNotification: function (notification: any) {
+        if (notification.userInteraction) {
+            console.log('notification', notification.data);
+            navigationRef.current?.navigate(notification.data.screen);
+        }
+    },
+});
 
 function App(): JSX.Element {
-    // Create notification channel id
-    const notificationChannelId = () => {
-        PushNotification.createChannel(
-            {
-                channelId: 'channel_general', // (required)
-                channelName: 'General Notifications', // (required)
-            },
-            created => console.log(`createChannel returned '${created}'`), // (optional) callback returns whether the channel was created, false means it already existed.
-        );
-    };
-    // FCM push notification in app
-    const foregroundNotiListener = useCallback(() => {
-        messaging().onMessage(async remoteMessage => {
-            PushNotification.localNotification({
-                message: remoteMessage.notification.body,
-                title: remoteMessage.notification.title,
-                bigPictureUrl: remoteMessage.notification.android.imageUrl,
-                smallIcon: remoteMessage.notification.android.imageUrl,
-                channelId: 'channel_general',
-            });
-            console.log('FCM push notification in app', remoteMessage);
-        });
-    }, []);
-    useEffect(() => {
-        notificationChannelId();
-        foregroundNotiListener();
-    }, []);
-
     return (
         <SafeAreaView style={appStyles.container}>
-            <RootApp />
+            <NavigationContainer ref={navigationRef} linking={linking}>
+                <RootApp />
+            </NavigationContainer>
         </SafeAreaView>
     );
 }

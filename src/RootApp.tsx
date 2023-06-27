@@ -2,9 +2,9 @@ import React from 'react';
 import { LogBox, Platform, Text, TextInput } from 'react-native';
 import { RecoilRoot } from 'recoil';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import { NavigationContainer } from '@react-navigation/native';
 import { RootStackNavigation } from './navigations/RootStackNavigation';
-import { linking } from './utils/linking';
+import { createNavigationContainerRef } from '@react-navigation/native';
+import { RootStackParamList } from './types/types';
 
 interface TextWithDefaultProps extends Text {
     defaultProps?: { allowFontScaling?: boolean };
@@ -14,7 +14,9 @@ interface TextInputWithDefaultProps extends TextInput {
     defaultProps?: { allowFontScaling?: boolean };
 }
 
-export const RootApp = () => {
+export const navigationRef = createNavigationContainerRef<RootStackParamList>();
+
+const RootApp = () => {
     LogBox.ignoreAllLogs();
 
     const queryClient = new QueryClient();
@@ -33,10 +35,10 @@ export const RootApp = () => {
     return (
         <QueryClientProvider client={queryClient}>
             <RecoilRoot>
-                <NavigationContainer linking={linking}>
-                    <RootStackNavigation />
-                </NavigationContainer>
+                <RootStackNavigation />
             </RecoilRoot>
         </QueryClientProvider>
     );
 };
+
+export default RootApp;
