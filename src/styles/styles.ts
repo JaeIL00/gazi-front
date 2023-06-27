@@ -564,6 +564,10 @@ export const nearbyPostListModalStyles = StyleSheet.create({
         shadowOpacity: 0.14,
         shadowRadius: 5 * screenFont,
     },
+    nothingListGuideBox: {
+        alignItems: 'center',
+        height: '90%',
+    },
 });
 export const mapWithMarkerStyles = StyleSheet.create({
     map: {
