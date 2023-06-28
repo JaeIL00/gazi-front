@@ -1,4 +1,4 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
 	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -24,7 +24,7 @@
                     android:value="true"/>
         <!-- Change the resource name to your App's accent color - or any other color you want -->
         <meta-data  android:name="com.dieam.reactnativepushnotification.notification_color"
-                    android:resource="@android:color/white"/> <!-- or @android:color/{name} to use a standard color -->
+                    android:resource="@color/violet"/> <!-- or @android:color/{name} to use a standard color -->
 
         <receiver android:name="com.dieam.reactnativepushnotification.modules.RNPushNotificationActions" />
         <receiver android:name="com.dieam.reactnativepushnotification.modules.RNPushNotificationPublisher" />
