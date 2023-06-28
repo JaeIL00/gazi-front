@@ -1,12 +1,15 @@
 import React from 'react';
-import { SafeAreaView } from 'react-native';
-import RootApp, { navigationRef } from './src/RootApp';
+import { LogBox, Platform, SafeAreaView, Text, TextInput } from 'react-native';
 import { appStyles } from './src/styles/styles';
 import CodePush from 'react-native-code-push';
 import PushNotification from 'react-native-push-notification';
 import { NavigationContainer } from '@react-navigation/native';
 import { linking } from './src/utils/linking';
 import messaging from '@react-native-firebase/messaging';
+import { QueryClient, QueryClientProvider } from 'react-query';
+import { RecoilRoot } from 'recoil';
+import { navigationRef } from './src/navigations/RootStackNavigation';
+import RootApp from './src/RootApp';
 
 // Create notification channel id
 PushNotification.createChannel(
@@ -22,22 +25,42 @@ messaging().setBackgroundMessageHandler(async remoteMessage => {
     console.log('Message handled in the background!', remoteMessage);
 });
 
-// Get foreground notification
-PushNotification.configure({
-    onNotification: function (notification: any) {
-        if (notification.userInteraction) {
-            console.log('notification', notification.data);
-            navigationRef.current?.navigate(notification.data.screen);
-        }
-    },
+messaging().onMessage(async remoteMessage => {
+    console.log('Message ', remoteMessage);
 });
 
+interface TextWithDefaultProps extends Text {
+    defaultProps?: { allowFontScaling?: boolean };
+}
+
+interface TextInputWithDefaultProps extends TextInput {
+    defaultProps?: { allowFontScaling?: boolean };
+}
+
 function App(): JSX.Element {
+    const queryClient = new QueryClient();
+
+    LogBox.ignoreAllLogs();
+
+    // Ignore font setting of device
+    if (Platform.OS === 'android') {
+        (Text as unknown as TextWithDefaultProps).defaultProps =
+            (Text as unknown as TextWithDefaultProps).defaultProps || {};
+        (Text as unknown as TextWithDefaultProps).defaultProps!.allowFontScaling = false;
+
+        (TextInput as unknown as TextInputWithDefaultProps).defaultProps =
+            (TextInput as unknown as TextInputWithDefaultProps).defaultProps || {};
+        (TextInput as unknown as TextInputWithDefaultProps).defaultProps!.allowFontScaling = false;
+    }
     return (
         <SafeAreaView style={appStyles.container}>
-            <NavigationContainer ref={navigationRef} linking={linking}>
-                <RootApp />
-            </NavigationContainer>
+            <QueryClientProvider client={queryClient}>
+                <RecoilRoot>
+                    <NavigationContainer ref={navigationRef} linking={linking}>
+                        <RootApp />
+                    </NavigationContainer>
+                </RecoilRoot>
+            </QueryClientProvider>
         </SafeAreaView>
     );
 }

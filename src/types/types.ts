@@ -1,4 +1,5 @@
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
+import { ParamListBase } from '@react-navigation/native';
 import { AxiosResponse } from 'axios';
 import { ReactElement, RefObject } from 'react';
 import { Asset } from 'react-native-image-picker';
