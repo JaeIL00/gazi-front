@@ -15,18 +15,15 @@ const RootApp = () => {
     const setUserAuthState = useSetRecoilState(userAuthAtom);
     const [userInfo, setUserInfo] = useRecoilState(userInfoAtom);
 
-    // Get foreground notification
+    // Get notification
     PushNotification.configure({
         onNotification: (notification: any) => {
-            if (notification.userInteraction) {
-                console.log(notification);
-                if (notification.foreground) {
-                    navigationRef.current?.navigate(notification.data.screen);
-                } else {
-                    setTimeout(() => {
-                        navigationRef.current?.navigate(notification.data.screen);
-                    }, 1000);
-                }
+            if (notification.userInteraction && notification.foreground) {
+                navigationRef.current?.navigate(notification.data.screen, { postId: notification.data.postId });
+            } else if (notification.userInteraction && !notification.foreground) {
+                setTimeout(() => {
+                    navigationRef.current?.navigate(notification.data.screen, { postId: notification.data.postId });
+                }, 1000);
             }
         },
     });
