@@ -1,4 +1,4 @@
-import React, { useCallback, useLayoutEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { ActivityIndicator, FlatList, RefreshControl, View } from 'react-native';
 import { useRecoilValue } from 'recoil';
 import { useInfiniteQuery } from 'react-query';
@@ -17,14 +17,14 @@ const AllBoardTemplate = () => {
     const { isAllowLocation } = useRecoilValue(userInfoAtom);
 
     const postsResponseIndexRef = useRef<number>(0);
-    const currentPositionRef = useRef<{ lat: number; lon: number; isChecked: boolean }>({
+
+    const [postList, setPostList] = useState<PostTypes[]>([]);
+    const [isPostRefresh, setIsPostRefresh] = useState<boolean>(false);
+    const [currentPosition, setCurrentPosition] = useState<{ lat: number; lon: number; isChecked: boolean }>({
         lat: 0,
         lon: 0,
         isChecked: false,
     });
-
-    const [postList, setPostList] = useState<PostTypes[]>([]);
-    const [isPostRefresh, setIsPostRefresh] = useState<boolean>(false);
 
     // Get post API
     const {
@@ -37,8 +37,8 @@ const AllBoardTemplate = () => {
         'getAllPosts',
         ({ pageParam = 0 }) =>
             getCommunityPostAPI({
-                curLat: currentPositionRef.current.lat,
-                curLon: currentPositionRef.current.lon,
+                curLat: currentPosition.lat,
+                curLon: currentPosition.lon,
                 accessToken,
                 keywords: ALL_POSTS,
                 page: pageParam,
@@ -68,18 +68,18 @@ const AllBoardTemplate = () => {
     const getMyCurrentLocation = () => {
         if (isAllowLocation) {
             Geolocation.getCurrentPosition(info => {
-                currentPositionRef.current = {
+                setCurrentPosition({
                     lat: info.coords.latitude,
                     lon: info.coords.longitude,
                     isChecked: true,
-                };
+                });
             });
         } else {
-            currentPositionRef.current = {
+            setCurrentPosition({
                 lat: 0,
                 lon: 0,
                 isChecked: true,
-            };
+            });
         }
     };
 
@@ -111,11 +111,11 @@ const AllBoardTemplate = () => {
     }, []);
 
     useLayoutEffect(() => {
-        if (currentPositionRef.current.isChecked) {
+        if (currentPosition.isChecked) {
             remove();
             getPostRefetch();
         }
-    }, [currentPositionRef.current]);
+    }, [currentPosition]);
 
     return (
         <View style={allBoardTemplateStyles.container}>
@@ -123,7 +123,7 @@ const AllBoardTemplate = () => {
                 keyExtractor={keyExtractor}
                 data={postList}
                 renderItem={renderItem}
-                onEndReachedThreshold={1.8}
+                onEndReachedThreshold={1.0}
                 onEndReached={() => {
                     if (hasNextPage) {
                         fetchNextPage();

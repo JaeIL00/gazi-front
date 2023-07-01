@@ -45,8 +45,8 @@ const LikeKeywordBoardTemplate = ({ moveToKeywordSettingScreen }: LikeKeywordBoa
         hasNextPage,
         isFetching,
         fetchNextPage,
-        refetch: postRefetch,
-        remove: postRemove,
+        refetch: getPostRefetch,
+        remove: getPostRemove,
     } = useInfiniteQuery(
         'getLikeKeywordPosts',
         ({ pageParam = 0 }) =>
@@ -83,6 +83,7 @@ const LikeKeywordBoardTemplate = ({ moveToKeywordSettingScreen }: LikeKeywordBoa
         'getMyLikeKeyword',
         () => getMyLikeKeywordsAPI(accessToken),
         {
+            enabled: false,
             onSuccess: ({ data }) => {
                 if (data.data.length < 1) {
                     setMyKeywordList(null);
@@ -125,8 +126,8 @@ const LikeKeywordBoardTemplate = ({ moveToKeywordSettingScreen }: LikeKeywordBoa
             getKeywordPostParamRef.current =
                 getKeywordPostParamRef.current + `&keywordId=${keywords[Number(index)].id}`;
         }
-        postRemove();
-        postRefetch();
+        getPostRemove();
+        getPostRefetch();
     };
 
     // Get post list handler
@@ -144,8 +145,8 @@ const LikeKeywordBoardTemplate = ({ moveToKeywordSettingScreen }: LikeKeywordBoa
     const postListRefresh = () => {
         postsResponseIndexRef.current = 0;
         setIsPostRefresh(true);
-        postRemove();
-        postRefetch();
+        getPostRemove();
+        getPostRefetch();
     };
 
     // My like keyword posts filtering for request API by my like keyword
@@ -182,8 +183,8 @@ const LikeKeywordBoardTemplate = ({ moveToKeywordSettingScreen }: LikeKeywordBoa
     );
     const keywordPostListPostRefetch = useCallback(
         debounce(() => {
-            postRemove();
-            postRefetch();
+            getPostRemove();
+            getPostRefetch();
         }, 600),
         [],
     );
