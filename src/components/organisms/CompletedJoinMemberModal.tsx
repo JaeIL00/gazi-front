@@ -2,14 +2,14 @@ import React, { useEffect } from 'react';
 import { Image, View } from 'react-native';
 import { useSetRecoilState } from 'recoil';
 
-import Colors from '../../../styles/Colors';
-import BoldText from '../../smallest/BoldText';
-import TextButton from '../../molecules/TextButton';
-import { joinMemberAtom } from '../../../store/atoms';
-import { CompletedJoinTemplateProps } from '../../../types/types';
-import { completedJoinTemplateStyles } from '../../../styles/styles';
+import Colors from '../../styles/Colors';
+import BoldText from '../smallest/BoldText';
+import TextButton from '../molecules/TextButton';
+import { joinMemberAtom } from '../../store/atoms';
+import { CompletedJoinMemberModalProps } from '../../types/types';
+import { completedJoinTemplateStyles } from '../../styles/styles';
 
-const CompletedJoinTemplate = ({ navigationHandler, inputNickname }: CompletedJoinTemplateProps) => {
+const CompletedJoinMemberModal = ({ navigationHandler, inputNickname }: CompletedJoinMemberModalProps) => {
     const setJoinMemberInfo = useSetRecoilState(joinMemberAtom);
     useEffect(() => {
         setJoinMemberInfo({
@@ -46,4 +46,4 @@ const CompletedJoinTemplate = ({ navigationHandler, inputNickname }: CompletedJo
         </View>
     );
 };
-export default CompletedJoinTemplate;
+export default CompletedJoinMemberModal;

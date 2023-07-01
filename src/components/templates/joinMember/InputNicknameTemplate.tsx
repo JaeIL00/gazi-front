@@ -11,7 +11,7 @@ import Spacer from '../../smallest/Spacer';
 import Colors from '../../../styles/Colors';
 import MediumText from '../../smallest/MediumText';
 import TextButton from '../../molecules/TextButton';
-import CompletedJoinTemplate from './CompletedJoinTemplate';
+import CompletedJoinMemberModal from '../../organisms/CompletedJoinMemberModal';
 import MoveBackWithPageTitle from '../../organisms/MoveBackWithPageTitle';
 import { SingleLineInput } from '../../smallest/SingleLineInput';
 import { InputNicknameTemplateProps } from '../../../types/types';
@@ -194,7 +194,7 @@ const InputNicknameTemplate = ({ navigationHandler }: InputNicknameTemplateProps
             </View>
 
             <Modal visible={isModalOn}>
-                <CompletedJoinTemplate navigationHandler={navigationHandler} inputNickname={inputNickname} />
+                <CompletedJoinMemberModal navigationHandler={navigationHandler} inputNickname={inputNickname} />
             </Modal>
 
             {(isFetching || isLoading) && <ActivityIndicator size="large" />}

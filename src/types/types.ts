@@ -524,7 +524,7 @@ export type InputEmailTemplateProps = {
 };
 export interface InputPasswordTemplateProps extends InputEmailTemplateProps {}
 export interface InputNicknameTemplateProps extends InputEmailTemplateProps {}
-export interface CompletedJoinTemplateProps extends InputEmailTemplateProps {
+export interface CompletedJoinMemberModalProps extends InputEmailTemplateProps {
     inputNickname: string;
 }
 export type RequestPemissionTemplateProps = {
