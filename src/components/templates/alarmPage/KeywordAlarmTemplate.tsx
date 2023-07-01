@@ -26,7 +26,10 @@ const KeywordAlarmTemplate = ({ navigationHandler }: KeywordAlarmTemplateProps) 
         onSuccess: ({ data }) => {
             setKeywordsLength(data.data.length);
         },
-        onError: () => {},
+        onError: error => {
+            // For Debug
+            console.log('(ERROR) Get my liked keywords in alarm screen', error);
+        },
     });
 
     useLayoutEffect(() => {
