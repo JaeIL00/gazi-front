@@ -26,7 +26,7 @@ const ThreadItemTemplate = ({
     const { accessToken } = useRecoilValue(userAuthAtom);
 
     const firstCommentId = useRef<number>();
-    const indexNumber = useRef<number>(0);
+    const commentIndexRef = useRef<number>(0);
 
     const [commentList, setCommentList] = useState<CommentTypes[]>([]);
     const [isReportSuccess, setIsReportSuccess] = useState<boolean>(false);
@@ -66,11 +66,12 @@ const ThreadItemTemplate = ({
                 return nextPage === total ? undefined : nextPage;
             },
             onSuccess: data => {
-                const pageNumber = data.pages[indexNumber.current].data.data.postList.pageable.pageNumber;
-                const responseCommentList: CommentTypes[] = data.pages[indexNumber.current].data.data.postList.content;
+                const pageNumber = data.pages[commentIndexRef.current].data.data.postList.pageable.pageNumber;
+                const responseCommentList: CommentTypes[] =
+                    data.pages[commentIndexRef.current].data.data.postList.content;
                 if (pageNumber === 0) {
                     setIsCommentRefresh(false);
-                    getCommentTopic(data.pages[indexNumber.current].data.data, responseCommentList);
+                    getCommentTopic(data.pages[commentIndexRef.current].data.data, responseCommentList);
                 } else {
                     const getNotReport = responseCommentList.filter((item: CommentTypes) => !item.report);
                     setCommentList([...commentList, ...getNotReport]);
@@ -78,7 +79,7 @@ const ThreadItemTemplate = ({
                 if (data.pages[0].data.data.postList.last) {
                     firstCommentId.current = responseCommentList.pop()?.postId;
                 } else {
-                    indexNumber.current = indexNumber.current + 1;
+                    commentIndexRef.current = commentIndexRef.current + 1;
                 }
             },
             onError: ({ response }) => {
@@ -103,7 +104,7 @@ const ThreadItemTemplate = ({
         },
     });
 
-    const getCommentTopic = (data: CommentTopicTypes, content: CommentTypes[]) => {
+    const getCommentTopic = useCallback((data: CommentTopicTypes, content: CommentTypes[]) => {
         setPostValue({
             title: data.title,
             rePostCount: data.rePostCount,
@@ -114,7 +115,7 @@ const ThreadItemTemplate = ({
         });
         const getNotReport = content.filter(item => !item.report);
         setCommentList([...getNotReport]);
-    };
+    }, []);
 
     // Comment thread list render
     const renderItem = useCallback(
@@ -130,11 +131,11 @@ const ThreadItemTemplate = ({
         ),
         [postValue, isReportSuccess],
     );
-    const commentListRefresh = () => {
+    const commentListRefresh = useCallback(() => {
         setIsCommentRefresh(true);
         commentRemove();
         commentRefetch();
-    };
+    }, []);
     const ItemSeparatorComponent = useCallback(() => <Spacer height={29} />, []);
 
     const reportHandler = (repostId: number) => {
@@ -159,7 +160,7 @@ const ThreadItemTemplate = ({
 
     // If write comment, get fresh list
     useLayoutEffect(() => {
-        indexNumber.current = 0;
+        commentIndexRef.current = 0;
         commentRemove();
         commentRefetch();
     }, [freshRePostCount]);
