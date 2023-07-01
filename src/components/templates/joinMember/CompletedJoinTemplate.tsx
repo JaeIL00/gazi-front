@@ -10,9 +10,9 @@ import { CompletedJoinTemplateProps } from '../../../types/types';
 import { completedJoinTemplateStyles } from '../../../styles/styles';
 
 const CompletedJoinTemplate = ({ navigationHandler, inputNickname }: CompletedJoinTemplateProps) => {
-    const setJoinMemberState = useSetRecoilState(joinMemberAtom);
+    const setJoinMemberInfo = useSetRecoilState(joinMemberAtom);
     useEffect(() => {
-        setJoinMemberState({
+        setJoinMemberInfo({
             email: '',
             password: '',
             nickName: '',
