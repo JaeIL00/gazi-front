@@ -21,9 +21,9 @@ const MARKER_ANIM_VALUE = 110 * screenHeight;
 const MINI_ANIM_VALUE = 152 * screenHeight;
 const INIT_MINI = 440 * screenHeight;
 const INIT_OUTPUT = INIT_MINI + 100;
-const NOTHING_LIST_GUIDE_FULL_ANIM_VALUE = 256 * screenHeight;
-const NOTHING_LIST_GUIDE_MIDDLE_ANIM_VALUE = 0;
-const NOTHING_LIST_GUIDE_MINI_ANIM_VALUE = -6 * screenHeight;
+const EMPTY_LIST_GUIDE_FULL_ANIM_VALUE = 256 * screenHeight;
+const EMPTY_LIST_GUIDE_MIDDLE_ANIM_VALUE = 0;
+const EMPTY_LIST_GUIDE_MINI_ANIM_VALUE = -6 * screenHeight;
 
 const NearbyPostListModal = ({
     isModalRef,
@@ -59,7 +59,7 @@ const NearbyPostListModal = ({
                     animRef.setValue(MINI_ANIM_VALUE + dy);
                     opacityRef.setValue(-MINI_ANIM_VALUE - dy);
                     if (nearPostList.length < 1) {
-                        nothingGuideRef.setValue(NOTHING_LIST_GUIDE_MINI_ANIM_VALUE - dy);
+                        nothingGuideRef.setValue(EMPTY_LIST_GUIDE_MINI_ANIM_VALUE - dy);
                     }
                 }
                 if (animType.current === 'middle') {
@@ -75,7 +75,7 @@ const NearbyPostListModal = ({
                     animRef.setValue(FULL_ANIM_VALUE + dy);
                     opacityRef.setValue(-FULL_ANIM_VALUE - dy);
                     if (nearPostList.length < 1) {
-                        nothingGuideRef.setValue(NOTHING_LIST_GUIDE_FULL_ANIM_VALUE - dy);
+                        nothingGuideRef.setValue(EMPTY_LIST_GUIDE_FULL_ANIM_VALUE - dy);
                     }
                 }
             },
@@ -99,7 +99,7 @@ const NearbyPostListModal = ({
                     });
                     if (nearPostList.length < 1) {
                         Animated.timing(nothingGuideRef, {
-                            toValue: NOTHING_LIST_GUIDE_FULL_ANIM_VALUE,
+                            toValue: EMPTY_LIST_GUIDE_FULL_ANIM_VALUE,
                             duration: 200,
                             useNativeDriver: true,
                         }).start();
@@ -116,7 +116,7 @@ const NearbyPostListModal = ({
                     }).start();
                     if (nearPostList.length < 1) {
                         Animated.timing(nothingGuideRef, {
-                            toValue: NOTHING_LIST_GUIDE_MINI_ANIM_VALUE,
+                            toValue: EMPTY_LIST_GUIDE_MINI_ANIM_VALUE,
                             duration: 200,
                             useNativeDriver: true,
                         }).start();
@@ -135,7 +135,7 @@ const NearbyPostListModal = ({
                     notBottomSheetMini();
                     if (nearPostList.length < 1) {
                         Animated.timing(nothingGuideRef, {
-                            toValue: NOTHING_LIST_GUIDE_MIDDLE_ANIM_VALUE,
+                            toValue: EMPTY_LIST_GUIDE_MIDDLE_ANIM_VALUE,
                             duration: 200,
                             useNativeDriver: true,
                         }).start();
@@ -151,7 +151,7 @@ const NearbyPostListModal = ({
                     }).start();
                     if (nearPostList.length < 1) {
                         Animated.timing(nothingGuideRef, {
-                            toValue: NOTHING_LIST_GUIDE_MINI_ANIM_VALUE,
+                            toValue: EMPTY_LIST_GUIDE_MINI_ANIM_VALUE,
                             duration: 200,
                             useNativeDriver: true,
                         }).start();
@@ -174,7 +174,7 @@ const NearbyPostListModal = ({
                     });
                     if (nearPostList.length < 1) {
                         Animated.timing(nothingGuideRef, {
-                            toValue: NOTHING_LIST_GUIDE_FULL_ANIM_VALUE,
+                            toValue: EMPTY_LIST_GUIDE_FULL_ANIM_VALUE,
                             duration: 200,
                             useNativeDriver: true,
                         }).start();
@@ -200,7 +200,7 @@ const NearbyPostListModal = ({
                     });
                     if (nearPostList.length < 1) {
                         Animated.timing(nothingGuideRef, {
-                            toValue: NOTHING_LIST_GUIDE_MIDDLE_ANIM_VALUE,
+                            toValue: EMPTY_LIST_GUIDE_MIDDLE_ANIM_VALUE,
                             duration: 200,
                             useNativeDriver: true,
                         }).start();
@@ -225,7 +225,7 @@ const NearbyPostListModal = ({
                     });
                     if (nearPostList.length < 1) {
                         Animated.timing(nothingGuideRef, {
-                            toValue: NOTHING_LIST_GUIDE_MIDDLE_ANIM_VALUE,
+                            toValue: EMPTY_LIST_GUIDE_MIDDLE_ANIM_VALUE,
                             duration: 200,
                             useNativeDriver: true,
                         }).start();
@@ -244,7 +244,7 @@ const NearbyPostListModal = ({
                     }).start();
                     if (nearPostList.length < 1) {
                         Animated.timing(nothingGuideRef, {
-                            toValue: NOTHING_LIST_GUIDE_FULL_ANIM_VALUE,
+                            toValue: EMPTY_LIST_GUIDE_FULL_ANIM_VALUE,
                             duration: 200,
                             useNativeDriver: true,
                         }).start();
