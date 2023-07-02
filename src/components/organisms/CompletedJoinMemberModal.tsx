@@ -28,7 +28,7 @@ const CompletedJoinMemberModal = ({ navigationHandler, inputNickname }: Complete
 
             <View style={completedJoinTemplateStyles.imageBox}>
                 <Image
-                    source={require('../../../assets/join-member-complete-image.png')}
+                    source={require('../../assets/join-member-complete-image.png')}
                     style={completedJoinTemplateStyles.imageSize}
                 />
             </View>
