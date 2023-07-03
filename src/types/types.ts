@@ -207,7 +207,7 @@ export type joinMemberTypes = {
 };
 export type emailAuthAtomTypes = {
     number: number;
-    isOk: boolean;
+    isAuthorizationPass: boolean;
 };
 
 // NAVIGATION

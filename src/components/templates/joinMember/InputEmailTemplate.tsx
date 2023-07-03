@@ -68,7 +68,7 @@ const InputEmailTemplate = ({ navigationHandler }: InputEmailTemplateProps) => {
         const doNothing = !email || !duplicatedError || !isEmail;
 
         if (doNotMutate) {
-            authData.isOk ? navigationHandler('GO') : authNumberModalHanlder('OPEN');
+            authData.isAuthorizationPass ? navigationHandler('GO') : authNumberModalHanlder('OPEN');
         } else if (doNothing) {
             return;
         } else {
@@ -166,7 +166,7 @@ const InputEmailTemplate = ({ navigationHandler }: InputEmailTemplateProps) => {
 
                 <TextButton
                     onPress={onPressEmailAuth}
-                    text={authData.isOk ? '완료' : '인증메일 전송'}
+                    text={authData.isAuthorizationPass ? '완료' : '인증메일 전송'}
                     height={48}
                     backgroundColor={isEmail && !duplicatedError ? Colors.BLACK : Colors.BTN_GRAY}
                     textColor={Colors.WHITE}
