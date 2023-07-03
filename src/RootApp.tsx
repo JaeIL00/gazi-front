@@ -51,9 +51,15 @@ const RootApp = () => {
         },
     });
 
+    // Remove token in storage
     const errorLoginHandler = async (status: number) => {
         if (status === 400 || status === 404) {
-            await AsyncStorage.multiRemove(['GAZI_ac_tk', 'GAZI_re_tk']);
+            try {
+                await AsyncStorage.multiRemove(['GAZI_ac_tk', 'GAZI_re_tk']);
+            } catch (error) {
+                // For Debug
+                console.log('(ERROR) Remove token in storage', error);
+            }
         }
         navigationRef.current?.navigate('NotLoginHome');
         SplashScreen.hide();
