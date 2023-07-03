@@ -13,7 +13,7 @@ export const communityTabStyle = StyleSheet.create({
     container: {
         width: '100%',
         height: 1.5 * screenFont,
-        backgroundColor: '#EBEBEB',
+        backgroundColor: Colors.BORDER_GRAY,
         position: 'absolute',
         bottom: 0,
     },
@@ -233,6 +233,50 @@ export const moveBackWithPageTitleStyles = StyleSheet.create({
         paddingBottom: 43 * screenHeight,
     },
 });
+export const reportModalStyles = StyleSheet.create({
+    container: {
+        paddingHorizontal: 24 * screenWidth,
+        paddingTop: 32 * screenHeight,
+        paddingBottom: 24 * screenHeight,
+        backgroundColor: Colors.WHITE,
+        borderRadius: 12 * screenFont,
+        marginHorizontal: 33 * screenWidth,
+    },
+    titleBox: {
+        alignItems: 'center',
+    },
+    reportFinishButtonBox: {
+        flexDirection: 'row',
+        paddingTop: 30 * screenHeight,
+    },
+    reportTopicButtonBox: {
+        flexDirection: 'row',
+    },
+    topicRadioButtonBox: {
+        gap: 20 * screenHeight,
+        paddingTop: 24 * screenHeight,
+        paddingBottom: 30 * screenHeight,
+        paddingRight: 57.5 * screenWidth,
+    },
+    topicRadioButton: {
+        flexDirection: 'row',
+    },
+    radio: {
+        width: 22 * screenWidth,
+        height: 22 * screenWidth,
+        borderWidth: 1 * screenFont,
+        borderRadius: 11 * screenWidth,
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginRight: 8 * screenWidth,
+    },
+    radioInnerCircle: {
+        width: 12.7 * screenWidth,
+        height: 12.7 * screenWidth,
+        borderRadius: 6.35 * screenFont,
+        backgroundColor: '#6826F5',
+    },
+});
 export const photoGalleryStyles = StyleSheet.create({
     container: {
         backgroundColor: Colors.WHITE,
@@ -248,6 +292,15 @@ export const photoGalleryStyles = StyleSheet.create({
         justifyContent: 'space-between',
         paddingHorizontal: 22 * screenWidth,
         paddingVertical: 16 * screenHeight,
+        borderColor: Colors.BORDER_GRAY,
+    },
+    perPhotoImage: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingVertical: 10 * screenHeight,
+        paddingLeft: 16 * screenWidth,
+        borderBottomWidth: 1 * screenFont,
+        borderColor: Colors.BORDER_GRAY,
     },
     albumButtonBox: {
         flexDirection: 'row',
@@ -511,6 +564,10 @@ export const nearbyPostListModalStyles = StyleSheet.create({
         shadowOpacity: 0.14,
         shadowRadius: 5 * screenFont,
     },
+    nothingListGuideBox: {
+        alignItems: 'center',
+        height: '90%',
+    },
 });
 export const mapWithMarkerStyles = StyleSheet.create({
     map: {
@@ -582,7 +639,7 @@ export const searchLocationStyles = StyleSheet.create({
     },
     resultButton: {
         paddingVertical: 12 * screenHeight,
-        borderColor: '#EBEBEB',
+        borderColor: Colors.BORDER_GRAY,
         borderBottomWidth: 1 * screenFont,
         paddingHorizontal: 16 * screenWidth,
     },
@@ -887,7 +944,7 @@ export const requestPemissionTemplateStyles = StyleSheet.create({
     },
     lineBar: {
         borderTopWidth: 1 * screenFont,
-        borderColor: '#EBEBEB',
+        borderColor: Colors.BORDER_GRAY,
     },
     buttonBox: {
         position: 'absolute',
@@ -1072,7 +1129,7 @@ export const writePostTemplateStyles = StyleSheet.create({
     },
     settingContainer: {
         borderBottomWidth: 1 * screenFont,
-        borderColor: '#EBEBEB',
+        borderColor: Colors.BORDER_GRAY,
         paddingHorizontal: 16 * screenWidth,
         paddingBottom: 12 * screenHeight,
     },
@@ -1200,7 +1257,7 @@ export const writeCommentTemplateStyles = StyleSheet.create({
     },
     settingContainer: {
         borderBottomWidth: 1 * screenFont,
-        borderColor: '#EBEBEB',
+        borderColor: Colors.BORDER_GRAY,
         paddingHorizontal: 16 * screenWidth,
         paddingBottom: 12 * screenHeight,
     },
@@ -1356,7 +1413,7 @@ export const myPageTemplateStyles = StyleSheet.create({
     },
     versionBox: {
         borderBottomWidth: 1 * screenFont,
-        borderColor: '#EBEBEB',
+        borderColor: Colors.BORDER_GRAY,
         paddingHorizontal: 16 * screenWidth,
         paddingVertical: 16 * screenWidth,
         flexDirection: 'row',
@@ -1366,6 +1423,20 @@ export const myPageTemplateStyles = StyleSheet.create({
     tabRightIcon: {
         width: 8 * screenWidth,
         height: 14 * screenHeight,
+    },
+    sectionItem: {
+        paddingHorizontal: 16 * screenWidth,
+        paddingVertical: 16 * screenHeight,
+        borderColor: Colors.BORDER_GRAY,
+    },
+});
+export const keywordAlarmTemplateStyles = StyleSheet.create({
+    headerBox: {
+        flexDirection: 'row',
+        paddingTop: 14 * screenHeight,
+        paddingBottom: 13 * screenHeight,
+        justifyContent: 'space-between',
+        alignItems: 'center',
     },
 });
 export const editNicknameTemplateStyles = StyleSheet.create({
@@ -1419,7 +1490,7 @@ export const threadItemTemplateStyles = StyleSheet.create({
         alignItems: 'center',
         paddingBottom: 13 * screenHeight,
         borderBottomWidth: 1 * screenFont,
-        borderColor: '#EBEBEB',
+        borderColor: Colors.BORDER_GRAY,
     },
     headerTitleBox: {
         flexDirection: 'row',
@@ -1436,7 +1507,7 @@ export const threadItemTemplateStyles = StyleSheet.create({
     },
     commentBoxBar: {
         borderLeftWidth: 1 * screenFont,
-        borderColor: '#EBEBEB',
+        borderColor: Colors.BORDER_GRAY,
         position: 'absolute',
         top: 42 * screenHeight,
         left: 2.8 * screenWidth,
@@ -1478,6 +1549,12 @@ export const myPostCommentTemplateStyles = StyleSheet.create({
         paddingTop: 12 * screenHeight,
         borderBottomWidth: 1.5 * screenFont,
     },
+    commentItem: {
+        borderColor: Colors.BORDER_GRAY,
+        borderBottomWidth: 1 * screenFont,
+        paddingVertical: 12 * screenHeight,
+        paddingHorizontal: 16 * screenWidth,
+    },
 });
 export const AccountManagementTemplateStyles = StyleSheet.create({
     headerBox: {
@@ -1488,7 +1565,7 @@ export const AccountManagementTemplateStyles = StyleSheet.create({
         paddingLeft: 22 * screenWidth,
         paddingRight: 16 * screenWidth,
         borderBottomWidth: 1 * screenFont,
-        borderColor: '#EBEBEB',
+        borderColor: Colors.BORDER_GRAY,
     },
     headerIcon: {
         width: 9 * screenWidth,
@@ -1497,7 +1574,7 @@ export const AccountManagementTemplateStyles = StyleSheet.create({
     tabBox: {
         width: '100%',
         height: 52 * screenHeight,
-        borderColor: '#EBEBEB',
+        borderColor: Colors.BORDER_GRAY,
         borderBottomWidth: 1 * screenFont,
         paddingHorizontal: 16 * screenWidth,
     },
@@ -1519,7 +1596,7 @@ export const PoliciesTemplateStyles = StyleSheet.create({
         paddingLeft: 22 * screenWidth,
         paddingRight: 16 * screenWidth,
         borderBottomWidth: 1 * screenFont,
-        borderColor: '#EBEBEB',
+        borderColor: Colors.BORDER_GRAY,
     },
     headerIcon: {
         width: 9 * screenWidth,
@@ -1528,7 +1605,7 @@ export const PoliciesTemplateStyles = StyleSheet.create({
     tabBox: {
         width: '100%',
         height: 52 * screenHeight,
-        borderColor: '#EBEBEB',
+        borderColor: Colors.BORDER_GRAY,
         borderBottomWidth: 1 * screenFont,
         paddingHorizontal: 16 * screenWidth,
     },
@@ -1565,7 +1642,6 @@ export const allBoardTemplateStyles = StyleSheet.create({
     },
     contentBox: {
         flex: 1,
-        overflow: 'hidden',
     },
     nothingBox: {
         alignItems: 'center',
@@ -1771,7 +1847,7 @@ export const likeKeywordSettingTemplateStyles = StyleSheet.create({
         paddingLeft: 22 * screenWidth,
         paddingRight: 16 * screenWidth,
         borderBottomWidth: 1 * screenFont,
-        borderColor: '#EBEBEB',
+        borderColor: Colors.BORDER_GRAY,
         width: '100%',
     },
     headerIcon: {

@@ -1,4 +1,5 @@
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
+import { ParamListBase } from '@react-navigation/native';
 import { AxiosResponse } from 'axios';
 import { ReactElement, RefObject } from 'react';
 import { Asset } from 'react-native-image-picker';
@@ -215,7 +216,7 @@ export type RootStackParamList = {
     EditNickname: undefined;
     AccountManagement: undefined;
     LikeKeywordSetting: {
-        isFromCommunity?: boolean;
+        isShortcut?: boolean;
     };
     Policies: undefined;
     ThreadItem: {
@@ -252,10 +253,15 @@ export type ServiceMainTabParamList = {
     MapHome: undefined;
     Community: undefined;
     MyPage: undefined;
+    AlarmPage: undefined;
 };
 export type CommunityTabParamList = {
     AllBoard: undefined;
     LikeBoard: undefined;
+};
+export type AlarmPageTabParamList = {
+    KeywordAlarm: undefined;
+    NewsAlarm: undefined;
 };
 export type MyPageParamList = {
     MyPageInitial: undefined;
@@ -408,6 +414,11 @@ export type HeaderMoleculeProps = {
 export interface MoveBackWithPageTitleProps extends PageTitleWithExplainProps {
     onPress: () => void;
 }
+export type ReportModalProps = {
+    isReportSuccess: boolean;
+    reportTopicHandler: () => void;
+    closeReportModalHandler: () => void;
+};
 export type ScreenWrapperProps = {
     children: ReactElement;
     isPaddingHorizontal: boolean;
@@ -421,6 +432,7 @@ export type CommentListItemProps = {
     postTitle: string;
     postCount: number;
     firstCommentId: number | undefined;
+    isReportSuccess: boolean;
     reportHandler: (repostId: number) => void;
 };
 export type ServiceAgreementProps = {
@@ -499,7 +511,7 @@ export type WritePostAddKeywordProps = {
 };
 export type EditMyKeywordProps = {
     myKeywordList: MyLikeKeywordTypes[];
-    isFromCommunity: boolean;
+    isShortcut: boolean;
     controlEditWindowHandler: (state: string) => void;
     getMyKeywordRefetch: <TPageData>(
         options?: (RefetchOptions & RefetchQueryFilters<TPageData>) | undefined,
@@ -564,15 +576,15 @@ export type ChangePasswordTemplateProps = {
     moveToBackScreenHandler: () => void;
 };
 export type LikeKeywordSettingTemplateProps = {
-    isFromCommunity: boolean | undefined;
+    isShortcut: boolean | undefined;
     moveToBackScreenHandler: () => void;
 };
 export type PoliciesTemplateProps = {
     moveToBackScreenHandler: () => void;
 };
-export type AllBoardTemplateProps = {
-    moveToKeywordSettingScreen: () => void;
-};
 export type LikeKeywordBoardTemplateProps = {
     moveToKeywordSettingScreen: () => void;
+};
+export type KeywordAlarmTemplateProps = {
+    navigationHandler: () => void;
 };

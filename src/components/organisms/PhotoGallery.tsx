@@ -235,7 +235,6 @@ const PhotoGallery = ({ closeGalleryHandling, getImageHandler }: PhotoGalleryPro
                 style={[
                     photoGalleryStyles.headerBox,
                     {
-                        borderColor: '#EBEBEB',
                         borderBottomWidth: albumListWindow ? 1 * screenFont : undefined,
                     },
                 ]}>
@@ -281,14 +280,7 @@ const PhotoGallery = ({ closeGalleryHandling, getImageHandler }: PhotoGalleryPro
                                 key={item.title}
                                 onPress={() => onPressChangeAlbum(item.title)}
                                 activeOpacity={1}
-                                style={{
-                                    flexDirection: 'row',
-                                    alignItems: 'center',
-                                    paddingVertical: 10 * screenHeight,
-                                    paddingLeft: 16 * screenWidth,
-                                    borderBottomWidth: 1 * screenFont,
-                                    borderColor: '#EBEBEB',
-                                }}>
+                                style={photoGalleryStyles.perPhotoImage}>
                                 <Image
                                     source={{ uri: item.thumbnail }}
                                     style={{ width: 60 * screenWidth, height: 60 * screenWidth }}

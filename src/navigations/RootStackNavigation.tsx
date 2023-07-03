@@ -1,12 +1,11 @@
-import React, { useLayoutEffect } from 'react';
-import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import React from 'react';
+import { RouteProp, createNavigationContainerRef, useNavigation, useRoute } from '@react-navigation/native';
 import { NativeStackNavigationProp, createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useRecoilValue } from 'recoil';
 import SplashScreen from 'react-native-splash-screen';
 
 import WritePostScreen from '../screens/WritePostScreen';
 import JoinMemberNavigation from './JoinMemberNavigation';
-import initEssentialFunc from '../utils/initEssentialFunc';
 import LoginScreen from '../screens/login/EmailLoginScreen';
 import PoliciesScreen from '../screens/myPage/PoliciesScreen';
 import WriteCommentScreen from '../screens/WriteCommentScreen';
@@ -23,16 +22,11 @@ import LikeKeywordSettingScreen from '../screens/myPage/LikeKeywordSettingScreen
 import { userAuthAtom } from '../store/atoms';
 import { RootStackParamList } from '../types/types';
 
+export const navigationRef = createNavigationContainerRef<RootStackParamList>();
+
 export const RootStackNavigation = () => {
     const Stack = createNativeStackNavigator<RootStackParamList>();
     const { isLogIn } = useRecoilValue(userAuthAtom);
-    const { checkAsyncStorage, isAllowLocationPermission } = initEssentialFunc();
-
-    useLayoutEffect(() => {
-        checkAsyncStorage();
-        isAllowLocationPermission();
-        // SplashScreen.hide();
-    }, []);
 
     return (
         <Stack.Navigator screenOptions={{ headerShown: false }}>

@@ -48,11 +48,7 @@ const MyProfileTemplate = ({ moveToScreen }: MyPageTemplateProps) => {
             <TouchableOpacity
                 onPress={() => navigation.push(item.screen)}
                 style={[
-                    {
-                        paddingHorizontal: 16 * screenWidth,
-                        paddingVertical: 16 * screenHeight,
-                        borderColor: '#EBEBEB',
-                    },
+                    myPageTemplateStyles.sectionItem,
                     {
                         borderBottomWidth: item.isBorder ? 1 * screenFont : undefined,
                     },

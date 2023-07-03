@@ -7,19 +7,16 @@ import { useRootNavigation, useRootRoute } from '../../navigations/RootStackNavi
 const LikeKeywordSettingScreen = () => {
     const rootNavigation = useRootNavigation();
     const rootRoute = useRootRoute<'LikeKeywordSetting'>();
-    let isFromCommunity: boolean | undefined;
+    let isShortcut: boolean | undefined;
     if (rootRoute.params) {
-        isFromCommunity = rootRoute.params.isFromCommunity;
+        isShortcut = rootRoute.params.isShortcut;
     }
     const moveToBackScreenHandler = () => {
         rootNavigation.pop();
     };
     return (
         <ScreenWrapper isPaddingHorizontal={false}>
-            <LikeKeywordSettingTemplate
-                moveToBackScreenHandler={moveToBackScreenHandler}
-                isFromCommunity={isFromCommunity}
-            />
+            <LikeKeywordSettingTemplate moveToBackScreenHandler={moveToBackScreenHandler} isShortcut={isShortcut} />
         </ScreenWrapper>
     );
 };

@@ -10,6 +10,7 @@ import SemiBoldText from '../components/smallest/SemiBoldText';
 import { View } from 'react-native';
 import { ServiceMainTabParamList } from '../types/types';
 import { screenHeight, screenWidth } from '../utils/changeStyleSize';
+import AlarmPageTabNavigation from './AlarmPageTabNavigation';
 
 const ServiceMainTabNavigation = () => {
     const ServiceMainTab = createBottomTabNavigator<ServiceMainTabParamList>();
@@ -40,6 +41,25 @@ const ServiceMainTabNavigation = () => {
             />
             <ServiceMainTab.Screen name="MapHome" component={MapHomeScreen} />
             <ServiceMainTab.Screen name="MyPage" component={MyPageScreen} />
+            <ServiceMainTab.Screen
+                name="AlarmPage"
+                component={AlarmPageTabNavigation}
+                options={{
+                    headerShown: true,
+                    header: () => {
+                        return (
+                            <View
+                                style={{
+                                    backgroundColor: Colors.WHITE,
+                                    paddingLeft: 16 * screenWidth,
+                                    paddingVertical: 15.5 * screenHeight,
+                                }}>
+                                <SemiBoldText text="알림" size={20} color="#000000" />
+                            </View>
+                        );
+                    },
+                }}
+            />
         </ServiceMainTab.Navigator>
     );
 };

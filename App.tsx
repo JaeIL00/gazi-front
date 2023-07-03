@@ -1,43 +1,66 @@
-import React, { useCallback, useEffect } from 'react';
-import { SafeAreaView } from 'react-native';
-import { RootApp } from './src/RootApp';
+import React from 'react';
+import { LogBox, Platform, SafeAreaView, Text, TextInput } from 'react-native';
 import { appStyles } from './src/styles/styles';
 import CodePush from 'react-native-code-push';
-import messaging from '@react-native-firebase/messaging';
 import PushNotification from 'react-native-push-notification';
+import { NavigationContainer } from '@react-navigation/native';
+import { linking } from './src/utils/linking';
+import messaging from '@react-native-firebase/messaging';
+import { QueryClient, QueryClientProvider } from 'react-query';
+import { RecoilRoot } from 'recoil';
+import { navigationRef } from './src/navigations/RootStackNavigation';
+import RootApp from './src/RootApp';
+
+// Create notification channel id
+PushNotification.createChannel(
+    {
+        channelId: 'channel_general', // (required)
+        channelName: 'General Notifications', // (required)
+    },
+    created => console.log(`createChannel returned '${created}'`), // (optional) callback returns whether the channel was created, false means it already existed.
+);
+
+// Get background notification
+messaging().setBackgroundMessageHandler(async remoteMessage => {
+    console.log('Message handled in the background!', remoteMessage);
+});
+
+messaging().onMessage(async remoteMessage => {
+    console.log('Message ', remoteMessage);
+});
+
+interface TextWithDefaultProps extends Text {
+    defaultProps?: { allowFontScaling?: boolean };
+}
+
+interface TextInputWithDefaultProps extends TextInput {
+    defaultProps?: { allowFontScaling?: boolean };
+}
 
 function App(): JSX.Element {
-    // Create notification channel id
-    const notificationChannelId = () => {
-        PushNotification.createChannel(
-            {
-                channelId: 'channel_general', // (required)
-                channelName: 'General Notifications', // (required)
-            },
-            created => console.log(`createChannel returned '${created}'`), // (optional) callback returns whether the channel was created, false means it already existed.
-        );
-    };
-    // FCM push notification in app
-    const foregroundNotiListener = useCallback(() => {
-        messaging().onMessage(async remoteMessage => {
-            PushNotification.localNotification({
-                message: remoteMessage.notification.body,
-                title: remoteMessage.notification.title,
-                bigPictureUrl: remoteMessage.notification.android.imageUrl,
-                smallIcon: remoteMessage.notification.android.imageUrl,
-                channelId: 'channel_general',
-            });
-            console.log('FCM push notification in app', remoteMessage);
-        });
-    }, []);
-    useEffect(() => {
-        notificationChannelId();
-        foregroundNotiListener();
-    }, []);
+    const queryClient = new QueryClient();
 
+    LogBox.ignoreAllLogs();
+
+    // Ignore font setting of device
+    if (Platform.OS === 'android') {
+        (Text as unknown as TextWithDefaultProps).defaultProps =
+            (Text as unknown as TextWithDefaultProps).defaultProps || {};
+        (Text as unknown as TextWithDefaultProps).defaultProps!.allowFontScaling = false;
+
+        (TextInput as unknown as TextInputWithDefaultProps).defaultProps =
+            (TextInput as unknown as TextInputWithDefaultProps).defaultProps || {};
+        (TextInput as unknown as TextInputWithDefaultProps).defaultProps!.allowFontScaling = false;
+    }
     return (
         <SafeAreaView style={appStyles.container}>
-            <RootApp />
+            <QueryClientProvider client={queryClient}>
+                <RecoilRoot>
+                    <NavigationContainer ref={navigationRef} linking={linking}>
+                        <RootApp />
+                    </NavigationContainer>
+                </RecoilRoot>
+            </QueryClientProvider>
         </SafeAreaView>
     );
 }

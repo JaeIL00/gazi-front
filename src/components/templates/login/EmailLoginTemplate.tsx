@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { ActivityIndicator, KeyboardAvoidingView, ToastAndroid, View } from 'react-native';
+import { ActivityIndicator, KeyboardAvoidingView, View } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useMutation } from 'react-query';
 import { debounce } from 'lodash';
-import { useRecoilState } from 'recoil';
+import { useSetRecoilState } from 'recoil';
 import messaging from '@react-native-firebase/messaging';
+import { PERMISSIONS, RESULTS, check } from 'react-native-permissions';
 
 import Icons from '../../smallest/Icons';
 import Spacer from '../../smallest/Spacer';
@@ -19,11 +20,10 @@ import { fcmDeviceTokenAPI, loginAPI } from '../../../queries/api';
 import { EmailLoginTemplateProps } from '../../../types/types';
 import { emailLoginTemplateStyles } from '../../../styles/styles';
 import { userInfoAtom, userAuthAtom } from '../../../store/atoms';
-import { PERMISSIONS, RESULTS, check } from 'react-native-permissions';
 
 const EmailLoginTemplate = ({ moveServiceHomeHandler }: EmailLoginTemplateProps) => {
-    const [tokenAtom, setTokenAtom] = useRecoilState(userAuthAtom);
-    const [userInfo, setUserInfo] = useRecoilState(userInfoAtom);
+    const setUserAuthState = useSetRecoilState(userAuthAtom);
+    const setUserInfoState = useSetRecoilState(userInfoAtom);
 
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
@@ -70,7 +70,7 @@ const EmailLoginTemplate = ({ moveServiceHomeHandler }: EmailLoginTemplateProps)
         try {
             await AsyncStorage.setItem('GAZI_ac_tk', data.accessToken);
             await AsyncStorage.setItem('GAZI_re_tk', data.refreshToken);
-            setTokenAtom({
+            setUserAuthState({
                 accessToken: data.accessToken,
                 refreshToken: data.refreshToken,
                 isLogIn: true,
@@ -106,7 +106,7 @@ const EmailLoginTemplate = ({ moveServiceHomeHandler }: EmailLoginTemplateProps)
         try {
             const locationPermission = await check(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION);
             const isAllow = locationPermission === RESULTS.GRANTED;
-            setUserInfo({
+            setUserInfoState({
                 memberId: data.memberId,
                 nickname: data.nickName,
                 email: data.email,
