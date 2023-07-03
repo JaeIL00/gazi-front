@@ -8,6 +8,12 @@ import { FlexAlignType, KeyboardType, TextStyle } from 'react-native/types';
 import { QueryObserverResult, RefetchOptions, RefetchQueryFilters } from 'react-query';
 
 //COMMON
+export type AlarmHistoryTypes = {
+    body: string;
+    id: number;
+    notificationEnum: string;
+    title: string;
+};
 export type KeywordListTypes = {
     id: number;
     keywordEnum: string;
@@ -586,5 +592,5 @@ export type LikeKeywordBoardTemplateProps = {
     moveToKeywordSettingScreen: () => void;
 };
 export type KeywordAlarmTemplateProps = {
-    navigationHandler: () => void;
+    navigationHandler: (screen: string, postId?: number) => void;
 };

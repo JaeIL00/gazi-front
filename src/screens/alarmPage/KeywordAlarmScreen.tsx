@@ -6,8 +6,18 @@ import { useRootNavigation } from '../../navigations/RootStackNavigation';
 
 const KeywordAlarmScreen = () => {
     const rootNavigation = useRootNavigation();
-    const navigationHandler = () => {
-        rootNavigation.push('LikeKeywordSetting', { isShortcut: true });
+    const navigationHandler = (screen: string, postId?: number) => {
+        switch (screen) {
+            case 'LikeKeywordSetting':
+                rootNavigation.push('LikeKeywordSetting', { isShortcut: true });
+                break;
+            case 'ThreadItem':
+                if (postId) {
+                    rootNavigation.push('ThreadItem', { postId });
+                }
+
+                break;
+        }
     };
     return (
         <ScreenWrapper isPaddingHorizontal={true}>

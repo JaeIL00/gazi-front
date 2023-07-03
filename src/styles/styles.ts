@@ -1437,6 +1437,25 @@ export const keywordAlarmTemplateStyles = StyleSheet.create({
         paddingBottom: 13 * screenHeight,
         justifyContent: 'space-between',
         alignItems: 'center',
+        backgroundColor: Colors.WHITE,
+        zIndex: 1,
+    },
+    historyItemButton: {
+        paddingVertical: 18 * screenHeight,
+        flexDirection: 'row',
+    },
+    alarmIcon: {
+        borderWidth: 1 * screenFont,
+        borderRadius: 12 * screenFont,
+        borderColor: Colors.BLACK,
+        width: 24 * screenWidth,
+        height: 24 * screenWidth,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    hisrotyItemTextBox: {
+        flex: 1,
+        marginLeft: 16 * screenWidth,
     },
 });
 export const editNicknameTemplateStyles = StyleSheet.create({
