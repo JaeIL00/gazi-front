@@ -273,6 +273,8 @@ export const reportAPI = async (param: {
     data: {
         postId: number | null;
         repostId: number | null;
+        reportEnum: string;
+        reason: string;
     };
 }) => {
     const response = await Axios({

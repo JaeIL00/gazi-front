@@ -25,11 +25,9 @@ const ThreadItemTemplate = ({
 }: ThreadItemTemplateProps) => {
     const { accessToken } = useRecoilValue(userAuthAtom);
 
-    const firstCommentId = useRef<number>();
     const commentIndexRef = useRef<number>(0);
 
     const [commentList, setCommentList] = useState<CommentTypes[]>([]);
-    const [isReportSuccess, setIsReportSuccess] = useState<boolean>(false);
     const [isCommentRefresh, setIsCommentRefresh] = useState<boolean>(false);
     const [postValue, setPostValue] = useState<CommentTopicTypes>({
         title: '',
@@ -67,18 +65,15 @@ const ThreadItemTemplate = ({
             },
             onSuccess: data => {
                 const pageNumber = data.pages[commentIndexRef.current].data.data.postList.pageable.pageNumber;
-                const responseCommentList: CommentTypes[] =
-                    data.pages[commentIndexRef.current].data.data.postList.content;
+                const content: CommentTypes[] = data.pages[commentIndexRef.current].data.data.postList.content;
                 if (pageNumber === 0) {
                     setIsCommentRefresh(false);
-                    getCommentTopic(data.pages[commentIndexRef.current].data.data, responseCommentList);
+                    getCommentTopic(data.pages[commentIndexRef.current].data.data, content);
                 } else {
-                    const getNotReport = responseCommentList.filter((item: CommentTypes) => !item.report);
+                    const getNotReport = content.filter((item: CommentTypes) => !item.report);
                     setCommentList([...commentList, ...getNotReport]);
                 }
-                if (data.pages[0].data.data.postList.last) {
-                    firstCommentId.current = responseCommentList.pop()?.postId;
-                } else {
+                if (!data.pages[0].data.data.postList.last) {
                     commentIndexRef.current = commentIndexRef.current + 1;
                 }
             },
@@ -90,19 +85,10 @@ const ThreadItemTemplate = ({
         },
     );
 
-    // Comment report API
-    const { mutate, isLoading } = useMutation(reportAPI, {
-        onSuccess: () => {
-            commentRemove();
-            commentRefetch();
-            setIsReportSuccess(true);
-        },
-        onError: ({ response }) => {
-            setIsReportSuccess(false);
-            // For Debug
-            console.log('(ERROR) report API. respense: ', response);
-        },
-    });
+    const getCommentListRefetch = () => {
+        commentRemove();
+        commentRefetch();
+    };
 
     const getCommentTopic = useCallback((data: CommentTopicTypes, content: CommentTypes[]) => {
         setPostValue({
@@ -122,47 +108,23 @@ const ThreadItemTemplate = ({
         ({ item }: { item: CommentTypes }) => (
             <CommentListItem
                 comment={item}
-                reportHandler={reportHandler}
                 postTitle={postValue.title}
                 postCount={postValue.rePostCount}
-                firstCommentId={firstCommentId.current}
-                isReportSuccess={isReportSuccess}
+                getCommentListRefetch={getCommentListRefetch}
             />
         ),
-        [postValue, isReportSuccess],
+        [postValue],
     );
     const commentListRefresh = useCallback(() => {
         setIsCommentRefresh(true);
-        commentRemove();
-        commentRefetch();
+        getCommentListRefetch();
     }, []);
     const ItemSeparatorComponent = useCallback(() => <Spacer height={29} />, []);
-
-    const reportHandler = (repostId: number) => {
-        if (firstCommentId.current === repostId) {
-            mutate({
-                accessToken,
-                data: {
-                    postId: repostId,
-                    repostId: null,
-                },
-            });
-        } else {
-            mutate({
-                accessToken,
-                data: {
-                    postId: null,
-                    repostId,
-                },
-            });
-        }
-    };
 
     // If write comment, get fresh list
     useLayoutEffect(() => {
         commentIndexRef.current = 0;
-        commentRemove();
-        commentRefetch();
+        getCommentListRefetch();
     }, [freshRePostCount]);
 
     return (

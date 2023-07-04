@@ -75,6 +75,7 @@ export type CommentTypes = {
     report: boolean;
     time: string;
     postId: number;
+    post: boolean;
 };
 export type uploadImageFileTypes = {
     uri: string;
@@ -422,8 +423,10 @@ export interface MoveBackWithPageTitleProps extends PageTitleWithExplainProps {
 }
 export type ReportModalProps = {
     isReportSuccess: boolean;
-    reportTopicHandler: () => void;
+    repostId: number;
+    reportMutate: (repostId: number, reportEnum: string, reason: string) => void;
     closeReportModalHandler: () => void;
+    getCommentListRefetch: () => void;
 };
 export type ScreenWrapperProps = {
     children: ReactElement;
@@ -437,9 +440,7 @@ export type CommentListItemProps = {
     comment: CommentTypes;
     postTitle: string;
     postCount: number;
-    firstCommentId: number | undefined;
-    isReportSuccess: boolean;
-    reportHandler: (repostId: number) => void;
+    getCommentListRefetch: () => void;
 };
 export type ServiceAgreementProps = {
     finishSlideComponentHandler: (state: string) => void;

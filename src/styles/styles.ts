@@ -251,11 +251,11 @@ export const reportModalStyles = StyleSheet.create({
     },
     reportTopicButtonBox: {
         flexDirection: 'row',
+        paddingTop: 30 * screenHeight,
     },
     topicRadioButtonBox: {
         gap: 20 * screenHeight,
         paddingTop: 24 * screenHeight,
-        paddingBottom: 30 * screenHeight,
         paddingRight: 57.5 * screenWidth,
     },
     topicRadioButton: {
@@ -275,6 +275,12 @@ export const reportModalStyles = StyleSheet.create({
         height: 12.7 * screenWidth,
         borderRadius: 6.35 * screenFont,
         backgroundColor: '#6826F5',
+    },
+    etcTextInputBox: {
+        borderBottomWidth: 1 * screenFont,
+        borderColor: Colors.BORDER_GRAY,
+        height: 27 * screenHeight,
+        marginTop: 16 * screenHeight,
     },
 });
 export const photoGalleryStyles = StyleSheet.create({
