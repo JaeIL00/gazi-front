@@ -1809,7 +1809,7 @@ export const DeleteMemberTemplateStyles = StyleSheet.create({
         height: 16 * screenHeight,
     },
     explainBox: {
-        paddingTop: 27 * screenHeight,
+        paddingTop: 20 * screenHeight,
     },
     explainList: {
         flexDirection: 'row',
