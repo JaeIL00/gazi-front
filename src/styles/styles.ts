@@ -154,6 +154,21 @@ export const modalBackgroundStyles = (width: number, height: number) =>
     });
 
 // MOLECULES
+export const writingFloatingBtnStyles = StyleSheet.create({
+    dropshadow: {
+        shadowColor: '#000000',
+        shadowOffset: {
+            width: 0,
+            height: 4 * screenHeight,
+        },
+        shadowOpacity: 0.14,
+        shadowRadius: 5 * screenFont,
+    },
+    writeIcon: {
+        width: 14.5 * screenWidth,
+        height: 16 * screenHeight,
+    },
+});
 export const loginTextInputStyles = StyleSheet.create({
     inputBox: {
         borderRadius: 5 * screenFont,
@@ -557,19 +572,7 @@ export const nearbyPostListModalStyles = StyleSheet.create({
         width: 20 * screenWidth,
         height: 20 * screenWidth,
     },
-    writeIcon: {
-        width: 14.5 * screenWidth,
-        height: 16 * screenHeight,
-    },
-    dropshadow: {
-        shadowColor: '#000000',
-        shadowOffset: {
-            width: 0,
-            height: 4 * screenHeight,
-        },
-        shadowOpacity: 0.14,
-        shadowRadius: 5 * screenFont,
-    },
+
     nothingListGuideBox: {
         alignItems: 'center',
         height: '90%',

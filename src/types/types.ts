@@ -370,6 +370,9 @@ export type ModalBackgroundProps = {
 };
 
 // MOLECULES
+export type WritingFloatingBtnProps = {
+    moveToWritingScreen: () => void;
+};
 export interface LoginTextInputProps extends SingleLineInputProps {
     title: string;
 }
@@ -502,7 +505,7 @@ export type NearbyPostListModalProps = {
     notBottomSheetMini: () => void;
     onPressGetUserPosition: () => void;
     callNextPageHandler: () => void;
-    moveToWritePost: () => void;
+    moveToWritingScreen: () => void;
     nearPostListRefresh: () => void;
 };
 export type SearchLocationProps = {
@@ -545,7 +548,7 @@ export interface InitLikeKeywordTemplateProps extends RequestPemissionTemplatePr
 export type MapHomeTemplateProps = {
     isModalRef: React.MutableRefObject<boolean>;
     handleModalTrigger: boolean;
-    moveToWritePost: () => void;
+    moveToWritingScreen: () => void;
 };
 export type WritePostTemplateProps = {
     navigationHandler: (state: string, postId?: number) => void;

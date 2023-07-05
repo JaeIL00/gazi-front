@@ -1,19 +1,19 @@
 import React, { useCallback, useEffect, useRef } from 'react';
-import { Animated, FlatList, PanResponder, PanResponderInstance, Platform, RefreshControl, View } from 'react-native';
-import DropShadow from 'react-native-drop-shadow';
+import { Animated, FlatList, PanResponder, PanResponderInstance, RefreshControl, View } from 'react-native';
 import { useRecoilValue } from 'recoil';
 import FastImage from 'react-native-fast-image';
 
 import Spacer from '../smallest/Spacer';
 import Colors from '../../styles/Colors';
 import PostListItem from './PostListItem';
+import NormalText from '../smallest/NormalText';
 import TouchButton from '../smallest/TouchButton';
 import SemiBoldText from '../smallest/SemiBoldText';
+import WritingFloatingBtn from '../molecules/WritingFloatingBtn';
 import { userInfoAtom } from '../../store/atoms';
 import { screenHeight } from '../../utils/changeStyleSize';
 import { nearbyPostListModalStyles } from '../../styles/styles';
 import { NearbyPostListModalProps, PostTypes } from '../../types/types';
-import NormalText from '../smallest/NormalText';
 
 const FULL_ANIM_VALUE = -415 * screenHeight;
 const MIDDLE_ANIM_VALUE = 0;
@@ -39,7 +39,7 @@ const NearbyPostListModal = ({
     notBottomSheetMini,
     onPressGetUserPosition,
     callNextPageHandler,
-    moveToWritePost,
+    moveToWritingScreen,
     nearPostListRefresh,
 }: NearbyPostListModalProps) => {
     const { nickname } = useRecoilValue(userInfoAtom);
@@ -369,21 +369,7 @@ const NearbyPostListModal = ({
                         />
                     </TouchButton>
                     <Spacer height={8} />
-                    {Platform.OS === 'android' && (
-                        <DropShadow style={nearbyPostListModalStyles.dropshadow}>
-                            <TouchButton
-                                onPress={moveToWritePost}
-                                width={52}
-                                height={52}
-                                borderRadius={52}
-                                backgroundColor={Colors.VIOLET}>
-                                <FastImage
-                                    source={require('../../assets/icons/write.png')}
-                                    style={nearbyPostListModalStyles.writeIcon}
-                                />
-                            </TouchButton>
-                        </DropShadow>
-                    )}
+                    <WritingFloatingBtn moveToWritingScreen={moveToWritingScreen} />
                 </View>
             </Animated.View>
             <Animated.View
@@ -436,7 +422,7 @@ const NearbyPostListModal = ({
                         <NormalText text="내 주변의 교통상황을 알려주세요" color={Colors.TXT_GRAY} size={14} />
                         <Spacer height={22} />
                         <TouchButton
-                            onPress={moveToWritePost}
+                            onPress={moveToWritingScreen}
                             borderColor={Colors.BTN_GRAY}
                             borderWidth={1}
                             paddingHorizontal={16}
