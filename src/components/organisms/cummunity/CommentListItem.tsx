@@ -20,7 +20,13 @@ import { CommentListItemProps, ImageViewTypes } from '../../../types/types';
 import { useRootNavigation } from '../../../navigations/RootStackNavigation';
 import { addHelpfulCommentAPI, delHelpfulCommentAPI, reportAPI } from '../../../queries/api';
 
-const CommentListItem = ({ comment, postTitle, postCount, getCommentListRefetch }: CommentListItemProps) => {
+const CommentListItem = ({
+    comment,
+    postTitle,
+    postCount,
+    getCommentListRefetch,
+    delReportComment,
+}: CommentListItemProps) => {
     const rootNavigation = useRootNavigation();
 
     const { accessToken } = useRecoilValue(userAuthAtom);
@@ -146,6 +152,7 @@ const CommentListItem = ({ comment, postTitle, postCount, getCommentListRefetch 
 
     const closeReportModalHandler = () => {
         setIsReportModal(false);
+        delReportComment(comment.postId);
     };
 
     // Move image view screen

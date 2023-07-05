@@ -2,7 +2,7 @@ import React, { useCallback, useLayoutEffect, useRef, useState } from 'react';
 import { FlatList, Image, Platform, View } from 'react-native';
 import DropShadow from 'react-native-drop-shadow';
 import { useRecoilValue } from 'recoil';
-import { useInfiniteQuery, useMutation } from 'react-query';
+import { useInfiniteQuery } from 'react-query';
 
 import Icons from '../../smallest/Icons';
 import Spacer from '../../smallest/Spacer';
@@ -12,8 +12,8 @@ import TouchButton from '../../smallest/TouchButton';
 import SemiBoldText from '../../smallest/SemiBoldText';
 import CommentListItem from '../../organisms/cummunity/CommentListItem';
 import { userAuthAtom } from '../../../store/atoms';
+import { getCommentListAPI } from '../../../queries/api';
 import { threadItemTemplateStyles } from '../../../styles/styles';
-import { getCommentListAPI, reportAPI } from '../../../queries/api';
 import { screenHeight, screenWidth } from '../../../utils/changeStyleSize';
 import { CommentTopicTypes, CommentTypes, ThreadItemTemplateProps } from '../../../types/types';
 
@@ -47,7 +47,7 @@ const ThreadItemTemplate = ({
         refetch: commentRefetch,
         remove: commentRemove,
     } = useInfiniteQuery(
-        ['getCommentList'],
+        'getCommentList',
         ({ pageParam = 0 }) =>
             getCommentListAPI({
                 accessToken,
@@ -57,8 +57,7 @@ const ThreadItemTemplate = ({
                 page: pageParam,
             }),
         {
-            cacheTime: 0,
-            getNextPageParam: (lastPage, allPages) => {
+            getNextPageParam: lastPage => {
                 const total = lastPage.data.data.postList.totalPages;
                 const nextPage = lastPage.data.data.postList.pageable.pageNumber + 1;
                 return nextPage === total ? undefined : nextPage;
@@ -66,12 +65,13 @@ const ThreadItemTemplate = ({
             onSuccess: data => {
                 const pageNumber = data.pages[commentIndexRef.current].data.data.postList.pageable.pageNumber;
                 const content: CommentTypes[] = data.pages[commentIndexRef.current].data.data.postList.content;
+                const getNotReported = content.filter((item: CommentTypes) => !item.report);
                 if (pageNumber === 0) {
+                    getCommentTopic(data.pages[commentIndexRef.current].data.data);
+                    setCommentList(getNotReported);
                     setIsCommentRefresh(false);
-                    getCommentTopic(data.pages[commentIndexRef.current].data.data, content);
                 } else {
-                    const getNotReport = content.filter((item: CommentTypes) => !item.report);
-                    setCommentList([...commentList, ...getNotReport]);
+                    setCommentList([...commentList, ...getNotReported]);
                 }
                 if (!data.pages[0].data.data.postList.last) {
                     commentIndexRef.current = commentIndexRef.current + 1;
@@ -90,7 +90,8 @@ const ThreadItemTemplate = ({
         commentRefetch();
     };
 
-    const getCommentTopic = useCallback((data: CommentTopicTypes, content: CommentTypes[]) => {
+    // Get comment topic by comment API
+    const getCommentTopic = useCallback((data: CommentTopicTypes) => {
         setPostValue({
             title: data.title,
             rePostCount: data.rePostCount,
@@ -99,9 +100,13 @@ const ThreadItemTemplate = ({
             distance: data.distance,
             backgroundMapUrl: data.backgroundMapUrl,
         });
-        const getNotReport = content.filter(item => !item.report);
-        setCommentList([...getNotReport]);
     }, []);
+
+    // Delete report comment from success report API
+    const delReportComment = (postId: number) => {
+        // commentList.filter(comment => comment.postId !== postId);
+        setCommentList(prev => prev.filter(comment => comment.postId !== postId));
+    };
 
     // Comment thread list render
     const renderItem = useCallback(
@@ -111,6 +116,7 @@ const ThreadItemTemplate = ({
                 postTitle={postValue.title}
                 postCount={postValue.rePostCount}
                 getCommentListRefetch={getCommentListRefetch}
+                delReportComment={delReportComment}
             />
         ),
         [postValue],

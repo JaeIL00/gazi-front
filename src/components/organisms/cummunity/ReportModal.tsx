@@ -35,11 +35,6 @@ const ReportModal = ({
         }
     };
 
-    const finishReportModal = () => {
-        closeReportModalHandler();
-        // getCommentListRefetch();
-    };
-
     const radioButtonTopic = useCallback(
         (topic: { title: string; parameterValue: string }) => (
             <TouchableOpacity
@@ -73,7 +68,7 @@ const ReportModal = ({
                         </View>
                         <View style={reportModalStyles.reportFinishButtonBox}>
                             <TouchButton
-                                onPress={finishReportModal}
+                                onPress={closeReportModalHandler}
                                 width="100%"
                                 backgroundColor={Colors.BLACK}
                                 paddingVertical={12}>

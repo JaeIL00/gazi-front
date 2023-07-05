@@ -441,6 +441,7 @@ export type CommentListItemProps = {
     postTitle: string;
     postCount: number;
     getCommentListRefetch: () => void;
+    delReportComment: (postId: number) => void;
 };
 export type ServiceAgreementProps = {
     finishSlideComponentHandler: (state: string) => void;
