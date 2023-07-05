@@ -333,7 +333,7 @@ const NearbyPostListModal = ({
                         }),
                         zIndex: opacityRef.interpolate({
                             inputRange: [-MIDDLE_ANIM_VALUE, -MIDDLE_ANIM_VALUE + 10, -FULL_ANIM_VALUE],
-                            outputRange: [-1, 0, 0],
+                            outputRange: [-1, 1, 1],
                         }),
                     },
                 ]}
