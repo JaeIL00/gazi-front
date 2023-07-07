@@ -81,8 +81,8 @@ const InputNicknameTemplate = ({ navigationHandler }: InputNicknameTemplateProps
         email: string;
     }) => {
         try {
-            await AsyncStorage.setItem('GAZI_ac_tk', data.accessToken);
-            await AsyncStorage.setItem('GAZI_re_tk', data.refreshToken);
+            await AsyncStorage.setItem('access_token', data.accessToken);
+            await AsyncStorage.setItem('refresh_token', data.refreshToken);
             setUserAuthState({
                 accessToken: data.accessToken,
                 refreshToken: data.refreshToken,
