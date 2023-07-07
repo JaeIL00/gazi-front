@@ -67,5 +67,16 @@
 			<data android:scheme="gazinow" />
 		</intent-filter> 
       </activity>
+	  <activity
+		android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity"
+		android:exported="true">
+		<intent-filter>
+			<action android:name="android.intent.action.VIEW" />
+			<category android:name="android.intent.category.DEFAULT" />
+			<category android:name="android.intent.category.BROWSABLE" />
+			<data android:host="oauth"
+				android:scheme="kakaoee5a94d7095fc014a11ac4dadd9eee51" />
+		</intent-filter>
+	  </activity>
     </application>
 </manifest>

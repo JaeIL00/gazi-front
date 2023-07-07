@@ -2,4 +2,5 @@
     <string name="app_name">가는길지금</string>
 	<string name="appCenterCrashes_whenToSendCrashes" moduleConfig="true" translatable="false">DO_NOT_ASK_JAVASCRIPT</string>
 	<string name="appCenterAnalytics_whenToEnableAnalytics" moduleConfig="true" translatable="false">ALWAYS_SEND</string>
+	<string name="kakao_app_key">ee5a94d7095fc014a11ac4dadd9eee51</string>
 </resources>

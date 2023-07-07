@@ -30,7 +30,7 @@ const AccountManagementTemplate = ({ moveToScreenHandler }: AccountManagementTem
     });
     const logoutHandler = async () => {
         try {
-            await AsyncStorage.multiRemove(['GAZI_ac_tk', 'GAZI_re_tk']);
+            await AsyncStorage.multiRemove(['access_token', 'refresh_token']);
             setUserAuth({
                 ...userAuth,
                 isLogIn: false,
