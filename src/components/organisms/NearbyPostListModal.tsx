@@ -1,19 +1,19 @@
 import React, { useCallback, useEffect, useRef } from 'react';
-import { Animated, FlatList, PanResponder, PanResponderInstance, Platform, RefreshControl, View } from 'react-native';
-import DropShadow from 'react-native-drop-shadow';
+import { Animated, FlatList, PanResponder, PanResponderInstance, RefreshControl, View } from 'react-native';
 import { useRecoilValue } from 'recoil';
 import FastImage from 'react-native-fast-image';
 
 import Spacer from '../smallest/Spacer';
 import Colors from '../../styles/Colors';
 import PostListItem from './PostListItem';
+import NormalText from '../smallest/NormalText';
 import TouchButton from '../smallest/TouchButton';
 import SemiBoldText from '../smallest/SemiBoldText';
+import WritingFloatingBtn from '../molecules/WritingFloatingBtn';
 import { userInfoAtom } from '../../store/atoms';
 import { screenHeight } from '../../utils/changeStyleSize';
 import { nearbyPostListModalStyles } from '../../styles/styles';
 import { NearbyPostListModalProps, PostTypes } from '../../types/types';
-import NormalText from '../smallest/NormalText';
 
 const FULL_ANIM_VALUE = -415 * screenHeight;
 const MIDDLE_ANIM_VALUE = 0;
@@ -21,9 +21,9 @@ const MARKER_ANIM_VALUE = 110 * screenHeight;
 const MINI_ANIM_VALUE = 152 * screenHeight;
 const INIT_MINI = 440 * screenHeight;
 const INIT_OUTPUT = INIT_MINI + 100;
-const NOTHING_LIST_GUIDE_FULL_ANIM_VALUE = 256 * screenHeight;
-const NOTHING_LIST_GUIDE_MIDDLE_ANIM_VALUE = 0;
-const NOTHING_LIST_GUIDE_MINI_ANIM_VALUE = -6 * screenHeight;
+const EMPTY_LIST_GUIDE_FULL_ANIM_VALUE = 256 * screenHeight;
+const EMPTY_LIST_GUIDE_MIDDLE_ANIM_VALUE = 0;
+const EMPTY_LIST_GUIDE_MINI_ANIM_VALUE = -6 * screenHeight;
 
 const NearbyPostListModal = ({
     isModalRef,
@@ -39,7 +39,7 @@ const NearbyPostListModal = ({
     notBottomSheetMini,
     onPressGetUserPosition,
     callNextPageHandler,
-    moveToWritePost,
+    moveToWritingScreen,
     nearPostListRefresh,
 }: NearbyPostListModalProps) => {
     const { nickname } = useRecoilValue(userInfoAtom);
@@ -59,7 +59,7 @@ const NearbyPostListModal = ({
                     animRef.setValue(MINI_ANIM_VALUE + dy);
                     opacityRef.setValue(-MINI_ANIM_VALUE - dy);
                     if (nearPostList.length < 1) {
-                        nothingGuideRef.setValue(NOTHING_LIST_GUIDE_MINI_ANIM_VALUE - dy);
+                        nothingGuideRef.setValue(EMPTY_LIST_GUIDE_MINI_ANIM_VALUE - dy);
                     }
                 }
                 if (animType.current === 'middle') {
@@ -75,7 +75,7 @@ const NearbyPostListModal = ({
                     animRef.setValue(FULL_ANIM_VALUE + dy);
                     opacityRef.setValue(-FULL_ANIM_VALUE - dy);
                     if (nearPostList.length < 1) {
-                        nothingGuideRef.setValue(NOTHING_LIST_GUIDE_FULL_ANIM_VALUE - dy);
+                        nothingGuideRef.setValue(EMPTY_LIST_GUIDE_FULL_ANIM_VALUE - dy);
                     }
                 }
             },
@@ -99,7 +99,7 @@ const NearbyPostListModal = ({
                     });
                     if (nearPostList.length < 1) {
                         Animated.timing(nothingGuideRef, {
-                            toValue: NOTHING_LIST_GUIDE_FULL_ANIM_VALUE,
+                            toValue: EMPTY_LIST_GUIDE_FULL_ANIM_VALUE,
                             duration: 200,
                             useNativeDriver: true,
                         }).start();
@@ -116,7 +116,7 @@ const NearbyPostListModal = ({
                     }).start();
                     if (nearPostList.length < 1) {
                         Animated.timing(nothingGuideRef, {
-                            toValue: NOTHING_LIST_GUIDE_MINI_ANIM_VALUE,
+                            toValue: EMPTY_LIST_GUIDE_MINI_ANIM_VALUE,
                             duration: 200,
                             useNativeDriver: true,
                         }).start();
@@ -135,7 +135,7 @@ const NearbyPostListModal = ({
                     notBottomSheetMini();
                     if (nearPostList.length < 1) {
                         Animated.timing(nothingGuideRef, {
-                            toValue: NOTHING_LIST_GUIDE_MIDDLE_ANIM_VALUE,
+                            toValue: EMPTY_LIST_GUIDE_MIDDLE_ANIM_VALUE,
                             duration: 200,
                             useNativeDriver: true,
                         }).start();
@@ -151,7 +151,7 @@ const NearbyPostListModal = ({
                     }).start();
                     if (nearPostList.length < 1) {
                         Animated.timing(nothingGuideRef, {
-                            toValue: NOTHING_LIST_GUIDE_MINI_ANIM_VALUE,
+                            toValue: EMPTY_LIST_GUIDE_MINI_ANIM_VALUE,
                             duration: 200,
                             useNativeDriver: true,
                         }).start();
@@ -174,7 +174,7 @@ const NearbyPostListModal = ({
                     });
                     if (nearPostList.length < 1) {
                         Animated.timing(nothingGuideRef, {
-                            toValue: NOTHING_LIST_GUIDE_FULL_ANIM_VALUE,
+                            toValue: EMPTY_LIST_GUIDE_FULL_ANIM_VALUE,
                             duration: 200,
                             useNativeDriver: true,
                         }).start();
@@ -200,7 +200,7 @@ const NearbyPostListModal = ({
                     });
                     if (nearPostList.length < 1) {
                         Animated.timing(nothingGuideRef, {
-                            toValue: NOTHING_LIST_GUIDE_MIDDLE_ANIM_VALUE,
+                            toValue: EMPTY_LIST_GUIDE_MIDDLE_ANIM_VALUE,
                             duration: 200,
                             useNativeDriver: true,
                         }).start();
@@ -225,7 +225,7 @@ const NearbyPostListModal = ({
                     });
                     if (nearPostList.length < 1) {
                         Animated.timing(nothingGuideRef, {
-                            toValue: NOTHING_LIST_GUIDE_MIDDLE_ANIM_VALUE,
+                            toValue: EMPTY_LIST_GUIDE_MIDDLE_ANIM_VALUE,
                             duration: 200,
                             useNativeDriver: true,
                         }).start();
@@ -244,7 +244,7 @@ const NearbyPostListModal = ({
                     }).start();
                     if (nearPostList.length < 1) {
                         Animated.timing(nothingGuideRef, {
-                            toValue: NOTHING_LIST_GUIDE_FULL_ANIM_VALUE,
+                            toValue: EMPTY_LIST_GUIDE_FULL_ANIM_VALUE,
                             duration: 200,
                             useNativeDriver: true,
                         }).start();
@@ -333,7 +333,7 @@ const NearbyPostListModal = ({
                         }),
                         zIndex: opacityRef.interpolate({
                             inputRange: [-MIDDLE_ANIM_VALUE, -MIDDLE_ANIM_VALUE + 10, -FULL_ANIM_VALUE],
-                            outputRange: [-1, 0, 0],
+                            outputRange: [-1, 1, 1],
                         }),
                     },
                 ]}
@@ -369,21 +369,7 @@ const NearbyPostListModal = ({
                         />
                     </TouchButton>
                     <Spacer height={8} />
-                    {Platform.OS === 'android' && (
-                        <DropShadow style={nearbyPostListModalStyles.dropshadow}>
-                            <TouchButton
-                                onPress={moveToWritePost}
-                                width={52}
-                                height={52}
-                                borderRadius={52}
-                                backgroundColor={Colors.VIOLET}>
-                                <FastImage
-                                    source={require('../../assets/icons/write.png')}
-                                    style={nearbyPostListModalStyles.writeIcon}
-                                />
-                            </TouchButton>
-                        </DropShadow>
-                    )}
+                    <WritingFloatingBtn moveToWritingScreen={moveToWritingScreen} />
                 </View>
             </Animated.View>
             <Animated.View
@@ -436,7 +422,7 @@ const NearbyPostListModal = ({
                         <NormalText text="내 주변의 교통상황을 알려주세요" color={Colors.TXT_GRAY} size={14} />
                         <Spacer height={22} />
                         <TouchButton
-                            onPress={moveToWritePost}
+                            onPress={moveToWritingScreen}
                             borderColor={Colors.BTN_GRAY}
                             borderWidth={1}
                             paddingHorizontal={16}

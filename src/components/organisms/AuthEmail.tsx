@@ -63,7 +63,7 @@ const AuthEmail = ({ min, sec, resetTimeHandler, authNumberModalHanlder }: AuthE
                 useNativeDriver: true,
             }).start(({ finished }: { finished: boolean }) => {
                 if (finished) {
-                    setAuthData({ number: 0, isOk: true });
+                    setAuthData({ number: 0, isAuthorizationPass: true });
                     authNumberModalHanlder('CORRECT');
                 }
             });

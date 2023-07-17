@@ -154,6 +154,21 @@ export const modalBackgroundStyles = (width: number, height: number) =>
     });
 
 // MOLECULES
+export const writingFloatingBtnStyles = StyleSheet.create({
+    dropshadow: {
+        shadowColor: '#000000',
+        shadowOffset: {
+            width: 0,
+            height: 4 * screenHeight,
+        },
+        shadowOpacity: 0.14,
+        shadowRadius: 5 * screenFont,
+    },
+    writeIcon: {
+        width: 14.5 * screenWidth,
+        height: 16 * screenHeight,
+    },
+});
 export const loginTextInputStyles = StyleSheet.create({
     inputBox: {
         borderRadius: 5 * screenFont,
@@ -251,11 +266,11 @@ export const reportModalStyles = StyleSheet.create({
     },
     reportTopicButtonBox: {
         flexDirection: 'row',
+        paddingTop: 30 * screenHeight,
     },
     topicRadioButtonBox: {
         gap: 20 * screenHeight,
         paddingTop: 24 * screenHeight,
-        paddingBottom: 30 * screenHeight,
         paddingRight: 57.5 * screenWidth,
     },
     topicRadioButton: {
@@ -275,6 +290,12 @@ export const reportModalStyles = StyleSheet.create({
         height: 12.7 * screenWidth,
         borderRadius: 6.35 * screenFont,
         backgroundColor: '#6826F5',
+    },
+    etcTextInputBox: {
+        borderBottomWidth: 1 * screenFont,
+        borderColor: Colors.BORDER_GRAY,
+        height: 27 * screenHeight,
+        marginTop: 16 * screenHeight,
     },
 });
 export const photoGalleryStyles = StyleSheet.create({
@@ -551,19 +572,7 @@ export const nearbyPostListModalStyles = StyleSheet.create({
         width: 20 * screenWidth,
         height: 20 * screenWidth,
     },
-    writeIcon: {
-        width: 14.5 * screenWidth,
-        height: 16 * screenHeight,
-    },
-    dropshadow: {
-        shadowColor: '#000000',
-        shadowOffset: {
-            width: 0,
-            height: 4 * screenHeight,
-        },
-        shadowOpacity: 0.14,
-        shadowRadius: 5 * screenFont,
-    },
+
     nothingListGuideBox: {
         alignItems: 'center',
         height: '90%',
@@ -1437,6 +1446,25 @@ export const keywordAlarmTemplateStyles = StyleSheet.create({
         paddingBottom: 13 * screenHeight,
         justifyContent: 'space-between',
         alignItems: 'center',
+        backgroundColor: Colors.WHITE,
+        zIndex: 1,
+    },
+    historyItemButton: {
+        paddingVertical: 18 * screenHeight,
+        flexDirection: 'row',
+    },
+    alarmIcon: {
+        borderWidth: 1 * screenFont,
+        borderRadius: 12 * screenFont,
+        borderColor: Colors.BLACK,
+        width: 24 * screenWidth,
+        height: 24 * screenWidth,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    hisrotyItemTextBox: {
+        flex: 1,
+        marginLeft: 16 * screenWidth,
     },
 });
 export const editNicknameTemplateStyles = StyleSheet.create({
@@ -1784,7 +1812,7 @@ export const DeleteMemberTemplateStyles = StyleSheet.create({
         height: 16 * screenHeight,
     },
     explainBox: {
-        paddingTop: 27 * screenHeight,
+        paddingTop: 20 * screenHeight,
     },
     explainList: {
         flexDirection: 'row',

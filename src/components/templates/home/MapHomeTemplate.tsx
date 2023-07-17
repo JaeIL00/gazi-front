@@ -24,7 +24,7 @@ import { userAuthAtom, userInfoAtom } from '../../../store/atoms';
 import { screenFont, screenHeight, screenWidth } from '../../../utils/changeStyleSize';
 import { MapHomeTemplateProps, MapLocationTypes, PostTypes, MapBoundaryTypes } from '../../../types/types';
 
-const MapHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritePost }: MapHomeTemplateProps) => {
+const MapHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritingScreen }: MapHomeTemplateProps) => {
     const { accessToken } = useRecoilValue(userAuthAtom);
     const { isAllowLocation } = useRecoilValue(userInfoAtom);
 
@@ -368,7 +368,7 @@ const MapHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritePost }: Ma
                 notBottomSheetMini={notBottomSheetMini}
                 onPressGetUserPosition={onPressGetUserPosition}
                 callNextPageHandler={callNextPageHandler}
-                moveToWritePost={moveToWritePost}
+                moveToWritingScreen={moveToWritingScreen}
                 nearPostListRefresh={nearPostListRefresh}
                 isNearPostRefresh={isNearPostRefresh}
             />

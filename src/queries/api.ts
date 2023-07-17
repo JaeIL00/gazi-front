@@ -273,6 +273,8 @@ export const reportAPI = async (param: {
     data: {
         postId: number | null;
         repostId: number | null;
+        reportEnum: string;
+        reason: string;
     };
 }) => {
     const response = await Axios({
@@ -367,6 +369,21 @@ export const writeCommentFilesAPI = async (param: { data: FormData; rePostId: nu
             'Content-Type': 'multipart/form-data; boundary=someArbitraryUniqueString',
         },
         data: param.data,
+    });
+    return response;
+};
+
+// ALARM
+export const getAlarmHistoryAPI = async (param: { accessToken: string; page: number; isKeywordAlarm: boolean }) => {
+    const response = await Axios({
+        url: param.isKeywordAlarm
+            ? `/api/v1/member/get_notification_list?notificationEnums=KEYWORD&page=${param.page}`
+            : `/api/v1/member/get_notification_list?notificationEnums=LIKE?notificationEnums=REPOST&page=${param.page}`,
+        method: 'get',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${param.accessToken}`,
+        },
     });
     return response;
 };

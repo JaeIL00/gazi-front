@@ -14,8 +14,8 @@ const MapHomeScreen = () => {
     const isModalRef = useRef<boolean>(false);
     const [handleModalTrigger, setHandleModalTrigger] = useState<boolean>(false);
 
-    const moveToWritePost = () => {
-        rootNavigation.navigate('WritePost');
+    const moveToWritingScreen = () => {
+        rootNavigation.push('WritePost');
     };
 
     // Android back button & Header Back Button Handling
@@ -59,7 +59,7 @@ const MapHomeScreen = () => {
             <MapHomeTemplate
                 isModalRef={isModalRef}
                 handleModalTrigger={handleModalTrigger}
-                moveToWritePost={moveToWritePost}
+                moveToWritingScreen={moveToWritingScreen}
             />
         </View>
     );

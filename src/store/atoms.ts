@@ -35,6 +35,6 @@ export const emailAuthAtom = atom<emailAuthAtomTypes>({
     key: 'emailAuthAtom',
     default: {
         number: 0,
-        isOk: false,
+        isAuthorizationPass: false,
     },
 });

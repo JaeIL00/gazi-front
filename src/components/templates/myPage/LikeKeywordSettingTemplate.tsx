@@ -22,7 +22,7 @@ const LikeKeywordSettingTemplate = ({
 }: LikeKeywordSettingTemplateProps) => {
     const { accessToken } = useRecoilValue(userAuthAtom);
 
-    const [isEditWindow, setIsEditWindow] = useState<boolean>(isShortcut);
+    const [isEditMode, setIsEditMode] = useState<boolean>(isShortcut);
     const [myKeywordList, setMyKeywordList] = useState<MyLikeKeywordTypes[]>([]);
 
     // My like keyword API
@@ -40,10 +40,10 @@ const LikeKeywordSettingTemplate = ({
     const controlEditWindowHandler = (state: string) => {
         switch (state) {
             case 'GO':
-                setIsEditWindow(true);
+                setIsEditMode(true);
                 break;
             case 'BACK':
-                setIsEditWindow(false);
+                setIsEditMode(false);
                 break;
             default:
                 // For Debug
@@ -62,22 +62,18 @@ const LikeKeywordSettingTemplate = ({
                         />
                     </TouchButton>
                     <Spacer width={21} />
-                    <MediumText
-                        text={isEditWindow ? '관심 키워드 편집' : '관심 키워드'}
-                        size={18}
-                        color={Colors.BLACK}
-                    />
+                    <MediumText text={isEditMode ? '관심 키워드 편집' : '관심 키워드'} size={18} color={Colors.BLACK} />
                 </View>
 
                 <TouchButton
-                    onPress={() => (isEditWindow ? controlEditWindowHandler('BACK') : controlEditWindowHandler('GO'))}
+                    onPress={() => (isEditMode ? controlEditWindowHandler('BACK') : controlEditWindowHandler('GO'))}
                     hitSlop={20}>
-                    <SemiBoldText text={isEditWindow ? '취소' : '편집'} size={16} color={Colors.TXT_GRAY} />
+                    <SemiBoldText text={isEditMode ? '취소' : '편집'} size={16} color={Colors.TXT_GRAY} />
                 </TouchButton>
             </View>
 
             <View style={likeKeywordSettingTemplateStyles.contentBox}>
-                {isEditWindow ? (
+                {isEditMode ? (
                     <EditMyKeyword
                         myKeywordList={myKeywordList}
                         isShortcut={isShortcut}

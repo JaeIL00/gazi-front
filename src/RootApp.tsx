@@ -51,9 +51,15 @@ const RootApp = () => {
         },
     });
 
+    // Remove token in storage
     const errorLoginHandler = async (status: number) => {
         if (status === 400 || status === 404) {
-            await AsyncStorage.multiRemove(['GAZI_ac_tk', 'GAZI_re_tk']);
+            try {
+                await AsyncStorage.multiRemove(['access_token', 'refresh_token']);
+            } catch (error) {
+                // For Debug
+                console.log('(ERROR) Remove token in storage', error);
+            }
         }
         navigationRef.current?.navigate('NotLoginHome');
         SplashScreen.hide();
@@ -67,8 +73,8 @@ const RootApp = () => {
         firebaseToken: string;
     }) => {
         try {
-            await AsyncStorage.setItem('GAZI_ac_tk', data.accessToken);
-            await AsyncStorage.setItem('GAZI_re_tk', data.refreshToken);
+            await AsyncStorage.setItem('access_token', data.accessToken);
+            await AsyncStorage.setItem('refresh_token', data.refreshToken);
             setUserAuthState({
                 accessToken: data.accessToken,
                 refreshToken: data.refreshToken,
@@ -103,8 +109,8 @@ const RootApp = () => {
 
     const checkAsyncStorage = async () => {
         try {
-            const accessToken = await AsyncStorage.getItem('GAZI_ac_tk');
-            const refreshToken = await AsyncStorage.getItem('GAZI_re_tk');
+            const accessToken = await AsyncStorage.getItem('access_token');
+            const refreshToken = await AsyncStorage.getItem('refresh_token');
             if (accessToken && refreshToken) {
                 console.log('겟 엑세스', accessToken);
                 console.log('겟 리프레시', refreshToken);

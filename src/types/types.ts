@@ -8,6 +8,12 @@ import { FlexAlignType, KeyboardType, TextStyle } from 'react-native/types';
 import { QueryObserverResult, RefetchOptions, RefetchQueryFilters } from 'react-query';
 
 //COMMON
+export type AlarmHistoryTypes = {
+    body: string;
+    id: number;
+    notificationEnum: string;
+    title: string;
+};
 export type KeywordListTypes = {
     id: number;
     keywordEnum: string;
@@ -69,6 +75,7 @@ export type CommentTypes = {
     report: boolean;
     time: string;
     postId: number;
+    post: boolean;
 };
 export type uploadImageFileTypes = {
     uri: string;
@@ -201,7 +208,7 @@ export type joinMemberTypes = {
 };
 export type emailAuthAtomTypes = {
     number: number;
-    isOk: boolean;
+    isAuthorizationPass: boolean;
 };
 
 // NAVIGATION
@@ -363,6 +370,9 @@ export type ModalBackgroundProps = {
 };
 
 // MOLECULES
+export type WritingFloatingBtnProps = {
+    moveToWritingScreen: () => void;
+};
 export interface LoginTextInputProps extends SingleLineInputProps {
     title: string;
 }
@@ -416,8 +426,10 @@ export interface MoveBackWithPageTitleProps extends PageTitleWithExplainProps {
 }
 export type ReportModalProps = {
     isReportSuccess: boolean;
-    reportTopicHandler: () => void;
+    repostId: number;
+    reportMutate: (repostId: number, reportEnum: string, reason: string) => void;
     closeReportModalHandler: () => void;
+    getCommentListRefetch: () => void;
 };
 export type ScreenWrapperProps = {
     children: ReactElement;
@@ -431,9 +443,8 @@ export type CommentListItemProps = {
     comment: CommentTypes;
     postTitle: string;
     postCount: number;
-    firstCommentId: number | undefined;
-    isReportSuccess: boolean;
-    reportHandler: (repostId: number) => void;
+    getCommentListRefetch: () => void;
+    delReportComment: (postId: number) => void;
 };
 export type ServiceAgreementProps = {
     finishSlideComponentHandler: (state: string) => void;
@@ -494,7 +505,7 @@ export type NearbyPostListModalProps = {
     notBottomSheetMini: () => void;
     onPressGetUserPosition: () => void;
     callNextPageHandler: () => void;
-    moveToWritePost: () => void;
+    moveToWritingScreen: () => void;
     nearPostListRefresh: () => void;
 };
 export type SearchLocationProps = {
@@ -524,7 +535,7 @@ export type InputEmailTemplateProps = {
 };
 export interface InputPasswordTemplateProps extends InputEmailTemplateProps {}
 export interface InputNicknameTemplateProps extends InputEmailTemplateProps {}
-export interface CompletedJoinTemplateProps extends InputEmailTemplateProps {
+export interface CompletedJoinMemberModalProps extends InputEmailTemplateProps {
     inputNickname: string;
 }
 export type RequestPemissionTemplateProps = {
@@ -537,7 +548,7 @@ export interface InitLikeKeywordTemplateProps extends RequestPemissionTemplatePr
 export type MapHomeTemplateProps = {
     isModalRef: React.MutableRefObject<boolean>;
     handleModalTrigger: boolean;
-    moveToWritePost: () => void;
+    moveToWritingScreen: () => void;
 };
 export type WritePostTemplateProps = {
     navigationHandler: (state: string, postId?: number) => void;
@@ -586,5 +597,5 @@ export type LikeKeywordBoardTemplateProps = {
     moveToKeywordSettingScreen: () => void;
 };
 export type KeywordAlarmTemplateProps = {
-    navigationHandler: () => void;
+    navigationHandler: (screen: string, postId?: number) => void;
 };

@@ -73,7 +73,7 @@ const LikeKeywordBoardTemplate = ({ moveToKeywordSettingScreen }: LikeKeywordBoa
             },
             onError: ({ response }) => {
                 // For Debug
-                console.log('(ERROR) Get post API. respense: ', response);
+                console.log('(ERROR) Get like keyword post API. respense: ', response);
             },
         },
     );

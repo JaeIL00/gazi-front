@@ -51,39 +51,8 @@ const DeleteMemberTemplate = ({ moveToScreenHandler }: DeleteMemberTemplateProps
             </View>
 
             <View style={DeleteMemberTemplateStyles.explainBox}>
-                <View style={DeleteMemberTemplateStyles.explainList}>
-                    <View style={DeleteMemberTemplateStyles.explainDot}>
-                        <NormalText text="•" size={14} color="#000000" />
-                    </View>
-                    <Spacer width={18} />
-                    <NormalText
-                        text="구할 몸이 가치를 것이다. 피어나기 끝에 위하여, 동력은 바이며, 것이다. 이상을 우는 품으며, 것이다."
-                        size={14}
-                        color="#000000"
-                    />
-                </View>
-                <View style={DeleteMemberTemplateStyles.explainMiddle}>
-                    <View style={DeleteMemberTemplateStyles.explainDot}>
-                        <NormalText text="•" size={14} color="#000000" />
-                    </View>
-                    <Spacer width={18} />
-                    <NormalText
-                        text="구할 몸이 가치를 것이다. 피어나기 끝에 위하여, 동력은 바이며, 것이다. 이상을 우는 품으며, 것이다."
-                        size={14}
-                        color="#000000"
-                    />
-                </View>
-                <View style={DeleteMemberTemplateStyles.explainList}>
-                    <View style={DeleteMemberTemplateStyles.explainDot}>
-                        <NormalText text="•" size={14} color="#000000" />
-                    </View>
-                    <Spacer width={18} />
-                    <NormalText
-                        text="구할 몸이 가치를 것이다. 피어나기 끝에 위하여, 동력은 바이며, 것이다. 이상을 우는 품으며, 것이다."
-                        size={14}
-                        color="#000000"
-                    />
-                </View>
+                <NormalText text="탈퇴 시 계정의 모든 정보는 삭제되고" size={16} color="#49454F" />
+                <NormalText text="재가입 시에도 복구하기 어려워요." size={16} color="#49454F" />
             </View>
 
             <View style={DeleteMemberTemplateStyles.bottomBox}>
