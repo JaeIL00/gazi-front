@@ -18,7 +18,7 @@ const MoveBackWithPageTitle = ({
     return (
         <View>
             <View style={moveBackWithPageTitleStyles.buttonContainer}>
-                <TouchButton alignSelf="flex-start" onPress={onPress}>
+                <TouchButton alignSelf="flex-start" onPress={onPress} hitSlop={10}>
                     <Icons type="octicons" name="arrow-left" color={Colors.TXT_BLACK} size={24} />
                 </TouchButton>
             </View>

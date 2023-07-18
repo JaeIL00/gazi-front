@@ -46,12 +46,11 @@ export const SingleLineInput = ({
             maxLength={maxLength}
             secureTextEntry={secureTextEntry}
             style={[
-                value
+                value.length > 0
                     ? singleLineInputStyles(fontSize, width, height, fontFamily, placeFontFamily).input
-                    : singleLineInputStyles(fontSize, width, height, placeFontFamily, fontFamily).placeholder,
-                singleLineInputStyles(fontSize, width, height, placeFontFamily, fontFamily).common,
+                    : singleLineInputStyles(fontSize, width, height, fontFamily, placeFontFamily).placeholder,
+                singleLineInputStyles(fontSize, width, height, fontFamily, placeFontFamily).common,
             ]}
-            underlineColorAndroid={'transparent'}
             autoFocus={isFocus}
         />
     );

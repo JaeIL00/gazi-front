@@ -1,25 +1,35 @@
-import React from 'react';
-import { StatusBar, View } from 'react-native';
-import { screenWidth } from '../../utils/changeStyleSize';
-import { ScreenWrapperProps } from '../../types/types';
-import { useRootRoute } from '../../navigations/RootStackNavigation';
+import React, { useLayoutEffect, useState } from 'react';
 import { useRoute } from '@react-navigation/native';
+import { StatusBar, View } from 'react-native';
+
 import Colors from '../../styles/Colors';
+import { ScreenWrapperProps } from '../../types/types';
+import { screenWidth } from '../../utils/changeStyleSize';
 
 const ScreenWrapper = ({ children, isPaddingHorizontal }: ScreenWrapperProps) => {
-    // 기본배경: 낫로그인, 회원가입, 로그인, 초기키워드, 초기권한, 서비스홈, 답글스레드, 글작성위치검색, 헤드키워드설정
-    // 흰색배경: 커뮤니티, 관심키워드설정, 글작성, 마이페이지 모두
-    // #29292980: 이미지 뷰어
-    const rootRoute = useRoute();
-    let statusColor: string = Colors.BACKGROUND_DEFAULT;
-    let backgroundColor: string = Colors.BACKGROUND_DEFAULT;
-    if (rootRoute.name === ('Community' || 'LikeKeywordSetting' || 'WritePostOrComment' || 'MyProfile')) {
-        statusColor = Colors.WHITE;
-        backgroundColor = Colors.WHITE;
-    } else if (rootRoute.name === 'ImageView') {
-        statusColor = '#29292980';
-        backgroundColor = Colors.BLACK;
-    }
+    const route = useRoute();
+    const [statusColor, setStatusColor] = useState<string>(Colors.BACKGROUND_DEFAULT);
+    const [backgroundColor, setBackgroundColor] = useState<string>(Colors.BACKGROUND_DEFAULT);
+
+    useLayoutEffect(() => {
+        if (
+            route.name === 'AllBoard' ||
+            route.name === 'LikeBoard' ||
+            route.name === 'LikeKeywordSetting' ||
+            route.name === 'WritePost' ||
+            route.name === 'WriteComment' ||
+            route.name === 'MyProfile' ||
+            route.name === 'KeywordAlarm' ||
+            route.name === 'NewsAlarm'
+        ) {
+            setStatusColor(Colors.WHITE);
+            setBackgroundColor(Colors.WHITE);
+        } else if (route.name === 'ImageView') {
+            setStatusColor('#29292980');
+            setBackgroundColor(Colors.BLACK);
+        }
+    }, [route.name]);
+
     return (
         <View
             style={{
@@ -29,7 +39,7 @@ const ScreenWrapper = ({ children, isPaddingHorizontal }: ScreenWrapperProps) =>
             }}>
             <StatusBar
                 backgroundColor={statusColor}
-                barStyle={rootRoute.name === 'ImageView' ? 'light-content' : 'dark-content'}
+                barStyle={route.name === 'ImageView' ? 'light-content' : 'dark-content'}
             />
             {children}
         </View>

@@ -1,12 +1,13 @@
 import { atom } from 'recoil';
-import { emailAuthAtomTypes, joinMemberTypes, userInfoAtomTypes, userTokenAtomTypes } from '../types/types';
+import { emailAuthAtomTypes, joinMemberTypes, userInfoAtomTypes, userAuthAtomTypes } from '../types/types';
 
 // AUTH
-export const userTokenAtom = atom<userTokenAtomTypes>({
-    key: 'userTokenAtom',
+export const userAuthAtom = atom<userAuthAtomTypes>({
+    key: 'userAuthAtom',
     default: {
         accessToken: '',
         refreshToken: '',
+        isLogIn: false,
     },
 });
 
@@ -17,6 +18,7 @@ export const userInfoAtom = atom<userInfoAtomTypes>({
         memberId: null,
         nickname: '',
         email: '',
+        isAllowLocation: false,
     },
 });
 
@@ -33,6 +35,6 @@ export const emailAuthAtom = atom<emailAuthAtomTypes>({
     key: 'emailAuthAtom',
     default: {
         number: 0,
-        isOk: false,
+        isAuthorizationPass: false,
     },
 });

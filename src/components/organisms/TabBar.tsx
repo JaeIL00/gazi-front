@@ -23,7 +23,25 @@ const TabBar = ({ state, navigation }: TabBarProps) => {
     return (
         <View style={tabBarStyles.container}>
             {state.routes.map((route, index) => {
-                const label = route.name === 'ServiceHome' ? '지도' : route.name === 'Community' ? '커뮤니티' : '마이';
+                let label: string = '';
+                switch (route.name) {
+                    case 'MapHome':
+                        label = '지도';
+                        break;
+                    case 'Community':
+                        label = '커뮤니티';
+                        break;
+                    case 'MyPage':
+                        label = '마이';
+                        break;
+                    case 'AlarmPage':
+                        label = '알림';
+                        break;
+                    default:
+                        // For Debug
+                        console.log('(ERROR) TabBar component route name.', route.name);
+                        break;
+                }
 
                 const isFocused = state.index === index;
 

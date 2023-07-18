@@ -1,5 +1,5 @@
-import React, { useCallback, useLayoutEffect, useState } from 'react';
-import { ActivityIndicator, FlatList, StatusBar, TouchableOpacity, View } from 'react-native';
+import React, { useCallback, useLayoutEffect, useRef, useState } from 'react';
+import { FlatList, StatusBar, TouchableOpacity, View } from 'react-native';
 import { debounce } from 'lodash';
 import { useQuery } from 'react-query';
 import FastImage from 'react-native-fast-image';
@@ -11,43 +11,85 @@ import Colors from '../../styles/Colors';
 import MediumText from '../smallest/MediumText';
 import NormalText from '../smallest/NormalText';
 import TouchButton from '../smallest/TouchButton';
-import { searchGoogleAPI } from '../../queries/api';
+import { nearPlaceGoogleAPI, searchGoogleAPI } from '../../queries/api';
 import { searchLocationStyles } from '../../styles/styles';
 import { SingleLineInput } from '../smallest/SingleLineInput';
-import { screenFont, screenHeight, screenWidth } from '../../utils/changeStyleSize';
+import { screenHeight, screenWidth } from '../../utils/changeStyleSize';
 import { LocationResultTypes, SearchHistoryTypes, SearchLocationProps } from '../../types/types';
 
-const SearchLocation = ({ getLocationHandler, placeholder, isHome, searchModalHandler }: SearchLocationProps) => {
+const SearchLocation = ({
+    isHome,
+    placeholder,
+    isAllowLocation,
+    currentPosition,
+    searchModalHandler,
+    getLocationHandler,
+}: SearchLocationProps) => {
+    const nextPageTokenRef = useRef<string>('');
+
     const [searchText, setSearchText] = useState<string>('');
-    const [nextPageToken, setNextPageToken] = useState<string>('');
     const [resultsData, setResultsData] = useState<LocationResultTypes[]>([]);
     const [searchHistory, setSearchHistory] = useState<SearchHistoryTypes[]>([]);
+    const [resultsNearData, setResultsNearData] = useState<LocationResultTypes[]>([]);
 
     // Get Google search results API
-    const { refetch, isFetching } = useQuery(['search'], () => searchGoogleAPI(searchText, nextPageToken), {
-        enabled: false,
-        onSuccess: ({ data }) => {
-            // Save search results for list
-            if (data.next_page_token && !nextPageToken) {
-                setNextPageToken(data.next_page_token);
-                setResultsData(data.results);
-            } else if (nextPageToken) {
-                data.next_page_token ? setNextPageToken(data.next_page_token) : setNextPageToken('');
-                setResultsData([...resultsData, ...data.results]);
-            } else {
-                setResultsData(data.results);
-            }
+    const { refetch: placeSearchRefetch } = useQuery(
+        'placeSearch',
+        () => searchGoogleAPI(searchText, nextPageTokenRef.current),
+        {
+            enabled: false,
+            onSuccess: ({ data }) => {
+                // Save search results for list
+                if (data.next_page_token && !nextPageTokenRef.current) {
+                    nextPageTokenRef.current = data.next_page_token;
+                    setResultsData(data.results);
+                } else if (nextPageTokenRef.current) {
+                    data.next_page_token
+                        ? (nextPageTokenRef.current = data.next_page_token)
+                        : (nextPageTokenRef.current = '');
+                    setResultsData([...resultsData, ...data.results]);
+                } else {
+                    setResultsData(data.results);
+                }
+            },
+            onError: ({ response }) => {
+                // For Debug
+                console.log('(ERROR) Get Google search results API.', response);
+            },
         },
-        onError: ({ response }) => {
-            // For Debug
-            console.log('(ERROR) Get Google search results API.', response);
+    );
+
+    // Get Google near search results API
+    const { refetch: nearPlaceSearchRefetch } = useQuery(
+        'nearPlaceSearch',
+        () => nearPlaceGoogleAPI(currentPosition!.curLat, currentPosition!.curLon, nextPageTokenRef.current),
+        {
+            enabled: false,
+            onSuccess: ({ data }) => {
+                // Save near place results for list
+                if (data.next_page_token && !nextPageTokenRef.current) {
+                    nextPageTokenRef.current = data.next_page_token;
+                    setResultsNearData(data.results);
+                } else if (nextPageTokenRef.current) {
+                    data.next_page_token
+                        ? (nextPageTokenRef.current = data.next_page_token)
+                        : (nextPageTokenRef.current = '');
+                    setResultsNearData([...resultsData, ...data.results]);
+                } else {
+                    setResultsNearData(data.results);
+                }
+            },
+            onError: ({ response }) => {
+                // For Debug
+                console.log('(ERROR) Get Google near place results API.', response);
+            },
         },
-    });
+    );
 
     // Input text for searching location
     const onChangeSearchText = (text: string) => {
         setSearchText(text);
-        setNextPageToken('');
+        nextPageTokenRef.current = '';
         if (text.length > 0) {
             getSearchResult();
         } else if (text.length === 0) {
@@ -56,20 +98,20 @@ const SearchLocation = ({ getLocationHandler, placeholder, isHome, searchModalHa
     };
     const onPressDeleteText = () => {
         setSearchText('');
-        setNextPageToken('');
+        nextPageTokenRef.current = '';
         setResultsData([]);
     };
 
     const getSearchResult = useCallback(
         debounce(() => {
-            refetch();
+            placeSearchRefetch();
         }, 600),
         [],
     );
 
     const getNextPageResults = () => {
-        if (nextPageToken) {
-            refetch();
+        if (nextPageTokenRef.current) {
+            placeSearchRefetch();
         }
     };
 
@@ -96,7 +138,6 @@ const SearchLocation = ({ getLocationHandler, placeholder, isHome, searchModalHa
             if (historyArray) {
                 setSearchHistory(JSON.parse(historyArray));
             }
-            // await AsyncStorage.removeItem('GAZI_hst_sch');
         } catch (error) {
             // For Debug
             console.log('(ERROR)Get search history from storage.', error);
@@ -104,18 +145,31 @@ const SearchLocation = ({ getLocationHandler, placeholder, isHome, searchModalHa
     };
 
     // Flatlist function
-    const keyExtractor = useCallback(
-        (item: LocationResultTypes | SearchHistoryTypes, index: number) => item.name + index,
-        [],
-    );
+    const keyExtractorHistory = useCallback((item: SearchHistoryTypes) => item.location.lat + '', []);
+    const keyExtractorSearchResults = useCallback((item: LocationResultTypes) => item.geometry.location.lat + '', []);
     const renderItemResult = useCallback(
         ({ item }: { item: LocationResultTypes }) => {
-            const freshAddress = item.formatted_address.replace('대한민국 ', '');
+            let freshAddress: string = '';
+            if (isAllowLocation && !searchText) {
+                freshAddress = item.vicinity;
+            } else {
+                freshAddress = item.formatted_address.replace('대한민국 ', '');
+            }
             return (
                 <TouchableOpacity
                     onPress={() => {
-                        saveSearchHistoryStorage(item.formatted_address, item.name, item.geometry.location);
-                        getLocationHandler(item.geometry.location, item.name);
+                        getLocationHandler(
+                            item.geometry.location,
+                            item.name,
+                            searchText ? item.formatted_address : item.vicinity,
+                        );
+                        if (isHome) {
+                            saveSearchHistoryStorage(
+                                searchText ? item.formatted_address : item.vicinity,
+                                item.name,
+                                item.geometry.location,
+                            );
+                        }
                     }}
                     activeOpacity={1}
                     style={searchLocationStyles.resultButton}>
@@ -137,7 +191,7 @@ const SearchLocation = ({ getLocationHandler, placeholder, isHome, searchModalHa
                 </TouchableOpacity>
             );
         },
-        [searchHistory],
+        [searchHistory, searchText],
     );
     const renderItemHistory = useCallback(
         ({ item }: { item: SearchHistoryTypes }) => {
@@ -146,7 +200,7 @@ const SearchLocation = ({ getLocationHandler, placeholder, isHome, searchModalHa
                 <TouchableOpacity
                     onPress={() => {
                         saveSearchHistoryStorage(item.formatted_address, item.name, item.location);
-                        getLocationHandler(item.location, item.name);
+                        getLocationHandler(item.location, item.name, '');
                     }}
                     activeOpacity={1}
                     style={searchLocationStyles.resultButton}>
@@ -172,11 +226,14 @@ const SearchLocation = ({ getLocationHandler, placeholder, isHome, searchModalHa
 
     useLayoutEffect(() => {
         getSearchHistory();
+        if (!isHome && isAllowLocation) {
+            nearPlaceSearchRefetch();
+        }
     }, []);
 
     return (
-        <View>
-            <StatusBar backgroundColor={Colors.BACKGROUND_DEFAULT} />
+        <View style={searchLocationStyles.container}>
+            <StatusBar backgroundColor={isHome ? Colors.WHITE : Colors.BACKGROUND_DEFAULT} />
             <View style={searchLocationStyles.inputContainer}>
                 <View style={searchLocationStyles.inputBox}>
                     {isHome && searchModalHandler && (
@@ -203,21 +260,16 @@ const SearchLocation = ({ getLocationHandler, placeholder, isHome, searchModalHa
 
             <Spacer height={20} />
 
-            {isHome && !isFetching && !searchText ? (
+            {isHome && !searchText ? (
                 <>
                     <View style={{ paddingHorizontal: 16 * screenWidth }}>
                         <NormalText text="최근검색" size={14} color="#757575" />
                     </View>
                     <FlatList
-                        keyExtractor={keyExtractor}
+                        keyExtractor={keyExtractorHistory}
                         data={searchHistory}
                         renderItem={renderItemHistory}
                         showsVerticalScrollIndicator={false}
-                        getItemLayout={(data, index) => ({
-                            length: resultsData.length,
-                            offset: resultsData.length * index,
-                            index,
-                        })}
                         onEndReachedThreshold={0.7}
                         onEndReached={({ distanceFromEnd }) => {
                             if (distanceFromEnd > 0) {
@@ -230,15 +282,10 @@ const SearchLocation = ({ getLocationHandler, placeholder, isHome, searchModalHa
                 </>
             ) : (
                 <FlatList
-                    keyExtractor={keyExtractor}
-                    data={resultsData}
+                    keyExtractor={keyExtractorSearchResults}
+                    data={searchText ? resultsData : resultsNearData}
                     renderItem={renderItemResult}
                     showsVerticalScrollIndicator={false}
-                    getItemLayout={(data, index) => ({
-                        length: resultsData.length,
-                        offset: resultsData.length * index,
-                        index,
-                    })}
                     onEndReachedThreshold={1}
                     onEndReached={() => {
                         getNextPageResults();
@@ -247,8 +294,6 @@ const SearchLocation = ({ getLocationHandler, placeholder, isHome, searchModalHa
                     keyboardDismissMode="on-drag"
                 />
             )}
-
-            {isFetching && searchText && <ActivityIndicator size="large" />}
         </View>
     );
 };

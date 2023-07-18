@@ -1,6 +1,6 @@
 import React from 'react';
 import { Platform, ScrollView, View } from 'react-native';
-import { PERMISSIONS, requestMultiple } from 'react-native-permissions';
+import { PERMISSIONS, request, requestMultiple } from 'react-native-permissions';
 
 import Spacer from '../../smallest/Spacer';
 import Colors from '../../../styles/Colors';
@@ -11,7 +11,7 @@ import IconPermissionListItem from '../../molecules/IconPermissionListItem';
 import { RequestPemissionTemplateProps } from '../../../types/types';
 import { requestPemissionTemplateStyles } from '../../../styles/styles';
 
-const RequestPemissionTemplate = ({ moveToScreen }: RequestPemissionTemplateProps) => {
+const RequestPemissionTemplate = ({ navigationHandler }: RequestPemissionTemplateProps) => {
     // Request Permissions
     const onPressrequstPermission = async () => {
         if (Platform.OS === 'android') {
@@ -23,11 +23,12 @@ const RequestPemissionTemplate = ({ moveToScreen }: RequestPemissionTemplateProp
                     PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION,
                     PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
                 ]);
+                await request(PERMISSIONS.ANDROID.CAMERA);
             } catch (err) {
                 // For Debug
                 console.log('(ERROR) Request Permissions. err: ', err);
             } finally {
-                moveToScreen('OK');
+                navigationHandler('OK');
             }
         }
     };
@@ -37,7 +38,7 @@ const RequestPemissionTemplate = ({ moveToScreen }: RequestPemissionTemplateProp
             <MoveBackWithPageTitle
                 oneTitle="앱 사용을 위해"
                 twoTitle="접근 권한을 허용해주세요"
-                onPress={() => moveToScreen('BACK')}
+                onPress={() => navigationHandler('BACK')}
             />
 
             <Spacer height={63} />

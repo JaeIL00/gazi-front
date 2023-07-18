@@ -12,7 +12,6 @@ import NormalText from '../smallest/NormalText';
 import MediumText from '../smallest/MediumText';
 import TextButton from '../molecules/TextButton';
 import TouchButton from '../smallest/TouchButton';
-import ModalBackground from '../smallest/ModalBackground';
 import useKeyboardMotion from '../../utils/hooks/useKeyboardMotion';
 import { emailAuthAPI } from '../../queries/api';
 import { AuthEmailProps } from '../../types/types';
@@ -20,7 +19,7 @@ import { authEmailStyles } from '../../styles/styles';
 import { SingleLineInput } from '../smallest/SingleLineInput';
 import { emailAuthAtom, joinMemberAtom } from '../../store/atoms';
 
-const AuthEmail = ({ min, sec, resetTimeHandler, finishSlideComponentHandler }: AuthEmailProps) => {
+const AuthEmail = ({ min, sec, resetTimeHandler, authNumberModalHanlder }: AuthEmailProps) => {
     const { height } = useWindowDimensions();
 
     const [authData, setAuthData] = useRecoilState(emailAuthAtom);
@@ -38,7 +37,7 @@ const AuthEmail = ({ min, sec, resetTimeHandler, finishSlideComponentHandler }: 
         onSuccess: data => {
             setInputNumber('');
             setIsWrong(false);
-            setAuthNumber(data.data);
+            setAuthNumber(data.data.data);
             resetTimeHandler();
         },
     });
@@ -64,8 +63,8 @@ const AuthEmail = ({ min, sec, resetTimeHandler, finishSlideComponentHandler }: 
                 useNativeDriver: true,
             }).start(({ finished }: { finished: boolean }) => {
                 if (finished) {
-                    setAuthData({ number: 0, isOk: true });
-                    finishSlideComponentHandler('OK');
+                    setAuthData({ number: 0, isAuthorizationPass: true });
+                    authNumberModalHanlder('CORRECT');
                 }
             });
         }
@@ -73,7 +72,7 @@ const AuthEmail = ({ min, sec, resetTimeHandler, finishSlideComponentHandler }: 
 
     // Back Icon handling
     const onPressBackIcon = () => {
-        finishSlideComponentHandler('BACK');
+        authNumberModalHanlder('CLOSE');
     };
 
     // Input authorization number
@@ -83,6 +82,8 @@ const AuthEmail = ({ min, sec, resetTimeHandler, finishSlideComponentHandler }: 
         // Auth number validation
         if (text.length === 4) {
             validationHandler(text);
+        } else {
+            setActivityButton(false);
         }
     };
     const validationHandler = (text: string) => {
@@ -94,11 +95,6 @@ const AuthEmail = ({ min, sec, resetTimeHandler, finishSlideComponentHandler }: 
         }
     };
 
-    // Initialized auth number
-    useEffect(() => {
-        setAuthNumber(authData.number);
-    }, [authData]);
-
     // Finish button transitionY handling
     const { bottomValue, buttonUpAnimationHandler, buttonDownAnimationHandler } = useKeyboardMotion(53, 271);
     useEffect(() => {
@@ -109,6 +105,11 @@ const AuthEmail = ({ min, sec, resetTimeHandler, finishSlideComponentHandler }: 
             keyboardDidShowListener.remove();
             keyboardDidHideListener.remove();
         };
+    }, []);
+
+    // Initialized auth number
+    useEffect(() => {
+        setAuthNumber(authData.number);
     }, []);
 
     return (

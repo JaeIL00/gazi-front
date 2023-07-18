@@ -1,6 +1,6 @@
 import axios from 'axios';
 import Config from 'react-native-config';
-import { CommentReqTypes, PostDto, userTokenAtomTypes } from '../types/types';
+import { CommentDtoTypes, PostDtoTypes } from '../types/types';
 
 const Axios = axios.create({
     baseURL: Config.API_BASE_URL,
@@ -20,8 +20,33 @@ export const searchGoogleAPI = async (searchInput: string, nextPageToken: string
     });
     return response;
 };
+export const nearPlaceGoogleAPI = async (curLat: number, curLon: number, nextPageToken: string) => {
+    const url = nextPageToken
+        ? `https://maps.googleapis.com/maps/api/place/nearbysearch/json?pagetoken=${nextPageToken}&key=${Config.GOOGLE_PLACE_API_KEY}`
+        : `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${curLat}%2C${curLon}&radius=1000&key=${Config.GOOGLE_PLACE_API_KEY}`;
+    const response = await axios({
+        method: 'get',
+        url,
+        headers: {
+            'Accept-Language': 'ko',
+        },
+    });
+    return response;
+};
 
 // ACCOUT LOGIN LOGOUT
+export const fcmDeviceTokenAPI = async (param: { accessToken: string; fireBaseToken: string }) => {
+    const response = await Axios({
+        url: '/api/v1/member/get-firebase-access-key',
+        method: 'post',
+        headers: {
+            Authorization: `Bearer ${param.accessToken}`,
+            'Content-Type': 'application/json',
+        },
+        data: JSON.stringify({ fireBaseToken: param.fireBaseToken }),
+    });
+    return response;
+};
 export const loginAPI = async (data: { email: string; password: string }) => {
     const response = await Axios({
         url: '/api/v1/member/login',
@@ -54,7 +79,7 @@ export const deleteMemberAPI = async (accessToken: string) => {
     });
     return response;
 };
-export const logoutAPI = async (data: userTokenAtomTypes) => {
+export const logoutAPI = async (data: { accessToken: string; refreshToken: string }) => {
     const response = await Axios({
         url: '/api/v1/member/logout',
         method: 'post',
@@ -153,7 +178,7 @@ export const addLikeKeywordsAPI = async (param: { accessToken: string; data: num
     });
     return response;
 };
-export const geyMyLikeKeywordsAPI = async (accessToken: string) => {
+export const getMyLikeKeywordsAPI = async (accessToken: string) => {
     const response = await Axios({
         url: '/api/v1/member/my-keyword',
         method: 'get',
@@ -208,7 +233,7 @@ export const nearByUserPostsAPI = async (param: {
 };
 
 // COMMUNITY
-export const getAllPostAPI = async (param: {
+export const getCommunityPostAPI = async (param: {
     accessToken: string;
     curLat: number;
     curLon: number;
@@ -248,6 +273,8 @@ export const reportAPI = async (param: {
     data: {
         postId: number | null;
         repostId: number | null;
+        reportEnum: string;
+        reason: string;
     };
 }) => {
     const response = await Axios({
@@ -299,7 +326,7 @@ export const delHelpfulCommentAPI = async (param: {
 };
 
 // TEMPORARY COMMUNITY
-export const writePostAPI = async (param: { accessToken: string; data: PostDto }) => {
+export const writePostAPI = async (param: { accessToken: string; data: PostDtoTypes }) => {
     const response = await Axios({
         url: '/api/v1/post/top-post',
         method: 'post',
@@ -322,7 +349,7 @@ export const writePostFilesAPI = async (param: { accessToken: string; data: Form
     });
     return response;
 };
-export const writeCommentAPI = async (param: { accessToken: string; data: CommentReqTypes }) => {
+export const writeCommentAPI = async (param: { accessToken: string; data: CommentDtoTypes }) => {
     const response = await Axios({
         url: '/api/v1/post/repost',
         method: 'post',
@@ -342,6 +369,21 @@ export const writeCommentFilesAPI = async (param: { data: FormData; rePostId: nu
             'Content-Type': 'multipart/form-data; boundary=someArbitraryUniqueString',
         },
         data: param.data,
+    });
+    return response;
+};
+
+// ALARM
+export const getAlarmHistoryAPI = async (param: { accessToken: string; page: number; isKeywordAlarm: boolean }) => {
+    const response = await Axios({
+        url: param.isKeywordAlarm
+            ? `/api/v1/member/get_notification_list?notificationEnums=KEYWORD&page=${param.page}`
+            : `/api/v1/member/get_notification_list?notificationEnums=LIKE?notificationEnums=REPOST&page=${param.page}`,
+        method: 'get',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${param.accessToken}`,
+        },
     });
     return response;
 };

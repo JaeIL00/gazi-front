@@ -1,5 +1,6 @@
 apply plugin: "com.android.application"
 apply plugin: "com.facebook.react"
+apply plugin: 'com.google.gms.google-services'
 
 import com.android.build.OutputFile
 
@@ -93,14 +94,14 @@ android {
 
     compileSdkVersion rootProject.ext.compileSdkVersion
 
-    namespace "com.gazi"
+    namespace "com.gazinow"
     defaultConfig {
-        applicationId "com.gazi"
+        applicationId "com.gazinow"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 5
         versionName "1.2.0"
-		resValue "string", "build_config_package", "com.gazi"
+		resValue "string", "build_config_package", "com.gazinow"
 		resValue 'string', "CODE_PUSH_APK_BUILD_TIME", String.format("\"%d\"", System.currentTimeMillis())
     }
 
@@ -190,6 +191,8 @@ dependencies {
         implementation jscFlavor
     }
 	implementation 'androidx.core:core-splashscreen:1.0.0-beta01'
+	implementation platform('com.google.firebase:firebase-bom:32.1.1')
+	implementation 'com.google.firebase:firebase-analytics'
 }
 
 apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)

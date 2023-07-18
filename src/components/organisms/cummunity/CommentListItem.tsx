@@ -1,7 +1,10 @@
 import React, { useCallback, useState } from 'react';
 import { Image, View } from 'react-native';
 import { useMutation } from 'react-query';
+import { debounce } from 'lodash';
+import { useRecoilValue } from 'recoil';
 
+import ReportModal from './ReportModal';
 import Icons from '../../smallest/Icons';
 import Spacer from '../../smallest/Spacer';
 import Colors from '../../../styles/Colors';
@@ -9,22 +12,40 @@ import NormalText from '../../smallest/NormalText';
 import MediumText from '../../smallest/MediumText';
 import TouchButton from '../../smallest/TouchButton';
 import SemiBoldText from '../../smallest/SemiBoldText';
+import ModalBackground from '../../smallest/ModalBackground';
 import CommentImageItem from '../../molecules/CommentImageItem';
+import { userAuthAtom } from '../../../store/atoms';
 import { commentListItemStyles } from '../../../styles/styles';
 import { CommentListItemProps, ImageViewTypes } from '../../../types/types';
 import { useRootNavigation } from '../../../navigations/RootStackNavigation';
-import { addHelpfulCommentAPI, delHelpfulCommentAPI } from '../../../queries/api';
-import { debounce } from 'lodash';
-import { useRecoilValue } from 'recoil';
-import { userTokenAtom } from '../../../store/atoms';
+import { addHelpfulCommentAPI, delHelpfulCommentAPI, reportAPI } from '../../../queries/api';
 
-const CommentListItem = ({ comment, postTitle, postCount, reportHandler, firstCommentId }: CommentListItemProps) => {
+const CommentListItem = ({
+    comment,
+    postTitle,
+    postCount,
+    getCommentListRefetch,
+    delReportComment,
+}: CommentListItemProps) => {
     const rootNavigation = useRootNavigation();
 
-    const { accessToken } = useRecoilValue(userTokenAtom);
+    const { accessToken } = useRecoilValue(userAuthAtom);
 
     const [isHelpful, setIsHelpful] = useState<boolean>(comment.like);
+    const [isReportModal, setIsReportModal] = useState<boolean>(false);
+    const [isReportSuccess, setIsReportSuccess] = useState<boolean>(false);
     const [helpfulCount, setHelpfulCount] = useState<number>(comment.likeCount);
+
+    // Comment report API
+    const { mutate, isLoading } = useMutation(reportAPI, {
+        onSuccess: () => {
+            setIsReportSuccess(true);
+        },
+        onError: ({ response }) => {
+            // For Debug
+            console.log('(ERROR) report API. respense: ', response);
+        },
+    });
 
     // Add helpful comment API
     const { mutate: addHelpfultMutate } = useMutation(addHelpfulCommentAPI, {
@@ -61,7 +82,7 @@ const CommentListItem = ({ comment, postTitle, postCount, reportHandler, firstCo
     };
     const addHelpfulMutate = useCallback(
         debounce(() => {
-            if (firstCommentId === comment.postId) {
+            if (comment.post) {
                 addHelpfultMutate({
                     accessToken,
                     data: {
@@ -79,11 +100,11 @@ const CommentListItem = ({ comment, postTitle, postCount, reportHandler, firstCo
                 });
             }
         }, 1000),
-        [firstCommentId, comment],
+        [comment],
     );
     const delHelpfulMutate = useCallback(
         debounce(() => {
-            if (firstCommentId === comment.postId) {
+            if (comment.post) {
                 delHelpfultMutate({
                     accessToken,
                     data: {
@@ -101,8 +122,38 @@ const CommentListItem = ({ comment, postTitle, postCount, reportHandler, firstCo
                 });
             }
         }, 1000),
-        [firstCommentId],
+        [],
     );
+
+    // Report comment handler
+    const reportMutate = (repostId: number, reportEnum: string, reason: string) => {
+        if (comment.post) {
+            mutate({
+                accessToken,
+                data: {
+                    postId: repostId,
+                    repostId: null,
+                    reportEnum,
+                    reason,
+                },
+            });
+        } else {
+            mutate({
+                accessToken,
+                data: {
+                    postId: null,
+                    repostId,
+                    reportEnum,
+                    reason,
+                },
+            });
+        }
+    };
+
+    const closeReportModalHandler = () => {
+        setIsReportModal(false);
+        delReportComment(comment.postId);
+    };
 
     // Move image view screen
     const moveImageViewScreen = (viewData: ImageViewTypes) => {
@@ -124,9 +175,18 @@ const CommentListItem = ({ comment, postTitle, postCount, reportHandler, firstCo
                                 <MediumText text={`${comment.distance} | ${comment.time}`} size={11} color="#999999" />
                             </View>
                         </View>
-                        <TouchButton onPress={() => reportHandler(comment.postId)} hitSlop={10}>
+                        <TouchButton onPress={() => setIsReportModal(true)} hitSlop={10}>
                             <MediumText text="신고하기" size={11} color={Colors.BLACK} />
                         </TouchButton>
+                        <ModalBackground visible={isReportModal} onRequestClose={closeReportModalHandler}>
+                            <ReportModal
+                                repostId={comment.postId}
+                                isReportSuccess={isReportSuccess}
+                                reportMutate={reportMutate}
+                                closeReportModalHandler={closeReportModalHandler}
+                                getCommentListRefetch={getCommentListRefetch}
+                            />
+                        </ModalBackground>
                     </View>
                 </View>
 

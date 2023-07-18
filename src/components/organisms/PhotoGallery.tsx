@@ -9,10 +9,10 @@ import Spacer from '../smallest/Spacer';
 import Colors from '../../styles/Colors';
 import MediumText from '../smallest/MediumText';
 import TouchButton from '../smallest/TouchButton';
-import { GalleryAlbumListTypes, PhotoGalleryProps, uploadImageFileTypes } from '../../types/types';
+import SemiBoldText from '../smallest/SemiBoldText';
+import { GalleryAlbumListTypes, PhotoGalleryProps } from '../../types/types';
 import { photoGalleryStyles } from '../../styles/styles';
 import { screenFont, screenHeight, screenWidth } from '../../utils/changeStyleSize';
-import SemiBoldText from '../smallest/SemiBoldText';
 
 const PhotoGallery = ({ closeGalleryHandling, getImageHandler }: PhotoGalleryProps) => {
     const [checkIndex, setCheckIndex] = useState<number[]>([]);
@@ -235,7 +235,6 @@ const PhotoGallery = ({ closeGalleryHandling, getImageHandler }: PhotoGalleryPro
                 style={[
                     photoGalleryStyles.headerBox,
                     {
-                        borderColor: '#EBEBEB',
                         borderBottomWidth: albumListWindow ? 1 * screenFont : undefined,
                     },
                 ]}>
@@ -281,14 +280,7 @@ const PhotoGallery = ({ closeGalleryHandling, getImageHandler }: PhotoGalleryPro
                                 key={item.title}
                                 onPress={() => onPressChangeAlbum(item.title)}
                                 activeOpacity={1}
-                                style={{
-                                    flexDirection: 'row',
-                                    alignItems: 'center',
-                                    paddingVertical: 10 * screenHeight,
-                                    paddingLeft: 16 * screenWidth,
-                                    borderBottomWidth: 1 * screenFont,
-                                    borderColor: '#EBEBEB',
-                                }}>
+                                style={photoGalleryStyles.perPhotoImage}>
                                 <Image
                                     source={{ uri: item.thumbnail }}
                                     style={{ width: 60 * screenWidth, height: 60 * screenWidth }}

@@ -8,7 +8,6 @@ import TextButton from '../molecules/TextButton';
 import SemiBoldText from '../smallest/SemiBoldText';
 import { FailPermissionModalProps } from '../../types/types';
 import { FailPermissionModalStyles } from '../../styles/styles';
-import ModalBackground from '../smallest/ModalBackground';
 
 const FailPermissionModal = ({
     onPressModalButton,

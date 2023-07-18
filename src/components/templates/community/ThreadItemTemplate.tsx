@@ -1,8 +1,8 @@
-import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import React, { useCallback, useLayoutEffect, useRef, useState } from 'react';
 import { FlatList, Image, Platform, View } from 'react-native';
 import DropShadow from 'react-native-drop-shadow';
 import { useRecoilValue } from 'recoil';
-import { useInfiniteQuery, useMutation } from 'react-query';
+import { useInfiniteQuery } from 'react-query';
 
 import Icons from '../../smallest/Icons';
 import Spacer from '../../smallest/Spacer';
@@ -11,9 +11,9 @@ import NormalText from '../../smallest/NormalText';
 import TouchButton from '../../smallest/TouchButton';
 import SemiBoldText from '../../smallest/SemiBoldText';
 import CommentListItem from '../../organisms/cummunity/CommentListItem';
-import { userTokenAtom } from '../../../store/atoms';
+import { userAuthAtom } from '../../../store/atoms';
+import { getCommentListAPI } from '../../../queries/api';
 import { threadItemTemplateStyles } from '../../../styles/styles';
-import { getCommentListAPI, reportAPI } from '../../../queries/api';
 import { screenHeight, screenWidth } from '../../../utils/changeStyleSize';
 import { CommentTopicTypes, CommentTypes, ThreadItemTemplateProps } from '../../../types/types';
 
@@ -23,12 +23,12 @@ const ThreadItemTemplate = ({
     movetoCommunityScreen,
     moveToWriteScreen,
 }: ThreadItemTemplateProps) => {
-    const { accessToken } = useRecoilValue(userTokenAtom);
+    const { accessToken } = useRecoilValue(userAuthAtom);
 
-    const firstCommentId = useRef<number>();
-    const indexNumber = useRef<number>(0);
+    const commentIndexRef = useRef<number>(0);
 
     const [commentList, setCommentList] = useState<CommentTypes[]>([]);
+    const [isCommentRefresh, setIsCommentRefresh] = useState<boolean>(false);
     const [postValue, setPostValue] = useState<CommentTopicTypes>({
         title: '',
         rePostCount: 0,
@@ -47,7 +47,7 @@ const ThreadItemTemplate = ({
         refetch: commentRefetch,
         remove: commentRemove,
     } = useInfiniteQuery(
-        ['getCommentList'],
+        'getCommentList',
         ({ pageParam = 0 }) =>
             getCommentListAPI({
                 accessToken,
@@ -57,47 +57,41 @@ const ThreadItemTemplate = ({
                 page: pageParam,
             }),
         {
-            cacheTime: 0,
-            getNextPageParam: (lastPage, allPages) => {
+            getNextPageParam: lastPage => {
                 const total = lastPage.data.data.postList.totalPages;
                 const nextPage = lastPage.data.data.postList.pageable.pageNumber + 1;
                 return nextPage === total ? undefined : nextPage;
             },
             onSuccess: data => {
-                const pageNumber = data.pages[indexNumber.current].data.data.postList.pageable.pageNumber;
-                const responseCommentList: CommentTypes[] = data.pages[indexNumber.current].data.data.postList.content;
+                const pageNumber = data.pages[commentIndexRef.current].data.data.postList.pageable.pageNumber;
+                const content: CommentTypes[] = data.pages[commentIndexRef.current].data.data.postList.content;
+                const getNotReported = content.filter((item: CommentTypes) => !item.report);
                 if (pageNumber === 0) {
-                    getCommentTopic(data.pages[indexNumber.current].data.data, responseCommentList);
+                    getCommentTopic(data.pages[commentIndexRef.current].data.data);
+                    setCommentList(getNotReported);
+                    setIsCommentRefresh(false);
                 } else {
-                    const getNotReport = responseCommentList.filter((item: CommentTypes) => !item.report);
-                    setCommentList([...commentList, ...getNotReport]);
+                    setCommentList([...commentList, ...getNotReported]);
                 }
-                if (data.pages[0].data.data.postList.last) {
-                    firstCommentId.current = responseCommentList.pop()?.postId;
-                } else {
-                    indexNumber.current = indexNumber.current + 1;
+                if (!data.pages[0].data.data.postList.last) {
+                    commentIndexRef.current = commentIndexRef.current + 1;
                 }
             },
             onError: ({ response }) => {
+                setIsCommentRefresh(false);
                 // For Debug
                 console.log('(ERROR) Get comment list API. respense: ', response);
             },
         },
     );
 
-    // Comment report API
-    const { mutate, isLoading } = useMutation(reportAPI, {
-        onSuccess: () => {
-            commentRemove();
-            commentRefetch();
-        },
-        onError: ({ response }) => {
-            // For Debug
-            console.log('(ERROR) report API. respense: ', response);
-        },
-    });
+    const getCommentListRefetch = () => {
+        commentRemove();
+        commentRefetch();
+    };
 
-    const getCommentTopic = (data: CommentTopicTypes, content: CommentTypes[]) => {
+    // Get comment topic by comment API
+    const getCommentTopic = useCallback((data: CommentTopicTypes) => {
         setPostValue({
             title: data.title,
             rePostCount: data.rePostCount,
@@ -106,8 +100,12 @@ const ThreadItemTemplate = ({
             distance: data.distance,
             backgroundMapUrl: data.backgroundMapUrl,
         });
-        const getNotReport = content.filter(item => !item.report);
-        setCommentList([...getNotReport]);
+    }, []);
+
+    // Delete report comment from success report API
+    const delReportComment = (postId: number) => {
+        // commentList.filter(comment => comment.postId !== postId);
+        setCommentList(prev => prev.filter(comment => comment.postId !== postId));
     };
 
     // Comment thread list render
@@ -115,41 +113,24 @@ const ThreadItemTemplate = ({
         ({ item }: { item: CommentTypes }) => (
             <CommentListItem
                 comment={item}
-                reportHandler={reportHandler}
                 postTitle={postValue.title}
                 postCount={postValue.rePostCount}
-                firstCommentId={firstCommentId.current}
+                getCommentListRefetch={getCommentListRefetch}
+                delReportComment={delReportComment}
             />
         ),
         [postValue],
     );
+    const commentListRefresh = useCallback(() => {
+        setIsCommentRefresh(true);
+        getCommentListRefetch();
+    }, []);
     const ItemSeparatorComponent = useCallback(() => <Spacer height={29} />, []);
-
-    const reportHandler = (repostId: number) => {
-        if (firstCommentId.current === repostId) {
-            mutate({
-                accessToken,
-                data: {
-                    postId: repostId,
-                    repostId: null,
-                },
-            });
-        } else {
-            mutate({
-                accessToken,
-                data: {
-                    postId: null,
-                    repostId,
-                },
-            });
-        }
-    };
 
     // If write comment, get fresh list
     useLayoutEffect(() => {
-        indexNumber.current = 0;
-        commentRemove();
-        commentRefetch();
+        commentIndexRef.current = 0;
+        getCommentListRefetch();
     }, [freshRePostCount]);
 
     return (
@@ -179,7 +160,11 @@ const ThreadItemTemplate = ({
                                 <Spacer height={4} />
                             </>
                         )}
-                        <SemiBoldText text={postValue.title} size={20} color={Colors.BLACK} />
+                        <View style={threadItemTemplateStyles.headerTitleBox}>
+                            {postValue.title.split(' ').map(item => (
+                                <SemiBoldText text={`${item} `} size={20} color={Colors.BLACK} />
+                            ))}
+                        </View>
                         <Spacer height={4} />
                         <NormalText
                             text={`${postValue.rePostCount} posts • updated ${postValue.time}`}
@@ -187,10 +172,11 @@ const ThreadItemTemplate = ({
                             color={Colors.BLACK}
                         />
                     </View>
+                    {/* Temparay planning
                     <Image
                         source={require('../../../assets/icons/share.png')}
                         style={threadItemTemplateStyles.shareIcon}
-                    />
+                    /> */}
                 </View>
 
                 <View style={threadItemTemplateStyles.commentBox}>
@@ -207,6 +193,8 @@ const ThreadItemTemplate = ({
                                 fetchNextPage();
                             }
                         }}
+                        onRefresh={commentListRefresh}
+                        refreshing={isCommentRefresh}
                     />
                 </View>
             </View>
