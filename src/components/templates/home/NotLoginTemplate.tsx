@@ -12,8 +12,6 @@ import BoldText from '../../smallest/BoldText';
 import TextButton from '../../molecules/TextButton';
 import { notLoginTemplateStyles } from '../../../styles/styles';
 import { useRootNavigation } from '../../../navigations/RootStackNavigation';
-import { KakaoOAuthToken, KakaoProfile, getProfile, login } from '@react-native-seoul/kakao-login';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const NotLoginTemplate = () => {
     const NAVER_CLIENT_ID = Config.NAVER_CLIENT_ID as string;
