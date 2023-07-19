@@ -6,20 +6,20 @@ import { useMutation } from 'react-query';
 import { debounce } from 'lodash';
 import DropShadow from 'react-native-drop-shadow';
 
-import Spacer from '../../smallest/Spacer';
-import Colors from '../../../styles/Colors';
-import MediumText from '../../smallest/MediumText';
+import Spacer from '../../atoms/Spacer';
+import colors from '../../../common/constants/colors';
+import MediumText from '../../atoms/MediumText';
+import TouchButton from '../../atoms/TouchButton';
 import TextButton from '../../molecules/TextButton';
-import TouchButton from '../../smallest/TouchButton';
-import SemiBoldText from '../../smallest/SemiBoldText';
+import SemiBoldText from '../../atoms/SemiBoldText';
 import KeywordsList from '../../organisms/KeywordsList';
-import useCheckKeyword from '../../../utils/hooks/useCheckKeyword';
+import useCheckKeyword from '../../../common/hooks/useCheckKeyword';
 import MoveBackWithPageTitle from '../../organisms/MoveBackWithPageTitle';
-import { userAuthAtom } from '../../../store/atoms';
-import { addLikeKeywordsAPI } from '../../../queries/api';
-import { InitLikeKeywordTemplateProps } from '../../../types/types';
-import { initLikeKeywordTemplateStyles } from '../../../styles/styles';
-import { issueKeywordsNotEtc, subwayKeywords, trafficKeywords } from '../../../utils/allKeywords';
+import { userAuthAtom } from '../../../recoil';
+import { addLikeKeywordsAPI } from '../../../apis/api';
+import { initLikeKeywordTemplateStyles } from '../../../styles/templates/styles';
+import { issueKeywordsNotEtc, subwayKeywords, trafficKeywords } from '../../../common/constants/allKeywords';
+import { InitLikeKeywordTemplateProps } from '../../../types/templates/types';
 
 const InitLikeKeywordTemplate = ({ navigationHandler }: InitLikeKeywordTemplateProps) => {
     const { accessToken } = useRecoilValue(userAuthAtom);
@@ -80,7 +80,7 @@ const InitLikeKeywordTemplate = ({ navigationHandler }: InitLikeKeywordTemplateP
                 />
                 <View style={initLikeKeywordTemplateStyles.skipBox}>
                     <TouchButton onPress={() => navigationHandler('OK')}>
-                        <MediumText text="Skip" color={Colors.TXT_GRAY} size={14} />
+                        <MediumText text="Skip" color={colors.TXT_GRAY} size={14} />
                     </TouchButton>
                 </View>
 
@@ -90,17 +90,17 @@ const InitLikeKeywordTemplate = ({ navigationHandler }: InitLikeKeywordTemplateP
                 showsVerticalScrollIndicator={false}
                 contentContainerStyle={initLikeKeywordTemplateStyles.scrollBox}>
                 <View>
-                    <SemiBoldText text="교통수단" color={Colors.BLACK} size={18} />
+                    <SemiBoldText text="교통수단" color={colors.BLACK} size={18} />
                     <Spacer height={14} />
                     <KeywordsList
                         type="TRAFFIC"
                         list={trafficKeywords}
                         isCheck={checkTraffic}
                         checkKeywordHandler={checkingKeywordHandler}
-                        checkTextColor={Colors.WHITE}
+                        checkTextColor={colors.WHITE}
                         checkBorderColor={undefined}
-                        checkBackColor={Colors.BLACK}
-                        trafficKeywordColor={Colors.BLACK}
+                        checkBackColor={colors.BLACK}
+                        trafficKeywordColor={colors.BLACK}
                     />
                     {checkTraffic[2] && (
                         <KeywordsList
@@ -108,9 +108,9 @@ const InitLikeKeywordTemplate = ({ navigationHandler }: InitLikeKeywordTemplateP
                             list={subwayKeywords}
                             isCheck={checkSubway}
                             checkKeywordHandler={checkingKeywordHandler}
-                            checkTextColor={Colors.WHITE}
+                            checkTextColor={colors.WHITE}
                             checkBorderColor={undefined}
-                            checkBackColor={Colors.BLACK}
+                            checkBackColor={colors.BLACK}
                         />
                     )}
                 </View>
@@ -118,16 +118,16 @@ const InitLikeKeywordTemplate = ({ navigationHandler }: InitLikeKeywordTemplateP
                 <Spacer height={16} />
 
                 <View>
-                    <SemiBoldText text="이슈" color={Colors.BLACK} size={18} />
+                    <SemiBoldText text="이슈" color={colors.BLACK} size={18} />
                     <Spacer height={14} />
                     <KeywordsList
                         type="ISSUE"
                         list={issueKeywordsNotEtc}
                         isCheck={checkIssue}
                         checkKeywordHandler={checkingKeywordHandler}
-                        checkTextColor={Colors.WHITE}
+                        checkTextColor={colors.WHITE}
                         checkBorderColor={undefined}
-                        checkBackColor={Colors.BLACK}
+                        checkBackColor={colors.BLACK}
                     />
                 </View>
             </ScrollView>
@@ -147,8 +147,8 @@ const InitLikeKeywordTemplate = ({ navigationHandler }: InitLikeKeywordTemplateP
                         onPress={onPressLikedKeyword}
                         text={checkedKeywords.length > 0 ? '확인' : '키워드를 골라주세요'}
                         height={48}
-                        backgroundColor={checkedKeywords.length > 0 ? Colors.BLACK : Colors.BTN_GRAY}
-                        textColor={Colors.WHITE}
+                        backgroundColor={checkedKeywords.length > 0 ? colors.BLACK : colors.BTN_GRAY}
+                        textColor={colors.WHITE}
                         fontSize={17}
                     />
                 </DropShadow>

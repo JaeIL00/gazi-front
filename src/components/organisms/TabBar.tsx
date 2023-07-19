@@ -1,12 +1,12 @@
 import React from 'react';
 import { Image, View } from 'react-native';
 
-import Spacer from '../smallest/Spacer';
-import Colors from '../../styles/Colors';
-import NormalText from '../smallest/NormalText';
-import TouchButton from '../smallest/TouchButton';
-import { TabBarProps } from '../../types/types';
-import { tabBarStyles } from '../../styles/styles';
+import Spacer from '../atoms/Spacer';
+import colors from '../../common/constants/colors';
+import NormalText from '../atoms/NormalText';
+import TouchButton from '../atoms/TouchButton';
+import { tabBarStyles } from '../../styles/organisms/styles';
+import { TabBarProps } from '../../types/common/types';
 
 const blurImageList = [
     require('../../assets/icons/chat-outline.png'),
@@ -65,7 +65,7 @@ const TabBar = ({ state, navigation }: TabBarProps) => {
                                 style={tabBarStyles.image}
                             />
                             <Spacer height={5} />
-                            <NormalText text={label} color={isFocused ? Colors.VIOLET : '#7E7E7E'} size={10} />
+                            <NormalText text={label} color={isFocused ? colors.VIOLET : '#7E7E7E'} size={10} />
                         </View>
                     </TouchButton>
                 );

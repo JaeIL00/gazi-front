@@ -1,15 +1,15 @@
 import React from 'react';
 import { Image, TouchableOpacity, View } from 'react-native';
 
-import Spacer from '../smallest/Spacer';
-import Colors from '../../styles/Colors';
-import NormalText from '../smallest/NormalText';
-import MediumText from '../smallest/MediumText';
-import SemiBoldText from '../smallest/SemiBoldText';
-import { PostListItemProps } from '../../types/types';
-import { postListItemStyles } from '../../styles/styles';
+import Spacer from '../atoms/Spacer';
+import colors from '../../common/constants/colors';
+import NormalText from '../atoms/NormalText';
+import MediumText from '../atoms/MediumText';
+import SemiBoldText from '../atoms/SemiBoldText';
+import { postListItemStyles } from '../../styles/organisms/styles';
 import { screenFont, screenHeight } from '../../utils/changeStyleSize';
 import { useRootNavigation } from '../../navigations/RootStackNavigation';
+import { PostListItemProps } from '../../types/organisms/types';
 
 const PostListItem = ({ post, isBorder, isMarkerPost, isNearList }: PostListItemProps) => {
     const rootNavigation = useRootNavigation();
@@ -19,7 +19,7 @@ const PostListItem = ({ post, isBorder, isMarkerPost, isNearList }: PostListItem
                 <View
                     style={{
                         borderBottomWidth: isBorder ? 1 * screenFont : undefined,
-                        borderColor: Colors.BORDER_GRAY,
+                        borderColor: colors.BORDER_GRAY,
                     }}>
                     <TouchableOpacity
                         onPress={() => rootNavigation.navigate('ThreadItem', { postId: post.postId })}
@@ -35,7 +35,7 @@ const PostListItem = ({ post, isBorder, isMarkerPost, isNearList }: PostListItem
                                 <SemiBoldText
                                     text={post.title}
                                     size={isMarkerPost ? 18 : 16}
-                                    color={Colors.BLACK}
+                                    color={colors.BLACK}
                                     numberOfLines={1}
                                 />
                                 {isMarkerPost && <Spacer height={5} />}
@@ -44,7 +44,7 @@ const PostListItem = ({ post, isBorder, isMarkerPost, isNearList }: PostListItem
                                         post.rePostCount
                                     }posts`}
                                     size={11}
-                                    color={Colors.TXT_GRAY}
+                                    color={colors.TXT_GRAY}
                                 />
                                 <Spacer height={5} />
                                 <NormalText text={post.content} size={12} color="#6A6A6A" numberOfLines={2} />

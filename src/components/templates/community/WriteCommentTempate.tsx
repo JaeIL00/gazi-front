@@ -4,38 +4,37 @@ import { useMutation } from 'react-query';
 import { useRecoilValue } from 'recoil';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { debounce } from 'lodash';
-
-import Icons from '../../smallest/Icons';
-import Spacer from '../../smallest/Spacer';
-import Colors from '../../../styles/Colors';
 import FastImage from 'react-native-fast-image';
-import NormalText from '../../smallest/NormalText';
-import MediumText from '../../smallest/MediumText';
+
+import Icons from '../../atoms/Icons';
+import Spacer from '../../atoms/Spacer';
+import colors from '../../../common/constants/colors';
+import NormalText from '../../atoms/NormalText';
+import MediumText from '../../atoms/MediumText';
+import TouchButton from '../../atoms/TouchButton';
 import TextButton from '../../molecules/TextButton';
-import TouchButton from '../../smallest/TouchButton';
-import SemiBoldText from '../../smallest/SemiBoldText';
+import SemiBoldText from '../../atoms/SemiBoldText';
 import PhotoGallery from '../../organisms/PhotoGallery';
-import MultiLineInput from '../../smallest/MultiLineInput';
+import MultiLineInput from '../../atoms/MultiLineInput';
+import ModalBackground from '../../atoms/ModalBackground';
 import HeaderMolecule from '../../molecules/HeaderMolecule';
 import SearchLocation from '../../organisms/SearchLocation';
-import ModalBackground from '../../smallest/ModalBackground';
-import FailPermissionModal from '../../organisms/FailPermissionModal';
 import AddKeywordInWrite from '../../organisms/cummunity/AddKeywordInWrite';
-import useTextInputValidation from '../../../utils/hooks/useTextInputValidation';
-import { userAuthAtom, userInfoAtom } from '../../../store/atoms';
-import { issueKeywords } from '../../../utils/allKeywords';
-import { subwayKeywords } from '../../../utils/allKeywords';
-import { trafficKeywords } from '../../../utils/allKeywords';
-import { writeCommentTemplateStyles } from '../../../styles/styles';
-import { writeCommentAPI, writeCommentFilesAPI } from '../../../queries/api';
+import useTextInputValidation from '../../../common/hooks/useTextInputValidation';
+import { userAuthAtom, userInfoAtom } from '../../../recoil';
+import { writeCommentTemplateStyles } from '../../../styles/templates/styles';
+import FailPermissionModal from '../../organisms/FailPermissionModal';
+import { writeCommentAPI, writeCommentFilesAPI } from '../../../apis/api';
+import { issueKeywords, subwayKeywords, trafficKeywords } from '../../../common/constants/allKeywords';
+
+import Geolocation from '@react-native-community/geolocation';
+import { WriteCommentTemplateProps } from '../../../types/templates/types';
 import {
     KeywordListTypes,
     TemporarySaveChooseLocationTypes,
-    WriteCommentTemplateProps,
     WriteCommentTypes,
     uploadImageFileTypes,
-} from '../../../types/types';
-import Geolocation from '@react-native-community/geolocation';
+} from '../../../types/common/types';
 
 const WriteCommentTemplate = ({ navigationHandler, threadInfo }: WriteCommentTemplateProps) => {
     const { accessToken } = useRecoilValue(userAuthAtom);
@@ -362,22 +361,22 @@ const WriteCommentTemplate = ({ navigationHandler, threadInfo }: WriteCommentTem
         <View style={writeCommentTemplateStyles.container}>
             <View style={writeCommentTemplateStyles.headerNavigateBox}>
                 <TouchButton onPress={() => navigationHandler('BACK')} hitSlop={10}>
-                    <Icons type="ionicons" name="close-sharp" size={24} color={Colors.BLACK} />
+                    <Icons type="ionicons" name="close-sharp" size={24} color={colors.BLACK} />
                 </TouchButton>
                 <TouchButton onPress={finishWritingHandler} hitSlop={10}>
-                    <SemiBoldText text="등록" size={16} color={Colors.BLACK} />
+                    <SemiBoldText text="등록" size={16} color={colors.BLACK} />
                 </TouchButton>
             </View>
 
             <ScrollView style={writeCommentTemplateStyles.contentBox}>
                 <View style={writeCommentTemplateStyles.settingContainer}>
                     <View>
-                        <SemiBoldText text={threadInfo.title} size={20} color={Colors.BLACK} numberOfLines={1} />
+                        <SemiBoldText text={threadInfo.title} size={20} color={colors.BLACK} numberOfLines={1} />
                         <Spacer height={4} />
                         <NormalText
                             text={`${threadInfo.rePostCount} post • updated ${threadInfo.time}`}
                             size={12}
-                            color={Colors.BLACK}
+                            color={colors.BLACK}
                         />
                     </View>
 
@@ -395,11 +394,11 @@ const WriteCommentTemplate = ({ navigationHandler, threadInfo }: WriteCommentTem
                                             <MediumText
                                                 text={writeCommentData.placeName}
                                                 size={13}
-                                                color={Colors.BLACK}
+                                                color={colors.BLACK}
                                             />
                                         </>
                                     ) : (
-                                        <MediumText text="위치설정" size={13} color={Colors.BLACK} />
+                                        <MediumText text="위치설정" size={13} color={colors.BLACK} />
                                     )}
                                     <Spacer width={4} />
                                     <FastImage
@@ -415,10 +414,10 @@ const WriteCommentTemplate = ({ navigationHandler, threadInfo }: WriteCommentTem
                                         <MediumText
                                             text={issueKeywords[chooseKeywords[0].id - 1].keywordName}
                                             size={13}
-                                            color={Colors.BLACK}
+                                            color={colors.BLACK}
                                         />
                                     ) : (
-                                        <MediumText text="키워드설정" size={13} color={Colors.BLACK} />
+                                        <MediumText text="키워드설정" size={13} color={colors.BLACK} />
                                     )}
                                     <Spacer width={4} />
                                     <FastImage
@@ -461,7 +460,7 @@ const WriteCommentTemplate = ({ navigationHandler, threadInfo }: WriteCommentTem
                             <>
                                 {chooseKeywords.map(item => (
                                     <View key={item.id} style={writeCommentTemplateStyles.bottomKeywordItem}>
-                                        <MediumText text={item.keywordName} size={12} color={Colors.TXT_LIGHTGRAY} />
+                                        <MediumText text={item.keywordName} size={12} color={colors.TXT_LIGHTGRAY} />
                                     </View>
                                 ))}
                             </>
@@ -544,14 +543,14 @@ const WriteCommentTemplate = ({ navigationHandler, threadInfo }: WriteCommentTem
 
             <ModalBackground visible={onErrorModal}>
                 <View style={writeCommentTemplateStyles.errorModalBox}>
-                    <SemiBoldText text={onErrorText} size={18} color={Colors.BLACK} />
+                    <SemiBoldText text={onErrorText} size={18} color={colors.BLACK} />
                     <Spacer height={18} />
                     <TextButton
                         onPress={offErrorModalHandler}
                         text="확인"
                         textColor="#49454F"
                         fontSize={14}
-                        backgroundColor={Colors.LIGHTGRAY}
+                        backgroundColor={colors.LIGHTGRAY}
                         paddingHorizontal={111}
                         paddingVertical={12}
                     />

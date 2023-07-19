@@ -4,21 +4,21 @@ import { useMutation } from 'react-query';
 import { useRecoilValue } from 'recoil';
 import LinearGradient from 'react-native-linear-gradient';
 
-import Icons from '../../smallest/Icons';
-import Spacer from '../../smallest/Spacer';
+import Icons from '../../atoms/Icons';
+import Spacer from '../../atoms/Spacer';
 import KeywordsList from '../KeywordsList';
-import Colors from '../../../styles/Colors';
-import BoldText from '../../smallest/BoldText';
+import colors from '../../../common/constants/colors';
+import BoldText from '../../atoms/BoldText';
 import TextButton from '../../molecules/TextButton';
-import TouchButton from '../../smallest/TouchButton';
-import SemiBoldText from '../../smallest/SemiBoldText';
-import useCheckKeyword from '../../../utils/hooks/useCheckKeyword';
-import { userAuthAtom } from '../../../store/atoms';
-import { EditMyKeywordProps } from '../../../types/types';
-import { editMyKeywordStyles } from '../../../styles/styles';
-import { editMyLikeKeywordsAPI } from '../../../queries/api';
+import TouchButton from '../../atoms/TouchButton';
+import SemiBoldText from '../../atoms/SemiBoldText';
+import useCheckKeyword from '../../../common/hooks/useCheckKeyword';
+import { userAuthAtom } from '../../../recoil';
+import { editMyLikeKeywordsAPI } from '../../../apis/api';
 import { useRootNavigation } from '../../../navigations/RootStackNavigation';
-import { issueKeywordsNotEtc, subwayKeywords, trafficKeywords } from '../../../utils/allKeywords';
+import { issueKeywordsNotEtc, subwayKeywords, trafficKeywords } from '../../../common/constants/allKeywords';
+import { editMyKeywordStyles } from '../../../styles/organisms/styles';
+import { EditMyKeywordProps } from '../../../types/organisms/types';
 
 const EditMyKeyword = ({
     myKeywordList,
@@ -190,7 +190,7 @@ const EditMyKeyword = ({
                     <Spacer height={16} />
                     <View>
                         <View style={editMyKeywordStyles.keywordListBox}>
-                            <SemiBoldText text="이슈" color={Colors.BLACK} size={16} />
+                            <SemiBoldText text="이슈" color={colors.BLACK} size={16} />
                         </View>
                         <Spacer height={14} />
                         <KeywordsList
@@ -199,7 +199,7 @@ const EditMyKeyword = ({
                             isCheck={editCheckIssue}
                             checkKeywordHandler={checkKeywordHandler}
                             checkTextColor="#7949C6"
-                            checkBorderColor={Colors.VIOLET}
+                            checkBorderColor={colors.VIOLET}
                             checkBackColor="#F1E9FF"
                         />
                     </View>
@@ -208,7 +208,7 @@ const EditMyKeyword = ({
 
                     <View>
                         <View style={editMyKeywordStyles.keywordListBox}>
-                            <SemiBoldText text="교통수단" color={Colors.BLACK} size={16} />
+                            <SemiBoldText text="교통수단" color={colors.BLACK} size={16} />
                         </View>
                         <Spacer height={14} />
                         <KeywordsList
@@ -217,7 +217,7 @@ const EditMyKeyword = ({
                             isCheck={editCheckTraffic}
                             checkKeywordHandler={checkKeywordHandler}
                             checkTextColor="#7949C6"
-                            checkBorderColor={Colors.VIOLET}
+                            checkBorderColor={colors.VIOLET}
                             checkBackColor="#F1E9FF"
                             trafficKeywordColor="#7949C6"
                         />
@@ -228,7 +228,7 @@ const EditMyKeyword = ({
                                 isCheck={editCheckSubway}
                                 checkKeywordHandler={checkKeywordHandler}
                                 checkTextColor="#7949C6"
-                                checkBorderColor={Colors.VIOLET}
+                                checkBorderColor={colors.VIOLET}
                                 checkBackColor="#F1E9FF"
                             />
                         )}
@@ -241,10 +241,10 @@ const EditMyKeyword = ({
                 <LinearGradient colors={['#FFFFFF00', '#FFFFFF']} style={editMyKeywordStyles.downLinear} />
                 <TouchButton onPress={resetCheckedHandler} paddingHorizontal={7}>
                     <View style={editMyKeywordStyles.resetText}>
-                        <Icons type="feather" name="refresh-cw" size={17} color={Colors.TXT_GRAY} />
+                        <Icons type="feather" name="refresh-cw" size={17} color={colors.TXT_GRAY} />
                         <Spacer width={3} />
                         <View style={editMyKeywordStyles.borderLine}>
-                            <BoldText text="선택초기화" size={13} color={Colors.TXT_GRAY} />
+                            <BoldText text="선택초기화" size={13} color={colors.TXT_GRAY} />
                         </View>
                     </View>
                 </TouchButton>
@@ -252,8 +252,8 @@ const EditMyKeyword = ({
                     onPress={putNewKeywordList}
                     text="선택완료"
                     fontSize={17}
-                    textColor={Colors.WHITE}
-                    backgroundColor={Colors.BLACK}
+                    textColor={colors.WHITE}
+                    backgroundColor={colors.BLACK}
                     paddingHorizontal={83.5}
                     paddingVertical={11}
                     alignSelf="stretch"

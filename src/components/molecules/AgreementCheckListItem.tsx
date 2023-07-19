@@ -1,12 +1,12 @@
 import React from 'react';
 import { View } from 'react-native';
 
-import Icons from '../smallest/Icons';
-import Colors from '../../styles/Colors';
-import TouchButton from '../smallest/TouchButton';
-import SemiBoldText from '../smallest/SemiBoldText';
-import { AgreementCheckListItemProps } from '../../types/types';
-import { agreementCheckListItemStyles, checkBoxBackground } from '../../styles/styles';
+import Icons from '../atoms/Icons';
+import colors from '../../common/constants/colors';
+import TouchButton from '../atoms/TouchButton';
+import SemiBoldText from '../atoms/SemiBoldText';
+import { AgreementCheckListItemProps } from '../../types/molecules/types';
+import { agreementCheckListItemStyles, checkBoxBackground } from '../../styles/molecules/styles';
 
 const AgreementCheckListItem = ({
     text,
@@ -20,9 +20,9 @@ const AgreementCheckListItem = ({
             <TouchButton onPress={() => onPressCheckList(index)} width={250}>
                 <View style={agreementCheckListItemStyles.agreeTitleBox}>
                     <View style={[agreementCheckListItemStyles.checkBox, checkBoxBackground(check).color]}>
-                        {check && <Icons type="feather" name="check" size={20} color={Colors.WHITE} />}
+                        {check && <Icons type="feather" name="check" size={20} color={colors.WHITE} />}
                     </View>
-                    <SemiBoldText size={14} color={Colors.BLACK} text={text} />
+                    <SemiBoldText size={14} color={colors.BLACK} text={text} />
                 </View>
             </TouchButton>
 

@@ -2,12 +2,12 @@ import React from 'react';
 import { NativeStackNavigationProp, createNativeStackNavigator } from '@react-navigation/native-stack';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 
-import InputEmailScreen from '../screens/joinMember/InputEmailScreen';
-import InputPasswordScreen from '../screens/joinMember/InputPasswordScreen';
-import InputNicknameScreen from '../screens/joinMember/InputNicknameScreen';
-import InitLikeKeywordScreen from '../screens/joinMember/InitLikeKeywordScreen';
-import RequestPermissionScreen from '../screens/joinMember/RequestPermissionScreen';
-import { JoinMemberParamList } from '../types/types';
+import InputEmailScreen from '../components/pages/joinMember/InputEmailScreen';
+import InputPasswordScreen from '../components/pages/joinMember/InputPasswordScreen';
+import InputNicknameScreen from '../components/pages/joinMember/InputNicknameScreen';
+import InitLikeKeywordScreen from '../components/pages/joinMember/InitLikeKeywordScreen';
+import RequestPermissionScreen from '../components/pages/joinMember/RequestPermissionScreen';
+import { JoinMemberParamList } from '../types/common/types';
 
 const JoinMemberNavigation = () => {
     const Stack = createNativeStackNavigator<JoinMemberParamList>();

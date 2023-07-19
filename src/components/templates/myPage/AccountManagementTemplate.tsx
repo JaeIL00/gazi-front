@@ -5,15 +5,15 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useMutation } from 'react-query';
 import FastImage from 'react-native-fast-image';
 
-import Spacer from '../../smallest/Spacer';
-import Colors from '../../../styles/Colors';
-import MediumText from '../../smallest/MediumText';
-import NormalText from '../../smallest/NormalText';
-import TouchButton from '../../smallest/TouchButton';
-import { logoutAPI } from '../../../queries/api';
-import { userAuthAtom } from '../../../store/atoms';
-import { AccountManagementTemplateProps } from '../../../types/types';
-import { AccountManagementTemplateStyles } from '../../../styles/styles';
+import Spacer from '../../atoms/Spacer';
+import colors from '../../../common/constants/colors';
+import MediumText from '../../atoms/MediumText';
+import NormalText from '../../atoms/NormalText';
+import TouchButton from '../../atoms/TouchButton';
+import { logoutAPI } from '../../../apis/api';
+import { userAuthAtom } from '../../../recoil';
+import { AccountManagementTemplateStyles } from '../../../styles/templates/styles';
+import { AccountManagementTemplateProps } from '../../../types/templates/types';
 
 const AccountManagementTemplate = ({ moveToScreenHandler }: AccountManagementTemplateProps) => {
     const [userAuth, setUserAuth] = useRecoilState(userAuthAtom);
@@ -52,13 +52,13 @@ const AccountManagementTemplate = ({ moveToScreenHandler }: AccountManagementTem
                     />
                 </TouchButton>
                 <Spacer width={21} />
-                <MediumText text="계정관리" size={18} color={Colors.BLACK} />
+                <MediumText text="계정관리" size={18} color={colors.BLACK} />
             </View>
 
             <View style={AccountManagementTemplateStyles.tabBox}>
                 <TouchButton onPress={() => moveToScreenHandler('PASSWORD')}>
                     <View style={AccountManagementTemplateStyles.buttonBox}>
-                        <NormalText text="비밀번호 변경" size={16} color={Colors.BLACK} />
+                        <NormalText text="비밀번호 변경" size={16} color={colors.BLACK} />
                     </View>
                 </TouchButton>
             </View>
@@ -71,14 +71,14 @@ const AccountManagementTemplate = ({ moveToScreenHandler }: AccountManagementTem
                         })
                     }>
                     <View style={AccountManagementTemplateStyles.buttonBox}>
-                        <NormalText text="로그아웃" size={16} color={Colors.BLACK} />
+                        <NormalText text="로그아웃" size={16} color={colors.BLACK} />
                     </View>
                 </TouchButton>
             </View>
             <View style={AccountManagementTemplateStyles.tabBox}>
                 <TouchButton onPress={() => moveToScreenHandler('DELETE')}>
                     <View style={AccountManagementTemplateStyles.buttonBox}>
-                        <NormalText text="회원 탈퇴" size={16} color={Colors.BLACK} />
+                        <NormalText text="회원 탈퇴" size={16} color={colors.BLACK} />
                     </View>
                 </TouchButton>
             </View>

@@ -2,14 +2,14 @@ import React from 'react';
 import { Platform, ScrollView, View } from 'react-native';
 import { PERMISSIONS, request, requestMultiple } from 'react-native-permissions';
 
-import Spacer from '../../smallest/Spacer';
-import Colors from '../../../styles/Colors';
-import NormalText from '../../smallest/NormalText';
+import Spacer from '../../atoms/Spacer';
+import colors from '../../../common/constants/colors';
+import NormalText from '../../atoms/NormalText';
 import TextButton from '../../molecules/TextButton';
 import MoveBackWithPageTitle from '../../organisms/MoveBackWithPageTitle';
 import IconPermissionListItem from '../../molecules/IconPermissionListItem';
-import { RequestPemissionTemplateProps } from '../../../types/types';
-import { requestPemissionTemplateStyles } from '../../../styles/styles';
+import { requestPemissionTemplateStyles } from '../../../styles/templates/styles';
+import { RequestPemissionTemplateProps } from '../../../types/templates/types';
 
 const RequestPemissionTemplate = ({ navigationHandler }: RequestPemissionTemplateProps) => {
     // Request Permissions
@@ -78,9 +78,9 @@ const RequestPemissionTemplate = ({ navigationHandler }: RequestPemissionTemplat
                 <NormalText
                     text="선택 권한의 경우 허용하지 않아도 서비스를 사용할 수 있으나"
                     size={12}
-                    color={Colors.TXT_GRAY}
+                    color={colors.TXT_GRAY}
                 />
-                <NormalText text="일부 서비스 이용이 제한될 수 있습니다" size={12} color={Colors.TXT_GRAY} />
+                <NormalText text="일부 서비스 이용이 제한될 수 있습니다" size={12} color={colors.TXT_GRAY} />
             </View>
 
             <View style={requestPemissionTemplateStyles.buttonBox}>
@@ -88,8 +88,8 @@ const RequestPemissionTemplate = ({ navigationHandler }: RequestPemissionTemplat
                     onPress={onPressrequstPermission}
                     text="확인"
                     height={48}
-                    backgroundColor={Colors.BLACK}
-                    textColor={Colors.WHITE}
+                    backgroundColor={colors.BLACK}
+                    textColor={colors.WHITE}
                     fontSize={17}
                 />
             </View>

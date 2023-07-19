@@ -4,12 +4,12 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import { Route } from 'react-native-tab-view';
 import { Props } from 'react-native-tab-view/lib/typescript/src/TabBarIndicator';
 
-import Colors from '../styles/Colors';
-import NewsAlarmScreen from '../screens/alarmPage/NewsAlarmScreen';
-import KeywordAlarmScreen from '../screens/alarmPage/KeywordAlarmScreen';
-import { communityTabStyle } from '../styles/styles';
+import colors from '../common/constants/colors';
+import NewsAlarmScreen from '../components/pages/alarmPage/NewsAlarmScreen';
+import KeywordAlarmScreen from '../components/pages/alarmPage/KeywordAlarmScreen';
+import { communityTabStyle } from '../styles/common/styles';
 import { screenFont } from '../utils/changeStyleSize';
-import { AlarmPageTabParamList } from '../types/types';
+import { AlarmPageTabParamList } from '../types/common/types';
 
 const AlarmPageTabNavigation = () => {
     const Tab = createMaterialTopTabNavigator<AlarmPageTabParamList>();
@@ -40,10 +40,10 @@ const AlarmPageTabNavigation = () => {
     const tabNavigatorScreenOption = {
         tabBarIndicator: topTabBarIndicator,
         tabBarIndicatorStyle: {
-            backgroundColor: Colors.BLACK,
+            backgroundColor: colors.BLACK,
         },
-        tabBarActiveTintColor: Colors.BLACK,
-        tabBarInactiveTintColor: Colors.TXT_GRAY,
+        tabBarActiveTintColor: colors.BLACK,
+        tabBarInactiveTintColor: colors.TXT_GRAY,
         tabBarLabelStyle: {
             fontFamily: 'Pretendard-SemiBold',
             fontSize: 16 * screenFont,

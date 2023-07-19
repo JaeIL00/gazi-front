@@ -17,35 +17,35 @@ import FastImage from 'react-native-fast-image';
 import Geolocation from '@react-native-community/geolocation';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import Icons from '../../smallest/Icons';
-import Spacer from '../../smallest/Spacer';
-import Colors from '../../../styles/Colors';
+import Icons from '../../atoms/Icons';
+import Spacer from '../../atoms/Spacer';
+import colors from '../../../common/constants/colors';
 import mapStyle from '../../../styles/mapStyle';
-import NormalText from '../../smallest/NormalText';
-import MediumText from '../../smallest/MediumText';
+import NormalText from '../../atoms/NormalText';
+import MediumText from '../../atoms/MediumText';
+import TouchButton from '../../atoms/TouchButton';
 import TextButton from '../../molecules/TextButton';
-import TouchButton from '../../smallest/TouchButton';
-import SemiBoldText from '../../smallest/SemiBoldText';
+import SemiBoldText from '../../atoms/SemiBoldText';
 import PhotoGallery from '../../organisms/PhotoGallery';
-import MultiLineInput from '../../smallest/MultiLineInput';
+import MultiLineInput from '../../atoms/MultiLineInput';
+import ModalBackground from '../../atoms/ModalBackground';
 import HeaderMolecule from '../../molecules/HeaderMolecule';
 import SearchLocation from '../../organisms/SearchLocation';
-import ModalBackground from '../../smallest/ModalBackground';
 import FailPermissionModal from '../../organisms/FailPermissionModal';
 import WritePostAddKeyword from '../../organisms/cummunity/AddKeywordInWrite';
 import { screenWidth } from '../../../utils/changeStyleSize';
-import { writePostTemplateStyles } from '../../../styles/styles';
-import { SingleLineInput } from '../../smallest/SingleLineInput';
-import { userAuthAtom, userInfoAtom } from '../../../store/atoms';
-import { writePostAPI, writePostFilesAPI } from '../../../queries/api';
-import { issueKeywords, subwayKeywords, trafficKeywords } from '../../../utils/allKeywords';
+import { userAuthAtom, userInfoAtom } from '../../../recoil';
+import { SingleLineInput } from '../../atoms/SingleLineInput';
+import { writePostTemplateStyles } from '../../../styles/templates/styles';
+import { writePostAPI, writePostFilesAPI } from '../../../apis/api';
+import { issueKeywords, subwayKeywords, trafficKeywords } from '../../../common/constants/allKeywords';
+import { WritePostTemplateProps } from '../../../types/templates/types';
 import {
     KeywordListTypes,
     TemporarySaveChooseLocationTypes,
-    WritePostTemplateProps,
     WritePostTypes,
     uploadImageFileTypes,
-} from '../../../types/types';
+} from '../../../types/common/types';
 
 const WritePostTemplate = ({ navigationHandler }: WritePostTemplateProps) => {
     const { accessToken } = useRecoilValue(userAuthAtom);
@@ -472,10 +472,10 @@ const WritePostTemplate = ({ navigationHandler }: WritePostTemplateProps) => {
             <View style={writePostTemplateStyles.container}>
                 <View style={writePostTemplateStyles.headerNavigateBox}>
                     <TouchButton onPress={() => navigationHandler('BACK')} hitSlop={10}>
-                        <Icons type="ionicons" name="close-sharp" size={24} color={Colors.BLACK} />
+                        <Icons type="ionicons" name="close-sharp" size={24} color={colors.BLACK} />
                     </TouchButton>
                     <TouchButton onPress={finishWritingHandler} hitSlop={10}>
-                        <SemiBoldText text="등록" size={16} color={Colors.BLACK} />
+                        <SemiBoldText text="등록" size={16} color={colors.BLACK} />
                     </TouchButton>
                 </View>
                 <ScrollView style={writePostTemplateStyles.contentBox}>
@@ -493,11 +493,11 @@ const WritePostTemplate = ({ navigationHandler }: WritePostTemplateProps) => {
                                             <MediumText
                                                 text={writePostData.dto.placeName}
                                                 size={13}
-                                                color={Colors.BLACK}
+                                                color={colors.BLACK}
                                             />
                                         </>
                                     ) : (
-                                        <MediumText text="위치설정" size={13} color={Colors.BLACK} />
+                                        <MediumText text="위치설정" size={13} color={colors.BLACK} />
                                     )}
                                     <Spacer width={4} />
                                     <FastImage
@@ -513,10 +513,10 @@ const WritePostTemplate = ({ navigationHandler }: WritePostTemplateProps) => {
                                         <MediumText
                                             text={issueKeywords[writePostData.dto.headKeywordId! - 1].keywordName}
                                             size={13}
-                                            color={Colors.BLACK}
+                                            color={colors.BLACK}
                                         />
                                     ) : (
-                                        <MediumText text="키워드설정" size={13} color={Colors.BLACK} />
+                                        <MediumText text="키워드설정" size={13} color={colors.BLACK} />
                                     )}
                                     <Spacer width={4} />
                                     <FastImage
@@ -569,7 +569,7 @@ const WritePostTemplate = ({ navigationHandler }: WritePostTemplateProps) => {
                                             <MediumText
                                                 text={item.keywordName}
                                                 size={12}
-                                                color={Colors.TXT_LIGHTGRAY}
+                                                color={colors.TXT_LIGHTGRAY}
                                             />
                                         </View>
                                     ))}
@@ -656,14 +656,14 @@ const WritePostTemplate = ({ navigationHandler }: WritePostTemplateProps) => {
 
                 <ModalBackground visible={onErrorModal}>
                     <View style={writePostTemplateStyles.errorModalBox}>
-                        <SemiBoldText text={onErrorText} size={18} color={Colors.BLACK} />
+                        <SemiBoldText text={onErrorText} size={18} color={colors.BLACK} />
                         <Spacer height={18} />
                         <TextButton
                             onPress={offErrorModalHandler}
                             text="확인"
                             textColor="#49454F"
                             fontSize={14}
-                            backgroundColor={Colors.LIGHTGRAY}
+                            backgroundColor={colors.LIGHTGRAY}
                             paddingHorizontal={111}
                             paddingVertical={12}
                         />

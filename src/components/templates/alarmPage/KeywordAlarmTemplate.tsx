@@ -4,17 +4,18 @@ import { useRecoilValue } from 'recoil';
 import { useInfiniteQuery, useQuery } from 'react-query';
 import { useFocusEffect } from '@react-navigation/native';
 
-import Icons from '../../smallest/Icons';
-import Spacer from '../../smallest/Spacer';
-import Colors from '../../../styles/Colors';
-import NormalText from '../../smallest/NormalText';
-import MediumText from '../../smallest/MediumText';
-import TouchButton from '../../smallest/TouchButton';
-import SemiBoldText from '../../smallest/SemiBoldText';
-import { userAuthAtom } from '../../../store/atoms';
-import { keywordAlarmTemplateStyles } from '../../../styles/styles';
-import { getAlarmHistoryAPI, getMyLikeKeywordsAPI } from '../../../queries/api';
-import { AlarmHistoryTypes, KeywordAlarmTemplateProps } from '../../../types/types';
+import Icons from '../../atoms/Icons';
+import Spacer from '../../atoms/Spacer';
+import colors from '../../../common/constants/colors';
+import NormalText from '../../atoms/NormalText';
+import MediumText from '../../atoms/MediumText';
+import TouchButton from '../../atoms/TouchButton';
+import SemiBoldText from '../../atoms/SemiBoldText';
+import { userAuthAtom } from '../../../recoil';
+import { keywordAlarmTemplateStyles } from '../../../styles/templates/styles';
+import { getAlarmHistoryAPI, getMyLikeKeywordsAPI } from '../../../apis/api';
+import { KeywordAlarmTemplateProps } from '../../../types/templates/types';
+import { AlarmHistoryTypes } from '../../../types/common/types';
 
 const KeywordAlarmTemplate = ({ navigationHandler }: KeywordAlarmTemplateProps) => {
     const { accessToken } = useRecoilValue(userAuthAtom);
@@ -88,15 +89,15 @@ const KeywordAlarmTemplate = ({ navigationHandler }: KeywordAlarmTemplateProps) 
                 style={keywordAlarmTemplateStyles.historyItemButton}
                 activeOpacity={1}>
                 <View style={keywordAlarmTemplateStyles.alarmIcon}>
-                    <Icons type="materialCommunityIcons" name="bell" size={20} color={Colors.BLACK} />
+                    <Icons type="materialCommunityIcons" name="bell" size={20} color={colors.BLACK} />
                 </View>
                 <View style={keywordAlarmTemplateStyles.hisrotyItemTextBox}>
-                    <SemiBoldText text={item.title} size={14} color={Colors.BLACK} />
+                    <SemiBoldText text={item.title} size={14} color={colors.BLACK} />
                     <Spacer height={2} />
-                    <NormalText text={item.body} size={12} color={Colors.TXT_GRAY} numberOfLines={2} />
+                    <NormalText text={item.body} size={12} color={colors.TXT_GRAY} numberOfLines={2} />
                 </View>
                 <View>
-                    <MediumText text="16분전" size={11} color={Colors.TXT_GRAY} />
+                    <MediumText text="16분전" size={11} color={colors.TXT_GRAY} />
                 </View>
             </TouchableOpacity>
         ),
@@ -112,13 +113,13 @@ const KeywordAlarmTemplate = ({ navigationHandler }: KeywordAlarmTemplateProps) 
     return (
         <View>
             <View style={keywordAlarmTemplateStyles.headerBox}>
-                <MediumText text={`알림 받는 키워드 ${keywordsLength}개`} size={14} color={Colors.BLACK} />
+                <MediumText text={`알림 받는 키워드 ${keywordsLength}개`} size={14} color={colors.BLACK} />
                 <TouchButton
                     onPress={() => navigationHandler('LikeKeywordSetting')}
                     paddingHorizontal={16}
                     paddingVertical={8}
                     backgroundColor="#F2F2F2">
-                    <SemiBoldText text="설정" size={13} color={Colors.BLACK} />
+                    <SemiBoldText text="설정" size={13} color={colors.BLACK} />
                 </TouchButton>
             </View>
 

@@ -1,11 +1,11 @@
 import React from 'react';
 import { ScrollView, View } from 'react-native';
 
-import Colors from '../../styles/Colors';
-import NormalText from '../smallest/NormalText';
-import TouchButton from '../smallest/TouchButton';
-import { KeywordsListProps } from '../../types/types';
-import { keywordsListStyles } from '../../styles/styles';
+import colors from '../../common/constants/colors';
+import NormalText from '../atoms/NormalText';
+import TouchButton from '../atoms/TouchButton';
+import { keywordsListStyles } from '../../styles/organisms/styles';
+import { KeywordsListProps } from '../../types/organisms/types';
 
 const KeywordsList = ({
     type,
@@ -31,7 +31,7 @@ const KeywordsList = ({
                             checkKeywordHandler(type, index, item.id);
                         }}
                         borderColor={
-                            isCheck[index] ? checkBorderColor : type === HEAD_KEYWORD ? Colors.VIOLET : Colors.TXT_GRAY
+                            isCheck[index] ? checkBorderColor : type === HEAD_KEYWORD ? colors.VIOLET : colors.TXT_GRAY
                         }
                         borderRadius={30}
                         borderWidth={1.1}
@@ -39,18 +39,18 @@ const KeywordsList = ({
                         paddingVertical={8}
                         backgroundColor={
                             item.keywordName === '지하철' && isCheck[index]
-                                ? Colors.WHITE
+                                ? colors.WHITE
                                 : isCheck[index]
                                 ? checkBackColor
                                 : type === HEAD_KEYWORD
                                 ? LIGHT_PURPLE
-                                : Colors.WHITE
+                                : colors.WHITE
                         }>
                         <>
                             {type === SUBWAY_KEYWORD && (
                                 <NormalText
                                     text={item.keywordName}
-                                    color={isCheck[index] ? checkTextColor : Colors.TXT_GRAY}
+                                    color={isCheck[index] ? checkTextColor : colors.TXT_GRAY}
                                     size={16}
                                 />
                             )}
@@ -64,7 +64,7 @@ const KeywordsList = ({
                                             ? checkTextColor
                                             : type === HEAD_KEYWORD
                                             ? PURPLE
-                                            : Colors.TXT_GRAY
+                                            : colors.TXT_GRAY
                                     }
                                     size={16}
                                 />

@@ -5,17 +5,18 @@ import { useQuery } from 'react-query';
 import FastImage from 'react-native-fast-image';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import Icons from '../smallest/Icons';
-import Spacer from '../smallest/Spacer';
-import Colors from '../../styles/Colors';
-import MediumText from '../smallest/MediumText';
-import NormalText from '../smallest/NormalText';
-import TouchButton from '../smallest/TouchButton';
-import { nearPlaceGoogleAPI, searchGoogleAPI } from '../../queries/api';
-import { searchLocationStyles } from '../../styles/styles';
-import { SingleLineInput } from '../smallest/SingleLineInput';
+import Icons from '../atoms/Icons';
+import Spacer from '../atoms/Spacer';
+import colors from '../../common/constants/colors';
+import MediumText from '../atoms/MediumText';
+import NormalText from '../atoms/NormalText';
+import TouchButton from '../atoms/TouchButton';
+import { nearPlaceGoogleAPI, searchGoogleAPI } from '../../apis/api';
+import { searchLocationStyles } from '../../styles/organisms/styles';
+import { SingleLineInput } from '../atoms/SingleLineInput';
 import { screenHeight, screenWidth } from '../../utils/changeStyleSize';
-import { LocationResultTypes, SearchHistoryTypes, SearchLocationProps } from '../../types/types';
+import { SearchLocationProps } from '../../types/organisms/types';
+import { LocationResultTypes, SearchHistoryTypes } from '../../types/common/types';
 
 const SearchLocation = ({
     isHome,
@@ -183,7 +184,7 @@ const SearchLocation = ({
                             <Spacer height={3} />
                             <View style={searchLocationStyles.resultAddress}>
                                 {freshAddress.split(' ').map(item => (
-                                    <NormalText text={`${item} `} size={14} color={Colors.TXT_GRAY} />
+                                    <NormalText text={`${item} `} size={14} color={colors.TXT_GRAY} />
                                 ))}
                             </View>
                         </View>
@@ -206,14 +207,14 @@ const SearchLocation = ({
                     style={searchLocationStyles.resultButton}>
                     <View style={searchLocationStyles.listItemBox}>
                         <View style={searchLocationStyles.historyIcons}>
-                            <Icons type="feather" name="clock" size={21} color={Colors.TXT_LIGHTGRAY} />
+                            <Icons type="feather" name="clock" size={21} color={colors.TXT_LIGHTGRAY} />
                         </View>
                         <View style={searchLocationStyles.resultTextBox}>
                             <MediumText text={item.name} size={16} color="#000000" />
                             <Spacer height={3} />
                             <View style={searchLocationStyles.resultAddress}>
                                 {freshAddress.split(' ').map(item => (
-                                    <NormalText text={`${item} `} size={14} color={Colors.TXT_GRAY} />
+                                    <NormalText text={`${item} `} size={14} color={colors.TXT_GRAY} />
                                 ))}
                             </View>
                         </View>
@@ -233,7 +234,7 @@ const SearchLocation = ({
 
     return (
         <View style={searchLocationStyles.container}>
-            <StatusBar backgroundColor={isHome ? Colors.WHITE : Colors.BACKGROUND_DEFAULT} />
+            <StatusBar backgroundColor={isHome ? colors.WHITE : colors.BACKGROUND_DEFAULT} />
             <View style={searchLocationStyles.inputContainer}>
                 <View style={searchLocationStyles.inputBox}>
                     {isHome && searchModalHandler && (

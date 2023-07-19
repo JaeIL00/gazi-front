@@ -2,14 +2,14 @@ import React, { useLayoutEffect, useState } from 'react';
 import { useRoute } from '@react-navigation/native';
 import { StatusBar, View } from 'react-native';
 
-import Colors from '../../styles/Colors';
-import { ScreenWrapperProps } from '../../types/types';
 import { screenWidth } from '../../utils/changeStyleSize';
+import colors from '../../common/constants/colors';
+import { ScreenWrapperProps } from '../../types/organisms/types';
 
 const ScreenWrapper = ({ children, isPaddingHorizontal }: ScreenWrapperProps) => {
     const route = useRoute();
-    const [statusColor, setStatusColor] = useState<string>(Colors.BACKGROUND_DEFAULT);
-    const [backgroundColor, setBackgroundColor] = useState<string>(Colors.BACKGROUND_DEFAULT);
+    const [statusColor, setStatusColor] = useState<string>(colors.BACKGROUND_DEFAULT);
+    const [backgroundColor, setBackgroundColor] = useState<string>(colors.BACKGROUND_DEFAULT);
 
     useLayoutEffect(() => {
         if (
@@ -22,11 +22,11 @@ const ScreenWrapper = ({ children, isPaddingHorizontal }: ScreenWrapperProps) =>
             route.name === 'KeywordAlarm' ||
             route.name === 'NewsAlarm'
         ) {
-            setStatusColor(Colors.WHITE);
-            setBackgroundColor(Colors.WHITE);
+            setStatusColor(colors.WHITE);
+            setBackgroundColor(colors.WHITE);
         } else if (route.name === 'ImageView') {
             setStatusColor('#29292980');
-            setBackgroundColor(Colors.BLACK);
+            setBackgroundColor(colors.BLACK);
         }
     }, [route.name]);
 

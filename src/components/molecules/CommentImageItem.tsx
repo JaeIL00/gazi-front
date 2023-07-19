@@ -1,9 +1,9 @@
 import React from 'react';
-import TouchButton from '../smallest/TouchButton';
+import TouchButton from '../atoms/TouchButton';
 import FastImage from 'react-native-fast-image';
 
-import { CommentImageProps } from '../../types/types';
-import { commentListItemStyles } from '../../styles/styles';
+import { CommentImageProps } from '../../types/molecules/types';
+import { commentListItemStyles } from '../../styles/molecules/styles';
 
 const CommentImageItem = ({ fileUrl, width, height, moveImageViewScreen }: CommentImageProps) => {
     return (

@@ -1,13 +1,13 @@
 import React from 'react';
 import { View } from 'react-native';
 
-import Spacer from '../smallest/Spacer';
-import Colors from '../../styles/Colors';
-import NormalText from '../smallest/NormalText';
+import Spacer from '../atoms/Spacer';
+import colors from '../../common/constants/colors';
+import NormalText from '../atoms/NormalText';
 import TextButton from '../molecules/TextButton';
-import SemiBoldText from '../smallest/SemiBoldText';
-import { FailPermissionModalProps } from '../../types/types';
-import { FailPermissionModalStyles } from '../../styles/styles';
+import SemiBoldText from '../atoms/SemiBoldText';
+import { FailPermissionModalProps } from '../../types/organisms/types';
+import { FailPermissionModalStyles } from '../../styles/organisms/styles';
 
 const FailPermissionModal = ({
     onPressModalButton,
@@ -18,7 +18,7 @@ const FailPermissionModal = ({
     return (
         <View style={FailPermissionModalStyles.container}>
             <View style={FailPermissionModalStyles.textBox}>
-                <SemiBoldText text={permissionName} size={18} color={Colors.BLACK} />
+                <SemiBoldText text={permissionName} size={18} color={colors.BLACK} />
                 <Spacer height={8} />
                 <NormalText text={contentOne} size={14} color="#777777" textAlign="center" lineHeight={19} />
                 {contentTwo && (
@@ -31,21 +31,21 @@ const FailPermissionModal = ({
             <View style={FailPermissionModalStyles.buttonBox}>
                 <TextButton
                     text="닫기"
-                    textColor={Colors.TXT_GRAY}
+                    textColor={colors.TXT_GRAY}
                     fontSize={14}
                     onPress={() => onPressModalButton('CLOSE')}
                     paddingVertical={12}
                     borderWidth={1}
-                    borderColor={Colors.TXT_GRAY}
+                    borderColor={colors.TXT_GRAY}
                     flex={1}
                 />
                 <Spacer width={8} />
                 <TextButton
                     text="설정하러 가기"
-                    textColor={Colors.WHITE}
+                    textColor={colors.WHITE}
                     fontSize={14}
                     onPress={() => onPressModalButton('MOVE')}
-                    backgroundColor={Colors.BLACK}
+                    backgroundColor={colors.BLACK}
                     paddingVertical={12}
                     flex={1}
                 />

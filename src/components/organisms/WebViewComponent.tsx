@@ -2,11 +2,11 @@ import React from 'react';
 import { TouchableOpacity, View } from 'react-native';
 import { WebView } from 'react-native-webview';
 
-import Icons from '../smallest/Icons';
-import Colors from '../../styles/Colors';
-import { WebViewComponentProps } from '../../types/types';
-import { webViewComponentStyles } from '../../styles/styles';
+import Icons from '../atoms/Icons';
+import colors from '../../common/constants/colors';
+import { webViewComponentStyles } from '../../styles/organisms/styles';
 import { screenHeight, screenWidth } from '../../utils/changeStyleSize';
+import { WebViewComponentProps } from '../../types/organisms/types';
 
 const WebViewComponent = ({ uri, closeHandler }: WebViewComponentProps) => {
     return (
@@ -20,7 +20,7 @@ const WebViewComponent = ({ uri, closeHandler }: WebViewComponentProps) => {
                 }}
                 onPress={() => closeHandler('')}
                 activeOpacity={1}>
-                <Icons type="ionicons" name="close" size={24} color={Colors.BLACK} />
+                <Icons type="ionicons" name="close" size={24} color={colors.BLACK} />
             </TouchableOpacity>
             <WebView source={{ uri }} style={webViewComponentStyles.webview} />
         </View>

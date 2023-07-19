@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
 import { View } from 'react-native';
 
-import Spacer from '../../smallest/Spacer';
-import Colors from '../../../styles/Colors';
+import Spacer from '../../atoms/Spacer';
+import colors from '../../../common/constants/colors';
 import HeaderMolecule from '../../molecules/HeaderMolecule';
 import LoginTextInput from '../../molecules/LoginTextInput';
 import IconWithMediumText from '../../molecules/IconWithMediumText';
-import useTextInputValidation from '../../../utils/hooks/useTextInputValidation';
-import { SingleLineInput } from '../../smallest/SingleLineInput';
-import { changePasswordTemplateStyles } from '../../../styles/styles';
+import useTextInputValidation from '../../../common/hooks/useTextInputValidation';
+import { SingleLineInput } from '../../atoms/SingleLineInput';
+import { changePasswordTemplateStyles } from '../../../styles/templates/styles';
 import { screenHeight, screenWidth } from '../../../utils/changeStyleSize';
-import { ChangePasswordTemplateProps } from '../../../types/types';
+import { ChangePasswordTemplateProps } from '../../../types/templates/types';
 
 const ChangePasswordTemplate = ({ moveToBackScreenHandler }: ChangePasswordTemplateProps) => {
     const {
@@ -61,7 +61,7 @@ const ChangePasswordTemplate = ({ moveToBackScreenHandler }: ChangePasswordTempl
                 finishText="완료"
                 isNextStep={false}
                 isWorkDone={isSamePassword}
-                background={Colors.WHITE}
+                background={colors.WHITE}
                 finishFunction={() => {}}
             />
             <View style={{ paddingHorizontal: 16 * screenWidth, paddingTop: 39 * screenHeight }}>
@@ -89,17 +89,17 @@ const ChangePasswordTemplate = ({ moveToBackScreenHandler }: ChangePasswordTempl
                         <IconWithMediumText
                             type="octicons"
                             name="check"
-                            iconColor={isPasswordLeng ? Colors.STATUS_GREEN : Colors.STATUS_GRAY}
+                            iconColor={isPasswordLeng ? colors.STATUS_GREEN : colors.STATUS_GRAY}
                             text="8자-20자 이내"
-                            textColor={isPasswordLeng ? Colors.STATUS_GREEN : Colors.STATUS_GRAY}
+                            textColor={isPasswordLeng ? colors.STATUS_GREEN : colors.STATUS_GRAY}
                         />
                         <Spacer width={14} />
                         <IconWithMediumText
                             type="octicons"
                             name="check"
-                            iconColor={isPasswordReg ? Colors.STATUS_GREEN : Colors.STATUS_GRAY}
+                            iconColor={isPasswordReg ? colors.STATUS_GREEN : colors.STATUS_GRAY}
                             text="영어, 숫자, 특수문자 포함"
-                            textColor={isPasswordReg ? Colors.STATUS_GREEN : Colors.STATUS_GRAY}
+                            textColor={isPasswordReg ? colors.STATUS_GREEN : colors.STATUS_GRAY}
                         />
                     </View>
                 )}
@@ -117,9 +117,9 @@ const ChangePasswordTemplate = ({ moveToBackScreenHandler }: ChangePasswordTempl
                 {twoNewPassword && (
                     <View style={changePasswordTemplateStyles.twoPasswordError}>
                         <IconWithMediumText
-                            iconColor={isSamePassword ? Colors.STATUS_GREEN : Colors.STATUS_RED}
+                            iconColor={isSamePassword ? colors.STATUS_GREEN : colors.STATUS_RED}
                             text={validationResult}
-                            textColor={isSamePassword ? Colors.STATUS_GREEN : Colors.STATUS_RED}
+                            textColor={isSamePassword ? colors.STATUS_GREEN : colors.STATUS_RED}
                             type={isSamePassword ? 'octicons' : 'fontisto'}
                             name={isSamePassword ? 'check' : 'close'}
                         />

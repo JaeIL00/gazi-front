@@ -1,16 +1,16 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Animated, Modal, View, useWindowDimensions } from 'react-native';
 
-import Icons from '../smallest/Icons';
-import Colors from '../../styles/Colors';
+import Icons from '../atoms/Icons';
+import colors from '../../common/constants/colors';
 import TextButton from '../molecules/TextButton';
 import WebViewComponent from './WebViewComponent';
-import TouchButton from '../smallest/TouchButton';
-import SemiBoldText from '../smallest/SemiBoldText';
+import TouchButton from '../atoms/TouchButton';
+import SemiBoldText from '../atoms/SemiBoldText';
 import AgreementCheckListItem from '../molecules/AgreementCheckListItem';
-import { ServiceAgreementProps } from '../../types/types';
 import { screenHeight } from '../../utils/changeStyleSize';
-import { checkBoxBackground, serviceAgreementStyles } from '../../styles/styles';
+import { checkBoxBackground, serviceAgreementStyles } from '../../styles/organisms/styles';
+import { ServiceAgreementProps } from '../../types/organisms/types';
 
 // Render list data
 const listData = ['(필수) 서비스 약관 동의', '(필수) 개인정보 수집 동의', '(필수) 위치기반 서비스 이용 동의'];
@@ -113,9 +113,9 @@ const ServiceAgreement = ({ finishSlideComponentHandler }: ServiceAgreementProps
                     <TouchButton backgroundColor="#f9f9f9" onPress={onPressAllCheck}>
                         <View style={serviceAgreementStyles.allAgreeBox}>
                             <View style={[serviceAgreementStyles.checkBox, checkBoxBackground(isAllCheck).color]}>
-                                {isAllCheck && <Icons type="feather" name="check" size={20} color={Colors.WHITE} />}
+                                {isAllCheck && <Icons type="feather" name="check" size={20} color={colors.WHITE} />}
                             </View>
-                            <SemiBoldText size={14} color={Colors.BLACK} text="약관 전체 동의" />
+                            <SemiBoldText size={14} color={colors.BLACK} text="약관 전체 동의" />
                         </View>
                     </TouchButton>
 
@@ -134,10 +134,10 @@ const ServiceAgreement = ({ finishSlideComponentHandler }: ServiceAgreementProps
 
                     <TextButton
                         height={48}
-                        backgroundColor={isAllCheck ? Colors.BLACK : Colors.BTN_GRAY}
+                        backgroundColor={isAllCheck ? colors.BLACK : colors.BTN_GRAY}
                         onPress={onPressFinishAnimation}
                         fontSize={17}
-                        textColor={Colors.WHITE}
+                        textColor={colors.WHITE}
                         text="완료"
                     />
                 </View>

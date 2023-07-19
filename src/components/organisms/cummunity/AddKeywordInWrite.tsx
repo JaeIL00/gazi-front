@@ -3,16 +3,17 @@ import { ScrollView, StatusBar, View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
 import KeywordsList from '../KeywordsList';
-import Spacer from '../../smallest/Spacer';
-import Colors from '../../../styles/Colors';
-import NormalText from '../../smallest/NormalText';
+import Spacer from '../../atoms/Spacer';
+import colors from '../../../common/constants/colors';
+import NormalText from '../../atoms/NormalText';
 import TextButton from '../../molecules/TextButton';
-import SemiBoldText from '../../smallest/SemiBoldText';
+import SemiBoldText from '../../atoms/SemiBoldText';
 import HeaderMolecule from '../../molecules/HeaderMolecule';
-import useCheckKeyword from '../../../utils/hooks/useCheckKeyword';
-import { addKeywordInWriteStyles } from '../../../styles/styles';
-import { KeywordListTypes, WritePostAddKeywordProps } from '../../../types/types';
-import { issueKeywords, subwayKeywords, trafficKeywords } from '../../../utils/allKeywords';
+import useCheckKeyword from '../../../common/hooks/useCheckKeyword';
+import { addKeywordInWriteStyles } from '../../../styles/organisms/styles';
+import { issueKeywords, subwayKeywords, trafficKeywords } from '../../../common/constants/allKeywords';
+import { KeywordListTypes } from '../../../types/common/types';
+import { WritePostAddKeywordProps } from '../../../types/organisms/types';
 
 const AddKeywordInWrite = ({ keywordModalHandler, getKeywordHandler }: WritePostAddKeywordProps) => {
     const [step, setStep] = useState<number>(1);
@@ -103,7 +104,7 @@ const AddKeywordInWrite = ({ keywordModalHandler, getKeywordHandler }: WritePost
 
     return (
         <View style={addKeywordInWriteStyles.container}>
-            <StatusBar backgroundColor={Colors.BACKGROUND_DEFAULT} />
+            <StatusBar backgroundColor={colors.BACKGROUND_DEFAULT} />
             <HeaderMolecule
                 title="키워드 설정"
                 isPaddingHorizontal={false}
@@ -121,7 +122,7 @@ const AddKeywordInWrite = ({ keywordModalHandler, getKeywordHandler }: WritePost
                         <View>
                             <Spacer height={16} />
                             <View style={addKeywordInWriteStyles.keywordListBox}>
-                                <SemiBoldText text="이슈" color={Colors.BLACK} size={16} />
+                                <SemiBoldText text="이슈" color={colors.BLACK} size={16} />
                                 <Spacer width={6} />
                                 <NormalText text="1개이상 선택" size={13} color="#8F8F8F" />
                             </View>
@@ -132,7 +133,7 @@ const AddKeywordInWrite = ({ keywordModalHandler, getKeywordHandler }: WritePost
                                 isCheck={checkIssue}
                                 checkKeywordHandler={checkingKeywordHandler}
                                 checkTextColor="#7949C6"
-                                checkBorderColor={Colors.VIOLET}
+                                checkBorderColor={colors.VIOLET}
                                 checkBackColor="#F1E9FF"
                             />
                         </View>
@@ -140,7 +141,7 @@ const AddKeywordInWrite = ({ keywordModalHandler, getKeywordHandler }: WritePost
 
                         <View>
                             <View style={addKeywordInWriteStyles.keywordListBox}>
-                                <SemiBoldText text="교통수단" color={Colors.BLACK} size={16} />
+                                <SemiBoldText text="교통수단" color={colors.BLACK} size={16} />
                                 <Spacer width={6} />
                                 <NormalText text="1개이상 선택" size={13} color="#8F8F8F" />
                             </View>
@@ -151,7 +152,7 @@ const AddKeywordInWrite = ({ keywordModalHandler, getKeywordHandler }: WritePost
                                 isCheck={checkTraffic}
                                 checkKeywordHandler={checkingKeywordHandler}
                                 checkTextColor="#7949C6"
-                                checkBorderColor={Colors.VIOLET}
+                                checkBorderColor={colors.VIOLET}
                                 checkBackColor="#F1E9FF"
                                 trafficKeywordColor="#7949C6"
                             />
@@ -162,7 +163,7 @@ const AddKeywordInWrite = ({ keywordModalHandler, getKeywordHandler }: WritePost
                                     isCheck={checkSubway}
                                     checkKeywordHandler={checkingKeywordHandler}
                                     checkTextColor="#7949C6"
-                                    checkBorderColor={Colors.VIOLET}
+                                    checkBorderColor={colors.VIOLET}
                                     checkBackColor="#F1E9FF"
                                 />
                             )}
@@ -174,17 +175,17 @@ const AddKeywordInWrite = ({ keywordModalHandler, getKeywordHandler }: WritePost
 
             {step === 2 && (
                 <View>
-                    <SemiBoldText text="선택하신 이슈 키워드 중" color={Colors.BLACK} size={16} />
-                    <SemiBoldText text="사건을 대표하는 키워드를 1개 선택해주세요" color={Colors.BLACK} size={16} />
+                    <SemiBoldText text="선택하신 이슈 키워드 중" color={colors.BLACK} size={16} />
+                    <SemiBoldText text="사건을 대표하는 키워드를 1개 선택해주세요" color={colors.BLACK} size={16} />
                     <Spacer height={21} />
                     <KeywordsList
                         type="HEAD"
                         list={chooseIssueList}
                         isCheck={checkHead}
                         checkKeywordHandler={checkingKeywordHandler}
-                        checkTextColor={Colors.WHITE}
-                        checkBorderColor={Colors.VIOLET}
-                        checkBackColor={Colors.VIOLET}
+                        checkTextColor={colors.WHITE}
+                        checkBorderColor={colors.VIOLET}
+                        checkBackColor={colors.VIOLET}
                     />
                 </View>
             )}
@@ -197,10 +198,10 @@ const AddKeywordInWrite = ({ keywordModalHandler, getKeywordHandler }: WritePost
                     height={48}
                     backgroundColor={
                         (checkedKeywords.length > 0 && step === 1) || (headKeyword.length > 0 && step === 2)
-                            ? Colors.BLACK
-                            : Colors.BTN_GRAY
+                            ? colors.BLACK
+                            : colors.BTN_GRAY
                     }
-                    textColor={Colors.WHITE}
+                    textColor={colors.WHITE}
                     fontSize={17}
                 />
             </View>

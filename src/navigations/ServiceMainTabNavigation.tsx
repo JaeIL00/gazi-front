@@ -2,15 +2,15 @@ import React, { useCallback } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { View } from 'react-native';
 
-import Colors from '../styles/Colors';
 import TabBar from '../components/organisms/TabBar';
-import MapHomeScreen from '../screens/home/MapHomeScreen';
-import MyPageScreen from '../screens/myPage/MyPageScreen';
+import MapHomeScreen from '../components/pages/home/MapHomeScreen';
+import MyPageScreen from '../components/pages/myPage/MyPageScreen';
 import CommunityTabNavigation from './CommunityTabNavigation';
 import AlarmPageTabNavigation from './AlarmPageTabNavigation';
-import SemiBoldText from '../components/smallest/SemiBoldText';
-import { ServiceMainTabParamList } from '../types/types';
+import SemiBoldText from '../components/atoms/SemiBoldText';
+import { ServiceMainTabParamList } from '../types/common/types';
 import { screenHeight, screenWidth } from '../utils/changeStyleSize';
+import colors from '../common/constants/colors';
 
 const ServiceMainTabNavigation = () => {
     const ServiceMainTab = createBottomTabNavigator<ServiceMainTabParamList>();
@@ -19,7 +19,7 @@ const ServiceMainTabNavigation = () => {
         (title: string) => (
             <View
                 style={{
-                    backgroundColor: Colors.WHITE,
+                    backgroundColor: colors.WHITE,
                     paddingLeft: 16 * screenWidth,
                     paddingVertical: 15.5 * screenHeight,
                 }}>

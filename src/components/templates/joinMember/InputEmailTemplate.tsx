@@ -5,23 +5,23 @@ import validator from 'validator';
 import { useMutation } from 'react-query';
 import { debounce } from 'lodash';
 
-import Icons from '../../smallest/Icons';
-import Spacer from '../../smallest/Spacer';
-import Colors from '../../../styles/Colors';
-import BoldText from '../../smallest/BoldText';
+import Icons from '../../atoms/Icons';
+import Spacer from '../../atoms/Spacer';
+import colors from '../../../common/constants/colors';
+import BoldText from '../../atoms/BoldText';
 import AuthEmail from '../../organisms/AuthEmail';
-import NormalText from '../../smallest/NormalText';
-import MediumText from '../../smallest/MediumText';
+import NormalText from '../../atoms/NormalText';
+import MediumText from '../../atoms/MediumText';
 import TextButton from '../../molecules/TextButton';
 import LoginTextInput from '../../molecules/LoginTextInput';
-import ModalBackground from '../../smallest/ModalBackground';
+import ModalBackground from '../../atoms/ModalBackground';
 import MoveBackWithPageTitle from '../../organisms/MoveBackWithPageTitle';
-import useBackgroundInterval from '../../../utils/hooks/useBackgroundInterval';
-import useTextInputValidation from '../../../utils/hooks/useTextInputValidation';
-import { emailAuthAPI } from '../../../queries/api';
-import { InputEmailTemplateProps } from '../../../types/types';
-import { inputEmailTemplateStyles } from '../../../styles/styles';
-import { emailAuthAtom, joinMemberAtom } from '../../../store/atoms';
+import useBackgroundInterval from '../../../common/hooks/useBackgroundInterval';
+import useTextInputValidation from '../../../common/hooks/useTextInputValidation';
+import { emailAuthAPI } from '../../../apis/api';
+import { emailAuthAtom, joinMemberAtom } from '../../../recoil';
+import { inputEmailTemplateStyles } from '../../../styles/templates/styles';
+import { InputEmailTemplateProps } from '../../../types/templates/types';
 
 const InputEmailTemplate = ({ navigationHandler }: InputEmailTemplateProps) => {
     const [authData, setAuthData] = useRecoilState(emailAuthAtom);
@@ -145,21 +145,21 @@ const InputEmailTemplate = ({ navigationHandler }: InputEmailTemplateProps) => {
                                 type={isEmail ? 'octicons' : 'fontisto'}
                                 name={isEmail ? 'check' : 'close'}
                                 size={14}
-                                color={isEmail ? Colors.STATUS_GREEN : Colors.STATUS_RED}
+                                color={isEmail ? colors.STATUS_GREEN : colors.STATUS_RED}
                             />
                             <Spacer width={4} />
                             <MediumText
                                 text={isEmail ? '올바른 이메일 형식입니다' : '이메일 형식이 올바르지 않습니다'}
                                 size={12}
-                                color={isEmail ? Colors.STATUS_GREEN : Colors.STATUS_RED}
+                                color={isEmail ? colors.STATUS_GREEN : colors.STATUS_RED}
                             />
                         </View>
                     )}
                     {duplicatedError && (
                         <View style={inputEmailTemplateStyles.emailErrorTextBox}>
-                            <Icons type={'fontisto'} name={'close'} size={14} color={Colors.STATUS_RED} />
+                            <Icons type={'fontisto'} name={'close'} size={14} color={colors.STATUS_RED} />
                             <Spacer width={4} />
-                            <MediumText text={duplicatedError} size={12} color={Colors.STATUS_RED} />
+                            <MediumText text={duplicatedError} size={12} color={colors.STATUS_RED} />
                         </View>
                     )}
                 </View>
@@ -168,17 +168,17 @@ const InputEmailTemplate = ({ navigationHandler }: InputEmailTemplateProps) => {
                     onPress={onPressEmailAuth}
                     text={authData.isAuthorizationPass ? '완료' : '인증메일 전송'}
                     height={48}
-                    backgroundColor={isEmail && !duplicatedError ? Colors.BLACK : Colors.BTN_GRAY}
-                    textColor={Colors.WHITE}
+                    backgroundColor={isEmail && !duplicatedError ? colors.BLACK : colors.BTN_GRAY}
+                    textColor={colors.WHITE}
                     fontSize={17}
                 />
                 <View style={inputEmailTemplateStyles.resendMailButtonBox}>
-                    <NormalText text="메일을 받지 못하셨나요?" size={13} color={Colors.TXT_GRAY} />
+                    <NormalText text="메일을 받지 못하셨나요?" size={13} color={colors.TXT_GRAY} />
                     <TouchableOpacity
                         onPress={onPressEmailAuth}
                         activeOpacity={1}
                         style={inputEmailTemplateStyles.resendButton}>
-                        <BoldText text="재전송" size={13} color={Colors.TXT_GRAY} />
+                        <BoldText text="재전송" size={13} color={colors.TXT_GRAY} />
                     </TouchableOpacity>
                 </View>
 

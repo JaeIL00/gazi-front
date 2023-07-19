@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
 import { Modal, View } from 'react-native';
 
-import Spacer from '../../smallest/Spacer';
-import Colors from '../../../styles/Colors';
-import NormalText from '../../smallest/NormalText';
-import MediumText from '../../smallest/MediumText';
-import TouchButton from '../../smallest/TouchButton';
+import Spacer from '../../atoms/Spacer';
+import colors from '../../../common/constants/colors';
+import NormalText from '../../atoms/NormalText';
+import MediumText from '../../atoms/MediumText';
+import TouchButton from '../../atoms/TouchButton';
 import WebViewComponent from '../../organisms/WebViewComponent';
-import { PoliciesTemplateProps } from '../../../types/types';
-import { PoliciesTemplateStyles } from '../../../styles/styles';
+import { PoliciesTemplateStyles } from '../../../styles/templates/styles';
 import FastImage from 'react-native-fast-image';
+import { PoliciesTemplateProps } from '../../../types/templates/types';
 
 const PoliciesTemplate = ({ moveToBackScreenHandler }: PoliciesTemplateProps) => {
     const [uri, seturi] = useState<string>('');
@@ -39,26 +39,26 @@ const PoliciesTemplate = ({ moveToBackScreenHandler }: PoliciesTemplateProps) =>
                     />
                 </TouchButton>
                 <Spacer width={21} />
-                <MediumText text="약관 및 정책" size={18} color={Colors.BLACK} />
+                <MediumText text="약관 및 정책" size={18} color={colors.BLACK} />
             </View>
             <View style={PoliciesTemplateStyles.tabBox}>
                 <TouchButton onPress={() => webViewHandler('SERVICE')}>
                     <View style={PoliciesTemplateStyles.buttonBox}>
-                        <NormalText text="서비스 이용약관" size={16} color={Colors.BLACK} />
+                        <NormalText text="서비스 이용약관" size={16} color={colors.BLACK} />
                     </View>
                 </TouchButton>
             </View>
             <View style={PoliciesTemplateStyles.tabBox}>
                 <TouchButton onPress={() => webViewHandler('PRIVATE')}>
                     <View style={PoliciesTemplateStyles.buttonBox}>
-                        <NormalText text="개인정보 처리방침" size={16} color={Colors.BLACK} />
+                        <NormalText text="개인정보 처리방침" size={16} color={colors.BLACK} />
                     </View>
                 </TouchButton>
             </View>
             <View style={PoliciesTemplateStyles.tabBox}>
                 <TouchButton onPress={() => webViewHandler('LOACTION')}>
                     <View style={PoliciesTemplateStyles.buttonBox}>
-                        <NormalText text="위치기반서비스" size={16} color={Colors.BLACK} />
+                        <NormalText text="위치기반서비스" size={16} color={colors.BLACK} />
                     </View>
                 </TouchButton>
             </View>

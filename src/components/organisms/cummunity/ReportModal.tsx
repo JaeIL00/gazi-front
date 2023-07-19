@@ -1,14 +1,14 @@
 import React, { useCallback, useState } from 'react';
 import { KeyboardAvoidingView, TouchableOpacity, View } from 'react-native';
 
-import Spacer from '../../smallest/Spacer';
-import Colors from '../../../styles/Colors';
-import NormalText from '../../smallest/NormalText';
-import TouchButton from '../../smallest/TouchButton';
-import SemiBoldText from '../../smallest/SemiBoldText';
-import { ReportModalProps } from '../../../types/types';
-import { reportModalStyles } from '../../../styles/styles';
-import { SingleLineInput } from '../../smallest/SingleLineInput';
+import Spacer from '../../atoms/Spacer';
+import colors from '../../../common/constants/colors';
+import NormalText from '../../atoms/NormalText';
+import TouchButton from '../../atoms/TouchButton';
+import SemiBoldText from '../../atoms/SemiBoldText';
+import { reportModalStyles } from '../../../styles/organisms/styles';
+import { SingleLineInput } from '../../atoms/SingleLineInput';
+import { ReportModalProps } from '../../../types/organisms/types';
 
 const ReportModal = ({
     isReportSuccess,
@@ -47,7 +47,7 @@ const ReportModal = ({
                     style={[
                         reportModalStyles.radio,
                         {
-                            borderColor: reportTopic === topic.parameterValue ? '#6826F5' : Colors.BORDER_GRAY,
+                            borderColor: reportTopic === topic.parameterValue ? '#6826F5' : colors.BORDER_GRAY,
                         },
                     ]}>
                     {reportTopic === topic.parameterValue && <View style={reportModalStyles.radioInnerCircle} />}
@@ -64,22 +64,22 @@ const ReportModal = ({
                 {isReportSuccess ? (
                     <>
                         <View style={reportModalStyles.titleBox}>
-                            <SemiBoldText text="신고가 완료되었습니다" color={Colors.BLACK} size={18} />
+                            <SemiBoldText text="신고가 완료되었습니다" color={colors.BLACK} size={18} />
                         </View>
                         <View style={reportModalStyles.reportFinishButtonBox}>
                             <TouchButton
                                 onPress={closeReportModalHandler}
                                 width="100%"
-                                backgroundColor={Colors.BLACK}
+                                backgroundColor={colors.BLACK}
                                 paddingVertical={12}>
-                                <SemiBoldText text="확인" size={14} color={Colors.WHITE} />
+                                <SemiBoldText text="확인" size={14} color={colors.WHITE} />
                             </TouchButton>
                         </View>
                     </>
                 ) : (
                     <>
                         <View style={reportModalStyles.titleBox}>
-                            <SemiBoldText text="신고 후 게시글 차단" color={Colors.BLACK} size={18} />
+                            <SemiBoldText text="신고 후 게시글 차단" color={colors.BLACK} size={18} />
                         </View>
 
                         <View style={reportModalStyles.topicRadioButtonBox}>{TOPIC_LIST.map(radioButtonTopic)}</View>
@@ -98,19 +98,19 @@ const ReportModal = ({
                         <View style={reportModalStyles.reportTopicButtonBox}>
                             <TouchButton
                                 onPress={closeReportModalHandler}
-                                borderColor={Colors.STATUS_GRAY}
+                                borderColor={colors.STATUS_GRAY}
                                 borderWidth={1}
                                 flex={1}
                                 paddingVertical={12}>
-                                <SemiBoldText text="취소" size={14} color={Colors.STATUS_GRAY} />
+                                <SemiBoldText text="취소" size={14} color={colors.STATUS_GRAY} />
                             </TouchButton>
                             <Spacer width={8} />
                             <TouchButton
                                 onPress={reportMutateHandler}
-                                backgroundColor={Colors.BLACK}
+                                backgroundColor={colors.BLACK}
                                 flex={1}
                                 paddingVertical={12}>
-                                <SemiBoldText text="신고하기" size={14} color={Colors.WHITE} />
+                                <SemiBoldText text="신고하기" size={14} color={colors.WHITE} />
                             </TouchButton>
                         </View>
                     </>

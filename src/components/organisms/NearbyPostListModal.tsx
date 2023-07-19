@@ -3,17 +3,18 @@ import { Animated, FlatList, PanResponder, PanResponderInstance, RefreshControl,
 import { useRecoilValue } from 'recoil';
 import FastImage from 'react-native-fast-image';
 
-import Spacer from '../smallest/Spacer';
-import Colors from '../../styles/Colors';
+import Spacer from '../atoms/Spacer';
+import colors from '../../common/constants/colors';
 import PostListItem from './PostListItem';
-import NormalText from '../smallest/NormalText';
-import TouchButton from '../smallest/TouchButton';
-import SemiBoldText from '../smallest/SemiBoldText';
+import NormalText from '../atoms/NormalText';
+import TouchButton from '../atoms/TouchButton';
+import SemiBoldText from '../atoms/SemiBoldText';
 import WritingFloatingBtn from '../molecules/WritingFloatingBtn';
-import { userInfoAtom } from '../../store/atoms';
+import { userInfoAtom } from '../../recoil';
 import { screenHeight } from '../../utils/changeStyleSize';
-import { nearbyPostListModalStyles } from '../../styles/styles';
-import { NearbyPostListModalProps, PostTypes } from '../../types/types';
+import { nearbyPostListModalStyles } from '../../styles/organisms/styles';
+import { NearbyPostListModalProps } from '../../types/organisms/types';
+import { PostTypes } from '../../types/common/types';
 
 const FULL_ANIM_VALUE = -415 * screenHeight;
 const MIDDLE_ANIM_VALUE = 0;
@@ -360,7 +361,7 @@ const NearbyPostListModal = ({
                         width={52}
                         height={52}
                         borderRadius={52}
-                        backgroundColor={Colors.WHITE}
+                        backgroundColor={colors.WHITE}
                         borderWidth={1}
                         borderColor="#E3E3E3">
                         <FastImage
@@ -396,7 +397,7 @@ const NearbyPostListModal = ({
                         <View style={nearbyPostListModalStyles.titleBox}>
                             <SemiBoldText
                                 text={`${nickname}님 주변에서 일어나고 있는 일`}
-                                color={Colors.BLACK}
+                                color={colors.BLACK}
                                 size={18}
                             />
                         </View>
@@ -417,13 +418,13 @@ const NearbyPostListModal = ({
                                 ],
                             },
                         ]}>
-                        <SemiBoldText text="주변에 일어나고 있는 일이  없어요!" color={Colors.BLACK} size={18} />
+                        <SemiBoldText text="주변에 일어나고 있는 일이  없어요!" color={colors.BLACK} size={18} />
                         <Spacer height={4} />
-                        <NormalText text="내 주변의 교통상황을 알려주세요" color={Colors.TXT_GRAY} size={14} />
+                        <NormalText text="내 주변의 교통상황을 알려주세요" color={colors.TXT_GRAY} size={14} />
                         <Spacer height={22} />
                         <TouchButton
                             onPress={moveToWritingScreen}
-                            borderColor={Colors.BTN_GRAY}
+                            borderColor={colors.BTN_GRAY}
                             borderWidth={1}
                             paddingHorizontal={16}
                             paddingVertical={12}

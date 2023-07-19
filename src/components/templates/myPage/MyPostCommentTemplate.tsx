@@ -3,20 +3,20 @@ import { FlatList, View } from 'react-native';
 import { useInfiniteQuery } from 'react-query';
 import { useRecoilValue } from 'recoil';
 import FastImage from 'react-native-fast-image';
-import NormalText from '../../smallest/NormalText';
+import NormalText from '../../atoms/NormalText';
 import PostListItem from '../../organisms/PostListItem';
 
-import Spacer from '../../smallest/Spacer';
-import Colors from '../../../styles/Colors';
-import MediumText from '../../smallest/MediumText';
-import TouchButton from '../../smallest/TouchButton';
-import SemiBoldText from '../../smallest/SemiBoldText';
-import { PostTypes } from '../../../types/types';
-import { userAuthAtom } from '../../../store/atoms';
-import { getMyPostCommentAPI } from '../../../queries/api';
-import { myPostCommentTemplateStyles } from '../../../styles/styles';
-import { MyCommentTypes, MyPostCommentTemplateProps } from '../../../types/types';
+import Spacer from '../../atoms/Spacer';
+import colors from '../../../common/constants/colors';
+import MediumText from '../../atoms/MediumText';
+import TouchButton from '../../atoms/TouchButton';
+import SemiBoldText from '../../atoms/SemiBoldText';
+import { userAuthAtom } from '../../../recoil';
+import { getMyPostCommentAPI } from '../../../apis/api';
+import { myPostCommentTemplateStyles } from '../../../styles/templates/styles';
 import { screenFont, screenHeight, screenWidth } from '../../../utils/changeStyleSize';
+import { MyPostCommentTemplateProps } from '../../../types/templates/types';
+import { MyCommentTypes, PostTypes } from '../../../types/common/types';
 
 const MyPostCommentTemplate = ({ moveToBackScreenHandler }: MyPostCommentTemplateProps) => {
     const { accessToken } = useRecoilValue(userAuthAtom);
@@ -121,16 +121,16 @@ const MyPostCommentTemplate = ({ moveToBackScreenHandler }: MyPostCommentTemplat
     const renderItemComment = useCallback(
         ({ item }: { item: MyCommentTypes }) => (
             <View style={myPostCommentTemplateStyles.commentItem}>
-                <MediumText text={item.title} size={16} color={Colors.BLACK} numberOfLines={1} />
+                <MediumText text={item.title} size={16} color={colors.BLACK} numberOfLines={1} />
                 <Spacer height={4} />
                 <NormalText
                     text={`회원님이 "${item.content}" 사건에 댓글을 남겼습니다`}
                     size={12}
-                    color={Colors.TXT_GRAY}
+                    color={colors.TXT_GRAY}
                     numberOfLines={1}
                 />
                 <Spacer height={4} />
-                <NormalText text={item.createTime} size={12} color={Colors.TXT_GRAY} />
+                <NormalText text={item.createTime} size={12} color={colors.TXT_GRAY} />
             </View>
         ),
         [],
@@ -147,7 +147,7 @@ const MyPostCommentTemplate = ({ moveToBackScreenHandler }: MyPostCommentTemplat
                     />
                 </TouchButton>
                 <Spacer width={21} />
-                <MediumText text="내가 작성한 글" size={18} color={Colors.BLACK} />
+                <MediumText text="내가 작성한 글" size={18} color={colors.BLACK} />
             </View>
 
             <View style={myPostCommentTemplateStyles.tabBox}>
@@ -155,22 +155,22 @@ const MyPostCommentTemplate = ({ moveToBackScreenHandler }: MyPostCommentTemplat
                     style={[
                         myPostCommentTemplateStyles.tabButton,
                         {
-                            borderColor: isPost ? Colors.BLACK : Colors.BORDER_GRAY,
+                            borderColor: isPost ? colors.BLACK : colors.BORDER_GRAY,
                         },
                     ]}>
                     <TouchButton onPress={() => tabHandler('POST')}>
-                        <SemiBoldText text="작성한 글" size={16} color={Colors.BLACK} />
+                        <SemiBoldText text="작성한 글" size={16} color={colors.BLACK} />
                     </TouchButton>
                 </View>
                 <View
                     style={[
                         myPostCommentTemplateStyles.tabButton,
                         {
-                            borderColor: !isPost ? Colors.BLACK : Colors.BORDER_GRAY,
+                            borderColor: !isPost ? colors.BLACK : colors.BORDER_GRAY,
                         },
                     ]}>
                     <TouchButton onPress={() => tabHandler('COMMENT')}>
-                        <SemiBoldText text="나의 답글" size={16} color={Colors.BLACK} />
+                        <SemiBoldText text="나의 답글" size={16} color={colors.BLACK} />
                     </TouchButton>
                 </View>
             </View>

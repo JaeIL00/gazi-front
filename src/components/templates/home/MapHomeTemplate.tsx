@@ -9,20 +9,21 @@ import { debounce } from 'lodash';
 import SplashScreen from 'react-native-splash-screen';
 import FastImage from 'react-native-fast-image';
 
-import Colors from '../../../styles/Colors';
-import MediumText from '../../smallest/MediumText';
-import NormalText from '../../smallest/NormalText';
-import TouchButton from '../../smallest/TouchButton';
+import MediumText from '../../atoms/MediumText';
+import NormalText from '../../atoms/NormalText';
+import TouchButton from '../../atoms/TouchButton';
 import MapWithMarker from '../../organisms/MapWithMarker';
 import SearchLocation from '../../organisms/SearchLocation';
-import ModalBackground from '../../smallest/ModalBackground';
+import ModalBackground from '../../atoms/ModalBackground';
 import FailPermissionModal from '../../organisms/FailPermissionModal';
 import NearbyPostListModal from '../../organisms/NearbyPostListModal';
-import { nearByUserPostsAPI } from '../../../queries/api';
-import { mapHomeTemplateStyles } from '../../../styles/styles';
-import { userAuthAtom, userInfoAtom } from '../../../store/atoms';
+import { nearByUserPostsAPI } from '../../../apis/api';
+import { userAuthAtom, userInfoAtom } from '../../../recoil';
+import { mapHomeTemplateStyles } from '../../../styles/templates/styles';
 import { screenFont, screenHeight, screenWidth } from '../../../utils/changeStyleSize';
-import { MapHomeTemplateProps, MapLocationTypes, PostTypes, MapBoundaryTypes } from '../../../types/types';
+import colors from '../../../common/constants/colors';
+import { MapBoundaryTypes, MapLocationTypes, PostTypes } from '../../../types/common/types';
+import { MapHomeTemplateProps } from '../../../types/templates/types';
 
 const MapHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritingScreen }: MapHomeTemplateProps) => {
     const { accessToken } = useRecoilValue(userAuthAtom);
@@ -330,7 +331,7 @@ const MapHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritingScreen }
                                     source={require('../../../assets/icons/search.png')}
                                     style={mapHomeTemplateStyles.searchIcon}
                                 />
-                                <NormalText text="지금 어디로 가시나요?" size={16} color={Colors.TXT_LIGHTGRAY} />
+                                <NormalText text="지금 어디로 가시나요?" size={16} color={colors.TXT_LIGHTGRAY} />
                             </View>
                         </TouchableOpacity>
                     </DropShadow>
@@ -395,7 +396,7 @@ const MapHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritingScreen }
 
             {isFarMapLevel && (
                 <View style={mapHomeTemplateStyles.zoomWarning}>
-                    <MediumText text="지도를 확대해 지금 일어나는 일을 확인해보세요!" size={14} color={Colors.WHITE} />
+                    <MediumText text="지도를 확대해 지금 일어나는 일을 확인해보세요!" size={14} color={colors.WHITE} />
                 </View>
             )}
 
@@ -409,7 +410,7 @@ const MapHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritingScreen }
                         borderColor="#B29ECC"
                         paddingVertical={5 * screenHeight}
                         paddingHorizontal={23 * screenWidth}>
-                        <MediumText text="현 지도에서 검색" size={14} color={Colors.VIOLET} />
+                        <MediumText text="현 지도에서 검색" size={14} color={colors.VIOLET} />
                     </TouchButton>
                 </DropShadow>
             )}

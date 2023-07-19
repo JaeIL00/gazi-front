@@ -2,19 +2,19 @@ import React, { useState } from 'react';
 import { KeyboardAvoidingView, View } from 'react-native';
 import { useRecoilState } from 'recoil';
 
-import Spacer from '../../smallest/Spacer';
-import Colors from '../../../styles/Colors';
-import NormalText from '../../smallest/NormalText';
-import MediumText from '../../smallest/MediumText';
+import Spacer from '../../atoms/Spacer';
+import colors from '../../../common/constants/colors';
+import NormalText from '../../atoms/NormalText';
+import MediumText from '../../atoms/MediumText';
 import TextButton from '../../molecules/TextButton';
 import LoginTextInput from '../../molecules/LoginTextInput';
-import ModalBackground from '../../smallest/ModalBackground';
+import ModalBackground from '../../atoms/ModalBackground';
 import ServiceAgreement from '../../organisms/ServiceAgreement';
 import IconWithMediumText from '../../molecules/IconWithMediumText';
 import MoveBackWithPageTitle from '../../organisms/MoveBackWithPageTitle';
-import { joinMemberAtom } from '../../../store/atoms';
-import { InputPasswordTemplateProps } from '../../../types/types';
-import { inputPasswordTemplateStyles } from '../../../styles/styles';
+import { joinMemberAtom } from '../../../recoil';
+import { inputPasswordTemplateStyles } from '../../../styles/templates/styles';
+import { InputPasswordTemplateProps } from '../../../types/templates/types';
 
 // Password validation rule
 const REG = /^(?=.*[a-zA-Z])(?=.*[!~.,?@#$%^&()_/|;:'"<>*+=-])(?=.*[0-9])/;
@@ -60,7 +60,7 @@ const InputPasswordTemplate = ({ navigationHandler }: InputPasswordTemplateProps
                     <Spacer height={6} />
 
                     <View style={inputPasswordTemplateStyles.emainTextBox}>
-                        <NormalText text={joinData.email} size={16} color={Colors.BLACK} />
+                        <NormalText text={joinData.email} size={16} color={colors.BLACK} />
                     </View>
 
                     <Spacer height={20} />
@@ -80,17 +80,17 @@ const InputPasswordTemplate = ({ navigationHandler }: InputPasswordTemplateProps
                         <IconWithMediumText
                             type="octicons"
                             name="check"
-                            iconColor={isPasswordLeng ? Colors.STATUS_GREEN : Colors.STATUS_GRAY}
+                            iconColor={isPasswordLeng ? colors.STATUS_GREEN : colors.STATUS_GRAY}
                             text="8자-20자 이내"
-                            textColor={isPasswordLeng ? Colors.STATUS_GREEN : Colors.STATUS_GRAY}
+                            textColor={isPasswordLeng ? colors.STATUS_GREEN : colors.STATUS_GRAY}
                         />
                         <Spacer width={14} />
                         <IconWithMediumText
                             type="octicons"
                             name="check"
-                            iconColor={isPasswordReg ? Colors.STATUS_GREEN : Colors.STATUS_GRAY}
+                            iconColor={isPasswordReg ? colors.STATUS_GREEN : colors.STATUS_GRAY}
                             text="영어, 숫자, 특수문자 포함"
-                            textColor={isPasswordReg ? Colors.STATUS_GREEN : Colors.STATUS_GRAY}
+                            textColor={isPasswordReg ? colors.STATUS_GREEN : colors.STATUS_GRAY}
                         />
                     </View>
                 </View>
@@ -101,8 +101,8 @@ const InputPasswordTemplate = ({ navigationHandler }: InputPasswordTemplateProps
                             onPress={canMoveNextStepHandler}
                             text="회원가입"
                             height={48}
-                            backgroundColor={isPasswordLeng && isPasswordReg ? Colors.BLACK : Colors.BTN_GRAY}
-                            textColor={Colors.WHITE}
+                            backgroundColor={isPasswordLeng && isPasswordReg ? colors.BLACK : colors.BTN_GRAY}
+                            textColor={colors.WHITE}
                             fontSize={17}
                         />
                     </KeyboardAvoidingView>

@@ -4,17 +4,18 @@ import { useQuery } from 'react-query';
 import { useRecoilValue } from 'recoil';
 import FastImage from 'react-native-fast-image';
 
-import Spacer from '../../smallest/Spacer';
-import Colors from '../../../styles/Colors';
-import MediumText from '../../smallest/MediumText';
-import NormalText from '../../smallest/NormalText';
-import TouchButton from '../../smallest/TouchButton';
-import SemiBoldText from '../../smallest/SemiBoldText';
+import Spacer from '../../atoms/Spacer';
+import colors from '../../../common/constants/colors';
+import MediumText from '../../atoms/MediumText';
+import NormalText from '../../atoms/NormalText';
+import TouchButton from '../../atoms/TouchButton';
+import SemiBoldText from '../../atoms/SemiBoldText';
 import EditMyKeyword from '../../organisms/myPage/EditMyKeyword';
-import { userAuthAtom } from '../../../store/atoms';
-import { getMyLikeKeywordsAPI } from '../../../queries/api';
-import { likeKeywordSettingTemplateStyles } from '../../../styles/styles';
-import { LikeKeywordSettingTemplateProps, MyLikeKeywordTypes } from '../../../types/types';
+import { userAuthAtom } from '../../../recoil';
+import { getMyLikeKeywordsAPI } from '../../../apis/api';
+import { likeKeywordSettingTemplateStyles } from '../../../styles/templates/styles';
+import { LikeKeywordSettingTemplateProps } from '../../../types/templates/types';
+import { MyLikeKeywordTypes } from '../../../types/common/types';
 
 const LikeKeywordSettingTemplate = ({
     moveToBackScreenHandler,
@@ -62,13 +63,13 @@ const LikeKeywordSettingTemplate = ({
                         />
                     </TouchButton>
                     <Spacer width={21} />
-                    <MediumText text={isEditMode ? '관심 키워드 편집' : '관심 키워드'} size={18} color={Colors.BLACK} />
+                    <MediumText text={isEditMode ? '관심 키워드 편집' : '관심 키워드'} size={18} color={colors.BLACK} />
                 </View>
 
                 <TouchButton
                     onPress={() => (isEditMode ? controlEditWindowHandler('BACK') : controlEditWindowHandler('GO'))}
                     hitSlop={20}>
-                    <SemiBoldText text={isEditMode ? '취소' : '편집'} size={16} color={Colors.TXT_GRAY} />
+                    <SemiBoldText text={isEditMode ? '취소' : '편집'} size={16} color={colors.TXT_GRAY} />
                 </TouchButton>
             </View>
 
@@ -83,7 +84,7 @@ const LikeKeywordSettingTemplate = ({
                 ) : (
                     <>
                         <View style={likeKeywordSettingTemplateStyles.contentTitleBox}>
-                            <SemiBoldText text="내가 고른 키워드" size={16} color={Colors.BLACK} />
+                            <SemiBoldText text="내가 고른 키워드" size={16} color={colors.BLACK} />
                         </View>
                         {myKeywordList.length > 0 ? (
                             <View style={likeKeywordSettingTemplateStyles.myKeywordBox}>
@@ -100,7 +101,7 @@ const LikeKeywordSettingTemplate = ({
                                     style={likeKeywordSettingTemplateStyles.nothingIcon}
                                 />
                                 <Spacer height={20} />
-                                <SemiBoldText text="관심 키워드를 골라주세요" size={18} color={Colors.BTN_GRAY} />
+                                <SemiBoldText text="관심 키워드를 골라주세요" size={18} color={colors.BTN_GRAY} />
                             </View>
                         )}
                     </>

@@ -2,11 +2,11 @@ import React from 'react';
 import { Platform } from 'react-native';
 import DropShadow from 'react-native-drop-shadow';
 
-import Colors from '../../styles/Colors';
+import colors from '../../common/constants/colors';
 import FastImage from 'react-native-fast-image';
-import TouchButton from '../smallest/TouchButton';
-import { WritingFloatingBtnProps } from '../../types/types';
-import { writingFloatingBtnStyles } from '../../styles/styles';
+import TouchButton from '../atoms/TouchButton';
+import { WritingFloatingBtnProps } from '../../types/molecules/types';
+import { writingFloatingBtnStyles } from '../../styles/molecules/styles';
 
 const WritingFloatingBtn = ({ moveToWritingScreen }: WritingFloatingBtnProps) => {
     return (
@@ -18,7 +18,7 @@ const WritingFloatingBtn = ({ moveToWritingScreen }: WritingFloatingBtnProps) =>
                         width={52}
                         height={52}
                         borderRadius={52}
-                        backgroundColor={Colors.VIOLET}>
+                        backgroundColor={colors.VIOLET}>
                         <FastImage
                             source={require('../../assets/icons/write.png')}
                             style={writingFloatingBtnStyles.writeIcon}

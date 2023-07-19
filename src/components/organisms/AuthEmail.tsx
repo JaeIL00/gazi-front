@@ -4,20 +4,20 @@ import { useMutation } from 'react-query';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { debounce } from 'lodash';
 
-import Icons from '../smallest/Icons';
-import Spacer from '../smallest/Spacer';
-import Colors from '../../styles/Colors';
-import BoldText from '../smallest/BoldText';
-import NormalText from '../smallest/NormalText';
-import MediumText from '../smallest/MediumText';
+import Icons from '../atoms/Icons';
+import Spacer from '../atoms/Spacer';
+import BoldText from '../atoms/BoldText';
+import NormalText from '../atoms/NormalText';
+import MediumText from '../atoms/MediumText';
 import TextButton from '../molecules/TextButton';
-import TouchButton from '../smallest/TouchButton';
-import useKeyboardMotion from '../../utils/hooks/useKeyboardMotion';
-import { emailAuthAPI } from '../../queries/api';
-import { AuthEmailProps } from '../../types/types';
-import { authEmailStyles } from '../../styles/styles';
-import { SingleLineInput } from '../smallest/SingleLineInput';
-import { emailAuthAtom, joinMemberAtom } from '../../store/atoms';
+import TouchButton from '../atoms/TouchButton';
+import useKeyboardMotion from '../../common/hooks/useKeyboardMotion';
+import { emailAuthAPI } from '../../apis/api';
+import { authEmailStyles } from '../../styles/organisms/styles';
+import { SingleLineInput } from '../atoms/SingleLineInput';
+import { emailAuthAtom, joinMemberAtom } from '../../recoil';
+import colors from '../../common/constants/colors';
+import { AuthEmailProps } from '../../types/organisms/types';
 
 const AuthEmail = ({ min, sec, resetTimeHandler, authNumberModalHanlder }: AuthEmailProps) => {
     const { height } = useWindowDimensions();
@@ -116,11 +116,11 @@ const AuthEmail = ({ min, sec, resetTimeHandler, authNumberModalHanlder }: AuthE
         <Animated.View style={[authEmailStyles.animateInner, { transform: [{ translateY: topValue }] }]}>
             <View style={authEmailStyles.backButtonBox}>
                 <TouchButton alignSelf="flex-start" onPress={onPressBackIcon}>
-                    <Icons type="octicons" name="arrow-left" color={Colors.TXT_BLACK} size={24} />
+                    <Icons type="octicons" name="arrow-left" color={colors.TXT_BLACK} size={24} />
                 </TouchButton>
             </View>
-            <BoldText text="메일로 받은 인증번호를 " size={24} color={Colors.BLACK} />
-            <BoldText text="입력해주세요" size={24} color={Colors.BLACK} />
+            <BoldText text="메일로 받은 인증번호를 " size={24} color={colors.BLACK} />
+            <BoldText text="입력해주세요" size={24} color={colors.BLACK} />
 
             <Spacer height={57} />
             <View>
@@ -138,16 +138,16 @@ const AuthEmail = ({ min, sec, resetTimeHandler, authNumberModalHanlder }: AuthE
                         <NormalText
                             text={`${min}:${String(sec).length === 1 ? '0' : ''}${sec}`}
                             size={13}
-                            color={Colors.BLACK}
+                            color={colors.BLACK}
                         />
                     </View>
                 </View>
 
                 {isWrong && (
                     <View style={authEmailStyles.emailErrorTextBox}>
-                        <Icons type={'fontisto'} name={'close'} size={14} color={Colors.STATUS_RED} />
+                        <Icons type={'fontisto'} name={'close'} size={14} color={colors.STATUS_RED} />
                         <Spacer width={4} />
-                        <MediumText text="인증번호가 일치하지 않습니다" size={12} color={Colors.STATUS_RED} />
+                        <MediumText text="인증번호가 일치하지 않습니다" size={12} color={colors.STATUS_RED} />
                     </View>
                 )}
             </View>
@@ -155,11 +155,11 @@ const AuthEmail = ({ min, sec, resetTimeHandler, authNumberModalHanlder }: AuthE
             <Spacer height={55} />
 
             <View style={authEmailStyles.retryTextBox}>
-                <NormalText text="메일을 받지 못하셨나요?" size={13} color={Colors.TXT_GRAY} />
+                <NormalText text="메일을 받지 못하셨나요?" size={13} color={colors.TXT_GRAY} />
                 <Spacer width={8} />
                 <TouchButton onPress={onPressEmailAuth}>
                     <View style={authEmailStyles.underBar}>
-                        <BoldText text="재전송" size={13} color={Colors.TXT_GRAY} />
+                        <BoldText text="재전송" size={13} color={colors.TXT_GRAY} />
                     </View>
                 </TouchButton>
             </View>
@@ -167,10 +167,10 @@ const AuthEmail = ({ min, sec, resetTimeHandler, authNumberModalHanlder }: AuthE
             <Animated.View style={[authEmailStyles.finishButton, { transform: [{ translateY: bottomValue }] }]}>
                 <TextButton
                     height={48}
-                    backgroundColor={activityButton ? Colors.BLACK : Colors.BTN_GRAY}
+                    backgroundColor={activityButton ? colors.BLACK : colors.BTN_GRAY}
                     onPress={onPressFinishAnimation}
                     fontSize={17}
-                    textColor={Colors.WHITE}
+                    textColor={colors.WHITE}
                     text="완료"
                 />
             </Animated.View>

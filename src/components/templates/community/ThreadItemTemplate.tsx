@@ -4,18 +4,19 @@ import DropShadow from 'react-native-drop-shadow';
 import { useRecoilValue } from 'recoil';
 import { useInfiniteQuery } from 'react-query';
 
-import Icons from '../../smallest/Icons';
-import Spacer from '../../smallest/Spacer';
-import Colors from '../../../styles/Colors';
-import NormalText from '../../smallest/NormalText';
-import TouchButton from '../../smallest/TouchButton';
-import SemiBoldText from '../../smallest/SemiBoldText';
+import Icons from '../../atoms/Icons';
+import Spacer from '../../atoms/Spacer';
+import colors from '../../../common/constants/colors';
+import NormalText from '../../atoms/NormalText';
+import TouchButton from '../../atoms/TouchButton';
+import SemiBoldText from '../../atoms/SemiBoldText';
 import CommentListItem from '../../organisms/cummunity/CommentListItem';
-import { userAuthAtom } from '../../../store/atoms';
-import { getCommentListAPI } from '../../../queries/api';
-import { threadItemTemplateStyles } from '../../../styles/styles';
+import { userAuthAtom } from '../../../recoil';
+import { getCommentListAPI } from '../../../apis/api';
+import { threadItemTemplateStyles } from '../../../styles/templates/styles';
 import { screenHeight, screenWidth } from '../../../utils/changeStyleSize';
-import { CommentTopicTypes, CommentTypes, ThreadItemTemplateProps } from '../../../types/types';
+import { CommentTopicTypes, CommentTypes } from '../../../types/common/types';
+import { ThreadItemTemplateProps } from '../../../types/templates/types';
 
 const ThreadItemTemplate = ({
     postId,
@@ -155,21 +156,21 @@ const ThreadItemTemplate = ({
                                 <NormalText
                                     text={`${postValue.distance} | ${postValue.placeName}`}
                                     size={12}
-                                    color={Colors.TXT_GRAY}
+                                    color={colors.TXT_GRAY}
                                 />
                                 <Spacer height={4} />
                             </>
                         )}
                         <View style={threadItemTemplateStyles.headerTitleBox}>
                             {postValue.title.split(' ').map(item => (
-                                <SemiBoldText text={`${item} `} size={20} color={Colors.BLACK} />
+                                <SemiBoldText text={`${item} `} size={20} color={colors.BLACK} />
                             ))}
                         </View>
                         <Spacer height={4} />
                         <NormalText
                             text={`${postValue.rePostCount} posts • updated ${postValue.time}`}
                             size={12}
-                            color={Colors.BLACK}
+                            color={colors.BLACK}
                         />
                     </View>
                     {/* Temparay planning
@@ -216,12 +217,12 @@ const ThreadItemTemplate = ({
                                     width={36}
                                     height={(36 / screenHeight) * screenWidth}
                                     borderRadius={36}>
-                                    <Icons type="octicons" name="arrow-left" color={Colors.TXT_BLACK} size={22} />
+                                    <Icons type="octicons" name="arrow-left" color={colors.TXT_BLACK} size={22} />
                                 </TouchButton>
                             </DropShadow>
                         ) : (
                             <TouchButton onPress={movetoCommunityScreen}>
-                                <Icons type="octicons" name="arrow-left" color={Colors.TXT_BLACK} size={22} />
+                                <Icons type="octicons" name="arrow-left" color={colors.TXT_BLACK} size={22} />
                             </TouchButton>
                         )}
                     </>
@@ -233,14 +234,14 @@ const ThreadItemTemplate = ({
                     <DropShadow style={threadItemTemplateStyles.ButtonShadow}>
                         <TouchButton
                             onPress={() => moveToWriteScreen(postValue.title, postValue.rePostCount, postValue.time)}
-                            backgroundColor={Colors.VIOLET}
+                            backgroundColor={colors.VIOLET}
                             width={100}
                             height={44}
                             borderRadius={32}>
                             <View style={threadItemTemplateStyles.writeCommentButton}>
-                                <Icons type="octicons" name="plus" color={Colors.WHITE} size={14} />
+                                <Icons type="octicons" name="plus" color={colors.WHITE} size={14} />
                                 <Spacer width={6} />
-                                <SemiBoldText text="답글달기" size={14} color={Colors.WHITE} />
+                                <SemiBoldText text="답글달기" size={14} color={colors.WHITE} />
                             </View>
                         </TouchButton>
                     </DropShadow>

@@ -4,15 +4,16 @@ import { AssetType, CameraRoll, GroupTypes, PhotoIdentifier } from '@react-nativ
 import FastImage from 'react-native-fast-image';
 import { launchCamera } from 'react-native-image-picker';
 
-import Icons from '../smallest/Icons';
-import Spacer from '../smallest/Spacer';
-import Colors from '../../styles/Colors';
-import MediumText from '../smallest/MediumText';
-import TouchButton from '../smallest/TouchButton';
-import SemiBoldText from '../smallest/SemiBoldText';
-import { GalleryAlbumListTypes, PhotoGalleryProps } from '../../types/types';
-import { photoGalleryStyles } from '../../styles/styles';
+import Icons from '../atoms/Icons';
+import Spacer from '../atoms/Spacer';
+import colors from '../../common/constants/colors';
+import MediumText from '../atoms/MediumText';
+import TouchButton from '../atoms/TouchButton';
+import SemiBoldText from '../atoms/SemiBoldText';
+import { photoGalleryStyles } from '../../styles/organisms/styles';
 import { screenFont, screenHeight, screenWidth } from '../../utils/changeStyleSize';
+import { PhotoGalleryProps } from '../../types/organisms/types';
+import { GalleryAlbumListTypes } from '../../types/common/types';
 
 const PhotoGallery = ({ closeGalleryHandling, getImageHandler }: PhotoGalleryProps) => {
     const [checkIndex, setCheckIndex] = useState<number[]>([]);
@@ -204,13 +205,13 @@ const PhotoGallery = ({ closeGalleryHandling, getImageHandler }: PhotoGalleryPro
                                         photoGalleryStyles.imageCheckBox,
                                         {
                                             backgroundColor:
-                                                checkIndex.indexOf(index) !== -1 ? Colors.VIOLET : '#D9D9D94D',
+                                                checkIndex.indexOf(index) !== -1 ? colors.VIOLET : '#D9D9D94D',
                                             borderWidth:
                                                 checkIndex.indexOf(index) !== -1 ? undefined : 1.5 * screenFont,
                                         },
                                     ]}>
                                     {checkIndex.indexOf(index) !== -1 && (
-                                        <Icons type="octicons" name="check" size={16} color={Colors.WHITE} />
+                                        <Icons type="octicons" name="check" size={16} color={colors.WHITE} />
                                     )}
                                 </View>
                             </View>
@@ -239,7 +240,7 @@ const PhotoGallery = ({ closeGalleryHandling, getImageHandler }: PhotoGalleryPro
                     },
                 ]}>
                 <TouchButton onPress={closeGalleryHandling}>
-                    <Icons type="ionicons" name="close" size={24} color={Colors.BLACK} />
+                    <Icons type="ionicons" name="close" size={24} color={colors.BLACK} />
                 </TouchButton>
                 <TouchButton onPress={() => setAlbumListWindow(!albumListWindow)}>
                     <View style={photoGalleryStyles.albumButtonBox}>
@@ -273,7 +274,7 @@ const PhotoGallery = ({ closeGalleryHandling, getImageHandler }: PhotoGalleryPro
                 <View style={{ position: 'relative' }}>
                     <ScrollView
                         showsVerticalScrollIndicator={false}
-                        style={{ backgroundColor: Colors.WHITE }}
+                        style={{ backgroundColor: colors.WHITE }}
                         contentContainerStyle={{ paddingBottom: 80 * screenHeight }}>
                         {albumList.map(item => (
                             <TouchableOpacity
@@ -286,9 +287,9 @@ const PhotoGallery = ({ closeGalleryHandling, getImageHandler }: PhotoGalleryPro
                                     style={{ width: 60 * screenWidth, height: 60 * screenWidth }}
                                 />
                                 <View style={{ paddingLeft: 10 * screenWidth }}>
-                                    <SemiBoldText text={item.title} size={16} color={Colors.BLACK} />
+                                    <SemiBoldText text={item.title} size={16} color={colors.BLACK} />
                                     <Spacer height={1} />
-                                    <MediumText text={item.count + ''} size={11} color={Colors.TXT_GRAY} />
+                                    <MediumText text={item.count + ''} size={11} color={colors.TXT_GRAY} />
                                 </View>
                             </TouchableOpacity>
                         ))}

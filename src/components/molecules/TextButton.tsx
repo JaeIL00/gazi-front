@@ -1,8 +1,8 @@
 import React from 'react';
 
-import TouchButton from '../smallest/TouchButton';
-import SemiBoldText from '../smallest/SemiBoldText';
-import { TextButtonProps } from '../../types/types';
+import TouchButton from '../atoms/TouchButton';
+import SemiBoldText from '../atoms/SemiBoldText';
+import { TextButtonProps } from '../../types/molecules/types';
 
 const TextButton = ({
     onPress,

@@ -4,8 +4,8 @@ import FastImage from 'react-native-fast-image';
 
 import mapStyle from '../../styles/mapStyle';
 import MapCurrentMarker from '../molecules/MapCurrentMarker';
-import { MapWithMarkerProps } from '../../types/types';
-import { mapWithMarkerStyles } from '../../styles/styles';
+import { mapWithMarkerStyles } from '../../styles/organisms/styles';
+import { MapWithMarkerProps } from '../../types/organisms/types';
 
 const MapWithMarker = ({
     mapRef,

@@ -1,12 +1,12 @@
 import React from 'react';
 import { View } from 'react-native';
 
-import Icons from '../smallest/Icons';
-import Colors from '../../styles/Colors';
-import TouchButton from '../smallest/TouchButton';
+import Icons from '../atoms/Icons';
+import colors from '../../common/constants/colors';
+import TouchButton from '../atoms/TouchButton';
 import PageTitleWithExplain from '../molecules/PageTitleWithExplain';
-import { MoveBackWithPageTitleProps } from '../../types/types';
-import { moveBackWithPageTitleStyles } from '../../styles/styles';
+import { moveBackWithPageTitleStyles } from '../../styles/organisms/styles';
+import { MoveBackWithPageTitleProps } from '../../types/organisms/types';
 
 const MoveBackWithPageTitle = ({
     oneTitle,
@@ -19,7 +19,7 @@ const MoveBackWithPageTitle = ({
         <View>
             <View style={moveBackWithPageTitleStyles.buttonContainer}>
                 <TouchButton alignSelf="flex-start" onPress={onPress} hitSlop={10}>
-                    <Icons type="octicons" name="arrow-left" color={Colors.TXT_BLACK} size={24} />
+                    <Icons type="octicons" name="arrow-left" color={colors.TXT_BLACK} size={24} />
                 </TouchButton>
             </View>
             <PageTitleWithExplain
