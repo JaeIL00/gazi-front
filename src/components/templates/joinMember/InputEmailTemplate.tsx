@@ -12,7 +12,6 @@ import BoldText from '../../atoms/BoldText';
 import AuthEmail from '../../organisms/AuthEmail';
 import NormalText from '../../atoms/NormalText';
 import MediumText from '../../atoms/MediumText';
-import TextButton from '../../molecules/TextButton';
 import LoginTextInput from '../../molecules/LoginTextInput';
 import ModalBackground from '../../atoms/ModalBackground';
 import MoveBackWithPageTitle from '../../organisms/MoveBackWithPageTitle';
@@ -22,6 +21,7 @@ import { emailAuthAPI } from '../../../apis/api';
 import { emailAuthAtom, joinMemberAtom } from '../../../recoil';
 import { inputEmailTemplateStyles } from '../../../styles/templates/styles';
 import { InputEmailTemplateProps } from '../../../types/templates/types';
+import TextButton from '../../molecules/TextButton';
 
 const InputEmailTemplate = ({ navigationHandler }: InputEmailTemplateProps) => {
     const [authData, setAuthData] = useRecoilState(emailAuthAtom);
@@ -64,10 +64,9 @@ const InputEmailTemplate = ({ navigationHandler }: InputEmailTemplateProps) => {
 
     // Request email authorization number API handling by button
     const onPressEmailAuth = debounce(() => {
-        const nextStepWithoutMutate = !duplicatedError && email === joinData.email && (minutes || seconds);
-        const userInteractionNothing = !email || !duplicatedError || !isEmail;
-
-        if (nextStepWithoutMutate) {
+        const nextStepWithoutMutate = !duplicatedError && email === joinData.email && minutes !== 0 && seconds !== 0;
+        const userInteractionNothing = !email || duplicatedError || !isEmail;
+        if (nextStepWithoutMutate && email) {
             authData.isAuthorizationPass ? navigationHandler('GO') : authNumberModalHanlder('OPEN');
         } else if (userInteractionNothing) {
             return;
@@ -169,17 +168,23 @@ const InputEmailTemplate = ({ navigationHandler }: InputEmailTemplateProps) => {
                     text={authData.isAuthorizationPass ? '완료' : '인증메일 전송'}
                     height={48}
                     backgroundColor={isEmail && !duplicatedError ? colors.BLACK : colors.BTN_GRAY}
-                    textColor={colors.WHITE}
+                    fontColor={colors.WHITE}
+                    fontWeight="semiBold"
                     fontSize={17}
+                    borderRadius={5}
                 />
                 <View style={inputEmailTemplateStyles.resendMailButtonBox}>
                     <NormalText text="메일을 받지 못하셨나요?" size={13} color={colors.TXT_GRAY} />
-                    <TouchableOpacity
+                    <TextButton
                         onPress={onPressEmailAuth}
-                        activeOpacity={1}
-                        style={inputEmailTemplateStyles.resendButton}>
-                        <BoldText text="재전송" size={13} color={colors.TXT_GRAY} />
-                    </TouchableOpacity>
+                        borderBottomWidth={1.5}
+                        borderColor={colors.TXT_GRAY}
+                        marginLeft={8}
+                        fontColor={colors.TXT_GRAY}
+                        fontSize={13}
+                        text="재전송"
+                        fontWeight="bold"
+                    />
                 </View>
 
                 <ModalBackground visible={isOnModal} onRequestClose={() => authNumberModalHanlder('CLOSE')}>

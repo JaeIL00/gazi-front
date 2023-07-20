@@ -89,8 +89,10 @@ const RequestPemissionTemplate = ({ navigationHandler }: RequestPemissionTemplat
                     text="확인"
                     height={48}
                     backgroundColor={colors.BLACK}
-                    textColor={colors.WHITE}
+                    fontColor={colors.WHITE}
+                    fontWeight="semiBold"
                     fontSize={17}
+                    borderRadius={5}
                 />
             </View>
         </View>

@@ -14,6 +14,8 @@ import { logoutAPI } from '../../../apis/api';
 import { userAuthAtom } from '../../../recoil';
 import { AccountManagementTemplateStyles } from '../../../styles/templates/styles';
 import { AccountManagementTemplateProps } from '../../../types/templates/types';
+import TextButton from '../../molecules/TextButton';
+import ImageButton from '../../molecules/ImageButton';
 
 const AccountManagementTemplate = ({ moveToScreenHandler }: AccountManagementTemplateProps) => {
     const [userAuth, setUserAuth] = useRecoilState(userAuthAtom);
@@ -45,42 +47,58 @@ const AccountManagementTemplate = ({ moveToScreenHandler }: AccountManagementTem
     return (
         <View>
             <View style={AccountManagementTemplateStyles.headerBox}>
-                <TouchButton onPress={() => moveToScreenHandler('BACK')} hitSlop={20}>
-                    <FastImage
-                        source={require('../../../assets/icons/to-left-black.png')}
-                        style={AccountManagementTemplateStyles.headerIcon}
-                    />
-                </TouchButton>
+                <ImageButton
+                    onPress={() => moveToScreenHandler('BACK')}
+                    hitSlop={20}
+                    imageSource={require('../../../assets/icons/to-left-black.png')}
+                    imageWidth={9}
+                    imageHeight={16}
+                    isCaching={true}
+                />
                 <Spacer width={21} />
                 <MediumText text="계정관리" size={18} color={colors.BLACK} />
             </View>
 
             <View style={AccountManagementTemplateStyles.tabBox}>
-                <TouchButton onPress={() => moveToScreenHandler('PASSWORD')}>
-                    <View style={AccountManagementTemplateStyles.buttonBox}>
-                        <NormalText text="비밀번호 변경" size={16} color={colors.BLACK} />
-                    </View>
-                </TouchButton>
+                <TextButton
+                    onPress={() => moveToScreenHandler('PASSWORD')}
+                    width="100%"
+                    height="100%"
+                    alignItems="flex-start"
+                    text="비밀번호 변경"
+                    fontSize={16}
+                    fontColor={colors.BLACK}
+                    fontWeight="normal"
+                />
             </View>
             <View style={AccountManagementTemplateStyles.tabBox}>
-                <TouchButton
+                <TextButton
                     onPress={() =>
                         mutate({
                             accessToken: userAuth.accessToken,
                             refreshToken: userAuth.refreshToken,
                         })
-                    }>
-                    <View style={AccountManagementTemplateStyles.buttonBox}>
-                        <NormalText text="로그아웃" size={16} color={colors.BLACK} />
-                    </View>
-                </TouchButton>
+                    }
+                    width="100%"
+                    height="100%"
+                    alignItems="flex-start"
+                    text="로그아웃"
+                    fontSize={16}
+                    fontColor={colors.BLACK}
+                    fontWeight="normal"
+                />
             </View>
             <View style={AccountManagementTemplateStyles.tabBox}>
-                <TouchButton onPress={() => moveToScreenHandler('DELETE')}>
-                    <View style={AccountManagementTemplateStyles.buttonBox}>
-                        <NormalText text="회원 탈퇴" size={16} color={colors.BLACK} />
-                    </View>
-                </TouchButton>
+                <TextButton
+                    onPress={() => moveToScreenHandler('DELETE')}
+                    width="100%"
+                    height="100%"
+                    alignItems="flex-start"
+                    text="회원 탈퇴"
+                    fontSize={16}
+                    fontColor={colors.BLACK}
+                    fontWeight="normal"
+                />
             </View>
             {isLoading && <ActivityIndicator size="large" />}
         </View>

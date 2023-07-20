@@ -1,3 +1,4 @@
+import { ImageRequireSource } from 'react-native';
 import { SingleLineInputProps, TouchButtonProps } from '../atoms/types';
 
 export type CommentImageProps = {
@@ -21,8 +22,30 @@ export interface PageTitleWithExplainProps {
 }
 export interface TextButtonProps extends TouchButtonProps {
     text: string;
-    textColor: string;
+    fontColor: string;
     fontSize: number;
+    fontWeight: 'bold' | 'semiBold' | 'medium' | 'normal';
+}
+export interface IconButtonProps extends TouchButtonProps {
+    iconType:
+        | 'octicons'
+        | 'feather'
+        | 'simpleLineIcons'
+        | 'materialCommunityIcons'
+        | 'fontisto'
+        | 'ionicons'
+        | 'fontAwesome'
+        | 'entypo';
+    iconName: string;
+    iconSize: number;
+    iconColor: string;
+}
+export interface ImageButtonProps extends TouchButtonProps {
+    isCaching: boolean;
+    imageWidth: number | string;
+    imageHeight: number | string;
+    imageBorderRadius?: number;
+    imageSource: ImageRequireSource | { uri: string };
 }
 export type AgreementCheckListItemProps = {
     text: string;

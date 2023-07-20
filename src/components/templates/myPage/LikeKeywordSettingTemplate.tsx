@@ -16,6 +16,8 @@ import { getMyLikeKeywordsAPI } from '../../../apis/api';
 import { likeKeywordSettingTemplateStyles } from '../../../styles/templates/styles';
 import { LikeKeywordSettingTemplateProps } from '../../../types/templates/types';
 import { MyLikeKeywordTypes } from '../../../types/common/types';
+import TextButton from '../../molecules/TextButton';
+import ImageButton from '../../molecules/ImageButton';
 
 const LikeKeywordSettingTemplate = ({
     moveToBackScreenHandler,
@@ -56,21 +58,26 @@ const LikeKeywordSettingTemplate = ({
         <View style={likeKeywordSettingTemplateStyles.container}>
             <View style={likeKeywordSettingTemplateStyles.headerBox}>
                 <View style={likeKeywordSettingTemplateStyles.headerTextBox}>
-                    <TouchButton onPress={moveToBackScreenHandler} hitSlop={20}>
-                        <FastImage
-                            source={require('../../../assets/icons/to-left-black.png')}
-                            style={likeKeywordSettingTemplateStyles.headerIcon}
-                        />
-                    </TouchButton>
+                    <ImageButton
+                        onPress={moveToBackScreenHandler}
+                        hitSlop={20}
+                        imageSource={require('../../../assets/icons/to-left-black.png')}
+                        imageWidth={9}
+                        imageHeight={16}
+                        isCaching={true}
+                    />
                     <Spacer width={21} />
                     <MediumText text={isEditMode ? '관심 키워드 편집' : '관심 키워드'} size={18} color={colors.BLACK} />
                 </View>
 
-                <TouchButton
+                <TextButton
                     onPress={() => (isEditMode ? controlEditWindowHandler('BACK') : controlEditWindowHandler('GO'))}
-                    hitSlop={20}>
-                    <SemiBoldText text={isEditMode ? '취소' : '편집'} size={16} color={colors.TXT_GRAY} />
-                </TouchButton>
+                    hitSlop={20}
+                    text={isEditMode ? '취소' : '편집'}
+                    fontSize={16}
+                    fontColor={colors.TXT_GRAY}
+                    fontWeight="semiBold"
+                />
             </View>
 
             <View style={likeKeywordSettingTemplateStyles.contentBox}>

@@ -7,6 +7,7 @@ import TouchButton from '../atoms/TouchButton';
 import SemiBoldText from '../atoms/SemiBoldText';
 import { AgreementCheckListItemProps } from '../../types/molecules/types';
 import { agreementCheckListItemStyles, checkBoxBackground } from '../../styles/molecules/styles';
+import IconButton from './IconButton';
 
 const AgreementCheckListItem = ({
     text,
@@ -25,10 +26,14 @@ const AgreementCheckListItem = ({
                     <SemiBoldText size={14} color={colors.BLACK} text={text} />
                 </View>
             </TouchButton>
-
-            <TouchButton onPress={() => webViewHandler(index)} width={20}>
-                <Icons type="simpleLineIcons" name="arrow-right" size={12} color="#CACACA" />
-            </TouchButton>
+            <IconButton
+                onPress={() => webViewHandler(index)}
+                width={20}
+                iconType="simpleLineIcons"
+                iconName="arrow-right"
+                iconSize={12}
+                iconColor="#CACACA"
+            />
         </View>
     );
 };

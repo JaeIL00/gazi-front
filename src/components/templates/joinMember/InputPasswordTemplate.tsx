@@ -102,8 +102,10 @@ const InputPasswordTemplate = ({ navigationHandler }: InputPasswordTemplateProps
                             text="회원가입"
                             height={48}
                             backgroundColor={isPasswordLeng && isPasswordReg ? colors.BLACK : colors.BTN_GRAY}
-                            textColor={colors.WHITE}
+                            fontColor={colors.WHITE}
+                            fontWeight="semiBold"
                             fontSize={17}
+                            borderRadius={5}
                         />
                     </KeyboardAvoidingView>
                 </View>

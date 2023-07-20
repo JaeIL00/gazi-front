@@ -7,6 +7,7 @@ import TouchButton from '../atoms/TouchButton';
 import PageTitleWithExplain from '../molecules/PageTitleWithExplain';
 import { moveBackWithPageTitleStyles } from '../../styles/organisms/styles';
 import { MoveBackWithPageTitleProps } from '../../types/organisms/types';
+import IconButton from '../molecules/IconButton';
 
 const MoveBackWithPageTitle = ({
     oneTitle,
@@ -18,9 +19,15 @@ const MoveBackWithPageTitle = ({
     return (
         <View>
             <View style={moveBackWithPageTitleStyles.buttonContainer}>
-                <TouchButton alignSelf="flex-start" onPress={onPress} hitSlop={10}>
-                    <Icons type="octicons" name="arrow-left" color={colors.TXT_BLACK} size={24} />
-                </TouchButton>
+                <IconButton
+                    onPress={onPress}
+                    alignSelf="flex-start"
+                    hitSlop={10}
+                    iconType="octicons"
+                    iconName="arrow-left"
+                    iconColor={colors.TXT_BLACK}
+                    iconSize={24}
+                />
             </View>
             <PageTitleWithExplain
                 oneTitle={oneTitle}

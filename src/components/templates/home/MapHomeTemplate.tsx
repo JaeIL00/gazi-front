@@ -24,6 +24,7 @@ import { screenFont, screenHeight, screenWidth } from '../../../utils/changeStyl
 import colors from '../../../common/constants/colors';
 import { MapBoundaryTypes, MapLocationTypes, PostTypes } from '../../../types/common/types';
 import { MapHomeTemplateProps } from '../../../types/templates/types';
+import TextButton from '../../molecules/TextButton';
 
 const MapHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritingScreen }: MapHomeTemplateProps) => {
     const { accessToken } = useRecoilValue(userAuthAtom);
@@ -325,7 +326,13 @@ const MapHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritingScreen }
             <View style={mapHomeTemplateStyles.searchLayout}>
                 {Platform.OS === 'android' && (
                     <DropShadow style={mapHomeTemplateStyles.dropshadow}>
-                        <TouchableOpacity onPress={() => searchModalHandler('OPEN')} activeOpacity={1}>
+                        <TouchButton
+                            onPress={() => searchModalHandler('OPEN')}
+                            backgroundColor={colors.BACKGROUND_DEFAULT}
+                            borderRadius={28}
+                            paddingHorizontal={19}
+                            paddingVertical={12}
+                            alignItems="flex-start">
                             <View style={mapHomeTemplateStyles.inputBox}>
                                 <FastImage
                                     source={require('../../../assets/icons/search.png')}
@@ -333,7 +340,7 @@ const MapHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritingScreen }
                                 />
                                 <NormalText text="지금 어디로 가시나요?" size={16} color={colors.TXT_LIGHTGRAY} />
                             </View>
-                        </TouchableOpacity>
+                        </TouchButton>
                     </DropShadow>
                 )}
                 {/* Temporary planning*/}
@@ -402,16 +409,19 @@ const MapHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritingScreen }
 
             {isNearPostSearchTopBar && !isFarMapLevel && Platform.OS === 'android' && (
                 <DropShadow style={mapHomeTemplateStyles.mapMoveSearch}>
-                    <TouchButton
+                    <TextButton
                         onPress={getBoundaryMap}
                         backgroundColor="#F8F7FA"
-                        borderRadius={54 * screenFont}
-                        borderWidth={1 * screenFont}
+                        borderRadius={54}
+                        borderWidth={1}
                         borderColor="#B29ECC"
-                        paddingVertical={5 * screenHeight}
-                        paddingHorizontal={23 * screenWidth}>
-                        <MediumText text="현 지도에서 검색" size={14} color={colors.VIOLET} />
-                    </TouchButton>
+                        paddingVertical={5}
+                        paddingHorizontal={23}
+                        text="현 지도에서 검색"
+                        fontSize={14}
+                        fontColor={colors.VIOLET}
+                        fontWeight="medium"
+                    />
                 </DropShadow>
             )}
         </>

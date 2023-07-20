@@ -10,6 +10,8 @@ import WebViewComponent from '../../organisms/WebViewComponent';
 import { PoliciesTemplateStyles } from '../../../styles/templates/styles';
 import FastImage from 'react-native-fast-image';
 import { PoliciesTemplateProps } from '../../../types/templates/types';
+import TextButton from '../../molecules/TextButton';
+import ImageButton from '../../molecules/ImageButton';
 
 const PoliciesTemplate = ({ moveToBackScreenHandler }: PoliciesTemplateProps) => {
     const [uri, seturi] = useState<string>('');
@@ -32,35 +34,49 @@ const PoliciesTemplate = ({ moveToBackScreenHandler }: PoliciesTemplateProps) =>
     return (
         <View style={PoliciesTemplateStyles.container}>
             <View style={PoliciesTemplateStyles.headerBox}>
-                <TouchButton onPress={moveToBackScreenHandler} hitSlop={20}>
-                    <FastImage
-                        source={require('../../../assets/icons/to-left-black.png')}
-                        style={PoliciesTemplateStyles.headerIcon}
-                    />
-                </TouchButton>
+                <ImageButton
+                    onPress={moveToBackScreenHandler}
+                    hitSlop={20}
+                    imageSource={require('../../../assets/icons/to-left-black.png')}
+                    imageWidth={9}
+                    imageHeight={16}
+                    isCaching={true}
+                />
                 <Spacer width={21} />
                 <MediumText text="약관 및 정책" size={18} color={colors.BLACK} />
             </View>
             <View style={PoliciesTemplateStyles.tabBox}>
-                <TouchButton onPress={() => webViewHandler('SERVICE')}>
-                    <View style={PoliciesTemplateStyles.buttonBox}>
-                        <NormalText text="서비스 이용약관" size={16} color={colors.BLACK} />
-                    </View>
-                </TouchButton>
+                <TextButton
+                    onPress={() => webViewHandler('SERVICE')}
+                    height="100%"
+                    alignSelf="flex-start"
+                    text="서비스 이용약관"
+                    fontSize={16}
+                    fontColor={colors.BLACK}
+                    fontWeight="normal"
+                />
             </View>
             <View style={PoliciesTemplateStyles.tabBox}>
-                <TouchButton onPress={() => webViewHandler('PRIVATE')}>
-                    <View style={PoliciesTemplateStyles.buttonBox}>
-                        <NormalText text="개인정보 처리방침" size={16} color={colors.BLACK} />
-                    </View>
-                </TouchButton>
+                <TextButton
+                    onPress={() => webViewHandler('PRIVATE')}
+                    text="개인정보 처리방침"
+                    height="100%"
+                    alignSelf="flex-start"
+                    fontSize={16}
+                    fontColor={colors.BLACK}
+                    fontWeight="normal"
+                />
             </View>
             <View style={PoliciesTemplateStyles.tabBox}>
-                <TouchButton onPress={() => webViewHandler('LOACTION')}>
-                    <View style={PoliciesTemplateStyles.buttonBox}>
-                        <NormalText text="위치기반서비스" size={16} color={colors.BLACK} />
-                    </View>
-                </TouchButton>
+                <TextButton
+                    onPress={() => webViewHandler('LOACTION')}
+                    text="위치기반서비스"
+                    height="100%"
+                    alignSelf="flex-start"
+                    fontSize={16}
+                    fontColor={colors.BLACK}
+                    fontWeight="normal"
+                />
             </View>
 
             <Modal visible={uri.length > 0} onRequestClose={() => seturi('')}>

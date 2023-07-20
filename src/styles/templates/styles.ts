@@ -51,11 +51,6 @@ export const inputEmailTemplateStyles = StyleSheet.create({
         paddingBottom: 36 * screenHeight,
         justifyContent: 'center',
     },
-    resendButton: {
-        borderBottomWidth: 1.5 * screenFont,
-        borderColor: colors.TXT_GRAY,
-        marginLeft: 8 * screenWidth,
-    },
 });
 export const inputPasswordTemplateStyles = StyleSheet.create({
     container: {
@@ -231,11 +226,6 @@ export const mapHomeTemplateStyles = StyleSheet.create({
     },
     inputBox: {
         flexDirection: 'row',
-        alignItems: 'center',
-        backgroundColor: colors.BACKGROUND_DEFAULT,
-        borderRadius: 28 * screenFont,
-        paddingHorizontal: 19 * screenWidth,
-        paddingVertical: 12 * screenHeight,
     },
     searchIcon: {
         width: 24 * screenWidth,
@@ -297,7 +287,6 @@ export const writePostTemplateStyles = StyleSheet.create({
         paddingHorizontal: 16 * screenWidth,
         paddingBottom: 12 * screenHeight,
     },
-    contentInputFocus: { height: 400 * screenHeight },
     settingBox: {
         flexDirection: 'row',
         alignItems: 'center',
@@ -389,7 +378,6 @@ export const writePostTemplateStyles = StyleSheet.create({
     },
     bottomImageDelButton: {
         position: 'absolute',
-        height: 25 * screenHeight,
         top: -2 * screenWidth,
         right: -4 * screenWidth,
         justifyContent: 'center',
@@ -425,9 +413,7 @@ export const writeCommentTemplateStyles = StyleSheet.create({
         paddingHorizontal: 16 * screenWidth,
         paddingBottom: 12 * screenHeight,
     },
-    contentInputFocus: {
-        height: 400 * screenHeight,
-    },
+
     settingBox: {
         flexDirection: 'row',
         alignItems: 'center',
@@ -514,7 +500,6 @@ export const writeCommentTemplateStyles = StyleSheet.create({
     },
     bottomImageDelButton: {
         position: 'absolute',
-        height: 25 * screenHeight,
         top: -2 * screenWidth,
         right: -4 * screenWidth,
         justifyContent: 'center',
@@ -559,11 +544,6 @@ export const myPageTemplateStyles = StyleSheet.create({
         alignItems: 'center',
         paddingBottom: 1 * screenHeight,
     },
-    penIcon: {
-        width: 12 * screenWidth,
-        height: 12 * screenWidth,
-        marginLeft: 4 * screenWidth,
-    },
     tabListBox: {
         flexDirection: 'row',
         alignItems: 'center',
@@ -605,7 +585,6 @@ export const keywordAlarmTemplateStyles = StyleSheet.create({
         zIndex: 1,
     },
     historyItemButton: {
-        paddingVertical: 18 * screenHeight,
         flexDirection: 'row',
     },
     alarmIcon: {
@@ -719,10 +698,6 @@ export const myPostCommentTemplateStyles = StyleSheet.create({
         paddingTop: 17 * screenHeight,
         paddingHorizontal: 16 * screenWidth,
     },
-    headerIcon: {
-        width: 9 * screenWidth,
-        height: 16 * screenHeight,
-    },
     tabBox: {
         flexDirection: 'row',
     },
@@ -750,21 +725,13 @@ export const AccountManagementTemplateStyles = StyleSheet.create({
         borderBottomWidth: 1 * screenFont,
         borderColor: colors.BORDER_GRAY,
     },
-    headerIcon: {
-        width: 9 * screenWidth,
-        height: 16 * screenHeight,
-    },
+
     tabBox: {
         width: '100%',
         height: 52 * screenHeight,
         borderColor: colors.BORDER_GRAY,
         borderBottomWidth: 1 * screenFont,
         paddingHorizontal: 16 * screenWidth,
-    },
-    buttonBox: {
-        width: '100%',
-        height: '100%',
-        justifyContent: 'center',
     },
 });
 export const PoliciesTemplateStyles = StyleSheet.create({
@@ -781,21 +748,12 @@ export const PoliciesTemplateStyles = StyleSheet.create({
         borderBottomWidth: 1 * screenFont,
         borderColor: colors.BORDER_GRAY,
     },
-    headerIcon: {
-        width: 9 * screenWidth,
-        height: 16 * screenHeight,
-    },
     tabBox: {
         width: '100%',
         height: 52 * screenHeight,
         borderColor: colors.BORDER_GRAY,
         borderBottomWidth: 1 * screenFont,
         paddingHorizontal: 16 * screenWidth,
-    },
-    buttonBox: {
-        width: '100%',
-        height: '100%',
-        justifyContent: 'center',
     },
     webviewBox: {
         position: 'absolute',
@@ -962,10 +920,6 @@ export const DeleteMemberTemplateStyles = StyleSheet.create({
         paddingBottom: 49 * screenHeight,
         paddingTop: 20 * screenHeight,
     },
-    headerIcon: {
-        width: 9 * screenWidth,
-        height: 16 * screenHeight,
-    },
     explainBox: {
         paddingTop: 20 * screenHeight,
     },
@@ -1032,10 +986,6 @@ export const likeKeywordSettingTemplateStyles = StyleSheet.create({
         borderBottomWidth: 1 * screenFont,
         borderColor: colors.BORDER_GRAY,
         width: '100%',
-    },
-    headerIcon: {
-        width: 9 * screenWidth,
-        height: 16 * screenHeight,
     },
     headerTextBox: {
         flexDirection: 'row',

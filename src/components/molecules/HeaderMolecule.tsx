@@ -11,6 +11,7 @@ import { headerStyles } from '../../styles/molecules/styles';
 
 import { HeaderMoleculeProps } from '../../types/molecules/types';
 import { screenWidth } from '../../utils/changeStyleSize';
+import TextButton from './TextButton';
 
 const HeaderMolecule = ({
     isPaddingHorizontal,
@@ -44,9 +45,13 @@ const HeaderMolecule = ({
                 </View>
             </TouchButton>
             {headerFinish && (
-                <TouchButton onPress={() => (isWorkDone && finishFunction ? finishFunction() : undefined)}>
-                    <SemiBoldText text={finishText} size={16} color={isWorkDone ? colors.BLACK : colors.TXT_GRAY} />
-                </TouchButton>
+                <TextButton
+                    onPress={() => (isWorkDone && finishFunction ? finishFunction() : undefined)}
+                    text={finishText}
+                    fontColor={isWorkDone ? colors.BLACK : colors.TXT_GRAY}
+                    fontSize={16}
+                    fontWeight="semiBold"
+                />
             )}
         </View>
     );

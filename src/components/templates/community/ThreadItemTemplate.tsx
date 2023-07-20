@@ -17,6 +17,7 @@ import { threadItemTemplateStyles } from '../../../styles/templates/styles';
 import { screenHeight, screenWidth } from '../../../utils/changeStyleSize';
 import { CommentTopicTypes, CommentTypes } from '../../../types/common/types';
 import { ThreadItemTemplateProps } from '../../../types/templates/types';
+import IconButton from '../../molecules/IconButton';
 
 const ThreadItemTemplate = ({
     postId,
@@ -211,19 +212,26 @@ const ThreadItemTemplate = ({
                     <>
                         {postValue.backgroundMapUrl ? (
                             <DropShadow style={threadItemTemplateStyles.ButtonShadow}>
-                                <TouchButton
+                                <IconButton
                                     onPress={movetoCommunityScreen}
                                     backgroundColor="#FFFFFF80"
                                     width={36}
                                     height={(36 / screenHeight) * screenWidth}
-                                    borderRadius={36}>
-                                    <Icons type="octicons" name="arrow-left" color={colors.TXT_BLACK} size={22} />
-                                </TouchButton>
+                                    borderRadius={36}
+                                    iconType="octicons"
+                                    iconName="arrow-left"
+                                    iconColor={colors.TXT_BLACK}
+                                    iconSize={22}
+                                />
                             </DropShadow>
                         ) : (
-                            <TouchButton onPress={movetoCommunityScreen}>
-                                <Icons type="octicons" name="arrow-left" color={colors.TXT_BLACK} size={22} />
-                            </TouchButton>
+                            <IconButton
+                                onPress={movetoCommunityScreen}
+                                iconType="octicons"
+                                iconName="arrow-left"
+                                iconColor={colors.TXT_BLACK}
+                                iconSize={22}
+                            />
                         )}
                     </>
                 )}

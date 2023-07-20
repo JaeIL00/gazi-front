@@ -39,14 +39,6 @@ export const imageViewScreenStyles = StyleSheet.create({
         shadowOpacity: 0.15,
         shadowRadius: 4 * screenFont,
     },
-    backButtonBox: {
-        width: 36 * screenWidth,
-        height: 36 * screenWidth,
-        backgroundColor: '#171717CC',
-        borderRadius: 36 * screenFont,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
     bottomTitleBox: {
         backgroundColor: '#292929CC',
         position: 'absolute',

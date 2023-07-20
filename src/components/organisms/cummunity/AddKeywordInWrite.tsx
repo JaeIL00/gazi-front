@@ -201,8 +201,10 @@ const AddKeywordInWrite = ({ keywordModalHandler, getKeywordHandler }: WritePost
                             ? colors.BLACK
                             : colors.BTN_GRAY
                     }
-                    textColor={colors.WHITE}
+                    fontColor={colors.WHITE}
+                    fontWeight="semiBold"
                     fontSize={17}
+                    borderRadius={5}
                 />
             </View>
         </View>

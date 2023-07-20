@@ -6,7 +6,7 @@ import { Props } from 'react-native-tab-view/lib/typescript/src/TabBarIndicator'
 
 import AllBoardScreen from '../components/pages/community/AllBoardScreen';
 import LikeBoardScreen from '../components/pages/community/LikeBoardScreen';
-import WritingFloatingBtn from '../components/molecules/WritingFloatingBtn';
+import WritingFloatingBtn from '../components/organisms/WritingFloatingBtn';
 import { communityTabStyle } from '../styles/common/styles';
 import { screenFont } from '../utils/changeStyleSize';
 import { CommunityTabParamList } from '../types/common/types';

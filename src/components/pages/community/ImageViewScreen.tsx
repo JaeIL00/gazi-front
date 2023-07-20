@@ -13,6 +13,7 @@ import SemiBoldText from '../../atoms/SemiBoldText';
 import ScreenWrapper from '../../organisms/ScreenWrapper';
 import { imageViewScreenStyles } from '../../../styles/common/styles';
 import { useRootNavigation, useRootRoute } from '../../../navigations/RootStackNavigation';
+import IconButton from '../../molecules/IconButton';
 
 const ImageViewScreen = () => {
     const rootNavigation = useRootNavigation();
@@ -38,11 +39,17 @@ const ImageViewScreen = () => {
             <>
                 {Platform.OS === 'android' && (
                     <DropShadow style={imageViewScreenStyles.backButtonShadow}>
-                        <View style={imageViewScreenStyles.backButtonBox}>
-                            <TouchButton onPress={() => rootNavigation.goBack()}>
-                                <Icons type="ionicons" name="close" size={24} color={colors.WHITE} />
-                            </TouchButton>
-                        </View>
+                        <IconButton
+                            onPress={() => rootNavigation.goBack()}
+                            width={36}
+                            height={36}
+                            backgroundColor="#171717CC"
+                            borderRadius={36}
+                            iconType="ionicons"
+                            iconName="close"
+                            iconSize={24}
+                            iconColor={colors.WHITE}
+                        />
                     </DropShadow>
                 )}
 

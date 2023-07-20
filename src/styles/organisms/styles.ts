@@ -77,11 +77,7 @@ export const photoGalleryStyles = StyleSheet.create({
     },
     perPhotoImage: {
         flexDirection: 'row',
-        alignItems: 'center',
-        paddingVertical: 10 * screenHeight,
         paddingLeft: 16 * screenWidth,
-        borderBottomWidth: 1 * screenFont,
-        borderColor: colors.BORDER_GRAY,
     },
     albumButtonBox: {
         flexDirection: 'row',
@@ -328,10 +324,6 @@ export const nearbyPostListModalStyles = StyleSheet.create({
         bottom: 18 * screenHeight,
         right: 16 * screenWidth,
     },
-    locationIcon: {
-        width: 20 * screenWidth,
-        height: 20 * screenWidth,
-    },
 
     nothingListGuideBox: {
         alignItems: 'center',
@@ -412,12 +404,7 @@ export const searchLocationStyles = StyleSheet.create({
     listItemBox: {
         flexDirection: 'row',
     },
-    resultButton: {
-        paddingVertical: 12 * screenHeight,
-        borderColor: colors.BORDER_GRAY,
-        borderBottomWidth: 1 * screenFont,
-        paddingHorizontal: 16 * screenWidth,
-    },
+
     resultIcon: {
         width: 25 * screenWidth,
         height: 25 * screenWidth,
@@ -534,8 +521,16 @@ export const editMyKeywordStyles = StyleSheet.create({
     },
 });
 export const webViewComponentStyles = StyleSheet.create({
+    container: {
+        height: '100%',
+    },
     webview: {
         width: '100%',
         height: '95%',
+    },
+    headerBox: {
+        paddingBottom: 10 * screenHeight,
+        paddingTop: 13 * screenHeight,
+        paddingLeft: 16 * screenWidth,
     },
 });

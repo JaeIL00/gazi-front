@@ -110,7 +110,7 @@ const ServiceAgreement = ({ finishSlideComponentHandler }: ServiceAgreementProps
         <>
             <Animated.View style={[serviceAgreementStyles.animateInner, { transform: [{ translateY: topValue }] }]}>
                 <View>
-                    <TouchButton backgroundColor="#f9f9f9" onPress={onPressAllCheck}>
+                    <TouchButton backgroundColor="#f9f9f9" onPress={onPressAllCheck} borderRadius={5}>
                         <View style={serviceAgreementStyles.allAgreeBox}>
                             <View style={[serviceAgreementStyles.checkBox, checkBoxBackground(isAllCheck).color]}>
                                 {isAllCheck && <Icons type="feather" name="check" size={20} color={colors.WHITE} />}
@@ -137,8 +137,10 @@ const ServiceAgreement = ({ finishSlideComponentHandler }: ServiceAgreementProps
                         backgroundColor={isAllCheck ? colors.BLACK : colors.BTN_GRAY}
                         onPress={onPressFinishAnimation}
                         fontSize={17}
-                        textColor={colors.WHITE}
+                        fontColor={colors.WHITE}
+                        fontWeight="semiBold"
                         text="완료"
+                        borderRadius={5}
                     />
                 </View>
             </Animated.View>

@@ -10,6 +10,7 @@ import { postListItemStyles } from '../../styles/organisms/styles';
 import { screenFont, screenHeight } from '../../utils/changeStyleSize';
 import { useRootNavigation } from '../../navigations/RootStackNavigation';
 import { PostListItemProps } from '../../types/organisms/types';
+import TouchButton from '../atoms/TouchButton';
 
 const PostListItem = ({ post, isBorder, isMarkerPost, isNearList }: PostListItemProps) => {
     const rootNavigation = useRootNavigation();
@@ -21,9 +22,7 @@ const PostListItem = ({ post, isBorder, isMarkerPost, isNearList }: PostListItem
                         borderBottomWidth: isBorder ? 1 * screenFont : undefined,
                         borderColor: colors.BORDER_GRAY,
                     }}>
-                    <TouchableOpacity
-                        onPress={() => rootNavigation.navigate('ThreadItem', { postId: post.postId })}
-                        activeOpacity={1}>
+                    <TouchButton onPress={() => rootNavigation.navigate('ThreadItem', { postId: post.postId })}>
                         <View
                             style={[
                                 postListItemStyles.container,
@@ -56,7 +55,7 @@ const PostListItem = ({ post, isBorder, isMarkerPost, isNearList }: PostListItem
                                 </View>
                             )}
                         </View>
-                    </TouchableOpacity>
+                    </TouchButton>
                 </View>
             )}
         </>

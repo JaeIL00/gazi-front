@@ -19,6 +19,8 @@ import { likeKeywordBoardTemplateStyles } from '../../../styles/templates/styles
 import { getCommunityPostAPI, getMyLikeKeywordsAPI } from '../../../apis/api';
 import { LikeKeywordBoardTemplateProps } from '../../../types/templates/types';
 import { KeywordListTypes, PostTypes } from '../../../types/common/types';
+import TextButton from '../../molecules/TextButton';
+import IconButton from '../../molecules/IconButton';
 
 const LikeKeywordBoardTemplate = ({ moveToKeywordSettingScreen }: LikeKeywordBoardTemplateProps) => {
     const isFocusScreen = useIsFocused();
@@ -266,30 +268,32 @@ const LikeKeywordBoardTemplate = ({ moveToKeywordSettingScreen }: LikeKeywordBoa
                 ) : (
                     <View style={likeKeywordBoardTemplateStyles.myKeywordScrollBox}>
                         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                            <TouchButton
+                            <IconButton
                                 onPress={moveToKeywordSettingScreen}
                                 borderColor={colors.TXT_LIGHTGRAY}
                                 borderWidth={1}
                                 borderRadius={16}
                                 width={41.24}
-                                height={29}>
-                                <Icons type="entypo" name="plus" size={15} color={colors.TXT_LIGHTGRAY} />
-                            </TouchButton>
+                                height={29}
+                                iconType="entypo"
+                                iconName="plus"
+                                iconSize={15}
+                                iconColor={colors.TXT_LIGHTGRAY}
+                            />
                             {myKeywordList.map(item => (
-                                <TouchButton
+                                <TextButton
                                     key={item.id}
                                     onPress={() => myLikeKeywordFilterHandler(item.id)}
                                     backgroundColor={chooseKeywordFilter.includes(item.id) ? colors.VIOLET : '#F3EFF9'}
                                     borderRadius={16}
                                     paddingHorizontal={16}
                                     height={29}
-                                    marginLeft={6}>
-                                    <MediumText
-                                        text={item.keywordName}
-                                        size={14}
-                                        color={chooseKeywordFilter.includes(item.id) ? colors.WHITE : '#49454F'}
-                                    />
-                                </TouchButton>
+                                    marginLeft={6}
+                                    text={item.keywordName}
+                                    fontSize={14}
+                                    fontColor={chooseKeywordFilter.includes(item.id) ? colors.WHITE : '#49454F'}
+                                    fontWeight="medium"
+                                />
                             ))}
                         </ScrollView>
                     </View>

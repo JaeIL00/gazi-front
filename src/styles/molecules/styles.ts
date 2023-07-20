@@ -12,10 +12,6 @@ export const writingFloatingBtnStyles = StyleSheet.create({
         shadowOpacity: 0.14,
         shadowRadius: 5 * screenFont,
     },
-    writeIcon: {
-        width: 14.5 * screenWidth,
-        height: 16 * screenHeight,
-    },
 });
 export const mapWithMarkerStyles = StyleSheet.create({
     map: {
@@ -52,6 +48,14 @@ export const checkBoxBackground = (is: boolean) =>
     StyleSheet.create({
         color: {
             backgroundColor: is ? colors.BLACK : '#E3E3E3',
+        },
+    });
+export const imageButtonStyles = (width: number | string, height: number | string, borderRadius?: number) =>
+    StyleSheet.create({
+        image: {
+            width: typeof width === 'string' ? width : width * screenWidth,
+            height: typeof height === 'string' ? height : height * screenWidth,
+            borderRadius: borderRadius && borderRadius * screenFont,
         },
     });
 export const commentListItemStyles = StyleSheet.create({

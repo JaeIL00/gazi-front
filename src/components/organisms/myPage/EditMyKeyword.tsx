@@ -252,11 +252,13 @@ const EditMyKeyword = ({
                     onPress={putNewKeywordList}
                     text="선택완료"
                     fontSize={17}
-                    textColor={colors.WHITE}
+                    fontColor={colors.WHITE}
+                    fontWeight="semiBold"
                     backgroundColor={colors.BLACK}
                     paddingHorizontal={83.5}
                     paddingVertical={11}
                     alignSelf="stretch"
+                    borderRadius={5}
                 />
             </View>
             {isLoading && <ActivityIndicator size="large" />}

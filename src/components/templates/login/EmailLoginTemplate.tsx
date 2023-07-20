@@ -174,8 +174,10 @@ const EmailLoginTemplate = ({ moveServiceHomeHandler }: EmailLoginTemplateProps)
                     text="로그인"
                     height={48}
                     backgroundColor={email && password ? colors.BLACK : colors.BTN_GRAY}
-                    textColor={colors.WHITE}
+                    fontColor={colors.WHITE}
+                    fontWeight="semiBold"
                     fontSize={17}
+                    borderRadius={5}
                 />
 
                 <Spacer height={24} />

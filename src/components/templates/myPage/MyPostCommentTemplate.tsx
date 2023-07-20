@@ -17,6 +17,8 @@ import { myPostCommentTemplateStyles } from '../../../styles/templates/styles';
 import { screenFont, screenHeight, screenWidth } from '../../../utils/changeStyleSize';
 import { MyPostCommentTemplateProps } from '../../../types/templates/types';
 import { MyCommentTypes, PostTypes } from '../../../types/common/types';
+import TextButton from '../../molecules/TextButton';
+import ImageButton from '../../molecules/ImageButton';
 
 const MyPostCommentTemplate = ({ moveToBackScreenHandler }: MyPostCommentTemplateProps) => {
     const { accessToken } = useRecoilValue(userAuthAtom);
@@ -140,12 +142,14 @@ const MyPostCommentTemplate = ({ moveToBackScreenHandler }: MyPostCommentTemplat
     return (
         <View>
             <View style={myPostCommentTemplateStyles.headerBox}>
-                <TouchButton onPress={moveToBackScreenHandler} hitSlop={20}>
-                    <FastImage
-                        source={require('../../../assets/icons/to-left-black.png')}
-                        style={myPostCommentTemplateStyles.headerIcon}
-                    />
-                </TouchButton>
+                <ImageButton
+                    onPress={moveToBackScreenHandler}
+                    hitSlop={20}
+                    imageSource={require('../../../assets/icons/to-left-black.png')}
+                    imageWidth={9}
+                    imageHeight={16}
+                    isCaching={true}
+                />
                 <Spacer width={21} />
                 <MediumText text="내가 작성한 글" size={18} color={colors.BLACK} />
             </View>
@@ -158,9 +162,13 @@ const MyPostCommentTemplate = ({ moveToBackScreenHandler }: MyPostCommentTemplat
                             borderColor: isPost ? colors.BLACK : colors.BORDER_GRAY,
                         },
                     ]}>
-                    <TouchButton onPress={() => tabHandler('POST')}>
-                        <SemiBoldText text="작성한 글" size={16} color={colors.BLACK} />
-                    </TouchButton>
+                    <TextButton
+                        onPress={() => tabHandler('POST')}
+                        text="작성한 글"
+                        fontSize={16}
+                        fontColor={colors.BLACK}
+                        fontWeight="semiBold"
+                    />
                 </View>
                 <View
                     style={[
@@ -169,9 +177,13 @@ const MyPostCommentTemplate = ({ moveToBackScreenHandler }: MyPostCommentTemplat
                             borderColor: !isPost ? colors.BLACK : colors.BORDER_GRAY,
                         },
                     ]}>
-                    <TouchButton onPress={() => tabHandler('COMMENT')}>
-                        <SemiBoldText text="나의 답글" size={16} color={colors.BLACK} />
-                    </TouchButton>
+                    <TextButton
+                        onPress={() => tabHandler('COMMENT')}
+                        text="나의 답글"
+                        fontSize={16}
+                        fontColor={colors.BLACK}
+                        fontWeight="semiBold"
+                    />
                 </View>
             </View>
 

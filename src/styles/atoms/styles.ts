@@ -3,18 +3,19 @@ import { screenFont, screenHeight, screenWidth } from '../../utils/changeStyleSi
 import colors from '../../common/constants/colors';
 
 export const touchButtonStyles = (
-    width: number | string | undefined,
-    height: number | string | undefined,
-    backgroundColor: string | undefined,
-    paddingHorizontal: number | undefined,
-    paddingVertical: number | undefined,
-    alignSelf: FlexAlignType | undefined,
-    borderColor: string | undefined,
-    borderWidth: number | undefined,
-    borderRadius: number | undefined,
-    borderBottomWidth: number | undefined,
-    flex: number | undefined,
-    marginLeft: number | undefined,
+    width?: number | string,
+    height?: number | string,
+    backgroundColor?: string,
+    paddingHorizontal?: number,
+    paddingVertical?: number,
+    alignSelf?: FlexAlignType,
+    alignItems?: FlexAlignType,
+    borderColor?: string,
+    borderWidth?: number,
+    borderRadius?: number,
+    borderBottomWidth?: number,
+    flex?: number,
+    marginLeft?: number,
 ) =>
     StyleSheet.create({
         container: {
@@ -23,9 +24,9 @@ export const touchButtonStyles = (
             backgroundColor: backgroundColor,
             paddingHorizontal: paddingHorizontal && paddingHorizontal * screenWidth,
             paddingVertical: paddingVertical && paddingVertical * screenHeight,
-            borderRadius: borderRadius ? borderRadius * screenFont : 5 * screenFont,
+            borderRadius: borderRadius ? borderRadius * screenFont : 0,
             alignSelf: alignSelf,
-            alignItems: 'center',
+            alignItems: alignItems ? alignItems : 'center',
             justifyContent: 'center',
             borderColor: borderColor && borderColor,
             borderWidth: borderWidth && borderWidth * screenFont,

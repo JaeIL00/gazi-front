@@ -1,27 +1,21 @@
 import React from 'react';
-import { TouchableOpacity, View } from 'react-native';
+import { View } from 'react-native';
 import { WebView } from 'react-native-webview';
 
 import Icons from '../atoms/Icons';
 import colors from '../../common/constants/colors';
 import { webViewComponentStyles } from '../../styles/organisms/styles';
-import { screenHeight, screenWidth } from '../../utils/changeStyleSize';
 import { WebViewComponentProps } from '../../types/organisms/types';
+import TouchButton from '../atoms/TouchButton';
 
 const WebViewComponent = ({ uri, closeHandler }: WebViewComponentProps) => {
     return (
-        <View style={{ height: '100%' }}>
-            <TouchableOpacity
-                style={{
-                    paddingBottom: 10 * screenHeight,
-                    paddingTop: 13 * screenHeight,
-                    paddingLeft: 16 * screenWidth,
-                    alignSelf: 'flex-start',
-                }}
-                onPress={() => closeHandler('')}
-                activeOpacity={1}>
-                <Icons type="ionicons" name="close" size={24} color={colors.BLACK} />
-            </TouchableOpacity>
+        <View style={webViewComponentStyles.container}>
+            <TouchButton onPress={() => closeHandler('')} alignSelf="flex-start">
+                <View style={webViewComponentStyles.headerBox}>
+                    <Icons type="ionicons" name="close" size={24} color={colors.BLACK} />
+                </View>
+            </TouchButton>
             <WebView source={{ uri }} style={webViewComponentStyles.webview} />
         </View>
     );

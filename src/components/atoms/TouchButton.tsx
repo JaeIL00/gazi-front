@@ -1,5 +1,5 @@
 import React from 'react';
-import { TouchableOpacity } from 'react-native';
+import { Pressable } from 'react-native';
 
 import { TouchButtonProps } from '../../types/atoms/types';
 import { touchButtonStyles } from '../../styles/atoms/styles';
@@ -14,6 +14,7 @@ const TouchButton = ({
     paddingHorizontal,
     paddingVertical,
     alignSelf,
+    alignItems,
     borderColor,
     borderWidth,
     borderRadius,
@@ -23,7 +24,7 @@ const TouchButton = ({
     marginLeft,
 }: TouchButtonProps) => {
     return (
-        <TouchableOpacity
+        <Pressable
             onPressIn={onPressIn}
             onPress={onPress}
             style={
@@ -34,6 +35,7 @@ const TouchButton = ({
                     paddingHorizontal,
                     paddingVertical,
                     alignSelf,
+                    alignItems,
                     borderColor,
                     borderWidth,
                     borderRadius,
@@ -42,10 +44,9 @@ const TouchButton = ({
                     marginLeft,
                 ).container
             }
-            activeOpacity={1}
             hitSlop={hitSlop}>
             {children}
-        </TouchableOpacity>
+        </Pressable>
     );
 };
 

@@ -79,9 +79,13 @@ const InitLikeKeywordTemplate = ({ navigationHandler }: InitLikeKeywordTemplateP
                     onPress={() => navigationHandler('BACK')}
                 />
                 <View style={initLikeKeywordTemplateStyles.skipBox}>
-                    <TouchButton onPress={() => navigationHandler('OK')}>
-                        <MediumText text="Skip" color={colors.TXT_GRAY} size={14} />
-                    </TouchButton>
+                    <TextButton
+                        onPress={() => navigationHandler('OK')}
+                        text="Skip"
+                        fontColor={colors.TXT_GRAY}
+                        fontSize={14}
+                        fontWeight="medium"
+                    />
                 </View>
 
                 <LinearGradient colors={['#F9F9F9', '#F9F9F900']} style={initLikeKeywordTemplateStyles.upLinear} />
@@ -148,8 +152,10 @@ const InitLikeKeywordTemplate = ({ navigationHandler }: InitLikeKeywordTemplateP
                         text={checkedKeywords.length > 0 ? '확인' : '키워드를 골라주세요'}
                         height={48}
                         backgroundColor={checkedKeywords.length > 0 ? colors.BLACK : colors.BTN_GRAY}
-                        textColor={colors.WHITE}
+                        fontColor={colors.WHITE}
+                        fontWeight="semiBold"
                         fontSize={17}
+                        borderRadius={5}
                     />
                 </DropShadow>
             </View>

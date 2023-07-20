@@ -16,6 +16,7 @@ import { userInfoAtom, userAuthAtom } from '../../../recoil';
 import { editNicknameTemplateStyles } from '../../../styles/templates/styles';
 import { checkNicknameAPI, editNicknameAPI } from '../../../apis/api';
 import { EditNicknameTemplateProps } from '../../../types/templates/types';
+import IconButton from '../../molecules/IconButton';
 
 const EditNicknameTemplate = ({ moveToMyPageScreen }: EditNicknameTemplateProps) => {
     const { accessToken } = useRecoilValue(userAuthAtom);
@@ -118,9 +119,13 @@ const EditNicknameTemplate = ({ moveToMyPageScreen }: EditNicknameTemplateProps)
                         width={260}
                         maxLength={7}
                     />
-                    <TouchButton onPress={resetText}>
-                        <Icons type="ionicons" name="close-circle" size={19.5} color="#00000075" />
-                    </TouchButton>
+                    <IconButton
+                        onPress={resetText}
+                        iconType="ionicons"
+                        iconName="close-circle"
+                        iconSize={19.5}
+                        iconColor="#00000075"
+                    />
                 </View>
                 {validationResult && (
                     <View style={editNicknameTemplateStyles.validationText}>

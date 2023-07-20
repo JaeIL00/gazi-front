@@ -17,6 +17,8 @@ import { SingleLineInput } from '../atoms/SingleLineInput';
 import { screenHeight, screenWidth } from '../../utils/changeStyleSize';
 import { SearchLocationProps } from '../../types/organisms/types';
 import { LocationResultTypes, SearchHistoryTypes } from '../../types/common/types';
+import IconButton from '../molecules/IconButton';
+import ImageButton from '../molecules/ImageButton';
 
 const SearchLocation = ({
     isHome,
@@ -157,7 +159,7 @@ const SearchLocation = ({
                 freshAddress = item.formatted_address.replace('대한민국 ', '');
             }
             return (
-                <TouchableOpacity
+                <TouchButton
                     onPress={() => {
                         getLocationHandler(
                             item.geometry.location,
@@ -172,8 +174,10 @@ const SearchLocation = ({
                             );
                         }
                     }}
-                    activeOpacity={1}
-                    style={searchLocationStyles.resultButton}>
+                    paddingVertical={12}
+                    borderColor={colors.BORDER_GRAY}
+                    borderBottomWidth={1}
+                    paddingHorizontal={16}>
                     <View style={searchLocationStyles.listItemBox}>
                         <FastImage
                             source={require('../../assets/icons/location-pin-fill.png')}
@@ -189,7 +193,7 @@ const SearchLocation = ({
                             </View>
                         </View>
                     </View>
-                </TouchableOpacity>
+                </TouchButton>
             );
         },
         [searchHistory, searchText],
@@ -198,13 +202,15 @@ const SearchLocation = ({
         ({ item }: { item: SearchHistoryTypes }) => {
             const freshAddress = item.formatted_address.replace('대한민국 ', '');
             return (
-                <TouchableOpacity
+                <TouchButton
                     onPress={() => {
                         saveSearchHistoryStorage(item.formatted_address, item.name, item.location);
                         getLocationHandler(item.location, item.name, '');
                     }}
-                    activeOpacity={1}
-                    style={searchLocationStyles.resultButton}>
+                    paddingVertical={12}
+                    borderColor={colors.BORDER_GRAY}
+                    borderBottomWidth={1}
+                    paddingHorizontal={16}>
                     <View style={searchLocationStyles.listItemBox}>
                         <View style={searchLocationStyles.historyIcons}>
                             <Icons type="feather" name="clock" size={21} color={colors.TXT_LIGHTGRAY} />
@@ -219,7 +225,7 @@ const SearchLocation = ({
                             </View>
                         </View>
                     </View>
-                </TouchableOpacity>
+                </TouchButton>
             );
         },
         [searchHistory],
@@ -239,12 +245,14 @@ const SearchLocation = ({
                 <View style={searchLocationStyles.inputBox}>
                     {isHome && searchModalHandler && (
                         <>
-                            <TouchButton onPress={() => searchModalHandler('CLOSE')} hitSlop={10}>
-                                <FastImage
-                                    source={require('../../assets/icons/arrow-left-sharp.png')}
-                                    style={{ width: 16 * screenWidth, height: 16 * screenWidth }}
-                                />
-                            </TouchButton>
+                            <ImageButton
+                                onPress={() => searchModalHandler('CLOSE')}
+                                hitSlop={10}
+                                imageSource={require('../../assets/icons/arrow-left-sharp.png')}
+                                imageHeight={16}
+                                imageWidth={16}
+                                isCaching={true}
+                            />
                             <Spacer width={20} />
                         </>
                     )}
@@ -253,9 +261,14 @@ const SearchLocation = ({
                         placeholder={placeholder}
                         onChangeText={text => onChangeSearchText(text)}
                     />
-                    <TouchButton onPress={onPressDeleteText} paddingHorizontal={18 * screenWidth}>
-                        <Icons type="ionicons" name="close-circle" size={24} color="#00000075" />
-                    </TouchButton>
+                    <IconButton
+                        onPress={onPressDeleteText}
+                        paddingHorizontal={18 * screenWidth}
+                        iconType="ionicons"
+                        iconName="close-circle"
+                        iconSize={24}
+                        iconColor="#00000075"
+                    />
                 </View>
             </View>
 

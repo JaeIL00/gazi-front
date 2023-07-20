@@ -14,6 +14,7 @@ import TouchButton from '../../atoms/TouchButton';
 import { deleteMemberAPI } from '../../../apis/api';
 import { DeleteMemberTemplateStyles } from '../../../styles/templates/styles';
 import { DeleteMemberTemplateProps } from '../../../types/templates/types';
+import ImageButton from '../../molecules/ImageButton';
 
 const DeleteMemberTemplate = ({ moveToScreenHandler }: DeleteMemberTemplateProps) => {
     const { nickname } = useRecoilValue(userInfoAtom);
@@ -37,12 +38,15 @@ const DeleteMemberTemplate = ({ moveToScreenHandler }: DeleteMemberTemplateProps
     return (
         <View style={DeleteMemberTemplateStyles.container}>
             <View style={DeleteMemberTemplateStyles.headerBox}>
-                <TouchButton onPress={() => moveToScreenHandler('BACK')} alignSelf="flex-start" hitSlop={10}>
-                    <FastImage
-                        source={require('../../../assets/icons/to-left-black.png')}
-                        style={DeleteMemberTemplateStyles.headerIcon}
-                    />
-                </TouchButton>
+                <ImageButton
+                    onPress={() => moveToScreenHandler('BACK')}
+                    alignSelf="flex-start"
+                    hitSlop={10}
+                    isCaching={true}
+                    imageSource={require('../../../assets/icons/to-left-black.png')}
+                    imageWidth={9}
+                    imageHeight={16}
+                />
             </View>
 
             <View>
@@ -65,11 +69,13 @@ const DeleteMemberTemplate = ({ moveToScreenHandler }: DeleteMemberTemplateProps
                     onPress={() => moveToScreenHandler('BACK')}
                     text="취소"
                     fontSize={17}
-                    textColor={colors.WHITE}
+                    fontColor={colors.WHITE}
+                    fontWeight="semiBold"
                     backgroundColor={colors.BLACK}
                     paddingHorizontal={98}
                     paddingVertical={11}
                     alignSelf="stretch"
+                    borderRadius={5}
                 />
             </View>
             {isLoading && <ActivityIndicator size="large" />}

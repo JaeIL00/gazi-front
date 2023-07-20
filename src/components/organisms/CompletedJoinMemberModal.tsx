@@ -6,8 +6,8 @@ import colors from '../../common/constants/colors';
 import BoldText from '../atoms/BoldText';
 import TextButton from '../molecules/TextButton';
 import { joinMemberAtom } from '../../recoil';
-import { CompletedJoinMemberModalProps } from '../../types/types';
 import { completedJoinTemplateStyles } from '../../styles/templates/styles';
+import { CompletedJoinMemberModalProps } from '../../types/templates/types';
 
 const CompletedJoinMemberModal = ({ navigationHandler, inputNickname }: CompletedJoinMemberModalProps) => {
     const setJoinMemberInfo = useSetRecoilState(joinMemberAtom);
@@ -39,8 +39,10 @@ const CompletedJoinMemberModal = ({ navigationHandler, inputNickname }: Complete
                     text="확인"
                     height={48}
                     backgroundColor={colors.BLACK}
-                    textColor={colors.WHITE}
+                    fontColor={colors.WHITE}
+                    fontWeight="semiBold"
                     fontSize={17}
+                    borderRadius={5}
                 />
             </View>
         </View>

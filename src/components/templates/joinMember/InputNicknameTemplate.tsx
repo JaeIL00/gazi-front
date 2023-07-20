@@ -183,11 +183,13 @@ const InputNicknameTemplate = ({ navigationHandler }: InputNicknameTemplateProps
                     <View style={inputNicknameTemplateStyles.bottomButton}>
                         <TextButton
                             text="확인"
-                            textColor={colors.WHITE}
+                            fontColor={colors.WHITE}
+                            fontWeight="semiBold"
                             backgroundColor={isDuplicate && resultText ? colors.BLACK : colors.BTN_GRAY}
                             onPress={onPressJoinMember}
                             height={48}
                             fontSize={17}
+                            borderRadius={5}
                         />
                     </View>
                 </KeyboardAvoidingView>

@@ -31,23 +31,27 @@ const FailPermissionModal = ({
             <View style={FailPermissionModalStyles.buttonBox}>
                 <TextButton
                     text="닫기"
-                    textColor={colors.TXT_GRAY}
+                    fontColor={colors.TXT_GRAY}
                     fontSize={14}
+                    fontWeight="semiBold"
                     onPress={() => onPressModalButton('CLOSE')}
                     paddingVertical={12}
                     borderWidth={1}
                     borderColor={colors.TXT_GRAY}
                     flex={1}
+                    borderRadius={5}
                 />
                 <Spacer width={8} />
                 <TextButton
                     text="설정하러 가기"
-                    textColor={colors.WHITE}
+                    fontColor={colors.WHITE}
+                    fontWeight="semiBold"
                     fontSize={14}
                     onPress={() => onPressModalButton('MOVE')}
                     backgroundColor={colors.BLACK}
                     paddingVertical={12}
                     flex={1}
+                    borderRadius={5}
                 />
             </View>
         </View>

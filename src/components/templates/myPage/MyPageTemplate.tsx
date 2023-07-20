@@ -16,6 +16,8 @@ import { myPageTabList } from '../../../common/constants/myPageTabList';
 import { myPageTemplateStyles } from '../../../styles/templates/styles';
 import { screenFont, screenHeight, screenWidth } from '../../../utils/changeStyleSize';
 import { MyPageTemplateProps } from '../../../types/templates/types';
+import ImageButton from '../../molecules/ImageButton';
+import Spacer from '../../atoms/Spacer';
 
 const MyProfileTemplate = ({ moveToScreen }: MyPageTemplateProps) => {
     const navigation = useNavigation<any>();
@@ -45,15 +47,12 @@ const MyProfileTemplate = ({ moveToScreen }: MyPageTemplateProps) => {
                 isBorder: boolean;
             };
         }) => (
-            <TouchableOpacity
+            <TouchButton
                 onPress={() => navigation.push(item.screen)}
-                style={[
-                    myPageTemplateStyles.sectionItem,
-                    {
-                        borderBottomWidth: item.isBorder ? 1 * screenFont : undefined,
-                    },
-                ]}
-                activeOpacity={1}>
+                paddingHorizontal={16}
+                paddingVertical={16}
+                borderColor={colors.BORDER_GRAY}
+                borderBottomWidth={item.isBorder ? 1 * screenFont : undefined}>
                 <View style={myPageTemplateStyles.tabListBox}>
                     <NormalText text={item.name} size={16} color={colors.BLACK} />
                     <FastImage
@@ -61,7 +60,7 @@ const MyProfileTemplate = ({ moveToScreen }: MyPageTemplateProps) => {
                         style={myPageTemplateStyles.tabRightIcon}
                     />
                 </View>
-            </TouchableOpacity>
+            </TouchButton>
         ),
         [],
     );
@@ -106,12 +105,15 @@ const MyProfileTemplate = ({ moveToScreen }: MyPageTemplateProps) => {
                 <View style={myPageTemplateStyles.profileTextBox}>
                     <View style={myPageTemplateStyles.profileNameBox}>
                         <SemiBoldText text={nickname} size={16} color={colors.WHITE} />
-                        <TouchButton onPress={() => moveToScreen('EDIT_NICK')} hitSlop={10}>
-                            <FastImage
-                                source={require('../../../assets/icons/pencil.png')}
-                                style={myPageTemplateStyles.penIcon}
-                            />
-                        </TouchButton>
+                        <Spacer width={4} />
+                        <ImageButton
+                            onPress={() => moveToScreen('EDIT_NICK')}
+                            hitSlop={10}
+                            imageSource={require('../../../assets/icons/pencil.png')}
+                            imageHeight={12}
+                            imageWidth={12}
+                            isCaching={true}
+                        />
                     </View>
                     <NormalText text={email} size={12} color={colors.TXT_GRAY} />
                 </View>

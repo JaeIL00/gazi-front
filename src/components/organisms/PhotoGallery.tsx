@@ -14,6 +14,7 @@ import { photoGalleryStyles } from '../../styles/organisms/styles';
 import { screenFont, screenHeight, screenWidth } from '../../utils/changeStyleSize';
 import { PhotoGalleryProps } from '../../types/organisms/types';
 import { GalleryAlbumListTypes } from '../../types/common/types';
+import IconButton from '../molecules/IconButton';
 
 const PhotoGallery = ({ closeGalleryHandling, getImageHandler }: PhotoGalleryProps) => {
     const [checkIndex, setCheckIndex] = useState<number[]>([]);
@@ -239,9 +240,13 @@ const PhotoGallery = ({ closeGalleryHandling, getImageHandler }: PhotoGalleryPro
                         borderBottomWidth: albumListWindow ? 1 * screenFont : undefined,
                     },
                 ]}>
-                <TouchButton onPress={closeGalleryHandling}>
-                    <Icons type="ionicons" name="close" size={24} color={colors.BLACK} />
-                </TouchButton>
+                <IconButton
+                    onPress={closeGalleryHandling}
+                    iconType="ionicons"
+                    iconName="close"
+                    iconSize={24}
+                    iconColor={colors.BLACK}
+                />
                 <TouchButton onPress={() => setAlbumListWindow(!albumListWindow)}>
                     <View style={photoGalleryStyles.albumButtonBox}>
                         <MediumText text={currentAlbum} size={18} color="#000000" />
@@ -277,21 +282,26 @@ const PhotoGallery = ({ closeGalleryHandling, getImageHandler }: PhotoGalleryPro
                         style={{ backgroundColor: colors.WHITE }}
                         contentContainerStyle={{ paddingBottom: 80 * screenHeight }}>
                         {albumList.map(item => (
-                            <TouchableOpacity
+                            <TouchButton
                                 key={item.title}
                                 onPress={() => onPressChangeAlbum(item.title)}
-                                activeOpacity={1}
-                                style={photoGalleryStyles.perPhotoImage}>
-                                <Image
-                                    source={{ uri: item.thumbnail }}
-                                    style={{ width: 60 * screenWidth, height: 60 * screenWidth }}
-                                />
-                                <View style={{ paddingLeft: 10 * screenWidth }}>
-                                    <SemiBoldText text={item.title} size={16} color={colors.BLACK} />
-                                    <Spacer height={1} />
-                                    <MediumText text={item.count + ''} size={11} color={colors.TXT_GRAY} />
+                                paddingVertical={10}
+                                borderBottomWidth={1}
+                                borderColor={colors.BORDER_GRAY}
+                                alignSelf="flex-start"
+                                width="100%">
+                                <View style={photoGalleryStyles.perPhotoImage}>
+                                    <Image
+                                        source={{ uri: item.thumbnail }}
+                                        style={{ width: 60 * screenWidth, height: 60 * screenWidth }}
+                                    />
+                                    <View style={{ paddingLeft: 10 * screenWidth }}>
+                                        <SemiBoldText text={item.title} size={16} color={colors.BLACK} />
+                                        <Spacer height={1} />
+                                        <MediumText text={item.count + ''} size={11} color={colors.TXT_GRAY} />
+                                    </View>
                                 </View>
-                            </TouchableOpacity>
+                            </TouchButton>
                         ))}
                     </ScrollView>
                 </View>

@@ -9,12 +9,14 @@ import PostListItem from './PostListItem';
 import NormalText from '../atoms/NormalText';
 import TouchButton from '../atoms/TouchButton';
 import SemiBoldText from '../atoms/SemiBoldText';
-import WritingFloatingBtn from '../molecules/WritingFloatingBtn';
+import WritingFloatingBtn from './WritingFloatingBtn';
 import { userInfoAtom } from '../../recoil';
 import { screenHeight } from '../../utils/changeStyleSize';
 import { nearbyPostListModalStyles } from '../../styles/organisms/styles';
 import { NearbyPostListModalProps } from '../../types/organisms/types';
 import { PostTypes } from '../../types/common/types';
+import TextButton from '../molecules/TextButton';
+import ImageButton from '../molecules/ImageButton';
 
 const FULL_ANIM_VALUE = -415 * screenHeight;
 const MIDDLE_ANIM_VALUE = 0;
@@ -356,19 +358,19 @@ const NearbyPostListModal = ({
                     }),
                 }}>
                 <View style={nearbyPostListModalStyles.toggleButtonBox}>
-                    <TouchButton
+                    <ImageButton
                         onPress={onPressCurrentPositionToggle}
                         width={52}
                         height={52}
                         borderRadius={52}
                         backgroundColor={colors.WHITE}
                         borderWidth={1}
-                        borderColor="#E3E3E3">
-                        <FastImage
-                            source={require('../../assets/icons/location.png')}
-                            style={nearbyPostListModalStyles.locationIcon}
-                        />
-                    </TouchButton>
+                        borderColor="#E3E3E3"
+                        imageSource={require('../../assets/icons/location.png')}
+                        imageHeight={20}
+                        imageWidth={20}
+                        isCaching={true}
+                    />
                     <Spacer height={8} />
                     <WritingFloatingBtn moveToWritingScreen={moveToWritingScreen} />
                 </View>
@@ -422,15 +424,19 @@ const NearbyPostListModal = ({
                         <Spacer height={4} />
                         <NormalText text="내 주변의 교통상황을 알려주세요" color={colors.TXT_GRAY} size={14} />
                         <Spacer height={22} />
-                        <TouchButton
+                        <TextButton
                             onPress={moveToWritingScreen}
                             borderColor={colors.BTN_GRAY}
                             borderWidth={1}
                             paddingHorizontal={16}
                             paddingVertical={12}
-                            hitSlop={20}>
-                            <SemiBoldText text="사건 제보하기" color="#49454F" size={13} />
-                        </TouchButton>
+                            hitSlop={20}
+                            text="사건 제보하기"
+                            fontColor="#49454F"
+                            fontSize={13}
+                            borderRadius={5}
+                            fontWeight="semiBold"
+                        />
                     </Animated.View>
                 )}
             </Animated.View>

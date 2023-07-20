@@ -99,43 +99,51 @@ const NotLoginTemplate = () => {
                 <TextButton
                     text="이메일로 가입"
                     onPress={() => onPressNavigate('JoinMember')}
-                    textColor={colors.WHITE}
+                    fontColor={colors.WHITE}
+                    fontWeight="semiBold"
                     backgroundColor={colors.BLACK}
                     fontSize={17}
                     height={48}
+                    borderRadius={5}
                 />
                 <Spacer height={12} />
                 <TextButton
                     text="이메일로 로그인"
                     onPress={() => onPressNavigate('Login')}
-                    textColor={colors.BLACK}
+                    fontColor={colors.BLACK}
+                    fontWeight="semiBold"
                     backgroundColor={colors.WHITE}
                     fontSize={17}
                     height={48}
                     borderColor={colors.BLACK}
                     borderWidth={1}
+                    borderRadius={5}
                 />
                 <Spacer height={12} />
                 <TextButton
                     text="카카오 로그인"
                     onPress={kakaologinHandler}
-                    textColor={colors.BLACK}
+                    fontColor={colors.BLACK}
+                    fontWeight="semiBold"
                     backgroundColor={colors.WHITE}
                     fontSize={17}
                     height={48}
                     borderColor={colors.BLACK}
                     borderWidth={1}
+                    borderRadius={5}
                 />
                 <Spacer height={12} />
                 <TextButton
                     text="네이버 로그인"
                     onPress={naverLoginHandler}
-                    textColor={colors.BLACK}
+                    fontColor={colors.BLACK}
+                    fontWeight="semiBold"
                     backgroundColor={colors.WHITE}
                     fontSize={17}
                     height={48}
                     borderColor={colors.BLACK}
                     borderWidth={1}
+                    borderRadius={5}
                 />
             </View>
         </View>

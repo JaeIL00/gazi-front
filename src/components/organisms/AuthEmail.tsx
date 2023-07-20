@@ -18,6 +18,7 @@ import { SingleLineInput } from '../atoms/SingleLineInput';
 import { emailAuthAtom, joinMemberAtom } from '../../recoil';
 import colors from '../../common/constants/colors';
 import { AuthEmailProps } from '../../types/organisms/types';
+import IconButton from '../molecules/IconButton';
 
 const AuthEmail = ({ min, sec, resetTimeHandler, authNumberModalHanlder }: AuthEmailProps) => {
     const { height } = useWindowDimensions();
@@ -115,9 +116,14 @@ const AuthEmail = ({ min, sec, resetTimeHandler, authNumberModalHanlder }: AuthE
     return (
         <Animated.View style={[authEmailStyles.animateInner, { transform: [{ translateY: topValue }] }]}>
             <View style={authEmailStyles.backButtonBox}>
-                <TouchButton alignSelf="flex-start" onPress={onPressBackIcon}>
-                    <Icons type="octicons" name="arrow-left" color={colors.TXT_BLACK} size={24} />
-                </TouchButton>
+                <IconButton
+                    onPress={onPressBackIcon}
+                    alignSelf="flex-start"
+                    iconType="octicons"
+                    iconName="arrow-left"
+                    iconColor={colors.TXT_BLACK}
+                    iconSize={24}
+                />
             </View>
             <BoldText text="메일로 받은 인증번호를 " size={24} color={colors.BLACK} />
             <BoldText text="입력해주세요" size={24} color={colors.BLACK} />
@@ -170,7 +176,9 @@ const AuthEmail = ({ min, sec, resetTimeHandler, authNumberModalHanlder }: AuthE
                     backgroundColor={activityButton ? colors.BLACK : colors.BTN_GRAY}
                     onPress={onPressFinishAnimation}
                     fontSize={17}
-                    textColor={colors.WHITE}
+                    fontColor={colors.WHITE}
+                    fontWeight="semiBold"
+                    borderRadius={5}
                     text="완료"
                 />
             </Animated.View>

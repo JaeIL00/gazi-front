@@ -35,6 +35,7 @@ import {
     WriteCommentTypes,
     uploadImageFileTypes,
 } from '../../../types/common/types';
+import IconButton from '../../molecules/IconButton';
 
 const WriteCommentTemplate = ({ navigationHandler, threadInfo }: WriteCommentTemplateProps) => {
     const { accessToken } = useRecoilValue(userAuthAtom);
@@ -360,12 +361,22 @@ const WriteCommentTemplate = ({ navigationHandler, threadInfo }: WriteCommentTem
     return (
         <View style={writeCommentTemplateStyles.container}>
             <View style={writeCommentTemplateStyles.headerNavigateBox}>
-                <TouchButton onPress={() => navigationHandler('BACK')} hitSlop={10}>
-                    <Icons type="ionicons" name="close-sharp" size={24} color={colors.BLACK} />
-                </TouchButton>
-                <TouchButton onPress={finishWritingHandler} hitSlop={10}>
-                    <SemiBoldText text="등록" size={16} color={colors.BLACK} />
-                </TouchButton>
+                <IconButton
+                    onPress={() => navigationHandler('BACK')}
+                    hitSlop={10}
+                    iconType="ionicons"
+                    iconName="close-sharp"
+                    iconSize={24}
+                    iconColor={colors.BLACK}
+                />
+                <TextButton
+                    onPress={finishWritingHandler}
+                    hitSlop={10}
+                    text="등록"
+                    fontSize={16}
+                    fontColor={colors.BLACK}
+                    fontWeight="semiBold"
+                />
             </View>
 
             <ScrollView style={writeCommentTemplateStyles.contentBox}>
@@ -441,12 +452,7 @@ const WriteCommentTemplate = ({ navigationHandler, threadInfo }: WriteCommentTem
                     />
                 </View>
 
-                {!inputFocusBlur && (
-                    <TouchableOpacity
-                        style={writeCommentTemplateStyles.contentInputFocus}
-                        onPress={() => inputFocusBlurHandler('FOCUS')}
-                    />
-                )}
+                {!inputFocusBlur && <TouchButton onPress={() => inputFocusBlurHandler('FOCUS')} height={400} />}
             </ScrollView>
 
             <Modal visible={isCamAllowPermission} onRequestClose={() => setIsCamAllowPermission(false)}>
@@ -477,13 +483,19 @@ const WriteCommentTemplate = ({ navigationHandler, threadInfo }: WriteCommentTem
                                                 style={writeCommentTemplateStyles.bottomImageSize}
                                             />
                                         </View>
-                                        <TouchableOpacity
-                                            onPress={() => getImageHandler(item, 'DEL')}
-                                            activeOpacity={1}
-                                            style={writeCommentTemplateStyles.bottomImageDelButton}>
-                                            <View style={writeCommentTemplateStyles.bottomImageDelIconBack} />
-                                            <Icons type="ionicons" name="close-circle" size={20} color="#000000" />
-                                        </TouchableOpacity>
+                                        <View style={writeCommentTemplateStyles.bottomImageDelButton}>
+                                            <TouchButton onPress={() => getImageHandler(item, 'DEL')} height={25}>
+                                                <>
+                                                    <View style={writeCommentTemplateStyles.bottomImageDelIconBack} />
+                                                    <Icons
+                                                        type="ionicons"
+                                                        name="close-circle"
+                                                        size={20}
+                                                        color="#000000"
+                                                    />
+                                                </>
+                                            </TouchButton>
+                                        </View>
                                     </View>
                                 ))}
                             </>
@@ -548,11 +560,13 @@ const WriteCommentTemplate = ({ navigationHandler, threadInfo }: WriteCommentTem
                     <TextButton
                         onPress={offErrorModalHandler}
                         text="확인"
-                        textColor="#49454F"
+                        fontColor="#49454F"
+                        fontWeight="semiBold"
                         fontSize={14}
                         backgroundColor={colors.LIGHTGRAY}
                         paddingHorizontal={111}
                         paddingVertical={12}
+                        borderRadius={5}
                     />
                 </View>
             </ModalBackground>

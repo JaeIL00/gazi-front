@@ -11,6 +11,7 @@ export type TouchButtonProps = {
     paddingHorizontal?: number;
     paddingVertical?: number;
     alignSelf?: FlexAlignType;
+    alignItems?: FlexAlignType;
     borderColor?: string;
     borderWidth?: number;
     borderRadius?: number;
