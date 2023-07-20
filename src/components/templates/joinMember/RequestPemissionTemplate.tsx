@@ -6,7 +6,7 @@ import Spacer from '../../atoms/Spacer';
 import colors from '../../../common/constants/colors';
 import NormalText from '../../atoms/NormalText';
 import TextButton from '../../molecules/TextButton';
-import MoveBackWithPageTitle from '../../organisms/MoveBackWithPageTitle';
+import MoveBackWithPageTitle from '../../organisms/common/MoveBackWithPageTitle';
 import IconPermissionListItem from '../../molecules/IconPermissionListItem';
 import { requestPemissionTemplateStyles } from '../../../styles/templates/styles';
 import { RequestPemissionTemplateProps } from '../../../types/templates/types';

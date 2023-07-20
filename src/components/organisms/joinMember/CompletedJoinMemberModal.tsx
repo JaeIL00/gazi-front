@@ -2,12 +2,12 @@ import React, { useEffect } from 'react';
 import { Image, View } from 'react-native';
 import { useSetRecoilState } from 'recoil';
 
-import colors from '../../common/constants/colors';
-import BoldText from '../atoms/BoldText';
-import TextButton from '../molecules/TextButton';
-import { joinMemberAtom } from '../../recoil';
-import { completedJoinTemplateStyles } from '../../styles/templates/styles';
-import { CompletedJoinMemberModalProps } from '../../types/templates/types';
+import colors from '../../../common/constants/colors';
+import BoldText from '../../atoms/BoldText';
+import TextButton from '../../molecules/TextButton';
+import { joinMemberAtom } from '../../../recoil';
+import { completedJoinTemplateStyles } from '../../../styles/templates/styles';
+import { CompletedJoinMemberModalProps } from '../../../types/templates/types';
 
 const CompletedJoinMemberModal = ({ navigationHandler, inputNickname }: CompletedJoinMemberModalProps) => {
     const setJoinMemberInfo = useSetRecoilState(joinMemberAtom);
@@ -28,7 +28,7 @@ const CompletedJoinMemberModal = ({ navigationHandler, inputNickname }: Complete
 
             <View style={completedJoinTemplateStyles.imageBox}>
                 <Image
-                    source={require('../../assets/join-member-complete-image.png')}
+                    source={require('../../../assets/join-member-complete-image.png')}
                     style={completedJoinTemplateStyles.imageSize}
                 />
             </View>

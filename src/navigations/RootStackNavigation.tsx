@@ -4,11 +4,11 @@ import { NativeStackNavigationProp, createNativeStackNavigator } from '@react-na
 import { useRecoilValue } from 'recoil';
 import SplashScreen from 'react-native-splash-screen';
 
-import WritePostScreen from '../components/pages/WritePostScreen';
+import WritePostScreen from '../components/pages/community/WritePostScreen';
 import JoinMemberNavigation from './JoinMemberNavigation';
 import LoginScreen from '../components/pages/login/EmailLoginScreen';
 import PoliciesScreen from '../components/pages/myPage/PoliciesScreen';
-import WriteCommentScreen from '../components/pages/WriteCommentScreen';
+import WriteCommentScreen from '../components/pages/community/WriteCommentScreen';
 import ServiceMainTabNavigation from './ServiceMainTabNavigation';
 import ImageViewScreen from '../components/pages/community/ImageViewScreen';
 import NotLoginHomeScreen from '../components/pages/home/NotLoginHomeScreen';

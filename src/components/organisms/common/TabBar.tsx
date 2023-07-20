@@ -1,22 +1,22 @@
 import React from 'react';
 import { Image, View } from 'react-native';
 
-import Spacer from '../atoms/Spacer';
-import colors from '../../common/constants/colors';
-import NormalText from '../atoms/NormalText';
-import TouchButton from '../atoms/TouchButton';
-import { tabBarStyles } from '../../styles/organisms/styles';
-import { TabBarProps } from '../../types/common/types';
+import Spacer from '../../atoms/Spacer';
+import colors from '../../../common/constants/colors';
+import NormalText from '../../atoms/NormalText';
+import TouchButton from '../../atoms/TouchButton';
+import { tabBarStyles } from '../../../styles/organisms/styles';
+import { TabBarProps } from '../../../types/common/types';
 
 const blurImageList = [
-    require('../../assets/icons/chat-outline.png'),
-    require('../../assets/icons/map-outline.png'),
-    require('../../assets/icons/human-outline.png'),
+    require('../../../assets/icons/chat-outline.png'),
+    require('../../../assets/icons/map-outline.png'),
+    require('../../../assets/icons/human-outline.png'),
 ];
 const focusImageList = [
-    require('../../assets/icons/chat-fill.png'),
-    require('../../assets/icons/map-fill.png'),
-    require('../../assets/icons/human-fill.png'),
+    require('../../../assets/icons/chat-fill.png'),
+    require('../../../assets/icons/map-fill.png'),
+    require('../../../assets/icons/human-fill.png'),
 ];
 
 const TabBar = ({ state, navigation }: TabBarProps) => {

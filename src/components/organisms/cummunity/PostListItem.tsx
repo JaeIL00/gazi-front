@@ -1,16 +1,16 @@
 import React from 'react';
 import { Image, TouchableOpacity, View } from 'react-native';
 
-import Spacer from '../atoms/Spacer';
-import colors from '../../common/constants/colors';
-import NormalText from '../atoms/NormalText';
-import MediumText from '../atoms/MediumText';
-import SemiBoldText from '../atoms/SemiBoldText';
-import { postListItemStyles } from '../../styles/organisms/styles';
-import { screenFont, screenHeight } from '../../utils/changeStyleSize';
-import { useRootNavigation } from '../../navigations/RootStackNavigation';
-import { PostListItemProps } from '../../types/organisms/types';
-import TouchButton from '../atoms/TouchButton';
+import Spacer from '../../atoms/Spacer';
+import colors from '../../../common/constants/colors';
+import NormalText from '../../atoms/NormalText';
+import MediumText from '../../atoms/MediumText';
+import SemiBoldText from '../../atoms/SemiBoldText';
+import { postListItemStyles } from '../../../styles/organisms/styles';
+import { screenFont, screenHeight } from '../../../utils/changeStyleSize';
+import { useRootNavigation } from '../../../navigations/RootStackNavigation';
+import { PostListItemProps } from '../../../types/organisms/types';
+import TouchButton from '../../atoms/TouchButton';
 
 const PostListItem = ({ post, isBorder, isMarkerPost, isNearList }: PostListItemProps) => {
     const rootNavigation = useRootNavigation();

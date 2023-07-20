@@ -1,13 +1,13 @@
 import React from 'react';
 import { View } from 'react-native';
 
-import Icons from '../atoms/Icons';
-import colors from '../../common/constants/colors';
-import TouchButton from '../atoms/TouchButton';
-import SemiBoldText from '../atoms/SemiBoldText';
-import { AgreementCheckListItemProps } from '../../types/molecules/types';
-import { agreementCheckListItemStyles, checkBoxBackground } from '../../styles/molecules/styles';
-import IconButton from './IconButton';
+import Icons from '../../atoms/Icons';
+import colors from '../../../common/constants/colors';
+import TouchButton from '../../atoms/TouchButton';
+import SemiBoldText from '../../atoms/SemiBoldText';
+import { AgreementCheckListItemProps } from '../../../types/molecules/types';
+import { agreementCheckListItemStyles, checkBoxBackground } from '../../../styles/molecules/styles';
+import IconButton from '../../molecules/IconButton';
 
 const AgreementCheckListItem = ({
     text,

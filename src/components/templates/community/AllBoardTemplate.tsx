@@ -4,7 +4,7 @@ import { useRecoilValue } from 'recoil';
 import { useInfiniteQuery } from 'react-query';
 import Geolocation from '@react-native-community/geolocation';
 
-import PostListItem from '../../organisms/PostListItem';
+import PostListItem from '../../organisms/cummunity/PostListItem';
 import { getCommunityPostAPI } from '../../../apis/api';
 import { userAuthAtom, userInfoAtom } from '../../../recoil';
 import { allBoardTemplateStyles } from '../../../styles/templates/styles';

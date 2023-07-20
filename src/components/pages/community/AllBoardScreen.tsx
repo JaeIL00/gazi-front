@@ -1,6 +1,6 @@
 import React from 'react';
 
-import ScreenWrapper from '../../organisms/ScreenWrapper';
+import ScreenWrapper from '../../organisms/common/ScreenWrapper';
 import AllBoardTemplate from '../../templates/community/AllBoardTemplate';
 
 const AllBoardScreen = () => {

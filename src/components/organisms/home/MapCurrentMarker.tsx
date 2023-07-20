@@ -1,9 +1,9 @@
 import React, { memo } from 'react';
 import { Marker } from 'react-native-maps';
-import { mapWithMarkerStyles } from '../../styles/molecules/styles';
+import { mapWithMarkerStyles } from '../../../styles/molecules/styles';
 
 const MapCurrentMarker = ({ latitude, longitude }: { latitude: number; longitude: number }) => {
-    const MARKER_CURRENT_IMAGE = require('../../assets/icons/map-current-marker.png');
+    const MARKER_CURRENT_IMAGE = require('../../../assets/icons/map-current-marker.png');
     return (
         <Marker
             coordinate={{

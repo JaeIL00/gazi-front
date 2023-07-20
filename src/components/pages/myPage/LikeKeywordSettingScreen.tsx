@@ -1,6 +1,6 @@
 import React from 'react';
 
-import ScreenWrapper from '../../organisms/ScreenWrapper';
+import ScreenWrapper from '../../organisms/common/ScreenWrapper';
 import LikeKeywordSettingTemplate from '../../templates/myPage/LikeKeywordSettingTemplate';
 import { useRootNavigation, useRootRoute } from '../../../navigations/RootStackNavigation';
 

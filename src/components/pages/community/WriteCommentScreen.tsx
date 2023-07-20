@@ -1,8 +1,8 @@
 import React from 'react';
 
-import ScreenWrapper from '../organisms/ScreenWrapper';
-import WriteCommentTemplate from '../templates/community/WriteCommentTempate';
-import { useRootNavigation, useRootRoute } from '../../navigations/RootStackNavigation';
+import ScreenWrapper from '../../organisms/common/ScreenWrapper';
+import WriteCommentTemplate from '../../templates/community/WriteCommentTempate';
+import { useRootNavigation, useRootRoute } from '../../../navigations/RootStackNavigation';
 
 const WriteCommentScreen = () => {
     const route = useRootRoute<'WriteComment'>();

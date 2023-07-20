@@ -2,10 +2,10 @@ import React from 'react';
 import MapView, { Marker } from 'react-native-maps';
 import FastImage from 'react-native-fast-image';
 
-import mapStyle from '../../styles/mapStyle';
-import MapCurrentMarker from '../molecules/MapCurrentMarker';
-import { mapWithMarkerStyles } from '../../styles/organisms/styles';
-import { MapWithMarkerProps } from '../../types/organisms/types';
+import mapStyle from '../../../styles/mapStyle';
+import MapCurrentMarker from './MapCurrentMarker';
+import { mapWithMarkerStyles } from '../../../styles/organisms/styles';
+import { MapWithMarkerProps } from '../../../types/organisms/types';
 
 const MapWithMarker = ({
     mapRef,
@@ -37,7 +37,7 @@ const MapWithMarker = ({
             {isAllowLocation && (
                 <MapCurrentMarker latitude={currentPosition.latitude} longitude={currentPosition.longitude} />
             )}
-            {nearPostList.map(item => {
+            {/* {nearPostList.map(item => {
                 const markertypeIcon = () => {
                     switch (item.headKeyword) {
                         case 1:
@@ -77,7 +77,7 @@ const MapWithMarker = ({
                         <FastImage source={markertypeIcon()} style={mapWithMarkerStyles.issueMarker} />
                     </Marker>
                 );
-            })}
+            })} */}
         </MapView>
     );
 };

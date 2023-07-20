@@ -4,21 +4,21 @@ import { useMutation } from 'react-query';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { debounce } from 'lodash';
 
-import Icons from '../atoms/Icons';
-import Spacer from '../atoms/Spacer';
-import BoldText from '../atoms/BoldText';
-import NormalText from '../atoms/NormalText';
-import MediumText from '../atoms/MediumText';
-import TextButton from '../molecules/TextButton';
-import TouchButton from '../atoms/TouchButton';
-import useKeyboardMotion from '../../common/hooks/useKeyboardMotion';
-import { emailAuthAPI } from '../../apis/api';
-import { authEmailStyles } from '../../styles/organisms/styles';
-import { SingleLineInput } from '../atoms/SingleLineInput';
-import { emailAuthAtom, joinMemberAtom } from '../../recoil';
-import colors from '../../common/constants/colors';
-import { AuthEmailProps } from '../../types/organisms/types';
-import IconButton from '../molecules/IconButton';
+import Icons from '../../atoms/Icons';
+import Spacer from '../../atoms/Spacer';
+import BoldText from '../../atoms/BoldText';
+import NormalText from '../../atoms/NormalText';
+import MediumText from '../../atoms/MediumText';
+import TextButton from '../../molecules/TextButton';
+import TouchButton from '../../atoms/TouchButton';
+import useKeyboardMotion from '../../../common/hooks/useKeyboardMotion';
+import { emailAuthAPI } from '../../../apis/api';
+import { authEmailStyles } from '../../../styles/organisms/styles';
+import { SingleLineInput } from '../../atoms/SingleLineInput';
+import { emailAuthAtom, joinMemberAtom } from '../../../recoil';
+import colors from '../../../common/constants/colors';
+import { AuthEmailProps } from '../../../types/organisms/types';
+import IconButton from '../../molecules/IconButton';
 
 const AuthEmail = ({ min, sec, resetTimeHandler, authNumberModalHanlder }: AuthEmailProps) => {
     const { height } = useWindowDimensions();

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import ScreenWrapper from '../../organisms/ScreenWrapper';
+import ScreenWrapper from '../../organisms/common/ScreenWrapper';
 import InputEmailTemplate from '../../templates/joinMember/InputEmailTemplate';
 import { useJoinNavigation } from '../../../navigations/JoinMemberNavigation';
 

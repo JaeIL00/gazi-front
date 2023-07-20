@@ -5,20 +5,20 @@ import { useQuery } from 'react-query';
 import FastImage from 'react-native-fast-image';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import Icons from '../atoms/Icons';
-import Spacer from '../atoms/Spacer';
-import colors from '../../common/constants/colors';
-import MediumText from '../atoms/MediumText';
-import NormalText from '../atoms/NormalText';
-import TouchButton from '../atoms/TouchButton';
-import { nearPlaceGoogleAPI, searchGoogleAPI } from '../../apis/api';
-import { searchLocationStyles } from '../../styles/organisms/styles';
-import { SingleLineInput } from '../atoms/SingleLineInput';
-import { screenHeight, screenWidth } from '../../utils/changeStyleSize';
-import { SearchLocationProps } from '../../types/organisms/types';
-import { LocationResultTypes, SearchHistoryTypes } from '../../types/common/types';
-import IconButton from '../molecules/IconButton';
-import ImageButton from '../molecules/ImageButton';
+import Icons from '../../atoms/Icons';
+import Spacer from '../../atoms/Spacer';
+import colors from '../../../common/constants/colors';
+import MediumText from '../../atoms/MediumText';
+import NormalText from '../../atoms/NormalText';
+import TouchButton from '../../atoms/TouchButton';
+import { nearPlaceGoogleAPI, searchGoogleAPI } from '../../../apis/api';
+import { searchLocationStyles } from '../../../styles/organisms/styles';
+import { SingleLineInput } from '../../atoms/SingleLineInput';
+import { screenHeight, screenWidth } from '../../../utils/changeStyleSize';
+import { SearchLocationProps } from '../../../types/organisms/types';
+import { LocationResultTypes, SearchHistoryTypes } from '../../../types/common/types';
+import IconButton from '../../molecules/IconButton';
+import ImageButton from '../../molecules/ImageButton';
 
 const SearchLocation = ({
     isHome,
@@ -180,7 +180,7 @@ const SearchLocation = ({
                     paddingHorizontal={16}>
                     <View style={searchLocationStyles.listItemBox}>
                         <FastImage
-                            source={require('../../assets/icons/location-pin-fill.png')}
+                            source={require('../../../assets/icons/location-pin-fill.png')}
                             style={searchLocationStyles.resultIcon}
                         />
                         <View style={searchLocationStyles.resultTextBox}>
@@ -248,7 +248,7 @@ const SearchLocation = ({
                             <ImageButton
                                 onPress={() => searchModalHandler('CLOSE')}
                                 hitSlop={10}
-                                imageSource={require('../../assets/icons/arrow-left-sharp.png')}
+                                imageSource={require('../../../assets/icons/arrow-left-sharp.png')}
                                 imageHeight={16}
                                 imageWidth={16}
                                 isCaching={true}

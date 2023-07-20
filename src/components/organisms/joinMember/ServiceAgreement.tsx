@@ -1,16 +1,16 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Animated, Modal, View, useWindowDimensions } from 'react-native';
 
-import Icons from '../atoms/Icons';
-import colors from '../../common/constants/colors';
-import TextButton from '../molecules/TextButton';
-import WebViewComponent from './WebViewComponent';
-import TouchButton from '../atoms/TouchButton';
-import SemiBoldText from '../atoms/SemiBoldText';
-import AgreementCheckListItem from '../molecules/AgreementCheckListItem';
-import { screenHeight } from '../../utils/changeStyleSize';
-import { checkBoxBackground, serviceAgreementStyles } from '../../styles/organisms/styles';
-import { ServiceAgreementProps } from '../../types/organisms/types';
+import Icons from '../../atoms/Icons';
+import colors from '../../../common/constants/colors';
+import TextButton from '../../molecules/TextButton';
+import WebViewComponent from '../common/WebViewComponent';
+import TouchButton from '../../atoms/TouchButton';
+import SemiBoldText from '../../atoms/SemiBoldText';
+import AgreementCheckListItem from './AgreementCheckListItem';
+import { screenHeight } from '../../../utils/changeStyleSize';
+import { checkBoxBackground, serviceAgreementStyles } from '../../../styles/organisms/styles';
+import { ServiceAgreementProps } from '../../../types/organisms/types';
 
 // Render list data
 const listData = ['(필수) 서비스 약관 동의', '(필수) 개인정보 수집 동의', '(필수) 위치기반 서비스 이용 동의'];

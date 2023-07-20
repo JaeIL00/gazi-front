@@ -6,7 +6,7 @@ import colors from '../../../common/constants/colors';
 import NormalText from '../../atoms/NormalText';
 import MediumText from '../../atoms/MediumText';
 import TouchButton from '../../atoms/TouchButton';
-import WebViewComponent from '../../organisms/WebViewComponent';
+import WebViewComponent from '../../organisms/common/WebViewComponent';
 import { PoliciesTemplateStyles } from '../../../styles/templates/styles';
 import FastImage from 'react-native-fast-image';
 import { PoliciesTemplateProps } from '../../../types/templates/types';

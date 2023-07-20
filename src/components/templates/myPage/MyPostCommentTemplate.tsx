@@ -4,7 +4,7 @@ import { useInfiniteQuery } from 'react-query';
 import { useRecoilValue } from 'recoil';
 import FastImage from 'react-native-fast-image';
 import NormalText from '../../atoms/NormalText';
-import PostListItem from '../../organisms/PostListItem';
+import PostListItem from '../../organisms/cummunity/PostListItem';
 
 import Spacer from '../../atoms/Spacer';
 import colors from '../../../common/constants/colors';

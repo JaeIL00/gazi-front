@@ -1,6 +1,6 @@
 import React from 'react';
 
-import ScreenWrapper from '../../organisms/ScreenWrapper';
+import ScreenWrapper from '../../organisms/common/ScreenWrapper';
 import InputPasswordTemplate from '../../templates/joinMember/InputPasswordTemplate';
 import { useJoinNavigation } from '../../../navigations/JoinMemberNavigation';
 import { useIsFocused } from '@react-navigation/native';

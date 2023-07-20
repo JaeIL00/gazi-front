@@ -4,7 +4,7 @@ import { useFocusEffect } from '@react-navigation/native';
 
 import MapHomeTemplate from '../../templates/home/MapHomeTemplate';
 import { useRootNavigation } from '../../../navigations/RootStackNavigation';
-import ScreenWrapper from '../../organisms/ScreenWrapper';
+import ScreenWrapper from '../../organisms/common/ScreenWrapper';
 
 const MapHomeScreen = () => {
     const rootNavigation = useRootNavigation();

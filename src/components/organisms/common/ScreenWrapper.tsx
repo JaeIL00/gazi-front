@@ -2,9 +2,9 @@ import React, { useLayoutEffect, useState } from 'react';
 import { useRoute } from '@react-navigation/native';
 import { StatusBar, View } from 'react-native';
 
-import { screenWidth } from '../../utils/changeStyleSize';
-import colors from '../../common/constants/colors';
-import { ScreenWrapperProps } from '../../types/organisms/types';
+import { screenWidth } from '../../../utils/changeStyleSize';
+import colors from '../../../common/constants/colors';
+import { ScreenWrapperProps } from '../../../types/organisms/types';
 
 const ScreenWrapper = ({ children, isPaddingHorizontal }: ScreenWrapperProps) => {
     const route = useRoute();

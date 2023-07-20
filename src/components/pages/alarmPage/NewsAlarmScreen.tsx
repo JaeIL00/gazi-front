@@ -1,7 +1,7 @@
 import React from 'react';
 import { View } from 'react-native';
 
-import ScreenWrapper from '../../organisms/ScreenWrapper';
+import ScreenWrapper from '../../organisms/common/ScreenWrapper';
 
 const NewsAlarmScreen = () => {
     return (

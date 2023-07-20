@@ -15,7 +15,7 @@ import MediumText from '../../atoms/MediumText';
 import TextButton from '../../molecules/TextButton';
 import TouchButton from '../../atoms/TouchButton';
 import LoginTextInput from '../../molecules/LoginTextInput';
-import MoveBackWithPageTitle from '../../organisms/MoveBackWithPageTitle';
+import MoveBackWithPageTitle from '../../organisms/common/MoveBackWithPageTitle';
 import { userInfoAtom, userAuthAtom } from '../../../recoil';
 import { fcmDeviceTokenAPI, loginAPI } from '../../../apis/api';
 import { emailLoginTemplateStyles } from '../../../styles/templates/styles';

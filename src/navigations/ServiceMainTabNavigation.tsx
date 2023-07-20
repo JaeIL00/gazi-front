@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { View } from 'react-native';
 
-import TabBar from '../components/organisms/TabBar';
+import TabBar from '../components/organisms/common/TabBar';
 import MapHomeScreen from '../components/pages/home/MapHomeScreen';
 import MyPageScreen from '../components/pages/myPage/MyPageScreen';
 import CommunityTabNavigation from './CommunityTabNavigation';

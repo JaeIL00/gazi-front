@@ -10,7 +10,7 @@ import NormalText from '../../atoms/NormalText';
 import MediumText from '../../atoms/MediumText';
 import TouchButton from '../../atoms/TouchButton';
 import SemiBoldText from '../../atoms/SemiBoldText';
-import ScreenWrapper from '../../organisms/ScreenWrapper';
+import ScreenWrapper from '../../organisms/common/ScreenWrapper';
 import { imageViewScreenStyles } from '../../../styles/common/styles';
 import { useRootNavigation, useRootRoute } from '../../../navigations/RootStackNavigation';
 import IconButton from '../../molecules/IconButton';

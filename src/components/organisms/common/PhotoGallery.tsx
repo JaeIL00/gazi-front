@@ -4,17 +4,17 @@ import { AssetType, CameraRoll, GroupTypes, PhotoIdentifier } from '@react-nativ
 import FastImage from 'react-native-fast-image';
 import { launchCamera } from 'react-native-image-picker';
 
-import Icons from '../atoms/Icons';
-import Spacer from '../atoms/Spacer';
-import colors from '../../common/constants/colors';
-import MediumText from '../atoms/MediumText';
-import TouchButton from '../atoms/TouchButton';
-import SemiBoldText from '../atoms/SemiBoldText';
-import { photoGalleryStyles } from '../../styles/organisms/styles';
-import { screenFont, screenHeight, screenWidth } from '../../utils/changeStyleSize';
-import { PhotoGalleryProps } from '../../types/organisms/types';
-import { GalleryAlbumListTypes } from '../../types/common/types';
-import IconButton from '../molecules/IconButton';
+import Icons from '../../atoms/Icons';
+import Spacer from '../../atoms/Spacer';
+import colors from '../../../common/constants/colors';
+import MediumText from '../../atoms/MediumText';
+import TouchButton from '../../atoms/TouchButton';
+import SemiBoldText from '../../atoms/SemiBoldText';
+import { photoGalleryStyles } from '../../../styles/organisms/styles';
+import { screenFont, screenHeight, screenWidth } from '../../../utils/changeStyleSize';
+import { PhotoGalleryProps } from '../../../types/organisms/types';
+import { GalleryAlbumListTypes } from '../../../types/common/types';
+import IconButton from '../../molecules/IconButton';
 
 const PhotoGallery = ({ closeGalleryHandling, getImageHandler }: PhotoGalleryProps) => {
     const [checkIndex, setCheckIndex] = useState<number[]>([]);
@@ -186,7 +186,7 @@ const PhotoGallery = ({ closeGalleryHandling, getImageHandler }: PhotoGalleryPro
                     <TouchButton onPress={() => onPressListBox(item, index)} height="100%">
                         {index === 0 ? (
                             <FastImage
-                                source={require('../../assets/icons/camera-fill.png')}
+                                source={require('../../../assets/icons/camera-fill.png')}
                                 style={photoGalleryStyles.cameraIcon}
                             />
                         ) : (
@@ -252,7 +252,7 @@ const PhotoGallery = ({ closeGalleryHandling, getImageHandler }: PhotoGalleryPro
                         <MediumText text={currentAlbum} size={18} color="#000000" />
                         <Spacer width={5} />
                         <FastImage
-                            source={require('../../assets/icons/triangle-down.png')}
+                            source={require('../../../assets/icons/triangle-down.png')}
                             style={[
                                 photoGalleryStyles.albumButtonIcon,
                                 {

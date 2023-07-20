@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 import { useSetRecoilState } from 'recoil';
 import { useFocusEffect } from '@react-navigation/native';
 
-import ScreenWrapper from '../../organisms/ScreenWrapper';
+import ScreenWrapper from '../../organisms/common/ScreenWrapper';
 import NotLoginTemplate from '../../templates/home/NotLoginTemplate';
 import { joinMemberAtom } from '../../../recoil';
 

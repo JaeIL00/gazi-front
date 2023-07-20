@@ -6,7 +6,7 @@ import LinearGradient from 'react-native-linear-gradient';
 
 import Icons from '../../atoms/Icons';
 import Spacer from '../../atoms/Spacer';
-import KeywordsList from '../KeywordsList';
+import KeywordsList from '../common/KeywordsList';
 import colors from '../../../common/constants/colors';
 import BoldText from '../../atoms/BoldText';
 import TextButton from '../../molecules/TextButton';

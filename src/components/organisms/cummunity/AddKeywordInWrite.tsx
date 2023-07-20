@@ -2,7 +2,7 @@ import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { ScrollView, StatusBar, View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
-import KeywordsList from '../KeywordsList';
+import KeywordsList from '../common/KeywordsList';
 import Spacer from '../../atoms/Spacer';
 import colors from '../../../common/constants/colors';
 import NormalText from '../../atoms/NormalText';

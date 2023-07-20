@@ -3,20 +3,20 @@ import { Animated, FlatList, PanResponder, PanResponderInstance, RefreshControl,
 import { useRecoilValue } from 'recoil';
 import FastImage from 'react-native-fast-image';
 
-import Spacer from '../atoms/Spacer';
-import colors from '../../common/constants/colors';
-import PostListItem from './PostListItem';
-import NormalText from '../atoms/NormalText';
-import TouchButton from '../atoms/TouchButton';
-import SemiBoldText from '../atoms/SemiBoldText';
-import WritingFloatingBtn from './WritingFloatingBtn';
-import { userInfoAtom } from '../../recoil';
-import { screenHeight } from '../../utils/changeStyleSize';
-import { nearbyPostListModalStyles } from '../../styles/organisms/styles';
-import { NearbyPostListModalProps } from '../../types/organisms/types';
-import { PostTypes } from '../../types/common/types';
-import TextButton from '../molecules/TextButton';
-import ImageButton from '../molecules/ImageButton';
+import Spacer from '../../atoms/Spacer';
+import colors from '../../../common/constants/colors';
+import PostListItem from '../cummunity/PostListItem';
+import NormalText from '../../atoms/NormalText';
+import TouchButton from '../../atoms/TouchButton';
+import SemiBoldText from '../../atoms/SemiBoldText';
+import WritingFloatingBtn from '../common/WritingFloatingBtn';
+import { userInfoAtom } from '../../../recoil';
+import { screenHeight } from '../../../utils/changeStyleSize';
+import { nearbyPostListModalStyles } from '../../../styles/organisms/styles';
+import { NearbyPostListModalProps } from '../../../types/organisms/types';
+import { PostTypes } from '../../../types/common/types';
+import TextButton from '../../molecules/TextButton';
+import ImageButton from '../../molecules/ImageButton';
 
 const FULL_ANIM_VALUE = -415 * screenHeight;
 const MIDDLE_ANIM_VALUE = 0;
@@ -366,7 +366,7 @@ const NearbyPostListModal = ({
                         backgroundColor={colors.WHITE}
                         borderWidth={1}
                         borderColor="#E3E3E3"
-                        imageSource={require('../../assets/icons/location.png')}
+                        imageSource={require('../../../assets/icons/location.png')}
                         imageHeight={20}
                         imageWidth={20}
                         isCaching={true}

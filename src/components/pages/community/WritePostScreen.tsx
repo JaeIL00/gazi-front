@@ -1,8 +1,8 @@
 import React from 'react';
 
-import WritePostTemplate from '../templates/community/WritePostTemplate';
-import { useRootNavigation } from '../../navigations/RootStackNavigation';
-import ScreenWrapper from '../organisms/ScreenWrapper';
+import WritePostTemplate from '../../templates/community/WritePostTemplate';
+import { useRootNavigation } from '../../../navigations/RootStackNavigation';
+import ScreenWrapper from '../../organisms/common/ScreenWrapper';
 
 const WritePostScreen = () => {
     const rootNavigation = useRootNavigation();

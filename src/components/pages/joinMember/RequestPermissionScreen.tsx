@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 import { BackHandler } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 
-import ScreenWrapper from '../../organisms/ScreenWrapper';
+import ScreenWrapper from '../../organisms/common/ScreenWrapper';
 import RequestPemissionTemplate from '../../templates/joinMember/RequestPemissionTemplate';
 import { useRootNavigation } from '../../../navigations/RootStackNavigation';
 import { useJoinNavigation } from '../../../navigations/JoinMemberNavigation';

@@ -1,11 +1,11 @@
 import React from 'react';
 import { ScrollView, View } from 'react-native';
 
-import colors from '../../common/constants/colors';
-import NormalText from '../atoms/NormalText';
-import TouchButton from '../atoms/TouchButton';
-import { keywordsListStyles } from '../../styles/organisms/styles';
-import { KeywordsListProps } from '../../types/organisms/types';
+import colors from '../../../common/constants/colors';
+import NormalText from '../../atoms/NormalText';
+import TouchButton from '../../atoms/TouchButton';
+import { keywordsListStyles } from '../../../styles/organisms/styles';
+import { KeywordsListProps } from '../../../types/organisms/types';
 
 const KeywordsList = ({
     type,

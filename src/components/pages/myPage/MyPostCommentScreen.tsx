@@ -1,7 +1,7 @@
 import React from 'react';
 import { useIsFocused } from '@react-navigation/native';
 
-import ScreenWrapper from '../../organisms/ScreenWrapper';
+import ScreenWrapper from '../../organisms/common/ScreenWrapper';
 import MyPostCommentTemplate from '../../templates/myPage/MyPostCommentTemplate';
 import { useRootNavigation } from '../../../navigations/RootStackNavigation';
 

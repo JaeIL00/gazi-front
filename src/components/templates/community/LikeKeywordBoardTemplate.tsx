@@ -13,7 +13,7 @@ import colors from '../../../common/constants/colors';
 import MediumText from '../../atoms/MediumText';
 import TouchButton from '../../atoms/TouchButton';
 import SemiBoldText from '../../atoms/SemiBoldText';
-import PostListItem from '../../organisms/PostListItem';
+import PostListItem from '../../organisms/cummunity/PostListItem';
 import { userAuthAtom, userInfoAtom } from '../../../recoil';
 import { likeKeywordBoardTemplateStyles } from '../../../styles/templates/styles';
 import { getCommunityPostAPI, getMyLikeKeywordsAPI } from '../../../apis/api';

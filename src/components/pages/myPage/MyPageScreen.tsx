@@ -1,6 +1,6 @@
 import React from 'react';
 
-import ScreenWrapper from '../../organisms/ScreenWrapper';
+import ScreenWrapper from '../../organisms/common/ScreenWrapper';
 import MyProfileTemplate from '../../templates/myPage/MyPageTemplate';
 import { useRootNavigation } from '../../../navigations/RootStackNavigation';
 
