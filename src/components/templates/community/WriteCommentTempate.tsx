@@ -1,5 +1,5 @@
 import React, { useCallback, useLayoutEffect, useRef, useState } from 'react';
-import { ActivityIndicator, Image, Linking, Modal, ScrollView, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, Image, Linking, Modal, ScrollView, View } from 'react-native';
 import { useMutation } from 'react-query';
 import { useRecoilValue } from 'recoil';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -14,7 +14,6 @@ import MediumText from '../../atoms/MediumText';
 import TouchButton from '../../atoms/TouchButton';
 import TextButton from '../../molecules/TextButton';
 import SemiBoldText from '../../atoms/SemiBoldText';
-import PhotoGallery from '../../organisms/common/PhotoGallery';
 import MultiLineInput from '../../atoms/MultiLineInput';
 import ModalBackground from '../../atoms/ModalBackground';
 import HeaderMolecule from '../../molecules/HeaderMolecule';
@@ -22,9 +21,9 @@ import SearchLocation from '../../organisms/common/SearchLocation';
 import AddKeywordInWrite from '../../organisms/cummunity/AddKeywordInWrite';
 import useTextInputValidation from '../../../common/hooks/useTextInputValidation';
 import { userAuthAtom, userInfoAtom } from '../../../recoil';
+import { writeCommentAPI, writeCommentFilesAPI } from '../../../apis/api';
 import { writeCommentTemplateStyles } from '../../../styles/templates/styles';
 import FailPermissionModal from '../../organisms/common/FailPermissionModal';
-import { writeCommentAPI, writeCommentFilesAPI } from '../../../apis/api';
 import { issueKeywords, subwayKeywords, trafficKeywords } from '../../../common/constants/allKeywords';
 
 import Geolocation from '@react-native-community/geolocation';
@@ -36,6 +35,7 @@ import {
     uploadImageFileTypes,
 } from '../../../types/common/types';
 import IconButton from '../../molecules/IconButton';
+import HowGetPhotoSelectModal from '../../organisms/cummunity/HowGetPhotoSelectModal';
 
 const WriteCommentTemplate = ({ navigationHandler, threadInfo }: WriteCommentTemplateProps) => {
     const { accessToken } = useRecoilValue(userAuthAtom);
@@ -55,7 +55,7 @@ const WriteCommentTemplate = ({ navigationHandler, threadInfo }: WriteCommentTem
     const [inputFocusBlur, setInputFocusBlur] = useState<boolean>(false);
     const [imagePermission, setImagePermission] = useState<boolean>(false);
     const [chooseKeywords, setChooseKeywords] = useState<KeywordListTypes[]>([]);
-    const [isCamAllowPermission, setIsCamAllowPermission] = useState<boolean>(false);
+    const [isHowGetPhotoSelectModal, setIsHowGetPhotoSelectModal] = useState<boolean>(false);
     const [temporaryChooseLocationData, setTemporaryChooseLocationData] = useState<TemporarySaveChooseLocationTypes>({
         formatted_address: '',
         name: '',
@@ -183,31 +183,24 @@ const WriteCommentTemplate = ({ navigationHandler, threadInfo }: WriteCommentTem
     };
 
     // Close gallery button
-    const closeGalleryHandling = () => {
-        setIsCamAllowPermission(false);
+    const closePhotoSelectModalHandler = () => {
+        setIsHowGetPhotoSelectModal(false);
     };
 
     // Get image from gallery
-    const getImageHandler = (file: uploadImageFileTypes, state: string) => {
-        switch (state) {
-            case 'ADD':
-                setWriteCommentData({ ...writeCommentData, files: [...writeCommentData.files, file] });
-                break;
-            case 'DEL':
-                const freshFiles = writeCommentData.files.filter(item => item.uri !== file.uri);
-                setWriteCommentData({ ...writeCommentData, files: freshFiles });
-                break;
-            default:
-                // For Debug
-                console.log('(ERROR) Get image from gallery.', state, file);
-        }
+    const getImageHandler = (file: uploadImageFileTypes[]) => {
+        setWriteCommentData({ ...writeCommentData, files: [...writeCommentData.files, ...file] });
+    };
+    const delImageHandler = (file: uploadImageFileTypes) => {
+        const freshFiles = writeCommentData.files.filter(item => item.uri !== file.uri);
+        setWriteCommentData({ ...writeCommentData, files: freshFiles });
     };
 
     // Get image in library
-    const openGalleryHandler = async () => {
-        if (isAllowLocation) {
-            setIsCamAllowPermission(true);
-        } else {
+    const addPhotoHandler = async () => {
+        if (isAllowLocation && writeCommentData.files.length < 10) {
+            setIsHowGetPhotoSelectModal(true);
+        } else if (!isAllowLocation) {
             notAllowPermission();
         }
     };
@@ -455,10 +448,6 @@ const WriteCommentTemplate = ({ navigationHandler, threadInfo }: WriteCommentTem
                 {!inputFocusBlur && <TouchButton onPress={() => inputFocusBlurHandler('FOCUS')} height={400} />}
             </ScrollView>
 
-            <Modal visible={isCamAllowPermission} onRequestClose={() => setIsCamAllowPermission(false)}>
-                <PhotoGallery closeGalleryHandling={closeGalleryHandling} getImageHandler={getImageHandler} />
-            </Modal>
-
             <View style={writeCommentTemplateStyles.bottomBox}>
                 <View style={writeCommentTemplateStyles.bottomKeyword}>
                     {chooseKeywords.length > 0 && (
@@ -484,7 +473,7 @@ const WriteCommentTemplate = ({ navigationHandler, threadInfo }: WriteCommentTem
                                             />
                                         </View>
                                         <View style={writeCommentTemplateStyles.bottomImageDelButton}>
-                                            <TouchButton onPress={() => getImageHandler(item, 'DEL')} height={25}>
+                                            <TouchButton onPress={() => delImageHandler(item)} height={25}>
                                                 <>
                                                     <View style={writeCommentTemplateStyles.bottomImageDelIconBack} />
                                                     <Icons
@@ -503,8 +492,17 @@ const WriteCommentTemplate = ({ navigationHandler, threadInfo }: WriteCommentTem
                     )}
                 </View>
 
+                <ModalBackground
+                    visible={isHowGetPhotoSelectModal}
+                    onRequestClose={() => setIsHowGetPhotoSelectModal(false)}>
+                    <HowGetPhotoSelectModal
+                        getImageHandler={getImageHandler}
+                        closePhotoSelectModalHandler={closePhotoSelectModalHandler}
+                    />
+                </ModalBackground>
+
                 <TouchButton
-                    onPress={openGalleryHandler}
+                    onPress={addPhotoHandler}
                     alignSelf="flex-start"
                     paddingHorizontal={16}
                     paddingVertical={11}>

@@ -422,6 +422,21 @@ export const searchLocationStyles = StyleSheet.create({
         flexWrap: 'wrap',
     },
 });
+export const howGetPhotoSelectModalStyles = StyleSheet.create({
+    container: {
+        flexDirection: 'row',
+        backgroundColor: colors.BACKGROUND_DEFAULT,
+        height: 170 * screenHeight,
+        width: '100%',
+        position: 'absolute',
+        bottom: 0,
+        borderTopStartRadius: 10 * screenFont,
+        borderTopEndRadius: 10 * screenFont,
+        gap: 80 * screenWidth,
+        paddingTop: 38 * screenHeight,
+        justifyContent: 'center',
+    },
+});
 export const addKeywordInWriteStyles = StyleSheet.create({
     container: {
         position: 'absolute',

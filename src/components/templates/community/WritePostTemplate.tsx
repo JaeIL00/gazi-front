@@ -1,14 +1,5 @@
 import React, { RefObject, useCallback, useLayoutEffect, useRef, useState } from 'react';
-import {
-    ActivityIndicator,
-    Image,
-    ImageSourcePropType,
-    Linking,
-    Modal,
-    ScrollView,
-    TouchableOpacity,
-    View,
-} from 'react-native';
+import { ActivityIndicator, Image, ImageSourcePropType, Linking, Modal, ScrollView, View } from 'react-native';
 import { useMutation } from 'react-query';
 import { useRecoilValue } from 'recoil';
 import { debounce } from 'lodash';
@@ -26,7 +17,6 @@ import MediumText from '../../atoms/MediumText';
 import TouchButton from '../../atoms/TouchButton';
 import TextButton from '../../molecules/TextButton';
 import SemiBoldText from '../../atoms/SemiBoldText';
-import PhotoGallery from '../../organisms/common/PhotoGallery';
 import MultiLineInput from '../../atoms/MultiLineInput';
 import ModalBackground from '../../atoms/ModalBackground';
 import HeaderMolecule from '../../molecules/HeaderMolecule';
@@ -47,6 +37,7 @@ import {
     uploadImageFileTypes,
 } from '../../../types/common/types';
 import IconButton from '../../molecules/IconButton';
+import HowGetPhotoSelectModal from '../../organisms/cummunity/HowGetPhotoSelectModal';
 
 const WritePostTemplate = ({ navigationHandler }: WritePostTemplateProps) => {
     const { accessToken } = useRecoilValue(userAuthAtom);
@@ -69,7 +60,7 @@ const WritePostTemplate = ({ navigationHandler }: WritePostTemplateProps) => {
     const [inputFocusBlur, setInputFocusBlur] = useState<boolean>(false);
     const [imagePermission, setImagePermission] = useState<boolean>(false);
     const [chooseKeywords, setChooseKeywords] = useState<KeywordListTypes[]>([]);
-    const [isCamAllowPermission, setIsCamAllowPermission] = useState<boolean>(false);
+    const [isHowGetPhotoSelectModal, setIsHowGetPhotoSelectModal] = useState<boolean>(false);
     const [temporaryChooseLocationData, setTemporaryChooseLocationData] = useState<TemporarySaveChooseLocationTypes>({
         formatted_address: '',
         name: '',
@@ -184,19 +175,12 @@ const WritePostTemplate = ({ navigationHandler }: WritePostTemplateProps) => {
     };
 
     // Get image from gallery
-    const getImageHandler = (file: uploadImageFileTypes, state: string) => {
-        switch (state) {
-            case 'ADD':
-                setWritePostData({ ...writePostData, files: [...writePostData.files, file] });
-                break;
-            case 'DEL':
-                const freshFiles = writePostData.files.filter(item => item.uri !== file.uri);
-                setWritePostData({ ...writePostData, files: freshFiles });
-                break;
-            default:
-                // For Debug
-                console.log('(ERROR) Get image from gallery.', state, file);
-        }
+    const getImageHandler = (file: uploadImageFileTypes[]) => {
+        setWritePostData({ ...writePostData, files: [...writePostData.files, ...file] });
+    };
+    const delImageHandler = (file: uploadImageFileTypes) => {
+        const freshFiles = writePostData.files.filter(item => item.uri !== file.uri);
+        setWritePostData({ ...writePostData, files: freshFiles });
     };
 
     // Content input focue blur handler
@@ -214,18 +198,18 @@ const WritePostTemplate = ({ navigationHandler }: WritePostTemplateProps) => {
         }
     };
 
-    // Get image in library
-    const openGalleryHandler = async () => {
-        if (isAllowLocation) {
-            setIsCamAllowPermission(true);
-        } else {
+    // Get image in gallery or camera
+    const addPhotoHandler = async () => {
+        if (isAllowLocation && writePostData.files.length < 10) {
+            setIsHowGetPhotoSelectModal(true);
+        } else if (!isAllowLocation) {
             notAllowPermission();
         }
     };
 
     // Close gallery button
-    const closeGalleryHandling = () => {
-        setIsCamAllowPermission(false);
+    const closePhotoSelectModalHandler = () => {
+        setIsHowGetPhotoSelectModal(false);
     };
 
     // Check essential value of write post
@@ -561,10 +545,6 @@ const WritePostTemplate = ({ navigationHandler }: WritePostTemplateProps) => {
                     {!inputFocusBlur && <TouchButton onPress={() => inputFocusBlurHandler('FOCUS')} height={400} />}
                 </ScrollView>
 
-                <Modal visible={isCamAllowPermission} onRequestClose={() => setIsCamAllowPermission(false)}>
-                    <PhotoGallery closeGalleryHandling={closeGalleryHandling} getImageHandler={getImageHandler} />
-                </Modal>
-
                 <View style={writePostTemplateStyles.bottomBox}>
                     <View style={writePostTemplateStyles.bottomKeyword}>
                         {chooseKeywords.length > 0 && (
@@ -594,7 +574,7 @@ const WritePostTemplate = ({ navigationHandler }: WritePostTemplateProps) => {
                                                 />
                                             </View>
                                             <View style={writePostTemplateStyles.bottomImageDelButton}>
-                                                <TouchButton onPress={() => getImageHandler(item, 'DEL')}>
+                                                <TouchButton onPress={() => delImageHandler(item)}>
                                                     <>
                                                         <View style={writePostTemplateStyles.bottomImageDelIconBack} />
                                                         <Icons
@@ -613,8 +593,17 @@ const WritePostTemplate = ({ navigationHandler }: WritePostTemplateProps) => {
                         )}
                     </View>
 
+                    <ModalBackground
+                        visible={isHowGetPhotoSelectModal}
+                        onRequestClose={() => setIsHowGetPhotoSelectModal(false)}>
+                        <HowGetPhotoSelectModal
+                            getImageHandler={getImageHandler}
+                            closePhotoSelectModalHandler={closePhotoSelectModalHandler}
+                        />
+                    </ModalBackground>
+
                     <TouchButton
-                        onPress={openGalleryHandler}
+                        onPress={addPhotoHandler}
                         alignSelf="flex-start"
                         paddingHorizontal={16}
                         paddingVertical={11}>

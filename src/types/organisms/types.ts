@@ -120,3 +120,7 @@ export type EditMyKeywordProps = {
         options?: (RefetchOptions & RefetchQueryFilters<TPageData>) | undefined,
     ) => Promise<QueryObserverResult<AxiosResponse<any, any>, unknown>>;
 };
+export type HowGetPhotoSelectModalProps = {
+    getImageHandler: (files: uploadImageFileTypes[]) => void;
+    closePhotoSelectModalHandler: () => void;
+};
