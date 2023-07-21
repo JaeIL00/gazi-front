@@ -6,13 +6,13 @@ import VersionCheck from 'react-native-version-check';
 import FastImage from 'react-native-fast-image';
 
 import Icons from '../../atoms/Icons';
-import colors from '../../../common/constants/colors';
+import colors from '../../../constants/colors';
 import MediumText from '../../atoms/MediumText';
 import NormalText from '../../atoms/NormalText';
 import TouchButton from '../../atoms/TouchButton';
 import SemiBoldText from '../../atoms/SemiBoldText';
 import { userInfoAtom } from '../../../recoil';
-import { myPageTabList } from '../../../common/constants/myPageTabList';
+import { myPageTabList } from '../../../constants/myPageTabList';
 import { myPageTemplateStyles } from '../../../styles/templates/styles';
 import { screenFont, screenHeight, screenWidth } from '../../../utils/changeStyleSize';
 import { MyPageTemplateProps } from '../../../types/templates/types';

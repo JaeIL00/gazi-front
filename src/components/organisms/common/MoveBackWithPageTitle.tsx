@@ -1,7 +1,7 @@
 import React from 'react';
 import { View } from 'react-native';
 
-import colors from '../../../common/constants/colors';
+import colors from '../../../constants/colors';
 import { moveBackWithPageTitleStyles } from '../../../styles/organisms/styles';
 import { MoveBackWithPageTitleProps } from '../../../types/organisms/types';
 import IconButton from '../../molecules/IconButton';

@@ -1,6 +1,6 @@
 import { FlexAlignType, StyleSheet, TextStyle } from 'react-native';
 import { screenFont, screenHeight, screenWidth } from '../../utils/changeStyleSize';
-import colors from '../../common/constants/colors';
+import colors from '../../constants/colors';
 
 export const touchButtonStyles = (
     width?: number | string,

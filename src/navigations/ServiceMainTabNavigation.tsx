@@ -10,7 +10,7 @@ import AlarmPageTabNavigation from './AlarmPageTabNavigation';
 import SemiBoldText from '../components/atoms/SemiBoldText';
 import { ServiceMainTabParamList } from '../types/common/types';
 import { screenHeight, screenWidth } from '../utils/changeStyleSize';
-import colors from '../common/constants/colors';
+import colors from '../constants/colors';
 
 const ServiceMainTabNavigation = () => {
     const ServiceMainTab = createBottomTabNavigator<ServiceMainTabParamList>();

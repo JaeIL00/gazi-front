@@ -3,7 +3,7 @@ import { useRoute } from '@react-navigation/native';
 import { StatusBar, View } from 'react-native';
 
 import { screenWidth } from '../../../utils/changeStyleSize';
-import colors from '../../../common/constants/colors';
+import colors from '../../../constants/colors';
 import { ScreenWrapperProps } from '../../../types/organisms/types';
 
 const ScreenWrapper = ({ children, isPaddingHorizontal }: ScreenWrapperProps) => {

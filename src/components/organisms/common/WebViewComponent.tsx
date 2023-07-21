@@ -3,7 +3,7 @@ import { View } from 'react-native';
 import { WebView } from 'react-native-webview';
 
 import Icons from '../../atoms/Icons';
-import colors from '../../../common/constants/colors';
+import colors from '../../../constants/colors';
 import { webViewComponentStyles } from '../../../styles/organisms/styles';
 import { WebViewComponentProps } from '../../../types/organisms/types';
 import TouchButton from '../../atoms/TouchButton';

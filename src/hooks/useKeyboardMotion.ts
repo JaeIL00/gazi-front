@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 import { Animated } from 'react-native';
-import { screenHeight } from '../../utils/changeStyleSize';
+import { screenHeight } from '../utils/changeStyleSize';
 
 const useKeyboardMotion = (upNum: number, downNum: number) => {
     const bottomValue = useRef(new Animated.Value(downNum * screenHeight)).current;

@@ -6,11 +6,11 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 
 import Icons from '../../atoms/Icons';
 import Spacer from '../../atoms/Spacer';
-import colors from '../../../common/constants/colors';
+import colors from '../../../constants/colors';
 import MediumText from '../../atoms/MediumText';
 import TouchButton from '../../atoms/TouchButton';
 import HeaderMolecule from '../../molecules/HeaderMolecule';
-import useTextInputValidation from '../../../common/hooks/useTextInputValidation';
+import useTextInputValidation from '../../../hooks/useTextInputValidation';
 import { SingleLineInput } from '../../atoms/SingleLineInput';
 import { userInfoAtom, userAuthAtom } from '../../../recoil';
 import { editNicknameTemplateStyles } from '../../../styles/templates/styles';

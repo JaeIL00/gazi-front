@@ -2,7 +2,7 @@ import React, { useCallback, useState } from 'react';
 import { KeyboardAvoidingView, TouchableOpacity, View } from 'react-native';
 
 import Spacer from '../../atoms/Spacer';
-import colors from '../../../common/constants/colors';
+import colors from '../../../constants/colors';
 import NormalText from '../../atoms/NormalText';
 import TouchButton from '../../atoms/TouchButton';
 import SemiBoldText from '../../atoms/SemiBoldText';

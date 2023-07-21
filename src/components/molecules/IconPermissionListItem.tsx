@@ -2,7 +2,7 @@ import React from 'react';
 import { Image, View } from 'react-native';
 
 import Icons from '../atoms/Icons';
-import colors from '../../common/constants/colors';
+import colors from '../../constants/colors';
 import NormalText from '../atoms/NormalText';
 import MediumText from '../atoms/MediumText';
 import { IconPermissionListItemProps } from '../../types/molecules/types';

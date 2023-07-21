@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Image, View } from 'react-native';
 import { useSetRecoilState } from 'recoil';
 
-import colors from '../../../common/constants/colors';
+import colors from '../../../constants/colors';
 import BoldText from '../../atoms/BoldText';
 import TextButton from '../../molecules/TextButton';
 import { joinMemberAtom } from '../../../recoil';

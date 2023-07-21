@@ -2,7 +2,7 @@ import React from 'react';
 import { View } from 'react-native';
 
 import Spacer from '../../atoms/Spacer';
-import colors from '../../../common/constants/colors';
+import colors from '../../../constants/colors';
 import NormalText from '../../atoms/NormalText';
 import TextButton from '../../molecules/TextButton';
 import SemiBoldText from '../../atoms/SemiBoldText';

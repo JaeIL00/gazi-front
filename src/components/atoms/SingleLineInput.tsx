@@ -1,7 +1,7 @@
 import React, { RefObject, useEffect, useRef } from 'react';
 import { Keyboard, TextInput } from 'react-native';
 
-import colors from '../../common/constants/colors';
+import colors from '../../constants/colors';
 import { SingleLineInputProps } from '../../types/atoms/types';
 import { singleLineInputStyles } from '../../styles/atoms/styles';
 

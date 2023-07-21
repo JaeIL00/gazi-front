@@ -11,12 +11,12 @@ import NormalText from '../../atoms/NormalText';
 import MediumText from '../../atoms/MediumText';
 import TextButton from '../../molecules/TextButton';
 import TouchButton from '../../atoms/TouchButton';
-import useKeyboardMotion from '../../../common/hooks/useKeyboardMotion';
+import useKeyboardMotion from '../../../hooks/useKeyboardMotion';
 import { emailAuthAPI } from '../../../apis/api';
 import { authEmailStyles } from '../../../styles/organisms/styles';
 import { SingleLineInput } from '../../atoms/SingleLineInput';
 import { emailAuthAtom, joinMemberAtom } from '../../../recoil';
-import colors from '../../../common/constants/colors';
+import colors from '../../../constants/colors';
 import { AuthEmailProps } from '../../../types/organisms/types';
 import IconButton from '../../molecules/IconButton';
 

@@ -3,7 +3,7 @@ import { Platform, ScrollView, View, useWindowDimensions } from 'react-native';
 import DropShadow from 'react-native-drop-shadow';
 import FastImage from 'react-native-fast-image';
 
-import colors from '../../../common/constants/colors';
+import colors from '../../../constants/colors';
 import Icons from '../../atoms/Icons';
 import Spacer from '../../atoms/Spacer';
 import NormalText from '../../atoms/NormalText';

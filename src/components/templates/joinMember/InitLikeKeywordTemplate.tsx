@@ -7,18 +7,18 @@ import { debounce } from 'lodash';
 import DropShadow from 'react-native-drop-shadow';
 
 import Spacer from '../../atoms/Spacer';
-import colors from '../../../common/constants/colors';
+import colors from '../../../constants/colors';
 import MediumText from '../../atoms/MediumText';
 import TouchButton from '../../atoms/TouchButton';
 import TextButton from '../../molecules/TextButton';
 import SemiBoldText from '../../atoms/SemiBoldText';
 import KeywordsList from '../../organisms/common/KeywordsList';
-import useCheckKeyword from '../../../common/hooks/useCheckKeyword';
+import useCheckKeyword from '../../../hooks/useCheckKeyword';
 import MoveBackWithPageTitle from '../../organisms/common/MoveBackWithPageTitle';
 import { userAuthAtom } from '../../../recoil';
 import { addLikeKeywordsAPI } from '../../../apis/api';
 import { initLikeKeywordTemplateStyles } from '../../../styles/templates/styles';
-import { issueKeywordsNotEtc, subwayKeywords, trafficKeywords } from '../../../common/constants/allKeywords';
+import { issueKeywordsNotEtc, subwayKeywords, trafficKeywords } from '../../../constants/allKeywords';
 import { InitLikeKeywordTemplateProps } from '../../../types/templates/types';
 
 const InitLikeKeywordTemplate = ({ navigationHandler }: InitLikeKeywordTemplateProps) => {

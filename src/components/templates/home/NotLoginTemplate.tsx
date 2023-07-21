@@ -7,7 +7,7 @@ import NaverLogin from '@react-native-seoul/naver-login';
 import Config from 'react-native-config';
 
 import Spacer from '../../atoms/Spacer';
-import colors from '../../../common/constants/colors';
+import colors from '../../../constants/colors';
 import BoldText from '../../atoms/BoldText';
 import TextButton from '../../molecules/TextButton';
 import { notLoginTemplateStyles } from '../../../styles/templates/styles';

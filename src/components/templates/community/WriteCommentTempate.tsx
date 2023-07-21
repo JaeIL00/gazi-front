@@ -8,7 +8,7 @@ import FastImage from 'react-native-fast-image';
 
 import Icons from '../../atoms/Icons';
 import Spacer from '../../atoms/Spacer';
-import colors from '../../../common/constants/colors';
+import colors from '../../../constants/colors';
 import NormalText from '../../atoms/NormalText';
 import MediumText from '../../atoms/MediumText';
 import TouchButton from '../../atoms/TouchButton';
@@ -19,12 +19,12 @@ import ModalBackground from '../../atoms/ModalBackground';
 import HeaderMolecule from '../../molecules/HeaderMolecule';
 import SearchLocation from '../../organisms/common/SearchLocation';
 import AddKeywordInWrite from '../../organisms/cummunity/AddKeywordInWrite';
-import useTextInputValidation from '../../../common/hooks/useTextInputValidation';
+import useTextInputValidation from '../../../hooks/useTextInputValidation';
 import { userAuthAtom, userInfoAtom } from '../../../recoil';
 import { writeCommentAPI, writeCommentFilesAPI } from '../../../apis/api';
 import { writeCommentTemplateStyles } from '../../../styles/templates/styles';
 import FailPermissionModal from '../../organisms/common/FailPermissionModal';
-import { issueKeywords, subwayKeywords, trafficKeywords } from '../../../common/constants/allKeywords';
+import { issueKeywords, subwayKeywords, trafficKeywords } from '../../../constants/allKeywords';
 
 import Geolocation from '@react-native-community/geolocation';
 import { WriteCommentTemplateProps } from '../../../types/templates/types';

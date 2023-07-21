@@ -6,7 +6,7 @@ import { useInfiniteQuery } from 'react-query';
 
 import Icons from '../../atoms/Icons';
 import Spacer from '../../atoms/Spacer';
-import colors from '../../../common/constants/colors';
+import colors from '../../../constants/colors';
 import NormalText from '../../atoms/NormalText';
 import TouchButton from '../../atoms/TouchButton';
 import SemiBoldText from '../../atoms/SemiBoldText';

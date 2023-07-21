@@ -4,7 +4,7 @@ import { useRecoilValue } from 'recoil';
 import FastImage from 'react-native-fast-image';
 
 import Spacer from '../../atoms/Spacer';
-import colors from '../../../common/constants/colors';
+import colors from '../../../constants/colors';
 import PostListItem from '../cummunity/PostListItem';
 import NormalText from '../../atoms/NormalText';
 import TouchButton from '../../atoms/TouchButton';

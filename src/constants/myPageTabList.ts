@@ -1,4 +1,4 @@
-import { MyPageTabTypes } from '../../types/common/types';
+import { MyPageTabTypes } from '../types/common/types';
 
 export const myPageTabList: MyPageTabTypes[] = [
     {

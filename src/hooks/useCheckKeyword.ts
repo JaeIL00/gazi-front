@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
-import { issueKeywords, subwayKeywords, trafficKeywords } from '../../common/constants/allKeywords';
-import { KeywordListTypes } from '../../types/common/types';
+import { issueKeywords, subwayKeywords, trafficKeywords } from '../constants/allKeywords';
+import { KeywordListTypes } from '../types/common/types';
 
 const useCheckKeyword = () => {
     // Initialized check keywords

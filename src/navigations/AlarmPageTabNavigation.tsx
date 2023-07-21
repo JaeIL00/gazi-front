@@ -4,7 +4,7 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import { Route } from 'react-native-tab-view';
 import { Props } from 'react-native-tab-view/lib/typescript/src/TabBarIndicator';
 
-import colors from '../common/constants/colors';
+import colors from '../constants/colors';
 import NewsAlarmScreen from '../components/pages/alarmPage/NewsAlarmScreen';
 import KeywordAlarmScreen from '../components/pages/alarmPage/KeywordAlarmScreen';
 import { communityTabStyle } from '../styles/common/styles';

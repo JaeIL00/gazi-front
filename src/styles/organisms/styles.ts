@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 import { screenFont, screenHeight, screenWidth } from '../../utils/changeStyleSize';
-import colors from '../../common/constants/colors';
+import colors from '../../constants/colors';
 
 export const moveBackWithPageTitleStyles = StyleSheet.create({
     buttonContainer: {

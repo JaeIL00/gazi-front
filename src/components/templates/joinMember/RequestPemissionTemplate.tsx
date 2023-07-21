@@ -3,7 +3,7 @@ import { Platform, ScrollView, View } from 'react-native';
 import { PERMISSIONS, request, requestMultiple } from 'react-native-permissions';
 
 import Spacer from '../../atoms/Spacer';
-import colors from '../../../common/constants/colors';
+import colors from '../../../constants/colors';
 import NormalText from '../../atoms/NormalText';
 import TextButton from '../../molecules/TextButton';
 import MoveBackWithPageTitle from '../../organisms/common/MoveBackWithPageTitle';

@@ -10,7 +10,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import Icons from '../../atoms/Icons';
 import Spacer from '../../atoms/Spacer';
-import colors from '../../../common/constants/colors';
+import colors from '../../../constants/colors';
 import mapStyle from '../../../styles/mapStyle';
 import NormalText from '../../atoms/NormalText';
 import MediumText from '../../atoms/MediumText';
@@ -28,7 +28,7 @@ import { userAuthAtom, userInfoAtom } from '../../../recoil';
 import { SingleLineInput } from '../../atoms/SingleLineInput';
 import { writePostTemplateStyles } from '../../../styles/templates/styles';
 import { writePostAPI, writePostFilesAPI } from '../../../apis/api';
-import { issueKeywords, subwayKeywords, trafficKeywords } from '../../../common/constants/allKeywords';
+import { issueKeywords, subwayKeywords, trafficKeywords } from '../../../constants/allKeywords';
 import { WritePostTemplateProps } from '../../../types/templates/types';
 import {
     KeywordListTypes,

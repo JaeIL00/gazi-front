@@ -2,7 +2,7 @@ import React from 'react';
 import { Platform } from 'react-native';
 import DropShadow from 'react-native-drop-shadow';
 
-import colors from '../../../common/constants/colors';
+import colors from '../../../constants/colors';
 import { WritingFloatingBtnProps } from '../../../types/molecules/types';
 import { writingFloatingBtnStyles } from '../../../styles/molecules/styles';
 import ImageButton from '../../molecules/ImageButton';

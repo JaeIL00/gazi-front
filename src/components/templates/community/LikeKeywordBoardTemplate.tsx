@@ -9,7 +9,7 @@ import Geolocation from '@react-native-community/geolocation';
 
 import Icons from '../../atoms/Icons';
 import Spacer from '../../atoms/Spacer';
-import colors from '../../../common/constants/colors';
+import colors from '../../../constants/colors';
 import MediumText from '../../atoms/MediumText';
 import TouchButton from '../../atoms/TouchButton';
 import SemiBoldText from '../../atoms/SemiBoldText';

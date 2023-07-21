@@ -11,7 +11,7 @@ import { communityTabStyle } from '../styles/common/styles';
 import { screenFont } from '../utils/changeStyleSize';
 import { CommunityTabParamList } from '../types/common/types';
 import { useRootNavigation } from './RootStackNavigation';
-import colors from '../common/constants/colors';
+import colors from '../constants/colors';
 
 const CommunityTabNavigation = () => {
     const rootNavigation = useRootNavigation();

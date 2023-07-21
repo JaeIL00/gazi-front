@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Animated, Modal, View, useWindowDimensions } from 'react-native';
 
 import Icons from '../../atoms/Icons';
-import colors from '../../../common/constants/colors';
+import colors from '../../../constants/colors';
 import TextButton from '../../molecules/TextButton';
 import WebViewComponent from '../common/WebViewComponent';
 import TouchButton from '../../atoms/TouchButton';

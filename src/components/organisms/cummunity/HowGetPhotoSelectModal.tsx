@@ -3,7 +3,7 @@ import { View } from 'react-native';
 import ImagePicker from 'react-native-image-crop-picker';
 
 import TextButton from '../../molecules/TextButton';
-import colors from '../../../common/constants/colors';
+import colors from '../../../constants/colors';
 import { howGetPhotoSelectModalStyles } from '../../../styles/organisms/styles';
 import { HowGetPhotoSelectModalProps } from '../../../types/organisms/types';
 

@@ -21,7 +21,7 @@ import { nearByUserPostsAPI } from '../../../apis/api';
 import { userAuthAtom, userInfoAtom } from '../../../recoil';
 import { mapHomeTemplateStyles } from '../../../styles/templates/styles';
 import { screenFont, screenHeight, screenWidth } from '../../../utils/changeStyleSize';
-import colors from '../../../common/constants/colors';
+import colors from '../../../constants/colors';
 import { MapBoundaryTypes, MapLocationTypes, PostTypes } from '../../../types/common/types';
 import { MapHomeTemplateProps } from '../../../types/templates/types';
 import TextButton from '../../molecules/TextButton';

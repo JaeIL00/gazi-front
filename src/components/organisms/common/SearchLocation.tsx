@@ -7,7 +7,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import Icons from '../../atoms/Icons';
 import Spacer from '../../atoms/Spacer';
-import colors from '../../../common/constants/colors';
+import colors from '../../../constants/colors';
 import MediumText from '../../atoms/MediumText';
 import NormalText from '../../atoms/NormalText';
 import TouchButton from '../../atoms/TouchButton';

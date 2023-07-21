@@ -4,14 +4,14 @@ import LinearGradient from 'react-native-linear-gradient';
 
 import KeywordsList from '../common/KeywordsList';
 import Spacer from '../../atoms/Spacer';
-import colors from '../../../common/constants/colors';
+import colors from '../../../constants/colors';
 import NormalText from '../../atoms/NormalText';
 import TextButton from '../../molecules/TextButton';
 import SemiBoldText from '../../atoms/SemiBoldText';
 import HeaderMolecule from '../../molecules/HeaderMolecule';
-import useCheckKeyword from '../../../common/hooks/useCheckKeyword';
+import useCheckKeyword from '../../../hooks/useCheckKeyword';
 import { addKeywordInWriteStyles } from '../../../styles/organisms/styles';
-import { issueKeywords, subwayKeywords, trafficKeywords } from '../../../common/constants/allKeywords';
+import { issueKeywords, subwayKeywords, trafficKeywords } from '../../../constants/allKeywords';
 import { KeywordListTypes } from '../../../types/common/types';
 import { WritePostAddKeywordProps } from '../../../types/organisms/types';
 

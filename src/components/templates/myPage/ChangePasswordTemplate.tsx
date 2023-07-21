@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import { View } from 'react-native';
 
 import Spacer from '../../atoms/Spacer';
-import colors from '../../../common/constants/colors';
+import colors from '../../../constants/colors';
 import HeaderMolecule from '../../molecules/HeaderMolecule';
 import LoginTextInput from '../../molecules/LoginTextInput';
 import IconWithMediumText from '../../molecules/IconWithMediumText';
-import useTextInputValidation from '../../../common/hooks/useTextInputValidation';
+import useTextInputValidation from '../../../hooks/useTextInputValidation';
 import { SingleLineInput } from '../../atoms/SingleLineInput';
 import { changePasswordTemplateStyles } from '../../../styles/templates/styles';
 import { screenHeight, screenWidth } from '../../../utils/changeStyleSize';

@@ -2,7 +2,7 @@ import React from 'react';
 import { View } from 'react-native';
 
 import Icons from '../../atoms/Icons';
-import colors from '../../../common/constants/colors';
+import colors from '../../../constants/colors';
 import TouchButton from '../../atoms/TouchButton';
 import SemiBoldText from '../../atoms/SemiBoldText';
 import { AgreementCheckListItemProps } from '../../../types/molecules/types';

@@ -1,7 +1,7 @@
 import React from 'react';
 import { ScrollView, View } from 'react-native';
 
-import colors from '../../../common/constants/colors';
+import colors from '../../../constants/colors';
 import NormalText from '../../atoms/NormalText';
 import TouchButton from '../../atoms/TouchButton';
 import { keywordsListStyles } from '../../../styles/organisms/styles';
