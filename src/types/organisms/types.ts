@@ -68,7 +68,7 @@ export type KeywordsListProps = {
     checkBackColor: string;
     trafficKeywordColor?: string;
 };
-export type MapWithMarkerProps = {
+export type GoogleMapComponent = {
     mapRef: RefObject<MapView>;
     currentPosition: MapLocationTypes;
     nearPostList: PostTypes[];
@@ -103,7 +103,6 @@ export type NearbyPostListModalProps = {
 };
 export type NaverMapComponentProps = {
     mapRef: RefObject<NaverMapView>;
-    nearPostList: PostTypes[];
     currentPositionRef: MapLocationTypes;
     mapBoundaryStateRef: React.MutableRefObject<MapBoundaryTypes>;
     mapCurrentPositionRef: React.MutableRefObject<MapLocationTypes>;

@@ -2,7 +2,7 @@ import React, { RefObject, useCallback, useEffect, useLayoutEffect, useRef, useS
 import { ActivityIndicator, Linking, Modal, Platform, View } from 'react-native';
 import Geolocation from '@react-native-community/geolocation';
 import DropShadow from 'react-native-drop-shadow';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import MapView, { BoundingBox, Details, Region } from 'react-native-maps';
 import { useInfiniteQuery } from 'react-query';
 import { debounce } from 'lodash';
@@ -18,7 +18,7 @@ import ModalBackground from '../../atoms/ModalBackground';
 import FailPermissionModal from '../../organisms/common/FailPermissionModal';
 import NearbyPostListModal from '../../organisms/home/NearbyPostListModal';
 import { nearByUserPostsAPI } from '../../../apis/api';
-import { userAuthAtom, userInfoAtom } from '../../../recoil';
+import { nearPostListAtom, userAuthAtom, userInfoAtom } from '../../../recoil';
 import { mapHomeTemplateStyles } from '../../../styles/templates/styles';
 import { screenFont, screenHeight, screenWidth } from '../../../utils/changeStyleSize';
 import colors from '../../../constants/colors';
@@ -31,6 +31,7 @@ import NaverMapView from 'react-native-nmap';
 const MapHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritingScreen }: MapHomeTemplateProps) => {
     const { accessToken } = useRecoilValue(userAuthAtom);
     const { isAllowLocation } = useRecoilValue(userInfoAtom);
+    const setRecoilNearPost = useSetRecoilState(nearPostListAtom);
 
     const mapRef = useRef() as RefObject<NaverMapView>;
     const nearPostResponseIndexRef = useRef<number>(0);
@@ -100,9 +101,14 @@ const MapHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritingScreen }
                     setIsNearPostRefresh(false);
                     setIsNearPostSearchTopBar(false);
                     setNearPostList(content);
+                    setRecoilNearPost(content);
                     SplashScreen.hide();
                 } else {
                     setNearPostList([
+                        ...nearPostList,
+                        ...data.pages[nearPostResponseIndexRef.current].data.data.content,
+                    ]);
+                    setRecoilNearPost([
                         ...nearPostList,
                         ...data.pages[nearPostResponseIndexRef.current].data.data.content,
                     ]);
@@ -375,7 +381,6 @@ const MapHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritingScreen }
                 mapRef={mapRef}
                 currentPositionRef={userCurrentPositionRef.current}
                 mapBoundaryStateRef={mapBoundaryStateRef}
-                nearPostList={nearPostList}
                 mapCurrentPositionRef={mapCurrentPositionRef}
                 mapRenderCompleteHandler={mapRenderCompleteHandler}
                 findMarkerPost={findMarkerPost}

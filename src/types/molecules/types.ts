@@ -40,6 +40,9 @@ export interface IconButtonProps extends TouchButtonProps {
     iconSize: number;
     iconColor: string;
 }
+export type MapMarkerProps = {
+    findMarkerPost: (id: number) => void;
+};
 export interface ImageButtonProps extends TouchButtonProps {
     isCaching: boolean;
     imageWidth: number | string;

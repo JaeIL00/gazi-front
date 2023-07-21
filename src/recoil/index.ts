@@ -1,5 +1,11 @@
 import { atom } from 'recoil';
-import { emailAuthAtomTypes, joinMemberTypes, userInfoAtomTypes, userAuthAtomTypes } from '../types/types';
+import {
+    emailAuthAtomTypes,
+    joinMemberTypes,
+    userInfoAtomTypes,
+    userAuthAtomTypes,
+    PostTypes,
+} from '../types/common/types';
 
 // AUTH
 export const userAuthAtom = atom<userAuthAtomTypes>({
@@ -37,4 +43,23 @@ export const emailAuthAtom = atom<emailAuthAtomTypes>({
         number: 0,
         isAuthorizationPass: false,
     },
+});
+
+// COMMUNITY
+export const nearPostListAtom = atom<PostTypes[]>({
+    key: 'nearPostListAtom',
+    default: [
+        {
+            title: '',
+            distance: '',
+            time: '',
+            rePostCount: 0,
+            content: '',
+            latitude: 0,
+            longitude: 0,
+            headKeyword: 0,
+            thumbNail: '',
+            postId: 0,
+        },
+    ],
 });

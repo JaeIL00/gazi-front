@@ -4,7 +4,7 @@ import FastImage from 'react-native-fast-image';
 
 import MapCurrentMarker from './MapCurrentMarker';
 import { mapWithMarkerStyles } from '../../../styles/organisms/styles';
-import { MapWithMarkerProps } from '../../../types/organisms/types';
+import { GoogleMapComponent } from '../../../types/organisms/types';
 
 const GoogleMapComponent = ({
     mapRef,
@@ -15,7 +15,7 @@ const GoogleMapComponent = ({
     checkZoomLevelWarning,
     checkMapGesture,
     findMarkerPost,
-}: MapWithMarkerProps) => {
+}: GoogleMapComponent) => {
     return (
         <MapView
             ref={mapRef}
