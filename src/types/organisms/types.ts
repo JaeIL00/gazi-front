@@ -12,6 +12,7 @@ import { PageTitleWithExplainProps } from '../molecules/types';
 import MapView, { Details, Region } from 'react-native-maps';
 import { QueryObserverResult, RefetchOptions, RefetchQueryFilters } from 'react-query';
 import { AxiosResponse } from 'axios';
+import NaverMapView from 'react-native-nmap';
 
 export interface MoveBackWithPageTitleProps extends PageTitleWithExplainProps {
     onPress: () => void;
@@ -99,6 +100,16 @@ export type NearbyPostListModalProps = {
     callNextPageHandler: () => void;
     moveToWritingScreen: () => void;
     nearPostListRefresh: () => void;
+};
+export type NaverMapComponentProps = {
+    mapRef: RefObject<NaverMapView>;
+    currentPosition: MapLocationTypes;
+    mapBoundaryStateRef: React.MutableRefObject<MapBoundaryTypes>;
+    nearPostList: PostTypes[];
+    mapRenderCompleteHandler: () => void;
+    updateMapZoomLevel: (level: number) => void;
+    moveMapBottomSheetHandler: () => void;
+    findMarkerPost: (id: number) => void;
 };
 export type SearchLocationProps = {
     isHome: boolean;

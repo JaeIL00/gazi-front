@@ -13,37 +13,6 @@ export const writingFloatingBtnStyles = StyleSheet.create({
         shadowRadius: 5 * screenFont,
     },
 });
-export const mapWithMarkerStyles = StyleSheet.create({
-    map: {
-        width: '100%',
-        height: '100%',
-        position: 'absolute',
-        top: 0,
-    },
-    markerBox: {
-        justifyContent: 'center',
-        alignItems: 'center',
-        width: 103 * screenWidth,
-        height: 103 * screenWidth,
-    },
-    markerBoxInner: {
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    markerRange: {
-        position: 'absolute',
-        width: 103 * screenWidth,
-        height: 103 * screenWidth,
-    },
-    marker: {
-        width: 27 * screenWidth,
-        height: 27 * screenWidth,
-    },
-    issueMarker: {
-        width: 25 * screenWidth,
-        height: 25 * screenWidth,
-    },
-});
 export const checkBoxBackground = (is: boolean) =>
     StyleSheet.create({
         color: {

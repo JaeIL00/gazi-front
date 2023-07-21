@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, TouchableOpacity, View } from 'react-native';
+import { Image, View } from 'react-native';
 
 import Spacer from '../../atoms/Spacer';
 import colors from '../../../common/constants/colors';

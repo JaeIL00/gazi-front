@@ -369,7 +369,6 @@ export const checkBoxBackground = (is: boolean) =>
     });
 export const postListItemStyles = StyleSheet.create({
     container: {
-        flex: 1,
         paddingHorizontal: 16 * screenWidth,
         flexDirection: 'row',
     },

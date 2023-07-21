@@ -1,5 +1,5 @@
-import React, { RefObject, useCallback, useLayoutEffect, useRef, useState } from 'react';
-import { ActivityIndicator, Linking, Modal, Platform, TouchableOpacity, View } from 'react-native';
+import React, { RefObject, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { ActivityIndicator, Linking, Modal, Platform, View } from 'react-native';
 import Geolocation from '@react-native-community/geolocation';
 import DropShadow from 'react-native-drop-shadow';
 import { useRecoilValue } from 'recoil';
@@ -12,7 +12,7 @@ import FastImage from 'react-native-fast-image';
 import MediumText from '../../atoms/MediumText';
 import NormalText from '../../atoms/NormalText';
 import TouchButton from '../../atoms/TouchButton';
-import MapWithMarker from '../../organisms/home/MapWithMarker';
+import GoogleMapComponent from '../../organisms/home/GoogleMapComponent';
 import SearchLocation from '../../organisms/common/SearchLocation';
 import ModalBackground from '../../atoms/ModalBackground';
 import FailPermissionModal from '../../organisms/common/FailPermissionModal';
@@ -25,12 +25,14 @@ import colors from '../../../common/constants/colors';
 import { MapBoundaryTypes, MapLocationTypes, PostTypes } from '../../../types/common/types';
 import { MapHomeTemplateProps } from '../../../types/templates/types';
 import TextButton from '../../molecules/TextButton';
+import NaverMapComponent from '../../organisms/home/NaverMapComponent';
+import NaverMapView from 'react-native-nmap';
 
 const MapHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritingScreen }: MapHomeTemplateProps) => {
     const { accessToken } = useRecoilValue(userAuthAtom);
     const { isAllowLocation } = useRecoilValue(userInfoAtom);
 
-    const mapRef = useRef() as RefObject<MapView>;
+    const mapRef = useRef() as RefObject<NaverMapView>;
     const nearPostResponseIndexRef = useRef<number>(0);
     const locationPermissionRef = useRef<boolean>(false);
     const currentPositionRef = useRef<MapLocationTypes>({
@@ -49,6 +51,7 @@ const MapHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritingScreen }
         isNearSearch: false,
     });
 
+    const [mapZoomLevel, setMapZoomLevel] = useState<number>(0);
     const [searchModal, setSearchModal] = useState<boolean>(false);
     const [nearPostList, setNearPostList] = useState<PostTypes[]>([]);
     const [isFarMapLevel, setIsFarMapLevel] = useState<boolean>(false);
@@ -128,9 +131,13 @@ const MapHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritingScreen }
             latitude: location.lat,
             longitude: location.lng,
         };
-        setTimeout(() => {
-            getBoundaryMap();
-        }, 500);
+        // setTimeout(() => {
+        //     getBoundaryMap();
+        // }, 500);
+
+        // Naver map
+        initNearPosts();
+
         setIsNearPostSearchTopBar(false);
         setSearchModal(false);
     };
@@ -152,7 +159,8 @@ const MapHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritingScreen }
 
     // Fisrt render of map
     const mapRenderCompleteHandler = async () => {
-        getBoundaryMap();
+        // getBoundaryMap();
+        initNearPosts();
     };
 
     // Get current user position
@@ -171,8 +179,8 @@ const MapHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritingScreen }
                     mapRef.current?.animateToRegion({
                         latitude: currentPositionRef.current.latitude,
                         longitude: currentPositionRef.current.longitude,
-                        latitudeDelta: 0.04,
-                        longitudeDelta: 0.027,
+                        latitudeDelta: 0.004,
+                        longitudeDelta: 0.004,
                     });
                 }
             });
@@ -182,28 +190,29 @@ const MapHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritingScreen }
     }, 300);
 
     // Get boundary of map
-    const getBoundaryMap = useCallback(async () => {
-        let boundaryValue;
-        try {
-            boundaryValue = (await mapRef.current?.getMapBoundaries()) as BoundingBox;
-            mapBoundaryStateRef.current = {
-                ...mapBoundaryStateRef.current,
-                northEast: boundaryValue.northEast,
-                southWest: boundaryValue.southWest,
-            };
-        } catch (err) {
-            // For Debug
-            console.log('(ERROR) Get boundary of map.', err);
-        } finally {
-            if (boundaryValue) {
-                setIsNearPostSearchTopBar(false);
-                setTimeout(() => {
-                    initNearPosts();
-                }, 2000);
-            }
-        }
-    }, [isAllowLocation]);
+    // const getBoundaryMap = useCallback(async () => {
+    //     let boundaryValue;
+    //     try {
+    //         boundaryValue = (await mapRef.current?.getMapBoundaries()) as BoundingBox;
+    //         mapBoundaryStateRef.current = {
+    //             ...mapBoundaryStateRef.current,
+    //             northEast: boundaryValue.northEast,
+    //             southWest: boundaryValue.southWest,
+    //         };
+    //     } catch (err) {
+    //         // For Debug
+    //         console.log('(ERROR) Get boundary of map.', err);
+    //     } finally {
+    //         if (boundaryValue) {
+    //             setIsNearPostSearchTopBar(false);
+    //             setTimeout(() => {
+    //                 initNearPosts();
+    //             }, 2000);
+    //         }
+    //     }
+    // }, [isAllowLocation]);
     const initNearPosts = () => {
+        setIsNearPostSearchTopBar(false);
         nearPostResponseIndexRef.current = 0;
         remove();
         refetch();
@@ -213,6 +222,12 @@ const MapHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritingScreen }
     const findMarkerPost = (id: number) => {
         const findPost = nearPostList.filter(item => item.postId === id);
         setMarkerPost(findPost[0]);
+        mapRef.current?.animateToRegion({
+            latitude: findPost[0].latitude,
+            longitude: findPost[0].longitude,
+            latitudeDelta: 0.002,
+            longitudeDelta: 0.002,
+        });
     };
 
     // Near post flat list refresh
@@ -247,28 +262,32 @@ const MapHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritingScreen }
     };
 
     // Move to mini bottom sheet by move map
-    const moveToBottomSheetMini = () => {
-        if (!isBottomSheetMini) {
-            setIsBottomSheetMini(true);
-        }
-    };
+    // const moveToBottomSheetMini = () => {
+    //     if (!isBottomSheetMini) {
+    //     }
+    // };
     const notBottomSheetMini = () => {
         setIsBottomSheetMini(false);
     };
 
     // Check map gesture
-    const checkMapGesture = useCallback(
-        (region: Region, details: Details) => {
-            if (details.isGesture) {
-                moveToBottomSheetMini();
-                setIsNearPostSearchTopBar(true);
-            }
-            if (details.isGesture && markerPost) {
-                setMarkerPost(null);
-            }
-        },
-        [isBottomSheetMini, markerPost, setMarkerPost],
-    );
+    // const checkMapGesture = useCallback(
+    // (region: Region, details: Details) => {
+    //         if (details.isGesture) {
+    //             moveToBottomSheetMini();
+    //             setIsNearPostSearchTopBar(true);
+    //         }
+    //         if (details.isGesture && markerPost) {
+    //             setMarkerPost(null);
+    //         }
+    //     },
+    //     [isBottomSheetMini, markerPost, setMarkerPost],
+    // );
+    const moveMapBottomSheetHandler = () => {
+        setMarkerPost(null);
+        setIsBottomSheetMini(true);
+        setIsNearPostSearchTopBar(true);
+    };
 
     // Move to full bottom sheet by move map
     const moveToBottomSheetFull = (state: string) => {
@@ -306,6 +325,29 @@ const MapHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritingScreen }
         },
         [isFarMapLevel],
     );
+    const updateMapZoomLevel = (level: number) => {
+        setMapZoomLevel(level);
+    };
+
+    // Naver map zoom level handler
+    useEffect(() => {
+        if (mapZoomLevel < 12) {
+            setIsFarMapLevel(true);
+            setIsNearPostSearchTopBar(false);
+        } else if (mapZoomLevel > 12 && mapZoomLevel < 13) {
+            setIsFarMapLevel(false);
+            mapBoundaryStateRef.current = {
+                ...mapBoundaryStateRef.current,
+                isNearSearch: true,
+            };
+        } else {
+            setIsFarMapLevel(false);
+            mapBoundaryStateRef.current = {
+                ...mapBoundaryStateRef.current,
+                isNearSearch: false,
+            };
+        }
+    }, [mapZoomLevel]);
 
     useLayoutEffect(() => {
         isAllowPermissionInit();
@@ -313,7 +355,7 @@ const MapHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritingScreen }
 
     return (
         <>
-            <MapWithMarker
+            {/* <GoogleMapComponent
                 mapRef={mapRef}
                 currentPosition={currentPositionRef.current}
                 nearPostList={nearPostList}
@@ -322,6 +364,16 @@ const MapHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritingScreen }
                 checkZoomLevelWarning={checkZoomLevelWarning}
                 mapRenderCompleteHandler={mapRenderCompleteHandler}
                 findMarkerPost={findMarkerPost}
+            /> */}
+            <NaverMapComponent
+                mapRef={mapRef}
+                currentPosition={currentPositionRef.current}
+                mapBoundaryStateRef={mapBoundaryStateRef}
+                nearPostList={nearPostList}
+                mapRenderCompleteHandler={mapRenderCompleteHandler}
+                findMarkerPost={findMarkerPost}
+                updateMapZoomLevel={updateMapZoomLevel}
+                moveMapBottomSheetHandler={moveMapBottomSheetHandler}
             />
             <View style={mapHomeTemplateStyles.searchLayout}>
                 {Platform.OS === 'android' && (
@@ -410,7 +462,7 @@ const MapHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritingScreen }
             {isNearPostSearchTopBar && !isFarMapLevel && Platform.OS === 'android' && (
                 <DropShadow style={mapHomeTemplateStyles.mapMoveSearch}>
                     <TextButton
-                        onPress={getBoundaryMap}
+                        onPress={initNearPosts}
                         backgroundColor="#F8F7FA"
                         borderRadius={54}
                         borderWidth={1}

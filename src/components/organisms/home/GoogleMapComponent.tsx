@@ -2,12 +2,11 @@ import React from 'react';
 import MapView, { Marker } from 'react-native-maps';
 import FastImage from 'react-native-fast-image';
 
-import mapStyle from '../../../styles/mapStyle';
 import MapCurrentMarker from './MapCurrentMarker';
 import { mapWithMarkerStyles } from '../../../styles/organisms/styles';
 import { MapWithMarkerProps } from '../../../types/organisms/types';
 
-const MapWithMarker = ({
+const GoogleMapComponent = ({
     mapRef,
     currentPosition,
     nearPostList,
@@ -28,7 +27,6 @@ const MapWithMarker = ({
                 longitudeDelta: 0.027,
             }}
             maxZoomLevel={17}
-            customMapStyle={mapStyle}
             showsBuildings={false}
             pitchEnabled={false}
             onRegionChangeComplete={checkZoomLevelWarning}
@@ -37,7 +35,7 @@ const MapWithMarker = ({
             {isAllowLocation && (
                 <MapCurrentMarker latitude={currentPosition.latitude} longitude={currentPosition.longitude} />
             )}
-            {/* {nearPostList.map(item => {
+            {nearPostList.map(item => {
                 const markertypeIcon = () => {
                     switch (item.headKeyword) {
                         case 1:
@@ -77,9 +75,9 @@ const MapWithMarker = ({
                         <FastImage source={markertypeIcon()} style={mapWithMarkerStyles.issueMarker} />
                     </Marker>
                 );
-            })} */}
+            })}
         </MapView>
     );
 };
 
-export default MapWithMarker;
+export default GoogleMapComponent;
