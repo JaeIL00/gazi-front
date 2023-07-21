@@ -6,14 +6,14 @@ import { nearPostListAtom } from '../../recoil';
 import { Marker } from 'react-native-nmap';
 
 const MapMarkerItem = ({ findMarkerPost }: MapMarkerProps) => {
-    const isFocued = useIsFocused();
+    const isFocused = useIsFocused();
 
     const nearPostList = useRecoilValue(nearPostListAtom);
 
     if (nearPostList[0].postId) {
         return (
             <>
-                {isFocued &&
+                {isFocused &&
                     nearPostList.map(item => {
                         const markertypeIcon = () => {
                             switch (item.headKeyword) {
