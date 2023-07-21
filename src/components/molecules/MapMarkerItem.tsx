@@ -1,16 +1,17 @@
-import { useIsFocused } from '@react-navigation/native';
 import React from 'react';
-import { MapMarkerProps } from '../../types/molecules/types';
+import { useIsFocused } from '@react-navigation/native';
 import { useRecoilValue } from 'recoil';
-import { nearPostListAtom } from '../../recoil';
 import { Marker } from 'react-native-nmap';
+
+import { nearPostListAtom } from '../../recoil';
+import { MapMarkerProps } from '../../types/molecules/types';
 
 const MapMarkerItem = ({ findMarkerPost }: MapMarkerProps) => {
     const isFocused = useIsFocused();
 
     const nearPostList = useRecoilValue(nearPostListAtom);
 
-    if (nearPostList[0].postId) {
+    if (nearPostList.length > 0) {
         return (
             <>
                 {isFocused &&
