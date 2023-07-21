@@ -34,8 +34,11 @@ const MapHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritingScreen }
 
     const mapRef = useRef() as RefObject<NaverMapView>;
     const nearPostResponseIndexRef = useRef<number>(0);
-    const locationPermissionRef = useRef<boolean>(false);
-    const currentPositionRef = useRef<MapLocationTypes>({
+    const userCurrentPositionRef = useRef<MapLocationTypes>({
+        latitude: 37.49795103144074,
+        longitude: 127.02760985223079,
+    });
+    const mapCurrentPositionRef = useRef<MapLocationTypes>({
         latitude: 37.49795103144074,
         longitude: 127.02760985223079,
     });
@@ -71,8 +74,14 @@ const MapHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritingScreen }
                 minLon: mapBoundaryStateRef.current.southWest.longitude,
                 maxLat: mapBoundaryStateRef.current.northEast.latitude,
                 maxLon: mapBoundaryStateRef.current.northEast.longitude,
-                curLat: locationPermissionRef.current ? currentPositionRef.current.latitude : 0,
-                curLon: locationPermissionRef.current ? currentPositionRef.current.longitude : 0,
+                curLat:
+                    mapZoomLevel > 12 && mapZoomLevel < 13
+                        ? mapCurrentPositionRef.current.latitude
+                        : userCurrentPositionRef.current.longitude,
+                curLon:
+                    mapZoomLevel > 12 && mapZoomLevel < 13
+                        ? mapCurrentPositionRef.current.longitude
+                        : userCurrentPositionRef.current.longitude,
                 accessToken,
                 page: pageParam,
                 isNearSearch: mapBoundaryStateRef.current.isNearSearch,
@@ -127,7 +136,7 @@ const MapHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritingScreen }
 
     // Seach location to move map
     const getLocationHandler = (location: { lat: number; lng: number }) => {
-        currentPositionRef.current = {
+        userCurrentPositionRef.current = {
             latitude: location.lat,
             longitude: location.lng,
         };
@@ -145,15 +154,12 @@ const MapHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritingScreen }
     // Init first map rendering
     const isAllowPermissionInit = async () => {
         if (isAllowLocation) {
-            locationPermissionRef.current = true;
             Geolocation.getCurrentPosition(info => {
-                currentPositionRef.current = {
+                userCurrentPositionRef.current = {
                     latitude: info.coords.latitude,
                     longitude: info.coords.longitude,
                 };
             });
-        } else {
-            locationPermissionRef.current = false;
         }
     };
 
@@ -168,17 +174,17 @@ const MapHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritingScreen }
         if (isAllowLocation) {
             Geolocation.getCurrentPosition(info => {
                 if (
-                    info.coords.latitude !== currentPositionRef.current.latitude &&
-                    info.coords.longitude !== currentPositionRef.current.longitude
+                    info.coords.latitude !== userCurrentPositionRef.current.latitude &&
+                    info.coords.longitude !== userCurrentPositionRef.current.longitude
                 ) {
-                    currentPositionRef.current = {
+                    userCurrentPositionRef.current = {
                         latitude: info.coords.latitude,
                         longitude: info.coords.longitude,
                     };
                 } else {
                     mapRef.current?.animateToRegion({
-                        latitude: currentPositionRef.current.latitude,
-                        longitude: currentPositionRef.current.longitude,
+                        latitude: userCurrentPositionRef.current.latitude,
+                        longitude: userCurrentPositionRef.current.longitude,
                         latitudeDelta: 0.004,
                         longitudeDelta: 0.004,
                     });
@@ -367,9 +373,10 @@ const MapHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritingScreen }
             /> */}
             <NaverMapComponent
                 mapRef={mapRef}
-                currentPosition={currentPositionRef.current}
+                currentPositionRef={userCurrentPositionRef.current}
                 mapBoundaryStateRef={mapBoundaryStateRef}
                 nearPostList={nearPostList}
+                mapCurrentPositionRef={mapCurrentPositionRef}
                 mapRenderCompleteHandler={mapRenderCompleteHandler}
                 findMarkerPost={findMarkerPost}
                 updateMapZoomLevel={updateMapZoomLevel}
@@ -422,7 +429,7 @@ const MapHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritingScreen }
                 markerPost={markerPost}
                 isBottomSheetMini={isBottomSheetMini}
                 isBottomSheetFull={isBottomSheetFull}
-                currentPosition={currentPositionRef.current}
+                currentPosition={userCurrentPositionRef.current}
                 mapBoundaryState={mapBoundaryStateRef.current}
                 moveToBottomSheetFull={moveToBottomSheetFull}
                 notBottomSheetMini={notBottomSheetMini}

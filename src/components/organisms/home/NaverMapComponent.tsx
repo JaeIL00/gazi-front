@@ -1,16 +1,17 @@
 import React, { useCallback, useRef } from 'react';
 import NaverMapView, { Coord, Marker } from 'react-native-nmap';
 import { mapWithMarkerStyles } from '../../../styles/organisms/styles';
-import { NaverMapComponentProps } from '../../../types/organisms/types';
+import { NaverMapComponentProps, NaverMapOnChangeParams } from '../../../types/organisms/types';
 import { useRecoilValue } from 'recoil';
 import { userInfoAtom } from '../../../recoil';
 import { useIsFocused } from '@react-navigation/native';
 
 const NaverMapComponent = ({
     mapRef,
-    currentPosition,
+    currentPositionRef,
     mapBoundaryStateRef,
     nearPostList,
+    mapCurrentPositionRef,
     mapRenderCompleteHandler,
     updateMapZoomLevel,
     moveMapBottomSheetHandler,
@@ -23,13 +24,17 @@ const NaverMapComponent = ({
     const initCountRef = useRef<number>(0);
 
     const onCameraChange = useCallback(
-        ({ coveringRegion, zoom }: { coveringRegion: [Coord, Coord, Coord, Coord, Coord]; zoom: number }) => {
+        ({ latitude, longitude, coveringRegion, zoom }: NaverMapOnChangeParams) => {
+            updateMapZoomLevel(zoom);
             mapBoundaryStateRef.current = {
                 ...mapBoundaryStateRef.current,
                 northEast: coveringRegion[2],
                 southWest: coveringRegion[0],
             };
-            updateMapZoomLevel(zoom);
+            mapCurrentPositionRef.current = {
+                latitude,
+                longitude,
+            };
             if (initRef.current) {
                 mapRenderCompleteHandler();
                 initCountRef.current = initCountRef.current + 1;
@@ -47,8 +52,8 @@ const NaverMapComponent = ({
             ref={mapRef}
             style={mapWithMarkerStyles.map}
             center={{
-                latitude: currentPosition.latitude,
-                longitude: currentPosition.longitude,
+                latitude: currentPositionRef.latitude,
+                longitude: currentPositionRef.longitude,
                 zoom: 16,
             }}
             zoomControl={false}
@@ -61,8 +66,8 @@ const NaverMapComponent = ({
                 {isAllowLocation && (
                     <Marker
                         coordinate={{
-                            latitude: currentPosition.latitude,
-                            longitude: currentPosition.longitude,
+                            latitude: currentPositionRef.latitude,
+                            longitude: currentPositionRef.longitude,
                         }}
                         image={require('../../../assets/icons/map-current-marker.png')}
                         width={103}

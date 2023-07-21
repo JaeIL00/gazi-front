@@ -12,7 +12,7 @@ import { PageTitleWithExplainProps } from '../molecules/types';
 import MapView, { Details, Region } from 'react-native-maps';
 import { QueryObserverResult, RefetchOptions, RefetchQueryFilters } from 'react-query';
 import { AxiosResponse } from 'axios';
-import NaverMapView from 'react-native-nmap';
+import NaverMapView, { Coord } from 'react-native-nmap';
 
 export interface MoveBackWithPageTitleProps extends PageTitleWithExplainProps {
     onPress: () => void;
@@ -103,9 +103,10 @@ export type NearbyPostListModalProps = {
 };
 export type NaverMapComponentProps = {
     mapRef: RefObject<NaverMapView>;
-    currentPosition: MapLocationTypes;
-    mapBoundaryStateRef: React.MutableRefObject<MapBoundaryTypes>;
     nearPostList: PostTypes[];
+    currentPositionRef: MapLocationTypes;
+    mapBoundaryStateRef: React.MutableRefObject<MapBoundaryTypes>;
+    mapCurrentPositionRef: React.MutableRefObject<MapLocationTypes>;
     mapRenderCompleteHandler: () => void;
     updateMapZoomLevel: (level: number) => void;
     moveMapBottomSheetHandler: () => void;
@@ -134,4 +135,10 @@ export type EditMyKeywordProps = {
 export type HowGetPhotoSelectModalProps = {
     getImageHandler: (files: uploadImageFileTypes[]) => void;
     closePhotoSelectModalHandler: () => void;
+};
+export type NaverMapOnChangeParams = {
+    latitude: number;
+    longitude: number;
+    coveringRegion: [Coord, Coord, Coord, Coord, Coord];
+    zoom: number;
 };
