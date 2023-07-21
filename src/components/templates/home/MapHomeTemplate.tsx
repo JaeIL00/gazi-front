@@ -142,7 +142,13 @@ const MapHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritingScreen }
 
     // Seach location to move map
     const getLocationHandler = (location: { lat: number; lng: number }) => {
-        userCurrentPositionRef.current = {
+        mapRef.current?.animateToRegion({
+            latitude: location.lat,
+            longitude: location.lng,
+            latitudeDelta: 0.004,
+            longitudeDelta: 0.004,
+        });
+        mapCurrentPositionRef.current = {
             latitude: location.lat,
             longitude: location.lng,
         };
@@ -150,11 +156,13 @@ const MapHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritingScreen }
         //     getBoundaryMap();
         // }, 500);
 
-        // Naver map
-        initNearPosts();
-
         setIsNearPostSearchTopBar(false);
         setSearchModal(false);
+
+        // Naver map
+        setTimeout(() => {
+            initNearPosts();
+        }, 700);
     };
 
     // Init first map rendering
