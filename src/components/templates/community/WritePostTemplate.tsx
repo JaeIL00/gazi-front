@@ -1,14 +1,5 @@
 import React, { RefObject, useCallback, useLayoutEffect, useRef, useState } from 'react';
-import {
-    ActivityIndicator,
-    Image,
-    ImageSourcePropType,
-    Linking,
-    Modal,
-    ScrollView,
-    TouchableOpacity,
-    View,
-} from 'react-native';
+import { ActivityIndicator, Image, ImageSourcePropType, Linking, Modal, ScrollView, View } from 'react-native';
 import { useMutation } from 'react-query';
 import { useRecoilValue } from 'recoil';
 import { debounce } from 'lodash';
@@ -17,35 +8,36 @@ import FastImage from 'react-native-fast-image';
 import Geolocation from '@react-native-community/geolocation';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import Icons from '../../smallest/Icons';
-import Spacer from '../../smallest/Spacer';
-import Colors from '../../../styles/Colors';
+import Icons from '../../atoms/Icons';
+import Spacer from '../../atoms/Spacer';
+import colors from '../../../constants/colors';
 import mapStyle from '../../../styles/mapStyle';
-import NormalText from '../../smallest/NormalText';
-import MediumText from '../../smallest/MediumText';
+import NormalText from '../../atoms/NormalText';
+import MediumText from '../../atoms/MediumText';
+import TouchButton from '../../atoms/TouchButton';
 import TextButton from '../../molecules/TextButton';
-import TouchButton from '../../smallest/TouchButton';
-import SemiBoldText from '../../smallest/SemiBoldText';
-import PhotoGallery from '../../organisms/PhotoGallery';
-import MultiLineInput from '../../smallest/MultiLineInput';
+import SemiBoldText from '../../atoms/SemiBoldText';
+import MultiLineInput from '../../atoms/MultiLineInput';
+import ModalBackground from '../../atoms/ModalBackground';
 import HeaderMolecule from '../../molecules/HeaderMolecule';
-import SearchLocation from '../../organisms/SearchLocation';
-import ModalBackground from '../../smallest/ModalBackground';
-import FailPermissionModal from '../../organisms/FailPermissionModal';
+import SearchLocation from '../../organisms/common/SearchLocation';
+import FailPermissionModal from '../../organisms/common/FailPermissionModal';
 import WritePostAddKeyword from '../../organisms/cummunity/AddKeywordInWrite';
 import { screenWidth } from '../../../utils/changeStyleSize';
-import { writePostTemplateStyles } from '../../../styles/styles';
-import { SingleLineInput } from '../../smallest/SingleLineInput';
-import { userAuthAtom, userInfoAtom } from '../../../store/atoms';
-import { writePostAPI, writePostFilesAPI } from '../../../queries/api';
-import { issueKeywords, subwayKeywords, trafficKeywords } from '../../../utils/allKeywords';
+import { userAuthAtom, userInfoAtom } from '../../../recoil';
+import { SingleLineInput } from '../../atoms/SingleLineInput';
+import { writePostTemplateStyles } from '../../../styles/templates/styles';
+import { writePostAPI, writePostFilesAPI } from '../../../apis/api';
+import { issueKeywords, subwayKeywords, trafficKeywords } from '../../../constants/allKeywords';
+import { WritePostTemplateProps } from '../../../types/templates/types';
 import {
     KeywordListTypes,
     TemporarySaveChooseLocationTypes,
-    WritePostTemplateProps,
     WritePostTypes,
     uploadImageFileTypes,
-} from '../../../types/types';
+} from '../../../types/common/types';
+import IconButton from '../../molecules/IconButton';
+import HowGetPhotoSelectModal from '../../organisms/cummunity/HowGetPhotoSelectModal';
 
 const WritePostTemplate = ({ navigationHandler }: WritePostTemplateProps) => {
     const { accessToken } = useRecoilValue(userAuthAtom);
@@ -68,7 +60,7 @@ const WritePostTemplate = ({ navigationHandler }: WritePostTemplateProps) => {
     const [inputFocusBlur, setInputFocusBlur] = useState<boolean>(false);
     const [imagePermission, setImagePermission] = useState<boolean>(false);
     const [chooseKeywords, setChooseKeywords] = useState<KeywordListTypes[]>([]);
-    const [isCamAllowPermission, setIsCamAllowPermission] = useState<boolean>(false);
+    const [isHowGetPhotoSelectModal, setIsHowGetPhotoSelectModal] = useState<boolean>(false);
     const [temporaryChooseLocationData, setTemporaryChooseLocationData] = useState<TemporarySaveChooseLocationTypes>({
         formatted_address: '',
         name: '',
@@ -183,19 +175,12 @@ const WritePostTemplate = ({ navigationHandler }: WritePostTemplateProps) => {
     };
 
     // Get image from gallery
-    const getImageHandler = (file: uploadImageFileTypes, state: string) => {
-        switch (state) {
-            case 'ADD':
-                setWritePostData({ ...writePostData, files: [...writePostData.files, file] });
-                break;
-            case 'DEL':
-                const freshFiles = writePostData.files.filter(item => item.uri !== file.uri);
-                setWritePostData({ ...writePostData, files: freshFiles });
-                break;
-            default:
-                // For Debug
-                console.log('(ERROR) Get image from gallery.', state, file);
-        }
+    const getImageHandler = (file: uploadImageFileTypes[]) => {
+        setWritePostData({ ...writePostData, files: [...writePostData.files, ...file] });
+    };
+    const delImageHandler = (file: uploadImageFileTypes) => {
+        const freshFiles = writePostData.files.filter(item => item.uri !== file.uri);
+        setWritePostData({ ...writePostData, files: freshFiles });
     };
 
     // Content input focue blur handler
@@ -213,18 +198,18 @@ const WritePostTemplate = ({ navigationHandler }: WritePostTemplateProps) => {
         }
     };
 
-    // Get image in library
-    const openGalleryHandler = async () => {
-        if (isAllowLocation) {
-            setIsCamAllowPermission(true);
-        } else {
+    // Get image in gallery or camera
+    const addPhotoHandler = async () => {
+        if (isAllowLocation && writePostData.files.length < 10) {
+            setIsHowGetPhotoSelectModal(true);
+        } else if (!isAllowLocation) {
             notAllowPermission();
         }
     };
 
     // Close gallery button
-    const closeGalleryHandling = () => {
-        setIsCamAllowPermission(false);
+    const closePhotoSelectModalHandler = () => {
+        setIsHowGetPhotoSelectModal(false);
     };
 
     // Check essential value of write post
@@ -471,12 +456,22 @@ const WritePostTemplate = ({ navigationHandler }: WritePostTemplateProps) => {
             </MapView>
             <View style={writePostTemplateStyles.container}>
                 <View style={writePostTemplateStyles.headerNavigateBox}>
-                    <TouchButton onPress={() => navigationHandler('BACK')} hitSlop={10}>
-                        <Icons type="ionicons" name="close-sharp" size={24} color={Colors.BLACK} />
-                    </TouchButton>
-                    <TouchButton onPress={finishWritingHandler} hitSlop={10}>
-                        <SemiBoldText text="등록" size={16} color={Colors.BLACK} />
-                    </TouchButton>
+                    <IconButton
+                        onPress={() => navigationHandler('BACK')}
+                        hitSlop={10}
+                        iconType="ionicons"
+                        iconName="close-sharp"
+                        iconSize={24}
+                        iconColor={colors.BLACK}
+                    />
+                    <TextButton
+                        onPress={finishWritingHandler}
+                        hitSlop={10}
+                        text="등록"
+                        fontSize={16}
+                        fontColor={colors.BLACK}
+                        fontWeight="semiBold"
+                    />
                 </View>
                 <ScrollView style={writePostTemplateStyles.contentBox}>
                     <View style={writePostTemplateStyles.settingContainer}>
@@ -493,11 +488,11 @@ const WritePostTemplate = ({ navigationHandler }: WritePostTemplateProps) => {
                                             <MediumText
                                                 text={writePostData.dto.placeName}
                                                 size={13}
-                                                color={Colors.BLACK}
+                                                color={colors.BLACK}
                                             />
                                         </>
                                     ) : (
-                                        <MediumText text="위치설정" size={13} color={Colors.BLACK} />
+                                        <MediumText text="위치설정" size={13} color={colors.BLACK} />
                                     )}
                                     <Spacer width={4} />
                                     <FastImage
@@ -513,10 +508,10 @@ const WritePostTemplate = ({ navigationHandler }: WritePostTemplateProps) => {
                                         <MediumText
                                             text={issueKeywords[writePostData.dto.headKeywordId! - 1].keywordName}
                                             size={13}
-                                            color={Colors.BLACK}
+                                            color={colors.BLACK}
                                         />
                                     ) : (
-                                        <MediumText text="키워드설정" size={13} color={Colors.BLACK} />
+                                        <MediumText text="키워드설정" size={13} color={colors.BLACK} />
                                     )}
                                     <Spacer width={4} />
                                     <FastImage
@@ -547,17 +542,8 @@ const WritePostTemplate = ({ navigationHandler }: WritePostTemplateProps) => {
                             />
                         </View>
                     </View>
-                    {!inputFocusBlur && (
-                        <TouchableOpacity
-                            style={writePostTemplateStyles.contentInputFocus}
-                            onPress={() => inputFocusBlurHandler('FOCUS')}
-                        />
-                    )}
+                    {!inputFocusBlur && <TouchButton onPress={() => inputFocusBlurHandler('FOCUS')} height={400} />}
                 </ScrollView>
-
-                <Modal visible={isCamAllowPermission} onRequestClose={() => setIsCamAllowPermission(false)}>
-                    <PhotoGallery closeGalleryHandling={closeGalleryHandling} getImageHandler={getImageHandler} />
-                </Modal>
 
                 <View style={writePostTemplateStyles.bottomBox}>
                     <View style={writePostTemplateStyles.bottomKeyword}>
@@ -569,7 +555,7 @@ const WritePostTemplate = ({ navigationHandler }: WritePostTemplateProps) => {
                                             <MediumText
                                                 text={item.keywordName}
                                                 size={12}
-                                                color={Colors.TXT_LIGHTGRAY}
+                                                color={colors.TXT_LIGHTGRAY}
                                             />
                                         </View>
                                     ))}
@@ -587,13 +573,19 @@ const WritePostTemplate = ({ navigationHandler }: WritePostTemplateProps) => {
                                                     style={writePostTemplateStyles.bottomImageSize}
                                                 />
                                             </View>
-                                            <TouchableOpacity
-                                                onPress={() => getImageHandler(item, 'DEL')}
-                                                activeOpacity={1}
-                                                style={writePostTemplateStyles.bottomImageDelButton}>
-                                                <View style={writePostTemplateStyles.bottomImageDelIconBack} />
-                                                <Icons type="ionicons" name="close-circle" size={20} color="#000000" />
-                                            </TouchableOpacity>
+                                            <View style={writePostTemplateStyles.bottomImageDelButton}>
+                                                <TouchButton onPress={() => delImageHandler(item)}>
+                                                    <>
+                                                        <View style={writePostTemplateStyles.bottomImageDelIconBack} />
+                                                        <Icons
+                                                            type="ionicons"
+                                                            name="close-circle"
+                                                            size={20}
+                                                            color="#000000"
+                                                        />
+                                                    </>
+                                                </TouchButton>
+                                            </View>
                                         </View>
                                     ))}
                                 </>
@@ -601,8 +593,17 @@ const WritePostTemplate = ({ navigationHandler }: WritePostTemplateProps) => {
                         )}
                     </View>
 
+                    <ModalBackground
+                        visible={isHowGetPhotoSelectModal}
+                        onRequestClose={() => setIsHowGetPhotoSelectModal(false)}>
+                        <HowGetPhotoSelectModal
+                            getImageHandler={getImageHandler}
+                            closePhotoSelectModalHandler={closePhotoSelectModalHandler}
+                        />
+                    </ModalBackground>
+
                     <TouchButton
-                        onPress={openGalleryHandler}
+                        onPress={addPhotoHandler}
                         alignSelf="flex-start"
                         paddingHorizontal={16}
                         paddingVertical={11}>
@@ -656,16 +657,18 @@ const WritePostTemplate = ({ navigationHandler }: WritePostTemplateProps) => {
 
                 <ModalBackground visible={onErrorModal}>
                     <View style={writePostTemplateStyles.errorModalBox}>
-                        <SemiBoldText text={onErrorText} size={18} color={Colors.BLACK} />
+                        <SemiBoldText text={onErrorText} size={18} color={colors.BLACK} />
                         <Spacer height={18} />
                         <TextButton
                             onPress={offErrorModalHandler}
                             text="확인"
-                            textColor="#49454F"
+                            fontColor="#49454F"
+                            fontWeight="semiBold"
                             fontSize={14}
-                            backgroundColor={Colors.LIGHTGRAY}
+                            backgroundColor={colors.LIGHTGRAY}
                             paddingHorizontal={111}
                             paddingVertical={12}
+                            borderRadius={5}
                         />
                     </View>
                 </ModalBackground>

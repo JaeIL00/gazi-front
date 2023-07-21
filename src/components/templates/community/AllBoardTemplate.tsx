@@ -4,11 +4,11 @@ import { useRecoilValue } from 'recoil';
 import { useInfiniteQuery } from 'react-query';
 import Geolocation from '@react-native-community/geolocation';
 
-import PostListItem from '../../organisms/PostListItem';
-import { PostTypes } from '../../../types/types';
-import { getCommunityPostAPI } from '../../../queries/api';
-import { allBoardTemplateStyles } from '../../../styles/styles';
-import { userAuthAtom, userInfoAtom } from '../../../store/atoms';
+import PostListItem from '../../organisms/cummunity/PostListItem';
+import { getCommunityPostAPI } from '../../../apis/api';
+import { userAuthAtom, userInfoAtom } from '../../../recoil';
+import { allBoardTemplateStyles } from '../../../styles/templates/styles';
+import { PostTypes } from '../../../types/common/types';
 
 const ALL_POSTS = '';
 

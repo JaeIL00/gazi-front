@@ -5,20 +5,22 @@ import { debounce } from 'lodash';
 import { useRecoilValue } from 'recoil';
 
 import ReportModal from './ReportModal';
-import Icons from '../../smallest/Icons';
-import Spacer from '../../smallest/Spacer';
-import Colors from '../../../styles/Colors';
-import NormalText from '../../smallest/NormalText';
-import MediumText from '../../smallest/MediumText';
-import TouchButton from '../../smallest/TouchButton';
-import SemiBoldText from '../../smallest/SemiBoldText';
-import ModalBackground from '../../smallest/ModalBackground';
-import CommentImageItem from '../../molecules/CommentImageItem';
-import { userAuthAtom } from '../../../store/atoms';
-import { commentListItemStyles } from '../../../styles/styles';
-import { CommentListItemProps, ImageViewTypes } from '../../../types/types';
+import Icons from '../../atoms/Icons';
+import Spacer from '../../atoms/Spacer';
+import colors from '../../../constants/colors';
+import NormalText from '../../atoms/NormalText';
+import MediumText from '../../atoms/MediumText';
+import TouchButton from '../../atoms/TouchButton';
+import SemiBoldText from '../../atoms/SemiBoldText';
+import ModalBackground from '../../atoms/ModalBackground';
+import { userAuthAtom } from '../../../recoil';
+import { commentListItemStyles } from '../../../styles/molecules/styles';
 import { useRootNavigation } from '../../../navigations/RootStackNavigation';
-import { addHelpfulCommentAPI, delHelpfulCommentAPI, reportAPI } from '../../../queries/api';
+import { addHelpfulCommentAPI, delHelpfulCommentAPI, reportAPI } from '../../../apis/api';
+import { ImageViewTypes } from '../../../types/common/types';
+import { CommentListItemProps } from '../../../types/organisms/types';
+import TextButton from '../../molecules/TextButton';
+import ImageButton from '../../molecules/ImageButton';
 
 const CommentListItem = ({
     comment,
@@ -170,14 +172,19 @@ const CommentListItem = ({
                         <View style={commentListItemStyles.headerProfileBox}>
                             <View style={commentListItemStyles.headerProfileImg}></View>
                             <View style={commentListItemStyles.headerTitleBox}>
-                                <SemiBoldText text={comment.nickName} size={16} color={Colors.BLACK} />
+                                <SemiBoldText text={comment.nickName} size={16} color={colors.BLACK} />
                                 <Spacer height={1} />
                                 <MediumText text={`${comment.distance} | ${comment.time}`} size={11} color="#999999" />
                             </View>
                         </View>
-                        <TouchButton onPress={() => setIsReportModal(true)} hitSlop={10}>
-                            <MediumText text="신고하기" size={11} color={Colors.BLACK} />
-                        </TouchButton>
+                        <TextButton
+                            onPress={() => setIsReportModal(true)}
+                            hitSlop={10}
+                            text="신고하기"
+                            fontSize={11}
+                            fontColor={colors.BLACK}
+                            fontWeight="medium"
+                        />
                         <ModalBackground visible={isReportModal} onRequestClose={closeReportModalHandler}>
                             <ReportModal
                                 repostId={comment.postId}
@@ -195,8 +202,8 @@ const CommentListItem = ({
                     <NormalText text={comment.content} size={13} color="#000000" />
                     <Spacer height={8} />
                     {comment.fileList.length === 1 && (
-                        <CommentImageItem
-                            moveImageViewScreen={() =>
+                        <ImageButton
+                            onPress={() =>
                                 moveImageViewScreen({
                                     postTitle,
                                     postCount,
@@ -209,14 +216,18 @@ const CommentListItem = ({
                             }
                             width={308}
                             height={208}
-                            fileUrl={comment.fileList[0].fileUrl}
+                            imageSource={{ uri: comment.fileList[0].fileUrl }}
+                            isCaching={true}
+                            imageWidth="100%"
+                            imageHeight="100%"
+                            imageBorderRadius={5}
                         />
                     )}
                     {comment.fileList.length === 2 && (
                         <View style={commentListItemStyles.contentTwoImgBox}>
                             {comment.fileList.map((file, index) => (
-                                <CommentImageItem
-                                    moveImageViewScreen={() =>
+                                <ImageButton
+                                    onPress={() =>
                                         moveImageViewScreen({
                                             postTitle,
                                             postCount,
@@ -229,7 +240,11 @@ const CommentListItem = ({
                                     }
                                     width={151}
                                     height={208}
-                                    fileUrl={file.fileUrl}
+                                    imageSource={{ uri: file.fileUrl }}
+                                    isCaching={true}
+                                    imageWidth="100%"
+                                    imageHeight="100%"
+                                    imageBorderRadius={5}
                                 />
                             ))}
                         </View>
@@ -237,8 +252,8 @@ const CommentListItem = ({
                     {comment.fileList.length === 3 && (
                         <View style={commentListItemStyles.contentTwoOverImgBox}>
                             <View style={commentListItemStyles.contentThrHalfImg}>
-                                <CommentImageItem
-                                    moveImageViewScreen={() =>
+                                <ImageButton
+                                    onPress={() =>
                                         moveImageViewScreen({
                                             postTitle,
                                             postCount,
@@ -251,12 +266,16 @@ const CommentListItem = ({
                                     }
                                     width={151}
                                     height={208}
-                                    fileUrl={comment.fileList[0].fileUrl}
+                                    imageSource={{ uri: comment.fileList[0].fileUrl }}
+                                    isCaching={true}
+                                    imageWidth="100%"
+                                    imageHeight="100%"
+                                    imageBorderRadius={5}
                                 />
                             </View>
                             <View style={commentListItemStyles.contentThrQtImg}>
-                                <CommentImageItem
-                                    moveImageViewScreen={() =>
+                                <ImageButton
+                                    onPress={() =>
                                         moveImageViewScreen({
                                             postTitle,
                                             postCount,
@@ -269,10 +288,14 @@ const CommentListItem = ({
                                     }
                                     width={151}
                                     height={101}
-                                    fileUrl={comment.fileList[1].fileUrl}
+                                    imageSource={{ uri: comment.fileList[1].fileUrl }}
+                                    isCaching={true}
+                                    imageWidth="100%"
+                                    imageHeight="100%"
+                                    imageBorderRadius={5}
                                 />
-                                <CommentImageItem
-                                    moveImageViewScreen={() =>
+                                <ImageButton
+                                    onPress={() =>
                                         moveImageViewScreen({
                                             postTitle,
                                             postCount,
@@ -285,7 +308,11 @@ const CommentListItem = ({
                                     }
                                     width={151}
                                     height={101}
-                                    fileUrl={comment.fileList[2].fileUrl}
+                                    imageSource={{ uri: comment.fileList[2].fileUrl }}
+                                    isCaching={true}
+                                    imageWidth="100%"
+                                    imageHeight="100%"
+                                    imageBorderRadius={5}
                                 />
                             </View>
                         </View>
@@ -296,9 +323,8 @@ const CommentListItem = ({
                                 {comment.fileList.map((item, index) => {
                                     if (index < 2) {
                                         return (
-                                            <CommentImageItem
-                                                key={item.fileName}
-                                                moveImageViewScreen={() =>
+                                            <ImageButton
+                                                onPress={() =>
                                                     moveImageViewScreen({
                                                         postTitle,
                                                         postCount,
@@ -311,15 +337,19 @@ const CommentListItem = ({
                                                 }
                                                 width={151}
                                                 height={101}
-                                                fileUrl={item.fileUrl}
+                                                imageSource={{ uri: item.fileUrl }}
+                                                isCaching={true}
+                                                imageWidth="100%"
+                                                imageHeight="100%"
+                                                imageBorderRadius={5}
                                             />
                                         );
                                     }
                                 })}
                             </View>
                             <View style={commentListItemStyles.contentThrQtImg}>
-                                <CommentImageItem
-                                    moveImageViewScreen={() =>
+                                <ImageButton
+                                    onPress={() =>
                                         moveImageViewScreen({
                                             postTitle,
                                             postCount,
@@ -332,7 +362,11 @@ const CommentListItem = ({
                                     }
                                     width={151}
                                     height={101}
-                                    fileUrl={comment.fileList[2].fileUrl}
+                                    imageSource={{ uri: comment.fileList[2].fileUrl }}
+                                    isCaching={true}
+                                    imageWidth="100%"
+                                    imageHeight="100%"
+                                    imageBorderRadius={5}
                                 />
                                 {comment.fileList.length > 4 ? (
                                     <TouchButton
@@ -358,14 +392,14 @@ const CommentListItem = ({
                                                 <MediumText
                                                     text={`+${comment.fileList.length - 3}`}
                                                     size={18}
-                                                    color={Colors.WHITE}
+                                                    color={colors.WHITE}
                                                 />
                                             </View>
                                         </>
                                     </TouchButton>
                                 ) : (
-                                    <CommentImageItem
-                                        moveImageViewScreen={() =>
+                                    <ImageButton
+                                        onPress={() =>
                                             moveImageViewScreen({
                                                 postTitle,
                                                 postCount,
@@ -378,7 +412,11 @@ const CommentListItem = ({
                                         }
                                         width={151}
                                         height={101}
-                                        fileUrl={comment.fileList[3].fileUrl}
+                                        imageSource={{ uri: comment.fileList[3].fileUrl }}
+                                        isCaching={true}
+                                        imageWidth="100%"
+                                        imageHeight="100%"
+                                        imageBorderRadius={5}
                                     />
                                 )}
                             </View>
@@ -394,13 +432,13 @@ const CommentListItem = ({
                             type="feather"
                             name="thumbs-up"
                             size={15}
-                            color={isHelpful ? Colors.VIOLET : Colors.TXT_GRAY}
+                            color={isHelpful ? colors.VIOLET : colors.TXT_GRAY}
                         />
                         <Spacer width={2} />
                         <NormalText
                             text={`도움돼요 ${helpfulCount}`}
                             size={13}
-                            color={isHelpful ? Colors.VIOLET : Colors.TXT_GRAY}
+                            color={isHelpful ? colors.VIOLET : colors.TXT_GRAY}
                         />
                     </View>
                 </TouchButton>

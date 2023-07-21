@@ -1,9 +1,9 @@
 import React from 'react';
 
-import Icons from '../smallest/Icons';
-import Spacer from '../smallest/Spacer';
-import MediumText from '../smallest/MediumText';
-import { IconWithMediumTextProps } from '../../types/types';
+import Icons from '../atoms/Icons';
+import Spacer from '../atoms/Spacer';
+import MediumText from '../atoms/MediumText';
+import { IconWithMediumTextProps } from '../../types/molecules/types';
 
 const IconWithMediumText = ({ type, name, iconColor, text, textColor }: IconWithMediumTextProps) => {
     return (

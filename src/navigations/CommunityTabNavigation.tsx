@@ -4,14 +4,14 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import { Route } from 'react-native-tab-view';
 import { Props } from 'react-native-tab-view/lib/typescript/src/TabBarIndicator';
 
-import Colors from '../styles/Colors';
-import AllBoardScreen from '../screens/community/AllBoardScreen';
-import LikeBoardScreen from '../screens/community/LikeBoardScreen';
-import WritingFloatingBtn from '../components/molecules/WritingFloatingBtn';
-import { communityTabStyle } from '../styles/styles';
+import AllBoardScreen from '../components/pages/community/AllBoardScreen';
+import LikeBoardScreen from '../components/pages/community/LikeBoardScreen';
+import WritingFloatingBtn from '../components/organisms/common/WritingFloatingBtn';
+import { communityTabStyle } from '../styles/common/styles';
 import { screenFont } from '../utils/changeStyleSize';
-import { CommunityTabParamList } from '../types/types';
+import { CommunityTabParamList } from '../types/common/types';
 import { useRootNavigation } from './RootStackNavigation';
+import colors from '../constants/colors';
 
 const CommunityTabNavigation = () => {
     const rootNavigation = useRootNavigation();
@@ -47,10 +47,10 @@ const CommunityTabNavigation = () => {
     const tabNavigatorScreenOption = {
         tabBarIndicator: topTabBarIndicator,
         tabBarIndicatorStyle: {
-            backgroundColor: Colors.BLACK,
+            backgroundColor: colors.BLACK,
         },
-        tabBarActiveTintColor: Colors.BLACK,
-        tabBarInactiveTintColor: Colors.TXT_GRAY,
+        tabBarActiveTintColor: colors.BLACK,
+        tabBarInactiveTintColor: colors.TXT_GRAY,
         tabBarLabelStyle: {
             fontFamily: 'Pretendard-SemiBold',
             fontSize: 16 * screenFont,

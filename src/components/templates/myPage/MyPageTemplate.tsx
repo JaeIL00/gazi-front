@@ -5,17 +5,19 @@ import { useNavigation } from '@react-navigation/native';
 import VersionCheck from 'react-native-version-check';
 import FastImage from 'react-native-fast-image';
 
-import Icons from '../../smallest/Icons';
-import Colors from '../../../styles/Colors';
-import MediumText from '../../smallest/MediumText';
-import NormalText from '../../smallest/NormalText';
-import TouchButton from '../../smallest/TouchButton';
-import SemiBoldText from '../../smallest/SemiBoldText';
-import { userInfoAtom } from '../../../store/atoms';
-import { myPageTabList } from '../../../utils/myPageTabList';
-import { myPageTemplateStyles } from '../../../styles/styles';
-import { MyPageTemplateProps } from '../../../types/types';
+import Icons from '../../atoms/Icons';
+import colors from '../../../constants/colors';
+import MediumText from '../../atoms/MediumText';
+import NormalText from '../../atoms/NormalText';
+import TouchButton from '../../atoms/TouchButton';
+import SemiBoldText from '../../atoms/SemiBoldText';
+import { userInfoAtom } from '../../../recoil';
+import { myPageTabList } from '../../../constants/myPageTabList';
+import { myPageTemplateStyles } from '../../../styles/templates/styles';
 import { screenFont, screenHeight, screenWidth } from '../../../utils/changeStyleSize';
+import { MyPageTemplateProps } from '../../../types/templates/types';
+import ImageButton from '../../molecules/ImageButton';
+import Spacer from '../../atoms/Spacer';
 
 const MyProfileTemplate = ({ moveToScreen }: MyPageTemplateProps) => {
     const navigation = useNavigation<any>();
@@ -45,23 +47,20 @@ const MyProfileTemplate = ({ moveToScreen }: MyPageTemplateProps) => {
                 isBorder: boolean;
             };
         }) => (
-            <TouchableOpacity
+            <TouchButton
                 onPress={() => navigation.push(item.screen)}
-                style={[
-                    myPageTemplateStyles.sectionItem,
-                    {
-                        borderBottomWidth: item.isBorder ? 1 * screenFont : undefined,
-                    },
-                ]}
-                activeOpacity={1}>
+                paddingHorizontal={16}
+                paddingVertical={16}
+                borderColor={colors.BORDER_GRAY}
+                borderBottomWidth={item.isBorder ? 1 * screenFont : undefined}>
                 <View style={myPageTemplateStyles.tabListBox}>
-                    <NormalText text={item.name} size={16} color={Colors.BLACK} />
+                    <NormalText text={item.name} size={16} color={colors.BLACK} />
                     <FastImage
                         source={require('../../../assets/icons/to-right-white.png')}
                         style={myPageTemplateStyles.tabRightIcon}
                     />
                 </View>
-            </TouchableOpacity>
+            </TouchButton>
         ),
         [],
     );
@@ -76,7 +75,7 @@ const MyProfileTemplate = ({ moveToScreen }: MyPageTemplateProps) => {
             <>
                 {section.title && (
                     <View style={myPageTemplateStyles.tabTitleBox}>
-                        <MediumText text={section.title} size={14} color={Colors.TXT_GRAY} />
+                        <MediumText text={section.title} size={14} color={colors.TXT_GRAY} />
                     </View>
                 )}
             </>
@@ -105,15 +104,18 @@ const MyProfileTemplate = ({ moveToScreen }: MyPageTemplateProps) => {
                 </TouchButton>
                 <View style={myPageTemplateStyles.profileTextBox}>
                     <View style={myPageTemplateStyles.profileNameBox}>
-                        <SemiBoldText text={nickname} size={16} color={Colors.WHITE} />
-                        <TouchButton onPress={() => moveToScreen('EDIT_NICK')} hitSlop={10}>
-                            <FastImage
-                                source={require('../../../assets/icons/pencil.png')}
-                                style={myPageTemplateStyles.penIcon}
-                            />
-                        </TouchButton>
+                        <SemiBoldText text={nickname} size={16} color={colors.WHITE} />
+                        <Spacer width={4} />
+                        <ImageButton
+                            onPress={() => moveToScreen('EDIT_NICK')}
+                            hitSlop={10}
+                            imageSource={require('../../../assets/icons/pencil.png')}
+                            imageHeight={12}
+                            imageWidth={12}
+                            isCaching={true}
+                        />
                     </View>
-                    <NormalText text={email} size={12} color={Colors.TXT_GRAY} />
+                    <NormalText text={email} size={12} color={colors.TXT_GRAY} />
                 </View>
             </View>
 
@@ -125,7 +127,7 @@ const MyProfileTemplate = ({ moveToScreen }: MyPageTemplateProps) => {
                     renderSectionHeader={renderSectionHeader}
                 />
                 <View style={myPageTemplateStyles.versionBox}>
-                    <NormalText text="버전" size={16} color={Colors.BLACK} />
+                    <NormalText text="버전" size={16} color={colors.BLACK} />
                     <NormalText text={appVersionText} size={12} color="#00000099" />
                 </View>
             </View>

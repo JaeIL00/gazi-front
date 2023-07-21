@@ -7,19 +7,19 @@ import { useSetRecoilState } from 'recoil';
 import messaging from '@react-native-firebase/messaging';
 import { PERMISSIONS, RESULTS, check } from 'react-native-permissions';
 
-import Icons from '../../smallest/Icons';
-import Spacer from '../../smallest/Spacer';
-import Colors from '../../../styles/Colors';
-import BoldText from '../../smallest/BoldText';
-import MediumText from '../../smallest/MediumText';
+import Icons from '../../atoms/Icons';
+import Spacer from '../../atoms/Spacer';
+import colors from '../../../constants/colors';
+import BoldText from '../../atoms/BoldText';
+import MediumText from '../../atoms/MediumText';
 import TextButton from '../../molecules/TextButton';
-import TouchButton from '../../smallest/TouchButton';
+import TouchButton from '../../atoms/TouchButton';
 import LoginTextInput from '../../molecules/LoginTextInput';
-import MoveBackWithPageTitle from '../../organisms/MoveBackWithPageTitle';
-import { fcmDeviceTokenAPI, loginAPI } from '../../../queries/api';
-import { EmailLoginTemplateProps } from '../../../types/types';
-import { emailLoginTemplateStyles } from '../../../styles/styles';
-import { userInfoAtom, userAuthAtom } from '../../../store/atoms';
+import MoveBackWithPageTitle from '../../organisms/common/MoveBackWithPageTitle';
+import { userInfoAtom, userAuthAtom } from '../../../recoil';
+import { fcmDeviceTokenAPI, loginAPI } from '../../../apis/api';
+import { emailLoginTemplateStyles } from '../../../styles/templates/styles';
+import { EmailLoginTemplateProps } from '../../../types/templates/types';
 
 const EmailLoginTemplate = ({ moveServiceHomeHandler }: EmailLoginTemplateProps) => {
     const setUserAuthState = useSetRecoilState(userAuthAtom);
@@ -157,9 +157,9 @@ const EmailLoginTemplate = ({ moveServiceHomeHandler }: EmailLoginTemplateProps)
                     />
                     {loginErrorText && (
                         <View style={emailLoginTemplateStyles.emailErrorTextBox}>
-                            <Icons type={'fontisto'} name={'close'} size={14} color={Colors.STATUS_RED} />
+                            <Icons type={'fontisto'} name={'close'} size={14} color={colors.STATUS_RED} />
                             <Spacer width={4} />
-                            <MediumText text={loginErrorText} size={12} color={Colors.STATUS_RED} />
+                            <MediumText text={loginErrorText} size={12} color={colors.STATUS_RED} />
                         </View>
                     )}
                 </View>
@@ -173,16 +173,18 @@ const EmailLoginTemplate = ({ moveServiceHomeHandler }: EmailLoginTemplateProps)
                     onPress={onPressLoginButton}
                     text="로그인"
                     height={48}
-                    backgroundColor={email && password ? Colors.BLACK : Colors.BTN_GRAY}
-                    textColor={Colors.WHITE}
+                    backgroundColor={email && password ? colors.BLACK : colors.BTN_GRAY}
+                    fontColor={colors.WHITE}
+                    fontWeight="semiBold"
                     fontSize={17}
+                    borderRadius={5}
                 />
 
                 <Spacer height={24} />
 
                 <TouchButton onPress={() => {}}>
                     <View style={emailLoginTemplateStyles.underBar}>
-                        <BoldText text="비밀번호 찾기" size={13} color={Colors.TXT_GRAY} />
+                        <BoldText text="비밀번호 찾기" size={13} color={colors.TXT_GRAY} />
                     </View>
                 </TouchButton>
             </KeyboardAvoidingView>

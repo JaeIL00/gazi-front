@@ -7,8 +7,8 @@ import messaging from '@react-native-firebase/messaging';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { PERMISSIONS, RESULTS, check } from 'react-native-permissions';
 
-import { userAuthAtom, userInfoAtom } from './store/atoms';
-import { autoLoginAPI, fcmDeviceTokenAPI } from './queries/api';
+import { userAuthAtom, userInfoAtom } from './recoil';
+import { autoLoginAPI, fcmDeviceTokenAPI } from './apis/api';
 import { RootStackNavigation, navigationRef } from './navigations/RootStackNavigation';
 
 const RootApp = () => {

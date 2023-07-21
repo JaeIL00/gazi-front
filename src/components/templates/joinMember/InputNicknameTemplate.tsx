@@ -6,18 +6,18 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { debounce } from 'lodash';
 import messaging from '@react-native-firebase/messaging';
 
-import Icons from '../../smallest/Icons';
-import Spacer from '../../smallest/Spacer';
-import Colors from '../../../styles/Colors';
-import MediumText from '../../smallest/MediumText';
+import Icons from '../../atoms/Icons';
+import Spacer from '../../atoms/Spacer';
+import colors from '../../../constants/colors';
+import MediumText from '../../atoms/MediumText';
 import TextButton from '../../molecules/TextButton';
-import CompletedJoinMemberModal from '../../organisms/CompletedJoinMemberModal';
-import MoveBackWithPageTitle from '../../organisms/MoveBackWithPageTitle';
-import { SingleLineInput } from '../../smallest/SingleLineInput';
-import { InputNicknameTemplateProps } from '../../../types/types';
-import { inputNicknameTemplateStyles } from '../../../styles/styles';
-import { joinMemberAPI, checkNicknameAPI, fcmDeviceTokenAPI } from '../../../queries/api';
-import { joinMemberAtom, userInfoAtom, userAuthAtom } from '../../../store/atoms';
+import MoveBackWithPageTitle from '../../organisms/common/MoveBackWithPageTitle';
+import CompletedJoinMemberModal from '../../organisms/joinMember/CompletedJoinMemberModal';
+import { SingleLineInput } from '../../atoms/SingleLineInput';
+import { inputNicknameTemplateStyles } from '../../../styles/templates/styles';
+import { joinMemberAtom, userInfoAtom, userAuthAtom } from '../../../recoil';
+import { joinMemberAPI, checkNicknameAPI, fcmDeviceTokenAPI } from '../../../apis/api';
+import { InputNicknameTemplateProps } from '../../../types/templates/types';
 
 const InputNicknameTemplate = ({ navigationHandler }: InputNicknameTemplateProps) => {
     const [joinData, setJoinData] = useRecoilState(joinMemberAtom);
@@ -167,13 +167,13 @@ const InputNicknameTemplate = ({ navigationHandler }: InputNicknameTemplateProps
                                 type={isDuplicate ? 'octicons' : 'fontisto'}
                                 name={isDuplicate ? 'check' : 'close'}
                                 size={14}
-                                color={isDuplicate ? Colors.STATUS_GREEN : Colors.STATUS_RED}
+                                color={isDuplicate ? colors.STATUS_GREEN : colors.STATUS_RED}
                             />
                             <Spacer width={4} />
                             <MediumText
                                 text={resultText}
                                 size={12}
-                                color={isDuplicate ? Colors.STATUS_GREEN : Colors.STATUS_RED}
+                                color={isDuplicate ? colors.STATUS_GREEN : colors.STATUS_RED}
                             />
                         </View>
                     )}
@@ -183,11 +183,13 @@ const InputNicknameTemplate = ({ navigationHandler }: InputNicknameTemplateProps
                     <View style={inputNicknameTemplateStyles.bottomButton}>
                         <TextButton
                             text="확인"
-                            textColor={Colors.WHITE}
-                            backgroundColor={isDuplicate && resultText ? Colors.BLACK : Colors.BTN_GRAY}
+                            fontColor={colors.WHITE}
+                            fontWeight="semiBold"
+                            backgroundColor={isDuplicate && resultText ? colors.BLACK : colors.BTN_GRAY}
                             onPress={onPressJoinMember}
                             height={48}
                             fontSize={17}
+                            borderRadius={5}
                         />
                     </View>
                 </KeyboardAvoidingView>

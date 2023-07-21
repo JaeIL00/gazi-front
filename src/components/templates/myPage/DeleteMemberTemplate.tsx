@@ -1,19 +1,20 @@
 import React from 'react';
 import { ActivityIndicator, View } from 'react-native';
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { userInfoAtom, userAuthAtom } from '../../../store/atoms';
+import { userInfoAtom, userAuthAtom } from '../../../recoil';
 import { useMutation } from 'react-query';
 import FastImage from 'react-native-fast-image';
 
-import Spacer from '../../smallest/Spacer';
-import Colors from '../../../styles/Colors';
-import BoldText from '../../smallest/BoldText';
-import NormalText from '../../smallest/NormalText';
+import Spacer from '../../atoms/Spacer';
+import colors from '../../../constants/colors';
+import BoldText from '../../atoms/BoldText';
+import NormalText from '../../atoms/NormalText';
 import TextButton from '../../molecules/TextButton';
-import TouchButton from '../../smallest/TouchButton';
-import { deleteMemberAPI } from '../../../queries/api';
-import { DeleteMemberTemplateProps } from '../../../types/types';
-import { DeleteMemberTemplateStyles } from '../../../styles/styles';
+import TouchButton from '../../atoms/TouchButton';
+import { deleteMemberAPI } from '../../../apis/api';
+import { DeleteMemberTemplateStyles } from '../../../styles/templates/styles';
+import { DeleteMemberTemplateProps } from '../../../types/templates/types';
+import ImageButton from '../../molecules/ImageButton';
 
 const DeleteMemberTemplate = ({ moveToScreenHandler }: DeleteMemberTemplateProps) => {
     const { nickname } = useRecoilValue(userInfoAtom);
@@ -37,17 +38,20 @@ const DeleteMemberTemplate = ({ moveToScreenHandler }: DeleteMemberTemplateProps
     return (
         <View style={DeleteMemberTemplateStyles.container}>
             <View style={DeleteMemberTemplateStyles.headerBox}>
-                <TouchButton onPress={() => moveToScreenHandler('BACK')} alignSelf="flex-start" hitSlop={10}>
-                    <FastImage
-                        source={require('../../../assets/icons/to-left-black.png')}
-                        style={DeleteMemberTemplateStyles.headerIcon}
-                    />
-                </TouchButton>
+                <ImageButton
+                    onPress={() => moveToScreenHandler('BACK')}
+                    alignSelf="flex-start"
+                    hitSlop={10}
+                    isCaching={true}
+                    imageSource={require('../../../assets/icons/to-left-black.png')}
+                    imageWidth={9}
+                    imageHeight={16}
+                />
             </View>
 
             <View>
-                <BoldText text={`${nickname}님`} size={24} color={Colors.BLACK} />
-                <BoldText text="정말 탈퇴하시겠어요?" size={24} color={Colors.BLACK} />
+                <BoldText text={`${nickname}님`} size={24} color={colors.BLACK} />
+                <BoldText text="정말 탈퇴하시겠어요?" size={24} color={colors.BLACK} />
             </View>
 
             <View style={DeleteMemberTemplateStyles.explainBox}>
@@ -58,18 +62,20 @@ const DeleteMemberTemplate = ({ moveToScreenHandler }: DeleteMemberTemplateProps
             <View style={DeleteMemberTemplateStyles.bottomBox}>
                 <TouchButton onPress={onPressDeleteMember} paddingHorizontal={17}>
                     <View style={DeleteMemberTemplateStyles.borderLine}>
-                        <BoldText text="탈퇴할래요" size={13} color={Colors.TXT_GRAY} />
+                        <BoldText text="탈퇴할래요" size={13} color={colors.TXT_GRAY} />
                     </View>
                 </TouchButton>
                 <TextButton
                     onPress={() => moveToScreenHandler('BACK')}
                     text="취소"
                     fontSize={17}
-                    textColor={Colors.WHITE}
-                    backgroundColor={Colors.BLACK}
+                    fontColor={colors.WHITE}
+                    fontWeight="semiBold"
+                    backgroundColor={colors.BLACK}
                     paddingHorizontal={98}
                     paddingVertical={11}
                     alignSelf="stretch"
+                    borderRadius={5}
                 />
             </View>
             {isLoading && <ActivityIndicator size="large" />}

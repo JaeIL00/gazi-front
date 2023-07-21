@@ -4,18 +4,19 @@ import { debounce } from 'lodash';
 import { useMutation } from 'react-query';
 import { useRecoilState, useRecoilValue } from 'recoil';
 
-import Icons from '../../smallest/Icons';
-import Spacer from '../../smallest/Spacer';
-import Colors from '../../../styles/Colors';
-import MediumText from '../../smallest/MediumText';
-import TouchButton from '../../smallest/TouchButton';
+import Icons from '../../atoms/Icons';
+import Spacer from '../../atoms/Spacer';
+import colors from '../../../constants/colors';
+import MediumText from '../../atoms/MediumText';
+import TouchButton from '../../atoms/TouchButton';
 import HeaderMolecule from '../../molecules/HeaderMolecule';
-import useTextInputValidation from '../../../utils/hooks/useTextInputValidation';
-import { SingleLineInput } from '../../smallest/SingleLineInput';
-import { EditNicknameTemplateProps } from '../../../types/types';
-import { userInfoAtom, userAuthAtom } from '../../../store/atoms';
-import { editNicknameTemplateStyles } from '../../../styles/styles';
-import { checkNicknameAPI, editNicknameAPI } from '../../../queries/api';
+import useTextInputValidation from '../../../hooks/useTextInputValidation';
+import { SingleLineInput } from '../../atoms/SingleLineInput';
+import { userInfoAtom, userAuthAtom } from '../../../recoil';
+import { editNicknameTemplateStyles } from '../../../styles/templates/styles';
+import { checkNicknameAPI, editNicknameAPI } from '../../../apis/api';
+import { EditNicknameTemplateProps } from '../../../types/templates/types';
+import IconButton from '../../molecules/IconButton';
 
 const EditNicknameTemplate = ({ moveToMyPageScreen }: EditNicknameTemplateProps) => {
     const { accessToken } = useRecoilValue(userAuthAtom);
@@ -105,7 +106,7 @@ const EditNicknameTemplate = ({ moveToMyPageScreen }: EditNicknameTemplateProps)
                 finishText="완료"
                 isNextStep={false}
                 isWorkDone={isGoodResponse}
-                background={Colors.WHITE}
+                background={colors.WHITE}
                 finishFunction={editNicknameHandler}
             />
 
@@ -118,9 +119,13 @@ const EditNicknameTemplate = ({ moveToMyPageScreen }: EditNicknameTemplateProps)
                         width={260}
                         maxLength={7}
                     />
-                    <TouchButton onPress={resetText}>
-                        <Icons type="ionicons" name="close-circle" size={19.5} color="#00000075" />
-                    </TouchButton>
+                    <IconButton
+                        onPress={resetText}
+                        iconType="ionicons"
+                        iconName="close-circle"
+                        iconSize={19.5}
+                        iconColor="#00000075"
+                    />
                 </View>
                 {validationResult && (
                     <View style={editNicknameTemplateStyles.validationText}>
@@ -128,13 +133,13 @@ const EditNicknameTemplate = ({ moveToMyPageScreen }: EditNicknameTemplateProps)
                             type={isGoodResponse ? 'octicons' : 'fontisto'}
                             name={isGoodResponse ? 'check' : 'close'}
                             size={14}
-                            color={isGoodResponse ? Colors.STATUS_GREEN : Colors.STATUS_RED}
+                            color={isGoodResponse ? colors.STATUS_GREEN : colors.STATUS_RED}
                         />
                         <Spacer width={4} />
                         <MediumText
                             text={validationResult}
                             size={12}
-                            color={isGoodResponse ? Colors.STATUS_GREEN : Colors.STATUS_RED}
+                            color={isGoodResponse ? colors.STATUS_GREEN : colors.STATUS_RED}
                         />
                     </View>
                 )}

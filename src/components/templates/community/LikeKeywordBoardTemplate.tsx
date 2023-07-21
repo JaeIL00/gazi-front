@@ -7,18 +7,20 @@ import { debounce } from 'lodash';
 import FastImage from 'react-native-fast-image';
 import Geolocation from '@react-native-community/geolocation';
 
-import Icons from '../../smallest/Icons';
-import Spacer from '../../smallest/Spacer';
-import Colors from '../../../styles/Colors';
-import MediumText from '../../smallest/MediumText';
-import TouchButton from '../../smallest/TouchButton';
-import SemiBoldText from '../../smallest/SemiBoldText';
-import PostListItem from '../../organisms/PostListItem';
-import { userAuthAtom, userInfoAtom } from '../../../store/atoms';
-import { KeywordListTypes } from '../../../types/types';
-import { likeKeywordBoardTemplateStyles } from '../../../styles/styles';
-import { LikeKeywordBoardTemplateProps, PostTypes } from '../../../types/types';
-import { getCommunityPostAPI, getMyLikeKeywordsAPI } from '../../../queries/api';
+import Icons from '../../atoms/Icons';
+import Spacer from '../../atoms/Spacer';
+import colors from '../../../constants/colors';
+import MediumText from '../../atoms/MediumText';
+import TouchButton from '../../atoms/TouchButton';
+import SemiBoldText from '../../atoms/SemiBoldText';
+import PostListItem from '../../organisms/cummunity/PostListItem';
+import { userAuthAtom, userInfoAtom } from '../../../recoil';
+import { likeKeywordBoardTemplateStyles } from '../../../styles/templates/styles';
+import { getCommunityPostAPI, getMyLikeKeywordsAPI } from '../../../apis/api';
+import { LikeKeywordBoardTemplateProps } from '../../../types/templates/types';
+import { KeywordListTypes, PostTypes } from '../../../types/common/types';
+import TextButton from '../../molecules/TextButton';
+import IconButton from '../../molecules/IconButton';
 
 const LikeKeywordBoardTemplate = ({ moveToKeywordSettingScreen }: LikeKeywordBoardTemplateProps) => {
     const isFocusScreen = useIsFocused();
@@ -226,9 +228,9 @@ const LikeKeywordBoardTemplate = ({ moveToKeywordSettingScreen }: LikeKeywordBoa
                         <View style={likeKeywordBoardTemplateStyles.emptyButtonBox}>
                             <TouchButton onPress={moveToKeywordSettingScreen}>
                                 <View style={likeKeywordBoardTemplateStyles.addKeywordButton}>
-                                    <Icons type="entypo" name="plus" size={16} color={Colors.VIOLET} />
+                                    <Icons type="entypo" name="plus" size={16} color={colors.VIOLET} />
                                     <Spacer width={4} />
-                                    <MediumText text="관심 키워드 추가하기" size={14} color={Colors.VIOLET} />
+                                    <MediumText text="관심 키워드 추가하기" size={14} color={colors.VIOLET} />
                                 </View>
                             </TouchButton>
                             <Animated.View
@@ -249,7 +251,7 @@ const LikeKeywordBoardTemplate = ({ moveToKeywordSettingScreen }: LikeKeywordBoa
                                     <MediumText
                                         text="관심 키워드를 추가하면 한번에 모아볼 수 있어요"
                                         size={12}
-                                        color={Colors.WHITE}
+                                        color={colors.WHITE}
                                     />
                                 </View>
                             </Animated.View>
@@ -260,36 +262,38 @@ const LikeKeywordBoardTemplate = ({ moveToKeywordSettingScreen }: LikeKeywordBoa
                                 style={likeKeywordBoardTemplateStyles.nothingIcon}
                             />
                             <Spacer height={20} />
-                            <SemiBoldText text="관심 키워드를 골라주세요" size={18} color={Colors.BTN_GRAY} />
+                            <SemiBoldText text="관심 키워드를 골라주세요" size={18} color={colors.BTN_GRAY} />
                         </View>
                     </View>
                 ) : (
                     <View style={likeKeywordBoardTemplateStyles.myKeywordScrollBox}>
                         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                            <TouchButton
+                            <IconButton
                                 onPress={moveToKeywordSettingScreen}
-                                borderColor={Colors.TXT_LIGHTGRAY}
+                                borderColor={colors.TXT_LIGHTGRAY}
                                 borderWidth={1}
                                 borderRadius={16}
                                 width={41.24}
-                                height={29}>
-                                <Icons type="entypo" name="plus" size={15} color={Colors.TXT_LIGHTGRAY} />
-                            </TouchButton>
+                                height={29}
+                                iconType="entypo"
+                                iconName="plus"
+                                iconSize={15}
+                                iconColor={colors.TXT_LIGHTGRAY}
+                            />
                             {myKeywordList.map(item => (
-                                <TouchButton
+                                <TextButton
                                     key={item.id}
                                     onPress={() => myLikeKeywordFilterHandler(item.id)}
-                                    backgroundColor={chooseKeywordFilter.includes(item.id) ? Colors.VIOLET : '#F3EFF9'}
+                                    backgroundColor={chooseKeywordFilter.includes(item.id) ? colors.VIOLET : '#F3EFF9'}
                                     borderRadius={16}
                                     paddingHorizontal={16}
                                     height={29}
-                                    marginLeft={6}>
-                                    <MediumText
-                                        text={item.keywordName}
-                                        size={14}
-                                        color={chooseKeywordFilter.includes(item.id) ? Colors.WHITE : '#49454F'}
-                                    />
-                                </TouchButton>
+                                    marginLeft={6}
+                                    text={item.keywordName}
+                                    fontSize={14}
+                                    fontColor={chooseKeywordFilter.includes(item.id) ? colors.WHITE : '#49454F'}
+                                    fontWeight="medium"
+                                />
                             ))}
                         </ScrollView>
                     </View>

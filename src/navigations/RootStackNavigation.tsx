@@ -4,23 +4,23 @@ import { NativeStackNavigationProp, createNativeStackNavigator } from '@react-na
 import { useRecoilValue } from 'recoil';
 import SplashScreen from 'react-native-splash-screen';
 
-import WritePostScreen from '../screens/WritePostScreen';
+import WritePostScreen from '../components/pages/community/WritePostScreen';
 import JoinMemberNavigation from './JoinMemberNavigation';
-import LoginScreen from '../screens/login/EmailLoginScreen';
-import PoliciesScreen from '../screens/myPage/PoliciesScreen';
-import WriteCommentScreen from '../screens/WriteCommentScreen';
+import LoginScreen from '../components/pages/login/EmailLoginScreen';
+import PoliciesScreen from '../components/pages/myPage/PoliciesScreen';
+import WriteCommentScreen from '../components/pages/community/WriteCommentScreen';
 import ServiceMainTabNavigation from './ServiceMainTabNavigation';
-import ImageViewScreen from '../screens/community/ImageViewScreen';
-import NotLoginHomeScreen from '../screens/home/NotLoginHomeScreen';
-import ThreadItemScreen from '../screens/community/ThreadItemScreen';
-import EditNicknameScreen from '../screens/myPage/EditNicknameScreen';
-import DeleteMemberScreen from '../screens/myPage/DeleteMemberScreen';
-import MyPostCommentScreen from '../screens/myPage/MyPostCommentScreen';
-import ChangePasswordScreen from '../screens/myPage/ChangePasswordScreen';
-import AccountManagementScreen from '../screens/myPage/AccountManagementScreen';
-import LikeKeywordSettingScreen from '../screens/myPage/LikeKeywordSettingScreen';
-import { userAuthAtom } from '../store/atoms';
-import { RootStackParamList } from '../types/types';
+import ImageViewScreen from '../components/pages/community/ImageViewScreen';
+import NotLoginHomeScreen from '../components/pages/home/NotLoginHomeScreen';
+import ThreadItemScreen from '../components/pages/community/ThreadItemScreen';
+import EditNicknameScreen from '../components/pages/myPage/EditNicknameScreen';
+import DeleteMemberScreen from '../components/pages/myPage/DeleteMemberScreen';
+import MyPostCommentScreen from '../components/pages/myPage/MyPostCommentScreen';
+import ChangePasswordScreen from '../components/pages/myPage/ChangePasswordScreen';
+import AccountManagementScreen from '../components/pages/myPage/AccountManagementScreen';
+import LikeKeywordSettingScreen from '../components/pages/myPage/LikeKeywordSettingScreen';
+import { userAuthAtom } from '../recoil';
+import { RootStackParamList } from '../types/common/types';
 
 export const navigationRef = createNavigationContainerRef<RootStackParamList>();
 

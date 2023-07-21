@@ -6,14 +6,12 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import NaverLogin from '@react-native-seoul/naver-login';
 import Config from 'react-native-config';
 
-import Spacer from '../../smallest/Spacer';
-import Colors from '../../../styles/Colors';
-import BoldText from '../../smallest/BoldText';
+import Spacer from '../../atoms/Spacer';
+import colors from '../../../constants/colors';
+import BoldText from '../../atoms/BoldText';
 import TextButton from '../../molecules/TextButton';
-import { notLoginTemplateStyles } from '../../../styles/styles';
+import { notLoginTemplateStyles } from '../../../styles/templates/styles';
 import { useRootNavigation } from '../../../navigations/RootStackNavigation';
-import { KakaoOAuthToken, KakaoProfile, getProfile, login } from '@react-native-seoul/kakao-login';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const NotLoginTemplate = () => {
     const NAVER_CLIENT_ID = Config.NAVER_CLIENT_ID as string;
@@ -86,8 +84,8 @@ const NotLoginTemplate = () => {
     return (
         <View style={notLoginTemplateStyles.container}>
             <View>
-                <BoldText text="가는길에 지금 어떤 일이" size={24} color={Colors.BLACK} />
-                <BoldText text="일어나고 있는지 알아볼까요?" size={24} color={Colors.BLACK} />
+                <BoldText text="가는길에 지금 어떤 일이" size={24} color={colors.BLACK} />
+                <BoldText text="일어나고 있는지 알아볼까요?" size={24} color={colors.BLACK} />
             </View>
 
             <View style={notLoginTemplateStyles.imageBox}>
@@ -101,43 +99,51 @@ const NotLoginTemplate = () => {
                 <TextButton
                     text="이메일로 가입"
                     onPress={() => onPressNavigate('JoinMember')}
-                    textColor={Colors.WHITE}
-                    backgroundColor={Colors.BLACK}
+                    fontColor={colors.WHITE}
+                    fontWeight="semiBold"
+                    backgroundColor={colors.BLACK}
                     fontSize={17}
                     height={48}
+                    borderRadius={5}
                 />
                 <Spacer height={12} />
                 <TextButton
                     text="이메일로 로그인"
                     onPress={() => onPressNavigate('Login')}
-                    textColor={Colors.BLACK}
-                    backgroundColor={Colors.WHITE}
+                    fontColor={colors.BLACK}
+                    fontWeight="semiBold"
+                    backgroundColor={colors.WHITE}
                     fontSize={17}
                     height={48}
-                    borderColor={Colors.BLACK}
+                    borderColor={colors.BLACK}
                     borderWidth={1}
+                    borderRadius={5}
                 />
                 <Spacer height={12} />
                 <TextButton
                     text="카카오 로그인"
                     onPress={kakaologinHandler}
-                    textColor={Colors.BLACK}
-                    backgroundColor={Colors.WHITE}
+                    fontColor={colors.BLACK}
+                    fontWeight="semiBold"
+                    backgroundColor={colors.WHITE}
                     fontSize={17}
                     height={48}
-                    borderColor={Colors.BLACK}
+                    borderColor={colors.BLACK}
                     borderWidth={1}
+                    borderRadius={5}
                 />
                 <Spacer height={12} />
                 <TextButton
                     text="네이버 로그인"
                     onPress={naverLoginHandler}
-                    textColor={Colors.BLACK}
-                    backgroundColor={Colors.WHITE}
+                    fontColor={colors.BLACK}
+                    fontWeight="semiBold"
+                    backgroundColor={colors.WHITE}
                     fontSize={17}
                     height={48}
-                    borderColor={Colors.BLACK}
+                    borderColor={colors.BLACK}
                     borderWidth={1}
+                    borderRadius={5}
                 />
             </View>
         </View>

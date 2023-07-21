@@ -1,41 +1,41 @@
 import React, { useCallback, useLayoutEffect, useRef, useState } from 'react';
-import { ActivityIndicator, Image, Linking, Modal, ScrollView, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, Image, Linking, Modal, ScrollView, View } from 'react-native';
 import { useMutation } from 'react-query';
 import { useRecoilValue } from 'recoil';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { debounce } from 'lodash';
-
-import Icons from '../../smallest/Icons';
-import Spacer from '../../smallest/Spacer';
-import Colors from '../../../styles/Colors';
 import FastImage from 'react-native-fast-image';
-import NormalText from '../../smallest/NormalText';
-import MediumText from '../../smallest/MediumText';
+
+import Icons from '../../atoms/Icons';
+import Spacer from '../../atoms/Spacer';
+import colors from '../../../constants/colors';
+import NormalText from '../../atoms/NormalText';
+import MediumText from '../../atoms/MediumText';
+import TouchButton from '../../atoms/TouchButton';
 import TextButton from '../../molecules/TextButton';
-import TouchButton from '../../smallest/TouchButton';
-import SemiBoldText from '../../smallest/SemiBoldText';
-import PhotoGallery from '../../organisms/PhotoGallery';
-import MultiLineInput from '../../smallest/MultiLineInput';
+import SemiBoldText from '../../atoms/SemiBoldText';
+import MultiLineInput from '../../atoms/MultiLineInput';
+import ModalBackground from '../../atoms/ModalBackground';
 import HeaderMolecule from '../../molecules/HeaderMolecule';
-import SearchLocation from '../../organisms/SearchLocation';
-import ModalBackground from '../../smallest/ModalBackground';
-import FailPermissionModal from '../../organisms/FailPermissionModal';
+import SearchLocation from '../../organisms/common/SearchLocation';
 import AddKeywordInWrite from '../../organisms/cummunity/AddKeywordInWrite';
-import useTextInputValidation from '../../../utils/hooks/useTextInputValidation';
-import { userAuthAtom, userInfoAtom } from '../../../store/atoms';
-import { issueKeywords } from '../../../utils/allKeywords';
-import { subwayKeywords } from '../../../utils/allKeywords';
-import { trafficKeywords } from '../../../utils/allKeywords';
-import { writeCommentTemplateStyles } from '../../../styles/styles';
-import { writeCommentAPI, writeCommentFilesAPI } from '../../../queries/api';
+import useTextInputValidation from '../../../hooks/useTextInputValidation';
+import { userAuthAtom, userInfoAtom } from '../../../recoil';
+import { writeCommentAPI, writeCommentFilesAPI } from '../../../apis/api';
+import { writeCommentTemplateStyles } from '../../../styles/templates/styles';
+import FailPermissionModal from '../../organisms/common/FailPermissionModal';
+import { issueKeywords, subwayKeywords, trafficKeywords } from '../../../constants/allKeywords';
+
+import Geolocation from '@react-native-community/geolocation';
+import { WriteCommentTemplateProps } from '../../../types/templates/types';
 import {
     KeywordListTypes,
     TemporarySaveChooseLocationTypes,
-    WriteCommentTemplateProps,
     WriteCommentTypes,
     uploadImageFileTypes,
-} from '../../../types/types';
-import Geolocation from '@react-native-community/geolocation';
+} from '../../../types/common/types';
+import IconButton from '../../molecules/IconButton';
+import HowGetPhotoSelectModal from '../../organisms/cummunity/HowGetPhotoSelectModal';
 
 const WriteCommentTemplate = ({ navigationHandler, threadInfo }: WriteCommentTemplateProps) => {
     const { accessToken } = useRecoilValue(userAuthAtom);
@@ -55,7 +55,7 @@ const WriteCommentTemplate = ({ navigationHandler, threadInfo }: WriteCommentTem
     const [inputFocusBlur, setInputFocusBlur] = useState<boolean>(false);
     const [imagePermission, setImagePermission] = useState<boolean>(false);
     const [chooseKeywords, setChooseKeywords] = useState<KeywordListTypes[]>([]);
-    const [isCamAllowPermission, setIsCamAllowPermission] = useState<boolean>(false);
+    const [isHowGetPhotoSelectModal, setIsHowGetPhotoSelectModal] = useState<boolean>(false);
     const [temporaryChooseLocationData, setTemporaryChooseLocationData] = useState<TemporarySaveChooseLocationTypes>({
         formatted_address: '',
         name: '',
@@ -183,31 +183,24 @@ const WriteCommentTemplate = ({ navigationHandler, threadInfo }: WriteCommentTem
     };
 
     // Close gallery button
-    const closeGalleryHandling = () => {
-        setIsCamAllowPermission(false);
+    const closePhotoSelectModalHandler = () => {
+        setIsHowGetPhotoSelectModal(false);
     };
 
     // Get image from gallery
-    const getImageHandler = (file: uploadImageFileTypes, state: string) => {
-        switch (state) {
-            case 'ADD':
-                setWriteCommentData({ ...writeCommentData, files: [...writeCommentData.files, file] });
-                break;
-            case 'DEL':
-                const freshFiles = writeCommentData.files.filter(item => item.uri !== file.uri);
-                setWriteCommentData({ ...writeCommentData, files: freshFiles });
-                break;
-            default:
-                // For Debug
-                console.log('(ERROR) Get image from gallery.', state, file);
-        }
+    const getImageHandler = (file: uploadImageFileTypes[]) => {
+        setWriteCommentData({ ...writeCommentData, files: [...writeCommentData.files, ...file] });
+    };
+    const delImageHandler = (file: uploadImageFileTypes) => {
+        const freshFiles = writeCommentData.files.filter(item => item.uri !== file.uri);
+        setWriteCommentData({ ...writeCommentData, files: freshFiles });
     };
 
     // Get image in library
-    const openGalleryHandler = async () => {
-        if (isAllowLocation) {
-            setIsCamAllowPermission(true);
-        } else {
+    const addPhotoHandler = async () => {
+        if (isAllowLocation && writeCommentData.files.length < 10) {
+            setIsHowGetPhotoSelectModal(true);
+        } else if (!isAllowLocation) {
             notAllowPermission();
         }
     };
@@ -361,23 +354,33 @@ const WriteCommentTemplate = ({ navigationHandler, threadInfo }: WriteCommentTem
     return (
         <View style={writeCommentTemplateStyles.container}>
             <View style={writeCommentTemplateStyles.headerNavigateBox}>
-                <TouchButton onPress={() => navigationHandler('BACK')} hitSlop={10}>
-                    <Icons type="ionicons" name="close-sharp" size={24} color={Colors.BLACK} />
-                </TouchButton>
-                <TouchButton onPress={finishWritingHandler} hitSlop={10}>
-                    <SemiBoldText text="등록" size={16} color={Colors.BLACK} />
-                </TouchButton>
+                <IconButton
+                    onPress={() => navigationHandler('BACK')}
+                    hitSlop={10}
+                    iconType="ionicons"
+                    iconName="close-sharp"
+                    iconSize={24}
+                    iconColor={colors.BLACK}
+                />
+                <TextButton
+                    onPress={finishWritingHandler}
+                    hitSlop={10}
+                    text="등록"
+                    fontSize={16}
+                    fontColor={colors.BLACK}
+                    fontWeight="semiBold"
+                />
             </View>
 
             <ScrollView style={writeCommentTemplateStyles.contentBox}>
                 <View style={writeCommentTemplateStyles.settingContainer}>
                     <View>
-                        <SemiBoldText text={threadInfo.title} size={20} color={Colors.BLACK} numberOfLines={1} />
+                        <SemiBoldText text={threadInfo.title} size={20} color={colors.BLACK} numberOfLines={1} />
                         <Spacer height={4} />
                         <NormalText
                             text={`${threadInfo.rePostCount} post • updated ${threadInfo.time}`}
                             size={12}
-                            color={Colors.BLACK}
+                            color={colors.BLACK}
                         />
                     </View>
 
@@ -395,11 +398,11 @@ const WriteCommentTemplate = ({ navigationHandler, threadInfo }: WriteCommentTem
                                             <MediumText
                                                 text={writeCommentData.placeName}
                                                 size={13}
-                                                color={Colors.BLACK}
+                                                color={colors.BLACK}
                                             />
                                         </>
                                     ) : (
-                                        <MediumText text="위치설정" size={13} color={Colors.BLACK} />
+                                        <MediumText text="위치설정" size={13} color={colors.BLACK} />
                                     )}
                                     <Spacer width={4} />
                                     <FastImage
@@ -415,10 +418,10 @@ const WriteCommentTemplate = ({ navigationHandler, threadInfo }: WriteCommentTem
                                         <MediumText
                                             text={issueKeywords[chooseKeywords[0].id - 1].keywordName}
                                             size={13}
-                                            color={Colors.BLACK}
+                                            color={colors.BLACK}
                                         />
                                     ) : (
-                                        <MediumText text="키워드설정" size={13} color={Colors.BLACK} />
+                                        <MediumText text="키워드설정" size={13} color={colors.BLACK} />
                                     )}
                                     <Spacer width={4} />
                                     <FastImage
@@ -442,17 +445,8 @@ const WriteCommentTemplate = ({ navigationHandler, threadInfo }: WriteCommentTem
                     />
                 </View>
 
-                {!inputFocusBlur && (
-                    <TouchableOpacity
-                        style={writeCommentTemplateStyles.contentInputFocus}
-                        onPress={() => inputFocusBlurHandler('FOCUS')}
-                    />
-                )}
+                {!inputFocusBlur && <TouchButton onPress={() => inputFocusBlurHandler('FOCUS')} height={400} />}
             </ScrollView>
-
-            <Modal visible={isCamAllowPermission} onRequestClose={() => setIsCamAllowPermission(false)}>
-                <PhotoGallery closeGalleryHandling={closeGalleryHandling} getImageHandler={getImageHandler} />
-            </Modal>
 
             <View style={writeCommentTemplateStyles.bottomBox}>
                 <View style={writeCommentTemplateStyles.bottomKeyword}>
@@ -461,7 +455,7 @@ const WriteCommentTemplate = ({ navigationHandler, threadInfo }: WriteCommentTem
                             <>
                                 {chooseKeywords.map(item => (
                                     <View key={item.id} style={writeCommentTemplateStyles.bottomKeywordItem}>
-                                        <MediumText text={item.keywordName} size={12} color={Colors.TXT_LIGHTGRAY} />
+                                        <MediumText text={item.keywordName} size={12} color={colors.TXT_LIGHTGRAY} />
                                     </View>
                                 ))}
                             </>
@@ -478,13 +472,19 @@ const WriteCommentTemplate = ({ navigationHandler, threadInfo }: WriteCommentTem
                                                 style={writeCommentTemplateStyles.bottomImageSize}
                                             />
                                         </View>
-                                        <TouchableOpacity
-                                            onPress={() => getImageHandler(item, 'DEL')}
-                                            activeOpacity={1}
-                                            style={writeCommentTemplateStyles.bottomImageDelButton}>
-                                            <View style={writeCommentTemplateStyles.bottomImageDelIconBack} />
-                                            <Icons type="ionicons" name="close-circle" size={20} color="#000000" />
-                                        </TouchableOpacity>
+                                        <View style={writeCommentTemplateStyles.bottomImageDelButton}>
+                                            <TouchButton onPress={() => delImageHandler(item)} height={25}>
+                                                <>
+                                                    <View style={writeCommentTemplateStyles.bottomImageDelIconBack} />
+                                                    <Icons
+                                                        type="ionicons"
+                                                        name="close-circle"
+                                                        size={20}
+                                                        color="#000000"
+                                                    />
+                                                </>
+                                            </TouchButton>
+                                        </View>
                                     </View>
                                 ))}
                             </>
@@ -492,8 +492,17 @@ const WriteCommentTemplate = ({ navigationHandler, threadInfo }: WriteCommentTem
                     )}
                 </View>
 
+                <ModalBackground
+                    visible={isHowGetPhotoSelectModal}
+                    onRequestClose={() => setIsHowGetPhotoSelectModal(false)}>
+                    <HowGetPhotoSelectModal
+                        getImageHandler={getImageHandler}
+                        closePhotoSelectModalHandler={closePhotoSelectModalHandler}
+                    />
+                </ModalBackground>
+
                 <TouchButton
-                    onPress={openGalleryHandler}
+                    onPress={addPhotoHandler}
                     alignSelf="flex-start"
                     paddingHorizontal={16}
                     paddingVertical={11}>
@@ -544,16 +553,18 @@ const WriteCommentTemplate = ({ navigationHandler, threadInfo }: WriteCommentTem
 
             <ModalBackground visible={onErrorModal}>
                 <View style={writeCommentTemplateStyles.errorModalBox}>
-                    <SemiBoldText text={onErrorText} size={18} color={Colors.BLACK} />
+                    <SemiBoldText text={onErrorText} size={18} color={colors.BLACK} />
                     <Spacer height={18} />
                     <TextButton
                         onPress={offErrorModalHandler}
                         text="확인"
-                        textColor="#49454F"
+                        fontColor="#49454F"
+                        fontWeight="semiBold"
                         fontSize={14}
-                        backgroundColor={Colors.LIGHTGRAY}
+                        backgroundColor={colors.LIGHTGRAY}
                         paddingHorizontal={111}
                         paddingVertical={12}
+                        borderRadius={5}
                     />
                 </View>
             </ModalBackground>

@@ -1,20 +1,22 @@
 import React, { useCallback, useRef, useState } from 'react';
-import { FlatList, RefreshControl, TouchableOpacity, View } from 'react-native';
+import { FlatList, RefreshControl, View } from 'react-native';
 import { useRecoilValue } from 'recoil';
 import { useInfiniteQuery, useQuery } from 'react-query';
 import { useFocusEffect } from '@react-navigation/native';
 
-import Icons from '../../smallest/Icons';
-import Spacer from '../../smallest/Spacer';
-import Colors from '../../../styles/Colors';
-import NormalText from '../../smallest/NormalText';
-import MediumText from '../../smallest/MediumText';
-import TouchButton from '../../smallest/TouchButton';
-import SemiBoldText from '../../smallest/SemiBoldText';
-import { userAuthAtom } from '../../../store/atoms';
-import { keywordAlarmTemplateStyles } from '../../../styles/styles';
-import { getAlarmHistoryAPI, getMyLikeKeywordsAPI } from '../../../queries/api';
-import { AlarmHistoryTypes, KeywordAlarmTemplateProps } from '../../../types/types';
+import Icons from '../../atoms/Icons';
+import Spacer from '../../atoms/Spacer';
+import colors from '../../../constants/colors';
+import NormalText from '../../atoms/NormalText';
+import MediumText from '../../atoms/MediumText';
+import TouchButton from '../../atoms/TouchButton';
+import SemiBoldText from '../../atoms/SemiBoldText';
+import { userAuthAtom } from '../../../recoil';
+import { keywordAlarmTemplateStyles } from '../../../styles/templates/styles';
+import { getAlarmHistoryAPI, getMyLikeKeywordsAPI } from '../../../apis/api';
+import { KeywordAlarmTemplateProps } from '../../../types/templates/types';
+import { AlarmHistoryTypes } from '../../../types/common/types';
+import TextButton from '../../molecules/TextButton';
 
 const KeywordAlarmTemplate = ({ navigationHandler }: KeywordAlarmTemplateProps) => {
     const { accessToken } = useRecoilValue(userAuthAtom);
@@ -81,24 +83,25 @@ const KeywordAlarmTemplate = ({ navigationHandler }: KeywordAlarmTemplateProps) 
 
     const renderItem = useCallback(
         ({ item }: { item: AlarmHistoryTypes }) => (
-            <TouchableOpacity
+            <TouchButton
                 onPress={() => {
                     // item.postId 받아서 전달
                 }}
-                style={keywordAlarmTemplateStyles.historyItemButton}
-                activeOpacity={1}>
-                <View style={keywordAlarmTemplateStyles.alarmIcon}>
-                    <Icons type="materialCommunityIcons" name="bell" size={20} color={Colors.BLACK} />
+                paddingVertical={18}>
+                <View style={keywordAlarmTemplateStyles.historyItemButton}>
+                    <View style={keywordAlarmTemplateStyles.alarmIcon}>
+                        <Icons type="materialCommunityIcons" name="bell" size={20} color={colors.BLACK} />
+                    </View>
+                    <View style={keywordAlarmTemplateStyles.hisrotyItemTextBox}>
+                        <SemiBoldText text={item.title} size={14} color={colors.BLACK} />
+                        <Spacer height={2} />
+                        <NormalText text={item.body} size={12} color={colors.TXT_GRAY} numberOfLines={2} />
+                    </View>
+                    <View>
+                        <MediumText text="16분전" size={11} color={colors.TXT_GRAY} />
+                    </View>
                 </View>
-                <View style={keywordAlarmTemplateStyles.hisrotyItemTextBox}>
-                    <SemiBoldText text={item.title} size={14} color={Colors.BLACK} />
-                    <Spacer height={2} />
-                    <NormalText text={item.body} size={12} color={Colors.TXT_GRAY} numberOfLines={2} />
-                </View>
-                <View>
-                    <MediumText text="16분전" size={11} color={Colors.TXT_GRAY} />
-                </View>
-            </TouchableOpacity>
+            </TouchButton>
         ),
         [],
     );
@@ -112,14 +115,17 @@ const KeywordAlarmTemplate = ({ navigationHandler }: KeywordAlarmTemplateProps) 
     return (
         <View>
             <View style={keywordAlarmTemplateStyles.headerBox}>
-                <MediumText text={`알림 받는 키워드 ${keywordsLength}개`} size={14} color={Colors.BLACK} />
-                <TouchButton
+                <MediumText text={`알림 받는 키워드 ${keywordsLength}개`} size={14} color={colors.BLACK} />
+                <TextButton
                     onPress={() => navigationHandler('LikeKeywordSetting')}
                     paddingHorizontal={16}
                     paddingVertical={8}
-                    backgroundColor="#F2F2F2">
-                    <SemiBoldText text="설정" size={13} color={Colors.BLACK} />
-                </TouchButton>
+                    backgroundColor="#F2F2F2"
+                    text="설정"
+                    fontSize={13}
+                    fontColor={colors.BLACK}
+                    fontWeight="semiBold"
+                />
             </View>
 
             <View>

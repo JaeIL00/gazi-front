@@ -1,6 +1,6 @@
 import React from 'react';
 import { LogBox, Platform, SafeAreaView, Text, TextInput } from 'react-native';
-import { appStyles } from './src/styles/styles';
+import { appStyles } from './src/styles/common/styles';
 import CodePush from 'react-native-code-push';
 import PushNotification from 'react-native-push-notification';
 import { NavigationContainer } from '@react-navigation/native';
