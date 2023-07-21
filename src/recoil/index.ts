@@ -48,18 +48,5 @@ export const emailAuthAtom = atom<emailAuthAtomTypes>({
 // COMMUNITY
 export const nearPostListAtom = atom<PostTypes[]>({
     key: 'nearPostListAtom',
-    default: [
-        {
-            title: '',
-            distance: '',
-            time: '',
-            rePostCount: 0,
-            content: '',
-            latitude: 0,
-            longitude: 0,
-            headKeyword: 0,
-            thumbNail: '',
-            postId: 0,
-        },
-    ],
+    default: [],
 });

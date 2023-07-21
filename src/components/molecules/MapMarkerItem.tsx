@@ -1,46 +1,33 @@
-import { useIsFocused } from '@react-navigation/native';
 import React from 'react';
-import { MapMarkerProps } from '../../types/molecules/types';
+import { useIsFocused } from '@react-navigation/native';
 import { useRecoilValue } from 'recoil';
-import { nearPostListAtom } from '../../recoil';
 import { Marker } from 'react-native-nmap';
 
+import { nearPostListAtom } from '../../recoil';
+import { MapMarkerProps } from '../../types/molecules/types';
+
+const ISSUE_MARKER = {
+    1: require('../../assets/icons/marker-protest.png'),
+    2: require('../../assets/icons/marker-delay.png'),
+    3: require('../../assets/icons/marker-disaster.png'),
+    4: require('../../assets/icons/marker-construction.png'),
+    5: require('../../assets/icons/marker-congestion.png'),
+    6: require('../../assets/icons/marker-accident.png'),
+    7: require('../../assets/icons/marker-traffic-jam.png'),
+    8: require('../../assets/icons/marker-festival.png'),
+    9: require('../../assets/icons/marker-etc.png'),
+};
+
 const MapMarkerItem = ({ findMarkerPost }: MapMarkerProps) => {
-    const isFocued = useIsFocused();
+    const isFocused = useIsFocused();
 
     const nearPostList = useRecoilValue(nearPostListAtom);
 
-    if (nearPostList[0].postId) {
+    if (nearPostList.length > 0) {
         return (
             <>
-                {isFocued &&
+                {isFocused &&
                     nearPostList.map(item => {
-                        const markertypeIcon = () => {
-                            switch (item.headKeyword) {
-                                case 1:
-                                    return require('../../assets/icons/marker-protest.png');
-                                case 2:
-                                    return require('../../assets/icons/marker-delay.png');
-                                case 3:
-                                    return require('../../assets/icons/marker-disaster.png');
-                                case 4:
-                                    return require('../../assets/icons/marker-construction.png');
-                                case 5:
-                                    return require('../../assets/icons/marker-congestion.png');
-                                case 6:
-                                    return require('../../assets/icons/marker-accident.png');
-                                case 7:
-                                    return require('../../assets/icons/marker-traffic-jam.png');
-                                case 8:
-                                    return require('../../assets/icons/marker-festival.png');
-                                case 9:
-                                    return require('../../assets/icons/marker-etc.png');
-                                default:
-                                    // For Debug
-                                    console.log('(ERROR) Near post marker image');
-                                    return;
-                            }
-                        };
                         return (
                             <Marker
                                 key={item.postId}
@@ -52,7 +39,7 @@ const MapMarkerItem = ({ findMarkerPost }: MapMarkerProps) => {
                                 width={30}
                                 height={30}
                                 onClick={() => findMarkerPost(item.postId)}
-                                image={markertypeIcon()}
+                                image={ISSUE_MARKER[item.headKeyword]}
                             />
                         );
                     })}
