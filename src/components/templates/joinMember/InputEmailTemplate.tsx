@@ -1,33 +1,36 @@
-import React, { useState } from 'react';
+import React, { useLayoutEffect, useState } from 'react';
 import { ActivityIndicator, TouchableOpacity, View } from 'react-native';
 import { useRecoilState } from 'recoil';
 import validator from 'validator';
 import { useMutation } from 'react-query';
 import { debounce } from 'lodash';
 
-import Icons from '../../smallest/Icons';
-import Spacer from '../../smallest/Spacer';
-import Colors from '../../../styles/Colors';
-import BoldText from '../../smallest/BoldText';
-import NormalText from '../../smallest/NormalText';
-import MediumText from '../../smallest/MediumText';
-import TextButton from '../../molecules/TextButton';
+import Icons from '../../atoms/Icons';
+import Spacer from '../../atoms/Spacer';
+import colors from '../../../constants/colors';
+import BoldText from '../../atoms/BoldText';
+import AuthEmail from '../../organisms/joinMember/AuthEmail';
+import NormalText from '../../atoms/NormalText';
+import MediumText from '../../atoms/MediumText';
 import LoginTextInput from '../../molecules/LoginTextInput';
-import { emailAuthAPI } from '../../../queries/api';
-import { InputEmailTemplateProps } from '../../../types/types';
-import { inputEmailTemplateStyles } from '../../../styles/styles';
-import { emailAuthAtom, joinMemberAtom } from '../../../store/atoms';
-import useTextInputValidation from '../../../utils/hooks/useTextInputValidation';
+import ModalBackground from '../../atoms/ModalBackground';
+import MoveBackWithPageTitle from '../../organisms/common/MoveBackWithPageTitle';
+import useBackgroundInterval from '../../../hooks/useBackgroundInterval';
+import useTextInputValidation from '../../../hooks/useTextInputValidation';
+import { emailAuthAPI } from '../../../apis/api';
+import { emailAuthAtom, joinMemberAtom } from '../../../recoil';
+import { inputEmailTemplateStyles } from '../../../styles/templates/styles';
+import { InputEmailTemplateProps } from '../../../types/templates/types';
+import TextButton from '../../molecules/TextButton';
 
-const InputEmailTemplate = ({
-    minutes,
-    seconds,
-    onPressNextStep,
-    resetTimeHandler,
-    didAuthEmail,
-}: InputEmailTemplateProps) => {
+const InputEmailTemplate = ({ navigationHandler }: InputEmailTemplateProps) => {
     const [authData, setAuthData] = useRecoilState(emailAuthAtom);
     const [joinData, setJoinData] = useRecoilState(joinMemberAtom);
+
+    const [minutes, setMinutes] = useState<number>(5);
+    const [seconds, setSeconds] = useState<number>(0);
+    const [isEmail, setIsEmail] = useState<boolean>(false);
+    const [isOnModal, setIsOnModal] = useState<boolean>(false);
 
     const {
         text: email,
@@ -35,14 +38,13 @@ const InputEmailTemplate = ({
         validationResult: duplicatedError,
         changeValidationResult: setDuplicatedError,
     } = useTextInputValidation();
-    const [isEmail, setIsEmail] = useState<boolean>(false);
 
     // Request email authorization number API
     const { isLoading, mutate } = useMutation(emailAuthAPI, {
         onSuccess: data => {
             setAuthData({ ...authData, number: data.data.data });
             resetTimeHandler();
-            onPressNextStep();
+            authNumberModalHanlder('OPEN');
         },
         onError: ({ response }) => {
             if (response.data.state === 409) {
@@ -62,9 +64,11 @@ const InputEmailTemplate = ({
 
     // Request email authorization number API handling by button
     const onPressEmailAuth = debounce(() => {
-        if (!duplicatedError && email === joinData.email && isEmail && (minutes || seconds)) {
-            authData.isOk ? didAuthEmail() : onPressNextStep();
-        } else if (!email && !duplicatedError) {
+        const nextStepWithoutMutate = !duplicatedError && email === joinData.email && minutes !== 0 && seconds !== 0;
+        const userInteractionNothing = !email || duplicatedError || !isEmail;
+        if (nextStepWithoutMutate && email) {
+            authData.isAuthorizationPass ? navigationHandler('GO') : authNumberModalHanlder('OPEN');
+        } else if (userInteractionNothing) {
             return;
         } else {
             setJoinData({ ...joinData, email });
@@ -72,63 +76,129 @@ const InputEmailTemplate = ({
         }
     }, 300);
 
+    // Input auth number modal handler
+    const authNumberModalHanlder = (state: string) => {
+        switch (state) {
+            case 'OPEN':
+                setIsOnModal(true);
+                break;
+            case 'CLOSE':
+                setIsOnModal(false);
+                break;
+            case 'CORRECT':
+                setIsOnModal(false);
+                navigationHandler('GO');
+                break;
+            default:
+                // For Debug
+                console.log('(ERROR) Input auth number modal handler.', state);
+        }
+    };
+
+    // Timer for email authorization
+    const timerHandler = () => {
+        if (seconds > 0) {
+            setSeconds(seconds - 1);
+        } else if (seconds === 0) {
+            setSeconds(59);
+            setMinutes(minutes - 1);
+        }
+    };
+    const resetTimeHandler = () => {
+        setMinutes(5);
+        setSeconds(0);
+    };
+    useBackgroundInterval(timerHandler, minutes === 0 && seconds === 0 ? null : 1000);
+
+    // Reset auth number by full time
+    useLayoutEffect(() => {
+        if (minutes === 0 && seconds === 0) {
+            setAuthData({ ...authData, number: 0 });
+        }
+    }, [minutes]);
+
     return (
-        <View style={inputEmailTemplateStyles.container}>
-            <View style={inputEmailTemplateStyles.mainContent}>
-                <LoginTextInput
-                    title="Email"
-                    value={email}
-                    onChangeText={onChangeEmailText}
-                    placeholder="이메일(아이디) 입력"
-                    keyboardType="email-address"
-                />
-
-                <Spacer height={8} />
-
-                {email && !duplicatedError && (
-                    <View style={inputEmailTemplateStyles.emailErrorTextBox}>
-                        <Icons
-                            type={isEmail ? 'octicons' : 'fontisto'}
-                            name={isEmail ? 'check' : 'close'}
-                            size={14}
-                            color={isEmail ? Colors.STATUS_GREEN : Colors.STATUS_RED}
-                        />
-                        <Spacer width={4} />
-                        <MediumText
-                            text={isEmail ? '올바른 이메일 형식입니다' : '이메일 형식이 올바르지 않습니다'}
-                            size={12}
-                            color={isEmail ? Colors.STATUS_GREEN : Colors.STATUS_RED}
-                        />
-                    </View>
-                )}
-                {duplicatedError && (
-                    <View style={inputEmailTemplateStyles.emailErrorTextBox}>
-                        <Icons type={'fontisto'} name={'close'} size={14} color={Colors.STATUS_RED} />
-                        <Spacer width={4} />
-                        <MediumText text={duplicatedError} size={12} color={Colors.STATUS_RED} />
-                    </View>
-                )}
-            </View>
-
-            <TextButton
-                onPress={onPressEmailAuth}
-                text={authData.isOk ? '완료' : '인증메일 전송'}
-                height={48}
-                backgroundColor={isEmail && !duplicatedError ? Colors.BLACK : Colors.BTN_GRAY}
-                textColor={Colors.WHITE}
-                fontSize={17}
+        <>
+            <MoveBackWithPageTitle
+                onPress={() => navigationHandler('BACK')}
+                oneTitle="회원가입"
+                twoTitle=""
+                explainText="본인인증을 위한 이메일을 입력해주세요"
+                explainSize={13}
             />
-            <View style={inputEmailTemplateStyles.resendMailButtonBox}>
-                <NormalText text="메일을 받지 못하셨나요?" size={13} color={Colors.TXT_GRAY} />
-                <TouchableOpacity
+            <View style={inputEmailTemplateStyles.container}>
+                <View style={inputEmailTemplateStyles.mainContent}>
+                    <LoginTextInput
+                        title="Email"
+                        value={email}
+                        onChangeText={onChangeEmailText}
+                        placeholder="이메일(아이디) 입력"
+                        keyboardType="email-address"
+                    />
+
+                    <Spacer height={8} />
+
+                    {email && !duplicatedError && (
+                        <View style={inputEmailTemplateStyles.emailErrorTextBox}>
+                            <Icons
+                                type={isEmail ? 'octicons' : 'fontisto'}
+                                name={isEmail ? 'check' : 'close'}
+                                size={14}
+                                color={isEmail ? colors.STATUS_GREEN : colors.STATUS_RED}
+                            />
+                            <Spacer width={4} />
+                            <MediumText
+                                text={isEmail ? '올바른 이메일 형식입니다' : '이메일 형식이 올바르지 않습니다'}
+                                size={12}
+                                color={isEmail ? colors.STATUS_GREEN : colors.STATUS_RED}
+                            />
+                        </View>
+                    )}
+                    {duplicatedError && (
+                        <View style={inputEmailTemplateStyles.emailErrorTextBox}>
+                            <Icons type={'fontisto'} name={'close'} size={14} color={colors.STATUS_RED} />
+                            <Spacer width={4} />
+                            <MediumText text={duplicatedError} size={12} color={colors.STATUS_RED} />
+                        </View>
+                    )}
+                </View>
+
+                <TextButton
                     onPress={onPressEmailAuth}
-                    activeOpacity={1}
-                    style={inputEmailTemplateStyles.resendButton}>
-                    <BoldText text="재전송" size={13} color={Colors.TXT_GRAY} />
-                </TouchableOpacity>
+                    text={authData.isAuthorizationPass ? '완료' : '인증메일 전송'}
+                    height={48}
+                    backgroundColor={isEmail && !duplicatedError ? colors.BLACK : colors.BTN_GRAY}
+                    fontColor={colors.WHITE}
+                    fontWeight="semiBold"
+                    fontSize={17}
+                    borderRadius={5}
+                />
+                <View style={inputEmailTemplateStyles.resendMailButtonBox}>
+                    <NormalText text="메일을 받지 못하셨나요?" size={13} color={colors.TXT_GRAY} />
+                    <TextButton
+                        onPress={onPressEmailAuth}
+                        borderBottomWidth={1.5}
+                        borderColor={colors.TXT_GRAY}
+                        marginLeft={8}
+                        fontColor={colors.TXT_GRAY}
+                        fontSize={13}
+                        text="재전송"
+                        fontWeight="bold"
+                    />
+                </View>
+
+                <ModalBackground visible={isOnModal} onRequestClose={() => authNumberModalHanlder('CLOSE')}>
+                    <AuthEmail
+                        min={minutes}
+                        sec={seconds}
+                        resetTimeHandler={resetTimeHandler}
+                        authNumberModalHanlder={authNumberModalHanlder}
+                    />
+                </ModalBackground>
+
+                {isLoading && <ActivityIndicator size="large" />}
             </View>
-            {isLoading && <ActivityIndicator size="large" />}
-        </View>
+        </>
     );
 };
 

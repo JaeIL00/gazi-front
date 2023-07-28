@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "1015954149850",
+    "project_id": "gazinow",
+    "storage_bucket": "gazinow.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1015954149850:android:a8078b1813d0aaf1f470e3",
+        "android_client_info": {
+          "package_name": "com.gazinow"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1015954149850-ohb4ddosgqgvb8imoj4dvokd9715mtee.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.gazinow",
+            "certificate_hash": "a7fb41dea73543f6a64b23548a028d1bf3a3f489"
+          }
+        },
+        {
+          "client_id": "1015954149850-2ingscg6j4mlbn4vkm2j2dohirk3au3j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCJlTTJcvFB6Y_2zA-1-IsjlltmvxUezM4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1015954149850-2ingscg6j4mlbn4vkm2j2dohirk3au3j.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

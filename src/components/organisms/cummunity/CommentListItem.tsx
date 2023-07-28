@@ -1,30 +1,53 @@
 import React, { useCallback, useState } from 'react';
 import { Image, View } from 'react-native';
 import { useMutation } from 'react-query';
-
-import Icons from '../../smallest/Icons';
-import Spacer from '../../smallest/Spacer';
-import Colors from '../../../styles/Colors';
-import NormalText from '../../smallest/NormalText';
-import MediumText from '../../smallest/MediumText';
-import TouchButton from '../../smallest/TouchButton';
-import SemiBoldText from '../../smallest/SemiBoldText';
-import CommentImageItem from '../../molecules/CommentImageItem';
-import { commentListItemStyles } from '../../../styles/styles';
-import { CommentListItemProps, ImageViewTypes } from '../../../types/types';
-import { useRootNavigation } from '../../../navigations/RootStackNavigation';
-import { addHelpfulCommentAPI, delHelpfulCommentAPI } from '../../../queries/api';
 import { debounce } from 'lodash';
 import { useRecoilValue } from 'recoil';
-import { userTokenAtom } from '../../../store/atoms';
 
-const CommentListItem = ({ comment, postTitle, postCount, reportHandler, firstCommentId }: CommentListItemProps) => {
+import ReportModal from './ReportModal';
+import Icons from '../../atoms/Icons';
+import Spacer from '../../atoms/Spacer';
+import colors from '../../../constants/colors';
+import NormalText from '../../atoms/NormalText';
+import MediumText from '../../atoms/MediumText';
+import TouchButton from '../../atoms/TouchButton';
+import SemiBoldText from '../../atoms/SemiBoldText';
+import ModalBackground from '../../atoms/ModalBackground';
+import { userAuthAtom } from '../../../recoil';
+import { commentListItemStyles } from '../../../styles/molecules/styles';
+import { useRootNavigation } from '../../../navigations/RootStackNavigation';
+import { addHelpfulCommentAPI, delHelpfulCommentAPI, reportAPI } from '../../../apis/api';
+import { ImageViewTypes } from '../../../types/common/types';
+import { CommentListItemProps } from '../../../types/organisms/types';
+import TextButton from '../../molecules/TextButton';
+import ImageButton from '../../molecules/ImageButton';
+
+const CommentListItem = ({
+    comment,
+    postTitle,
+    postCount,
+    getCommentListRefetch,
+    delReportComment,
+}: CommentListItemProps) => {
     const rootNavigation = useRootNavigation();
 
-    const { accessToken } = useRecoilValue(userTokenAtom);
+    const { accessToken } = useRecoilValue(userAuthAtom);
 
     const [isHelpful, setIsHelpful] = useState<boolean>(comment.like);
+    const [isReportModal, setIsReportModal] = useState<boolean>(false);
+    const [isReportSuccess, setIsReportSuccess] = useState<boolean>(false);
     const [helpfulCount, setHelpfulCount] = useState<number>(comment.likeCount);
+
+    // Comment report API
+    const { mutate, isLoading } = useMutation(reportAPI, {
+        onSuccess: () => {
+            setIsReportSuccess(true);
+        },
+        onError: ({ response }) => {
+            // For Debug
+            console.log('(ERROR) report API. respense: ', response);
+        },
+    });
 
     // Add helpful comment API
     const { mutate: addHelpfultMutate } = useMutation(addHelpfulCommentAPI, {
@@ -61,7 +84,7 @@ const CommentListItem = ({ comment, postTitle, postCount, reportHandler, firstCo
     };
     const addHelpfulMutate = useCallback(
         debounce(() => {
-            if (firstCommentId === comment.postId) {
+            if (comment.post) {
                 addHelpfultMutate({
                     accessToken,
                     data: {
@@ -79,11 +102,11 @@ const CommentListItem = ({ comment, postTitle, postCount, reportHandler, firstCo
                 });
             }
         }, 1000),
-        [firstCommentId, comment],
+        [comment],
     );
     const delHelpfulMutate = useCallback(
         debounce(() => {
-            if (firstCommentId === comment.postId) {
+            if (comment.post) {
                 delHelpfultMutate({
                     accessToken,
                     data: {
@@ -101,8 +124,38 @@ const CommentListItem = ({ comment, postTitle, postCount, reportHandler, firstCo
                 });
             }
         }, 1000),
-        [firstCommentId],
+        [],
     );
+
+    // Report comment handler
+    const reportMutate = (repostId: number, reportEnum: string, reason: string) => {
+        if (comment.post) {
+            mutate({
+                accessToken,
+                data: {
+                    postId: repostId,
+                    repostId: null,
+                    reportEnum,
+                    reason,
+                },
+            });
+        } else {
+            mutate({
+                accessToken,
+                data: {
+                    postId: null,
+                    repostId,
+                    reportEnum,
+                    reason,
+                },
+            });
+        }
+    };
+
+    const closeReportModalHandler = () => {
+        setIsReportModal(false);
+        delReportComment(comment.postId);
+    };
 
     // Move image view screen
     const moveImageViewScreen = (viewData: ImageViewTypes) => {
@@ -119,14 +172,28 @@ const CommentListItem = ({ comment, postTitle, postCount, reportHandler, firstCo
                         <View style={commentListItemStyles.headerProfileBox}>
                             <View style={commentListItemStyles.headerProfileImg}></View>
                             <View style={commentListItemStyles.headerTitleBox}>
-                                <SemiBoldText text={comment.nickName} size={16} color={Colors.BLACK} />
+                                <SemiBoldText text={comment.nickName} size={16} color={colors.BLACK} />
                                 <Spacer height={1} />
                                 <MediumText text={`${comment.distance} | ${comment.time}`} size={11} color="#999999" />
                             </View>
                         </View>
-                        <TouchButton onPress={() => reportHandler(comment.postId)} hitSlop={10}>
-                            <MediumText text="신고하기" size={11} color={Colors.BLACK} />
-                        </TouchButton>
+                        <TextButton
+                            onPress={() => setIsReportModal(true)}
+                            hitSlop={10}
+                            text="신고하기"
+                            fontSize={11}
+                            fontColor={colors.BLACK}
+                            fontWeight="medium"
+                        />
+                        <ModalBackground visible={isReportModal} onRequestClose={closeReportModalHandler}>
+                            <ReportModal
+                                repostId={comment.postId}
+                                isReportSuccess={isReportSuccess}
+                                reportMutate={reportMutate}
+                                closeReportModalHandler={closeReportModalHandler}
+                                getCommentListRefetch={getCommentListRefetch}
+                            />
+                        </ModalBackground>
                     </View>
                 </View>
 
@@ -135,8 +202,8 @@ const CommentListItem = ({ comment, postTitle, postCount, reportHandler, firstCo
                     <NormalText text={comment.content} size={13} color="#000000" />
                     <Spacer height={8} />
                     {comment.fileList.length === 1 && (
-                        <CommentImageItem
-                            moveImageViewScreen={() =>
+                        <ImageButton
+                            onPress={() =>
                                 moveImageViewScreen({
                                     postTitle,
                                     postCount,
@@ -149,14 +216,18 @@ const CommentListItem = ({ comment, postTitle, postCount, reportHandler, firstCo
                             }
                             width={308}
                             height={208}
-                            fileUrl={comment.fileList[0].fileUrl}
+                            imageSource={{ uri: comment.fileList[0].fileUrl }}
+                            isCaching={true}
+                            imageWidth="100%"
+                            imageHeight="100%"
+                            imageBorderRadius={5}
                         />
                     )}
                     {comment.fileList.length === 2 && (
                         <View style={commentListItemStyles.contentTwoImgBox}>
                             {comment.fileList.map((file, index) => (
-                                <CommentImageItem
-                                    moveImageViewScreen={() =>
+                                <ImageButton
+                                    onPress={() =>
                                         moveImageViewScreen({
                                             postTitle,
                                             postCount,
@@ -169,7 +240,11 @@ const CommentListItem = ({ comment, postTitle, postCount, reportHandler, firstCo
                                     }
                                     width={151}
                                     height={208}
-                                    fileUrl={file.fileUrl}
+                                    imageSource={{ uri: file.fileUrl }}
+                                    isCaching={true}
+                                    imageWidth="100%"
+                                    imageHeight="100%"
+                                    imageBorderRadius={5}
                                 />
                             ))}
                         </View>
@@ -177,8 +252,8 @@ const CommentListItem = ({ comment, postTitle, postCount, reportHandler, firstCo
                     {comment.fileList.length === 3 && (
                         <View style={commentListItemStyles.contentTwoOverImgBox}>
                             <View style={commentListItemStyles.contentThrHalfImg}>
-                                <CommentImageItem
-                                    moveImageViewScreen={() =>
+                                <ImageButton
+                                    onPress={() =>
                                         moveImageViewScreen({
                                             postTitle,
                                             postCount,
@@ -191,12 +266,16 @@ const CommentListItem = ({ comment, postTitle, postCount, reportHandler, firstCo
                                     }
                                     width={151}
                                     height={208}
-                                    fileUrl={comment.fileList[0].fileUrl}
+                                    imageSource={{ uri: comment.fileList[0].fileUrl }}
+                                    isCaching={true}
+                                    imageWidth="100%"
+                                    imageHeight="100%"
+                                    imageBorderRadius={5}
                                 />
                             </View>
                             <View style={commentListItemStyles.contentThrQtImg}>
-                                <CommentImageItem
-                                    moveImageViewScreen={() =>
+                                <ImageButton
+                                    onPress={() =>
                                         moveImageViewScreen({
                                             postTitle,
                                             postCount,
@@ -209,10 +288,14 @@ const CommentListItem = ({ comment, postTitle, postCount, reportHandler, firstCo
                                     }
                                     width={151}
                                     height={101}
-                                    fileUrl={comment.fileList[1].fileUrl}
+                                    imageSource={{ uri: comment.fileList[1].fileUrl }}
+                                    isCaching={true}
+                                    imageWidth="100%"
+                                    imageHeight="100%"
+                                    imageBorderRadius={5}
                                 />
-                                <CommentImageItem
-                                    moveImageViewScreen={() =>
+                                <ImageButton
+                                    onPress={() =>
                                         moveImageViewScreen({
                                             postTitle,
                                             postCount,
@@ -225,7 +308,11 @@ const CommentListItem = ({ comment, postTitle, postCount, reportHandler, firstCo
                                     }
                                     width={151}
                                     height={101}
-                                    fileUrl={comment.fileList[2].fileUrl}
+                                    imageSource={{ uri: comment.fileList[2].fileUrl }}
+                                    isCaching={true}
+                                    imageWidth="100%"
+                                    imageHeight="100%"
+                                    imageBorderRadius={5}
                                 />
                             </View>
                         </View>
@@ -236,9 +323,8 @@ const CommentListItem = ({ comment, postTitle, postCount, reportHandler, firstCo
                                 {comment.fileList.map((item, index) => {
                                     if (index < 2) {
                                         return (
-                                            <CommentImageItem
-                                                key={item.fileName}
-                                                moveImageViewScreen={() =>
+                                            <ImageButton
+                                                onPress={() =>
                                                     moveImageViewScreen({
                                                         postTitle,
                                                         postCount,
@@ -251,15 +337,19 @@ const CommentListItem = ({ comment, postTitle, postCount, reportHandler, firstCo
                                                 }
                                                 width={151}
                                                 height={101}
-                                                fileUrl={item.fileUrl}
+                                                imageSource={{ uri: item.fileUrl }}
+                                                isCaching={true}
+                                                imageWidth="100%"
+                                                imageHeight="100%"
+                                                imageBorderRadius={5}
                                             />
                                         );
                                     }
                                 })}
                             </View>
                             <View style={commentListItemStyles.contentThrQtImg}>
-                                <CommentImageItem
-                                    moveImageViewScreen={() =>
+                                <ImageButton
+                                    onPress={() =>
                                         moveImageViewScreen({
                                             postTitle,
                                             postCount,
@@ -272,7 +362,11 @@ const CommentListItem = ({ comment, postTitle, postCount, reportHandler, firstCo
                                     }
                                     width={151}
                                     height={101}
-                                    fileUrl={comment.fileList[2].fileUrl}
+                                    imageSource={{ uri: comment.fileList[2].fileUrl }}
+                                    isCaching={true}
+                                    imageWidth="100%"
+                                    imageHeight="100%"
+                                    imageBorderRadius={5}
                                 />
                                 {comment.fileList.length > 4 ? (
                                     <TouchButton
@@ -298,14 +392,14 @@ const CommentListItem = ({ comment, postTitle, postCount, reportHandler, firstCo
                                                 <MediumText
                                                     text={`+${comment.fileList.length - 3}`}
                                                     size={18}
-                                                    color={Colors.WHITE}
+                                                    color={colors.WHITE}
                                                 />
                                             </View>
                                         </>
                                     </TouchButton>
                                 ) : (
-                                    <CommentImageItem
-                                        moveImageViewScreen={() =>
+                                    <ImageButton
+                                        onPress={() =>
                                             moveImageViewScreen({
                                                 postTitle,
                                                 postCount,
@@ -318,7 +412,11 @@ const CommentListItem = ({ comment, postTitle, postCount, reportHandler, firstCo
                                         }
                                         width={151}
                                         height={101}
-                                        fileUrl={comment.fileList[3].fileUrl}
+                                        imageSource={{ uri: comment.fileList[3].fileUrl }}
+                                        isCaching={true}
+                                        imageWidth="100%"
+                                        imageHeight="100%"
+                                        imageBorderRadius={5}
                                     />
                                 )}
                             </View>
@@ -334,13 +432,13 @@ const CommentListItem = ({ comment, postTitle, postCount, reportHandler, firstCo
                             type="feather"
                             name="thumbs-up"
                             size={15}
-                            color={isHelpful ? Colors.VIOLET : Colors.TXT_GRAY}
+                            color={isHelpful ? colors.VIOLET : colors.TXT_GRAY}
                         />
                         <Spacer width={2} />
                         <NormalText
                             text={`도움돼요 ${helpfulCount}`}
                             size={13}
-                            color={isHelpful ? Colors.VIOLET : Colors.TXT_GRAY}
+                            color={isHelpful ? colors.VIOLET : colors.TXT_GRAY}
                         />
                     </View>
                 </TouchButton>

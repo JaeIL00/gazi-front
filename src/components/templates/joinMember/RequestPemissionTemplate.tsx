@@ -1,17 +1,17 @@
 import React from 'react';
 import { Platform, ScrollView, View } from 'react-native';
-import { PERMISSIONS, requestMultiple } from 'react-native-permissions';
+import { PERMISSIONS, request, requestMultiple } from 'react-native-permissions';
 
-import Spacer from '../../smallest/Spacer';
-import Colors from '../../../styles/Colors';
-import NormalText from '../../smallest/NormalText';
+import Spacer from '../../atoms/Spacer';
+import colors from '../../../constants/colors';
+import NormalText from '../../atoms/NormalText';
 import TextButton from '../../molecules/TextButton';
-import MoveBackWithPageTitle from '../../organisms/MoveBackWithPageTitle';
+import MoveBackWithPageTitle from '../../organisms/common/MoveBackWithPageTitle';
 import IconPermissionListItem from '../../molecules/IconPermissionListItem';
-import { RequestPemissionTemplateProps } from '../../../types/types';
-import { requestPemissionTemplateStyles } from '../../../styles/styles';
+import { requestPemissionTemplateStyles } from '../../../styles/templates/styles';
+import { RequestPemissionTemplateProps } from '../../../types/templates/types';
 
-const RequestPemissionTemplate = ({ moveToScreen }: RequestPemissionTemplateProps) => {
+const RequestPemissionTemplate = ({ navigationHandler }: RequestPemissionTemplateProps) => {
     // Request Permissions
     const onPressrequstPermission = async () => {
         if (Platform.OS === 'android') {
@@ -23,11 +23,12 @@ const RequestPemissionTemplate = ({ moveToScreen }: RequestPemissionTemplateProp
                     PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION,
                     PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
                 ]);
+                await request(PERMISSIONS.ANDROID.CAMERA);
             } catch (err) {
                 // For Debug
                 console.log('(ERROR) Request Permissions. err: ', err);
             } finally {
-                moveToScreen('OK');
+                navigationHandler('OK');
             }
         }
     };
@@ -37,7 +38,7 @@ const RequestPemissionTemplate = ({ moveToScreen }: RequestPemissionTemplateProp
             <MoveBackWithPageTitle
                 oneTitle="앱 사용을 위해"
                 twoTitle="접근 권한을 허용해주세요"
-                onPress={() => moveToScreen('BACK')}
+                onPress={() => navigationHandler('BACK')}
             />
 
             <Spacer height={63} />
@@ -77,9 +78,9 @@ const RequestPemissionTemplate = ({ moveToScreen }: RequestPemissionTemplateProp
                 <NormalText
                     text="선택 권한의 경우 허용하지 않아도 서비스를 사용할 수 있으나"
                     size={12}
-                    color={Colors.TXT_GRAY}
+                    color={colors.TXT_GRAY}
                 />
-                <NormalText text="일부 서비스 이용이 제한될 수 있습니다" size={12} color={Colors.TXT_GRAY} />
+                <NormalText text="일부 서비스 이용이 제한될 수 있습니다" size={12} color={colors.TXT_GRAY} />
             </View>
 
             <View style={requestPemissionTemplateStyles.buttonBox}>
@@ -87,9 +88,11 @@ const RequestPemissionTemplate = ({ moveToScreen }: RequestPemissionTemplateProp
                     onPress={onPressrequstPermission}
                     text="확인"
                     height={48}
-                    backgroundColor={Colors.BLACK}
-                    textColor={Colors.WHITE}
+                    backgroundColor={colors.BLACK}
+                    fontColor={colors.WHITE}
+                    fontWeight="semiBold"
                     fontSize={17}
+                    borderRadius={5}
                 />
             </View>
         </View>
