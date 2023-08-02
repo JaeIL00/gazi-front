@@ -4,6 +4,7 @@ import { debounce } from 'lodash';
 import { useQuery } from 'react-query';
 import FastImage from 'react-native-fast-image';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useSetRecoilState } from 'recoil';
 
 import Icons from '../../atoms/Icons';
 import Spacer from '../../atoms/Spacer';
@@ -11,14 +12,15 @@ import colors from '../../../constants/colors';
 import MediumText from '../../atoms/MediumText';
 import NormalText from '../../atoms/NormalText';
 import TouchButton from '../../atoms/TouchButton';
-import { nearPlaceGoogleAPI, searchGoogleAPI } from '../../../apis/api';
-import { searchLocationStyles } from '../../../styles/organisms/styles';
-import { SingleLineInput } from '../../atoms/SingleLineInput';
-import { screenHeight, screenWidth } from '../../../utils/changeStyleSize';
-import { SearchLocationProps } from '../../../types/organisms/types';
-import { LocationResultTypes, SearchHistoryTypes } from '../../../types/common/types';
 import IconButton from '../../molecules/IconButton';
 import ImageButton from '../../molecules/ImageButton';
+import { nearPlaceGoogleAPI, searchGoogleAPI } from '../../../apis/api';
+import { SingleLineInput } from '../../atoms/SingleLineInput';
+import { SearchLocationProps } from '../../../types/organisms/types';
+import { searchLocationStyles } from '../../../styles/organisms/styles';
+import { screenHeight, screenWidth } from '../../../utils/changeStyleSize';
+import { LocationResultTypes, SearchHistoryTypes } from '../../../types/common/types';
+import { mapLocationSearchResultAtom, writingPlaceLocationSearchResultAtom } from '../../../recoil';
 
 const SearchLocation = ({
     isHome,
@@ -26,8 +28,10 @@ const SearchLocation = ({
     isAllowLocation,
     currentPosition,
     searchModalHandler,
-    getLocationHandler,
 }: SearchLocationProps) => {
+    const setMapLocationSearchResult = useSetRecoilState(mapLocationSearchResultAtom);
+    const setWritingPlaceLocationSearchResult = useSetRecoilState(writingPlaceLocationSearchResultAtom);
+
     const nextPageTokenRef = useRef<string>('');
 
     const [searchText, setSearchText] = useState<string>('');
@@ -161,17 +165,23 @@ const SearchLocation = ({
             return (
                 <TouchButton
                     onPress={() => {
-                        getLocationHandler(
-                            item.geometry.location,
-                            item.name,
-                            searchText ? item.formatted_address : item.vicinity,
-                        );
                         if (isHome) {
                             saveSearchHistoryStorage(
                                 searchText ? item.formatted_address : item.vicinity,
                                 item.name,
                                 item.geometry.location,
                             );
+                            setMapLocationSearchResult({
+                                location: item.geometry.location,
+                                placeName: item.name,
+                                address: searchText ? item.formatted_address : item.vicinity,
+                            });
+                        } else {
+                            setWritingPlaceLocationSearchResult({
+                                address: item.formatted_address,
+                                placeName: item.name,
+                                location: item.geometry.location,
+                            });
                         }
                     }}
                     paddingVertical={12}
@@ -205,7 +215,7 @@ const SearchLocation = ({
                 <TouchButton
                     onPress={() => {
                         saveSearchHistoryStorage(item.formatted_address, item.name, item.location);
-                        getLocationHandler(item.location, item.name, '');
+                        setMapLocationSearchResult({ location: item.location, placeName: item.name });
                     }}
                     paddingVertical={12}
                     borderColor={colors.BORDER_GRAY}

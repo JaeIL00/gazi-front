@@ -18,7 +18,7 @@ import ModalBackground from '../../atoms/ModalBackground';
 import FailPermissionModal from '../../organisms/common/FailPermissionModal';
 import NearbyPostListModal from '../../organisms/home/NearbyPostListModal';
 import { nearByUserPostsAPI } from '../../../apis/api';
-import { nearPostListAtom, userAuthAtom, userInfoAtom } from '../../../recoil';
+import { mapLocationSearchResultAtom, nearPostListAtom, userAuthAtom, userInfoAtom } from '../../../recoil';
 import { mapHomeTemplateStyles } from '../../../styles/templates/styles';
 import { screenFont, screenHeight, screenWidth } from '../../../utils/changeStyleSize';
 import colors from '../../../constants/colors';
@@ -31,6 +31,7 @@ import NaverMapView from 'react-native-nmap';
 const MapHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritingScreen }: MapHomeTemplateProps) => {
     const { accessToken } = useRecoilValue(userAuthAtom);
     const { isAllowLocation } = useRecoilValue(userInfoAtom);
+    const mapLocationSearchResult = useRecoilValue(mapLocationSearchResultAtom);
     const setRecoilNearPost = useSetRecoilState(nearPostListAtom);
 
     const mapRef = useRef() as RefObject<NaverMapView>;
@@ -141,16 +142,16 @@ const MapHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritingScreen }
     };
 
     // Seach location to move map
-    const getLocationHandler = (location: { lat: number; lng: number }) => {
+    const moveMapLocationHandler = () => {
         mapRef.current?.animateToRegion({
-            latitude: location.lat,
-            longitude: location.lng,
+            latitude: mapLocationSearchResult.location.lat,
+            longitude: mapLocationSearchResult.location.lng,
             latitudeDelta: 0.004,
             longitudeDelta: 0.004,
         });
         mapCurrentPositionRef.current = {
-            latitude: location.lat,
-            longitude: location.lng,
+            latitude: mapLocationSearchResult.location.lat,
+            longitude: mapLocationSearchResult.location.lng,
         };
         // setTimeout(() => {
         //     getBoundaryMap();
@@ -159,7 +160,7 @@ const MapHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritingScreen }
         setIsNearPostSearchTopBar(false);
         setSearchModal(false);
 
-        // Naver map
+        // // Naver map
         setTimeout(() => {
             initNearPosts();
         }, 700);
@@ -325,26 +326,26 @@ const MapHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritingScreen }
     };
 
     // Check map zoom level for warning
-    const checkZoomLevelWarning = useCallback(
-        (region: Region) => {
-            if (region.latitudeDelta > 0.15) {
-                setIsFarMapLevel(true);
-            } else if (region.latitudeDelta < 0.15 && region.latitudeDelta > 0.065) {
-                mapBoundaryStateRef.current = {
-                    ...mapBoundaryStateRef.current,
-                    isNearSearch: true,
-                };
-                setIsFarMapLevel(false);
-            } else {
-                mapBoundaryStateRef.current = {
-                    ...mapBoundaryStateRef.current,
-                    isNearSearch: false,
-                };
-                setIsFarMapLevel(false);
-            }
-        },
-        [isFarMapLevel],
-    );
+    // const checkZoomLevelWarning = useCallback(
+    //     (region: Region) => {
+    //         if (region.latitudeDelta > 0.15) {
+    //             setIsFarMapLevel(true);
+    //         } else if (region.latitudeDelta < 0.15 && region.latitudeDelta > 0.065) {
+    //             mapBoundaryStateRef.current = {
+    //                 ...mapBoundaryStateRef.current,
+    //                 isNearSearch: true,
+    //             };
+    //             setIsFarMapLevel(false);
+    //         } else {
+    //             mapBoundaryStateRef.current = {
+    //                 ...mapBoundaryStateRef.current,
+    //                 isNearSearch: false,
+    //             };
+    //             setIsFarMapLevel(false);
+    //         }
+    //     },
+    //     [isFarMapLevel],
+    // );
     const updateMapZoomLevel = (level: number) => {
         setMapZoomLevel(level);
     };
@@ -368,6 +369,13 @@ const MapHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritingScreen }
             };
         }
     }, [mapZoomLevel]);
+
+    // Place search result handler
+    useEffect(() => {
+        if (mapLocationSearchResult.location.lat) {
+            moveMapLocationHandler();
+        }
+    }, [mapLocationSearchResult]);
 
     useLayoutEffect(() => {
         isAllowPermissionInit();
@@ -427,7 +435,6 @@ const MapHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritingScreen }
             <Modal visible={searchModal} onRequestClose={() => setSearchModal(false)}>
                 <View style={mapHomeTemplateStyles.searchModalBox}>
                     <SearchLocation
-                        getLocationHandler={getLocationHandler}
                         placeholder="지금 어디로 가시나요?"
                         isHome={true}
                         searchModalHandler={searchModalHandler}

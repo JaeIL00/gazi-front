@@ -16,7 +16,6 @@ export type KeywordListTypes = {
 export type SearchHistoryTypes = {
     formatted_address: string;
     name: string;
-
     location: { lat: number; lng: number };
 };
 export type MyCommentTypes = {
@@ -79,11 +78,6 @@ export type GalleryAlbumListTypes = {
     title: string;
     count: number;
     thumbnail: string;
-};
-export type TemporarySaveChooseLocationTypes = {
-    formatted_address: string;
-    name: string;
-    location: { lat: number | null; lng: number | null };
 };
 export type LocationResultTypes = {
     business_status: string;
@@ -272,4 +266,9 @@ export type joinMemberTypes = {
 export type emailAuthAtomTypes = {
     number: number;
     isAuthorizationPass: boolean;
+};
+export type placeSearchResultAtomTypes = {
+    location: { lat: number; lng: number };
+    placeName: string;
+    address: string;
 };
