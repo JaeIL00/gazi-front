@@ -5,6 +5,7 @@ import {
     userInfoAtomTypes,
     userAuthAtomTypes,
     PostTypes,
+    placeSearchResultAtomTypes,
 } from '../types/common/types';
 
 // AUTH
@@ -49,4 +50,28 @@ export const emailAuthAtom = atom<emailAuthAtomTypes>({
 export const nearPostListAtom = atom<PostTypes[]>({
     key: 'nearPostListAtom',
     default: [],
+});
+
+// MAP
+export const mapLocationSearchResultAtom = atom<placeSearchResultAtomTypes>({
+    key: 'mapLocationSearchResultAtom',
+    default: {
+        location: {
+            lat: 0,
+            lng: 0,
+        },
+        placeName: '',
+        address: '',
+    },
+});
+export const writingPlaceLocationSearchResultAtom = atom<placeSearchResultAtomTypes>({
+    key: 'writingPlaceLocationSearchResultAtom',
+    default: {
+        location: {
+            lat: 0,
+            lng: 0,
+        },
+        placeName: '',
+        address: '',
+    },
 });
