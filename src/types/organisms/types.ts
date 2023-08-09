@@ -9,7 +9,6 @@ import {
     uploadImageFileTypes,
 } from '../common/types';
 import { PageTitleWithExplainProps } from '../molecules/types';
-import MapView, { Details, Region } from 'react-native-maps';
 import { QueryObserverResult, RefetchOptions, RefetchQueryFilters } from 'react-query';
 import { AxiosResponse } from 'axios';
 import NaverMapView, { Coord } from 'react-native-nmap';
@@ -67,16 +66,6 @@ export type KeywordsListProps = {
     checkBorderColor: string | undefined;
     checkBackColor: string;
     trafficKeywordColor?: string;
-};
-export type GoogleMapComponent = {
-    mapRef: RefObject<MapView>;
-    currentPosition: MapLocationTypes;
-    nearPostList: PostTypes[];
-    isAllowLocation: boolean;
-    mapRenderCompleteHandler: () => void;
-    checkMapGesture: (region: Region, details: Details) => void;
-    checkZoomLevelWarning: (region: Region) => void;
-    findMarkerPost: (id: number) => void;
 };
 export type PostListItemProps = {
     post: PostTypes | null;

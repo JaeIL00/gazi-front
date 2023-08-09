@@ -1,9 +1,8 @@
-import React, { RefObject, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { ActivityIndicator, Image, ImageSourcePropType, Linking, Modal, ScrollView, View } from 'react-native';
 import { useMutation } from 'react-query';
 import { useRecoilValue } from 'recoil';
 import { debounce } from 'lodash';
-import MapView, { Marker } from 'react-native-maps';
 import FastImage from 'react-native-fast-image';
 import Geolocation from '@react-native-community/geolocation';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -11,7 +10,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import Icons from '../../atoms/Icons';
 import Spacer from '../../atoms/Spacer';
 import colors from '../../../constants/colors';
-import mapStyle from '../../../styles/mapStyle';
 import NormalText from '../../atoms/NormalText';
 import MediumText from '../../atoms/MediumText';
 import TouchButton from '../../atoms/TouchButton';
@@ -25,7 +23,6 @@ import SearchLocation from '../../organisms/common/SearchLocation';
 import FailPermissionModal from '../../organisms/common/FailPermissionModal';
 import WritePostAddKeyword from '../../organisms/cummunity/AddKeywordInWrite';
 import HowGetPhotoSelectModal from '../../organisms/cummunity/HowGetPhotoSelectModal';
-import { screenWidth } from '../../../utils/changeStyleSize';
 import { SingleLineInput } from '../../atoms/SingleLineInput';
 import { writePostAPI, writePostFilesAPI } from '../../../apis/api';
 import { WritePostTemplateProps } from '../../../types/templates/types';
@@ -38,7 +35,6 @@ const WritePostTemplate = ({ navigationHandler }: WritePostTemplateProps) => {
     const { accessToken } = useRecoilValue(userAuthAtom);
     const { isAllowLocation } = useRecoilValue(userInfoAtom);
 
-    const mapRef = useRef() as RefObject<MapView>;
     const postIdRef = useRef<number>();
     const currentPositionRef = useRef<{ curLat: number; curLon: number }>({
         curLat: 0,
@@ -214,7 +210,10 @@ const WritePostTemplate = ({ navigationHandler }: WritePostTemplateProps) => {
             setOnErrorText('키워드를 설정해주세요');
             setOnErrorModal(true);
         } else {
-            mapSnapshotWithWritePostHandler();
+            postMutate({
+                accessToken,
+                data: writePostData.dto,
+            });
         }
     };
     const offErrorModalHandler = () => {
@@ -340,74 +339,6 @@ const WritePostTemplate = ({ navigationHandler }: WritePostTemplateProps) => {
         [writePostData],
     );
 
-    // Map snapshot handler for post. map and marker
-    const mapSnapshotWithWritePostHandler = () => {
-        mapRef.current?.render();
-        mapRef.current?.animateToRegion(
-            {
-                latitude: writePostData.dto.latitude!,
-                longitude: writePostData.dto.longitude!,
-                latitudeDelta: 0.006,
-                longitudeDelta: 0.0047,
-            },
-            300,
-        );
-        setTimeout(() => {
-            mapRef.current
-                ?.takeSnapshot({
-                    width: 300,
-                    height: 300,
-                    format: 'jpg',
-                    quality: 0.9,
-                    result: 'file',
-                })
-                .then(uri => {
-                    setWritePostData({
-                        ...writePostData,
-                        backgroundMap: uri,
-                    });
-                    postMutate({
-                        accessToken,
-                        data: writePostData.dto,
-                    });
-                });
-        }, 1500);
-
-        switch (writePostData.dto.headKeywordId) {
-            case 1:
-                setMarkerType(require('../../../assets/icons/marker-protest.png'));
-                break;
-            case 2:
-                setMarkerType(require('../../../assets/icons/marker-delay.png'));
-                break;
-            case 3:
-                setMarkerType(require('../../../assets/icons/marker-disaster.png'));
-                break;
-            case 4:
-                setMarkerType(require('../../../assets/icons/marker-construction.png'));
-                break;
-            case 5:
-                setMarkerType(require('../../../assets/icons/marker-congestion.png'));
-                break;
-            case 6:
-                setMarkerType(require('../../../assets/icons/marker-accident.png'));
-                break;
-            case 7:
-                setMarkerType(require('../../../assets/icons/marker-traffic-jam.png'));
-                break;
-            case 8:
-                setMarkerType(require('../../../assets/icons/marker-festival.png'));
-                break;
-            case 9:
-                setMarkerType(require('../../../assets/icons/marker-etc.png'));
-                break;
-            default:
-                // For Debug
-                console.log('(ERROR) Write post marker image');
-                return;
-        }
-    };
-
     // Place search result handler
     useEffect(() => {
         if (loactionModal) {
@@ -422,26 +353,6 @@ const WritePostTemplate = ({ navigationHandler }: WritePostTemplateProps) => {
 
     return (
         <>
-            <MapView
-                ref={mapRef}
-                style={writePostTemplateStyles.mapSize}
-                customMapStyle={mapStyle}
-                showsBuildings={false}>
-                {writePostData.dto.latitude && writePostData.dto.longitude && (
-                    <Marker
-                        coordinate={{
-                            latitude: writePostData.dto.latitude,
-                            longitude: writePostData.dto.longitude,
-                        }}
-                        anchor={{ x: 0.5, y: 0.5 }}
-                        style={writePostTemplateStyles.mapMarkerPosition}>
-                        <FastImage
-                            source={markerType ? markerType : require('../../../assets/icons/marker-protest.png')}
-                            style={{ width: 25 * screenWidth, height: 25 * screenWidth }}
-                        />
-                    </Marker>
-                )}
-            </MapView>
             <View style={writePostTemplateStyles.container}>
                 <View style={writePostTemplateStyles.headerNavigateBox}>
                     <IconButton
