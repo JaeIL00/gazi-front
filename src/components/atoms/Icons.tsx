@@ -8,23 +8,27 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import { IconsProps } from '../../types/atoms/types';
+import { IconsCompProps } from '../../types/atoms/types';
 import { screenFont } from '../../utils/changeStyleSize';
 
-const Icons = ({ type, name, size, color }: IconsProps) => {
-    let freshSize = size * screenFont;
-    return (
-        <>
-            {type === 'octicons' && <Octicons name={name} size={freshSize} color={color} />}
-            {type === 'feather' && <Feather name={name} size={freshSize} color={color} />}
-            {type === 'simpleLineIcons' && <SimpleLineIcons name={name} size={freshSize} color={color} />}
-            {type === 'fontisto' && <Fontisto name={name} size={freshSize} color={color} />}
-            {type === 'ionicons' && <Ionicons name={name} size={freshSize} color={color} />}
-            {type === 'entypo' && <Entypo name={name} size={freshSize} color={color} />}
-            {type === 'fontAwesome' && <FontAwesome name={name} size={freshSize} color={color} />}
-            {type === 'materialCommunityIcons' && <MaterialCommunityIcons name={name} size={freshSize} color={color} />}
-        </>
-    );
+const Icons = ({ type, name, size, color }: IconsCompProps) => {
+    if (size) {
+        let freshSize = size * screenFont;
+        return (
+            <>
+                {type === 'octicons' && <Octicons name={name} size={freshSize} color={color} />}
+                {type === 'feather' && <Feather name={name} size={freshSize} color={color} />}
+                {type === 'simpleLineIcons' && <SimpleLineIcons name={name} size={freshSize} color={color} />}
+                {type === 'fontisto' && <Fontisto name={name} size={freshSize} color={color} />}
+                {type === 'ionicons' && <Ionicons name={name} size={freshSize} color={color} />}
+                {type === 'entypo' && <Entypo name={name} size={freshSize} color={color} />}
+                {type === 'fontAwesome' && <FontAwesome name={name} size={freshSize} color={color} />}
+                {type === 'materialCommunityIcons' && (
+                    <MaterialCommunityIcons name={name} size={freshSize} color={color} />
+                )}
+            </>
+        );
+    } else return <></>;
 };
 
 export default Icons;

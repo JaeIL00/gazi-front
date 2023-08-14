@@ -1,10 +1,7 @@
-import { ReactElement } from 'react';
-import { FlexAlignType, KeyboardType, TextStyle } from 'react-native';
+import { FlexAlignType, PressableProps, TextInputProps, TextProps, TextStyle } from 'react-native';
+import { IconProps } from 'react-native-vector-icons/Icon';
 
-export type TouchButtonProps = {
-    children?: ReactElement;
-    onPressIn?: () => void;
-    onPress?: () => void;
+export interface TouchButtonProps extends PressableProps {
     width?: number | string;
     height?: number | string;
     backgroundColor?: string;
@@ -17,69 +14,28 @@ export type TouchButtonProps = {
     borderRadius?: number;
     borderBottomWidth?: number;
     flex?: number;
-    hitSlop?:
-        | {
-              top?: number;
-              bottom?: number;
-              left?: number;
-              right?: number;
-          }
-        | number;
     marginLeft?: number;
-};
+}
 
-export type SingleLineInputProps = {
-    value: string;
-    placeholder?: string;
-    keyboardType?: KeyboardType;
+export interface SingleLineInputProps extends TextInputProps {
     fontSize?: number;
-    maxLength?: number;
-    secureTextEntry?: boolean;
     width?: number;
     height?: number;
     fontFamily?: string | null;
     placeFontFamily?: string | null;
     isFocus?: boolean;
-    onChangeText: (text: string) => void;
-    onSubmitEditing?: () => void;
-};
-export type MultiLineInputProps = {
-    value: string;
-    placeholder: string;
-    fontSize?: number;
-    maxLength?: number;
-    width?: number;
-    height?: number;
-    fontFamily?: string | null;
-    placeFontFamily?: string | null;
+}
+export interface MultiLineInputProps extends SingleLineInputProps {
     inputFocusBlur: boolean;
     inputFocusBlurHandler: (state: string) => void;
-    onChangeText: (text: string) => void;
-    onSubmitEditing?: () => void;
-};
-export type IconsProps = {
+}
+export interface IconsCompProps extends IconProps {
     type: string;
-    name: string;
-    size: number;
-    color: string;
-};
-export type PageTitleProps = {
-    title: string;
-};
-export type GrayTextProps = {
-    text: string;
-    size: number;
-};
-export type AppTextProps = {
+}
+export interface AppTextProps extends TextProps {
     text: string;
     size: number;
     color: string;
     textAlign?: TextStyle['textAlign'];
     lineHeight?: number;
-    numberOfLines?: number;
-};
-export type ModalBackgroundProps = {
-    children: ReactElement;
-    visible: boolean;
-    onRequestClose?: () => void;
-};
+}

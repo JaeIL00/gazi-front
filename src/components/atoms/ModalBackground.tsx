@@ -1,10 +1,9 @@
 import React from 'react';
-import { Dimensions, Modal, View } from 'react-native';
+import { Dimensions, Modal, ModalProps, View } from 'react-native';
 
-import { ModalBackgroundProps } from '../../types/atoms/types';
 import { modalBackgroundStyles } from '../../styles/atoms/styles';
 
-const ModalBackground = ({ children, visible, onRequestClose }: ModalBackgroundProps) => {
+const ModalBackground = ({ children, visible, onRequestClose }: ModalProps) => {
     const { width, height } = Dimensions.get('screen');
     return (
         <Modal
