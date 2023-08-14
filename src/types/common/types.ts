@@ -270,5 +270,5 @@ export type emailAuthAtomTypes = {
 export type placeSearchResultAtomTypes = {
     location: { lat: number; lng: number };
     placeName: string;
-    address: string;
+    address?: string;
 };
