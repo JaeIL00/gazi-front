@@ -77,7 +77,7 @@ const MapHomeTemplate = ({ isModalRef, handleModalTrigger, moveToWritingScreen }
                 curLat:
                     mapZoomLevel > 12 && mapZoomLevel < 13
                         ? mapCurrentPositionRef.current.latitude
-                        : userCurrentPositionRef.current.longitude,
+                        : userCurrentPositionRef.current.latitude,
                 curLon:
                     mapZoomLevel > 12 && mapZoomLevel < 13
                         ? mapCurrentPositionRef.current.longitude
